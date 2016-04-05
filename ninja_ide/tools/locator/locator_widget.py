@@ -20,11 +20,13 @@ from __future__ import unicode_literals
 
 import re
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
@@ -38,27 +40,31 @@ class LocatorWidget(QDialog):
 
     def __init__(self, parent=None):
         super(LocatorWidget, self).__init__(
-            parent, Qt.Dialog | Qt.FramelessWindowHint)
+            parent, Qt.SplashScreen)# | Qt.FramelessWindowHint)
         self._parent = parent
-        self.setModal(True)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setStyleSheet("background:transparent;")
+        # self.setModal(True)
+        # self.setAttribute(Qt.WA_TranslucentBackground)
+        # self.setStyleSheet("background:transparent;")
+        self.setWindowState(Qt.WindowActive)
         self.setFixedHeight(400)
         self.setFixedWidth(500)
         # Create the QML user interface.
-        view = QDeclarativeView()
-        view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-        view.setSource(ui_tools.get_qml_resource("Locator.qml"))
-        self._root = view.rootObject()
+        self.view = QQuickWidget()
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
+        self.view.engine().quit.connect(self.hide)
+        self.view.setSource(ui_tools.get_qml_resource("Locator.qml"))
+        self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        vbox.addWidget(view)
+        vbox.addWidget(self.view)
 
         self.locate_symbols = locator.LocateSymbolsThread()
-        self.connect(self.locate_symbols, SIGNAL("finished()"), self._cleanup)
-        self.connect(self.locate_symbols, SIGNAL("terminated()"),
-                     self._cleanup)
+        self.locate_symbols.finished.connect(self._cleanup)
+        self.locate_symbols.terminated.connect(self._cleanup)
+
+        QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
+            lambda w1, w2, this=self: this.hide() if w1 == this.view else None)
 
         # Locator things
         self.filterPrefix = re.compile(r'(@|<|>|-|!|\.|/|:)')
@@ -91,12 +97,15 @@ class LocatorWidget(QDialog):
             ':': self._filter_lines
         }
 
-        self.connect(self._root, SIGNAL("textChanged(QString)"),
-                     self.set_prefix)
-        self.connect(self._root, SIGNAL("open(QString, int)"),
-                     self._open_item)
-        self.connect(self._root, SIGNAL("fetchMore()"),
-                     self._fetch_more)
+        self._root.textChanged.connect(self.set_prefix)
+        self._root.open.connect(self._open_item)
+        self._root.fetchMore.connect(self._fetch_more)
+
+    # @pyqtSlot(result=tuple)
+    def currentItem(self):
+        item = self._root.currentItem()
+        return item.toVariant()\
+            if item else None
 
     def reset_values(self):
         self._avoid_refresh = False
@@ -208,7 +217,7 @@ class LocatorWidget(QDialog):
                 if x.type == filterOptions[0] and
                 x.comparison.lower().find(filterOptions[1].lower()) > -1]
         else:
-            currentItem = self._root.currentItem()
+            currentItem = self.currentItem()
             if (filterOptions[index - 2] == locator.FILTERS['classes'] and
                     currentItem):
                 symbols = self.locate_symbols.get_symbols_for_class(
@@ -255,7 +264,7 @@ class LocatorWidget(QDialog):
     def _filter_tabs(self, filterOptions, index):
         at_start = (index == 0)
         if at_start:
-            ninjaide = IDE.get_service('ide')
+            ninjaide = IDE.getInstance()
             opened = ninjaide.filesystem.get_files()
             self.tempLocations = [
                 locator.ResultItem(
@@ -293,7 +302,7 @@ class LocatorWidget(QDialog):
                 if x.type == filterOptions[0] and
                 x.path == filterOptions[1]]
         else:
-            currentItem = self._root.currentItem()
+            currentItem = self.currentItem()
             if currentItem:
                 self.tempLocations = [
                     x for x in self.locate_symbols.get_locations()

@@ -16,18 +16,18 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QCursor
-from PyQt4.QtGui import QMenu
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QMenu
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -37,7 +37,9 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 class TreeSymbolsWidget(QDialog):
     """Class of Dialog for Tree Symbols"""
-
+    dockWidget = pyqtSignal("QObject*")
+    undockWidget = pyqtSignal()
+    changeTitle = pyqtSignal(str)
     def __init__(self, parent=None):
         super(TreeSymbolsWidget, self).__init__(parent,
                                                 Qt.WindowStaysOnTopHint)
@@ -47,37 +49,30 @@ class TreeSymbolsWidget(QDialog):
         self.tree = QTreeWidget()
         vbox.addWidget(self.tree)
         self.tree.header().setHidden(True)
-        self.tree.setSelectionMode(self.tree.SingleSelection)
+        self.tree.setSelectionMode(QAbstractItemView.SingleSelection)
         self.tree.setAnimated(True)
         self.tree.header().setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-        self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        self.tree.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.tree.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
         self.docstrings = {}
         self.collapsedItems = {}
 
-        self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-                     self._go_to_definition)
-        self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-                     self._go_to_definition)
+        self.tree.itemClicked['QTreeWidgetItem*', int].connect(self._go_to_definition)
+        # self.tree.itemActivated['QTreeWidgetItem*', int].connect(self._go_to_definition)
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(
-            self,
-            SIGNAL("customContextMenuRequested(const QPoint &)"),
-            self._menu_context_tree)
-        self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
-                     self._item_collapsed)
-        self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
-                     self._item_expanded)
+        self.customContextMenuRequested['const QPoint &'].connect(self._menu_context_tree)
+        self.tree.itemCollapsed['QTreeWidgetItem*'].connect(self._item_collapsed)
+        self.tree.itemExpanded['QTreeWidgetItem*'].connect(self._item_expanded)
 
         IDE.register_service('symbols_explorer', self)
         ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
 
     def install_tab(self):
         """Connect signals for goingdown"""
-        ide = IDE.get_service('ide')
-        self.connect(ide, SIGNAL("goingDown()"), self.close)
+        ide = IDE.getInstance()
+        ide.goingDown.connect(self.close)
 
     def _menu_context_tree(self, point):
         """Context menu"""
@@ -97,15 +92,11 @@ class TreeSymbolsWidget(QDialog):
         menu.addSeparator()
         #save_state = menu.addAction(self.tr("Save State"))
 
-        self.connect(f_all, SIGNAL("triggered()"),
-                     lambda: self.tree.collapseAll())
-        self.connect(u_all, SIGNAL("triggered()"),
-                     lambda: self.tree.expandAll())
-        self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
-        self.connect(u_class_method, SIGNAL("triggered()"),
-                     self._unfold_class_method)
-        self.connect(u_class_attr, SIGNAL("triggered()"),
-                     self._unfold_class_attribute)
+        f_all.triggered['bool'].connect(lambda s: self.tree.collapseAll())
+        u_all.triggered['bool'].connect(lambda s: self.tree.expandAll())
+        u_class.triggered['bool'].connect(self._unfold_class)
+        u_class_method.triggered['bool'].connect(self._unfold_class_method)
+        u_class_attr.triggered['bool'].connect(self._unfold_class_attribute)
         #self.connect(save_state, SIGNAL("triggered()"),
             #self._save_symbols_state)
 
@@ -211,7 +202,9 @@ class TreeSymbolsWidget(QDialog):
             self.actualSymbols = (filename, symbols)
             self.docstrings = symbols.get('docstrings', {})
             parent = self.tree
+
         if 'attributes' in symbols:
+            # print("\nsymbols['attributes']", symbols['attributes'])
             globalAttribute = ItemTree(parent, [translations.TR_ATTRIBUTES])
             globalAttribute.isClickable = False
             globalAttribute.isAttribute = True
@@ -265,8 +258,10 @@ class TreeSymbolsWidget(QDialog):
     def _go_to_definition(self, item):
         """Takes and item object and goes to definition on the editor"""
         main_container = IDE.get_service('main_container')
+        print("\nprimero al clickear pas por aca!!", item.text(0))
         if item.isClickable and main_container:
-            main_container.editor_go_to_line(item.lineno - 1)
+            # main_container.editor_go_to_line(item.lineno - 1, True)
+            main_container.editor_go_to_symbol_line(item.lineno - 1, item.text(0), True)
 
     def create_tooltip(self, name, lineno):
         """Takes a name and line number and returns a tooltip"""
@@ -280,7 +275,7 @@ class TreeSymbolsWidget(QDialog):
 
     def _item_collapsed(self, item):
         """When item collapsed"""
-        super(TreeSymbolsWidget, self).collapseItem(item)
+        self.tree.collapseItem(item)
 
         can_check = (not item.isClickable) or item.isClass or item.isMethod
         if can_check:
@@ -292,7 +287,7 @@ class TreeSymbolsWidget(QDialog):
 
     def _item_expanded(self, item):
         """When item expanded"""
-        super(TreeSymbolsWidget, self).expandItem(item)
+        self.tree.expandItem(item)
 
         n = self._get_unique_name(item)
         filename = self.actualSymbols[0]
@@ -311,20 +306,21 @@ class TreeSymbolsWidget(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+            self.dockWidget.emit(self)
 
     def closeEvent(self, event):
         """On Close event handling"""
-        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        self.dockWidget.emit(self)
         event.ignore()
 
 
 class ItemTree(QTreeWidgetItem):
     """Item Tree widget items"""
 
-    def __init__(self, parent, name, lineno=None):
+    def __init__(self, parent, name, lineno=None, pos= None):
         super(ItemTree, self).__init__(parent, name)
         self.lineno = lineno
+        self.pos = pos
         self.isClickable = True
         self.isAttribute = False
         self.isClass = False

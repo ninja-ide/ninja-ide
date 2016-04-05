@@ -19,7 +19,7 @@ from __future__ import absolute_import
 
 import os
 
-from PyQt4.QtNetwork import QLocalSocket
+from PyQt5.QtNetwork import QLocalSocket
 
 
 file_delimiter = '<-nf>'

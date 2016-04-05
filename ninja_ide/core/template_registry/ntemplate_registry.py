@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 import os
 
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 from ninja_ide.gui.ide import IDE
 

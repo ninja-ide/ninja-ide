@@ -16,17 +16,18 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -43,6 +44,11 @@ class ErrorsWidget(QDialog):
     pep8Activated(bool)
     lintActivated(bool)
     """
+    pep8Activated = pyqtSignal(bool)
+    lintActivated = pyqtSignal(bool)
+    dockWidget = pyqtSignal("QObject*")
+    undockWidget = pyqtSignal()
+    changeTitle = pyqtSignal(str)
 ###############################################################################
 
     def __init__(self, parent=None):
@@ -78,21 +84,19 @@ class ErrorsWidget(QDialog):
         vbox.addLayout(hbox_pep8)
         vbox.addWidget(self.listPep8)
 
-        self.connect(self.listErrors, SIGNAL("itemSelectionChanged()"),
-                     self.errors_selected)
-        self.connect(self.listPep8, SIGNAL("itemSelectionChanged()"),
-                     self.pep8_selected)
-        self.connect(self.btn_lint_activate, SIGNAL("clicked()"),
-                     self._turn_on_off_lint)
-        self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
-                     self._turn_on_off_pep8)
+        self.listErrors.itemClicked['QListWidgetItem*'].connect(self.errors_selected)
+        # self.listErrors.itemActivated['QListWidgetItem*'].connect(self.errors_selected)
+        self.listPep8.itemClicked['QListWidgetItem*'].connect(self.pep8_selected)
+        # self.listPep8.itemActivated['QListWidgetItem*'].connect(self.pep8_selected)
+        self.btn_lint_activate.clicked['bool'].connect(self._turn_on_off_lint)
+        self.btn_pep8_activate.clicked['bool'].connect(self._turn_on_off_pep8)
 
         IDE.register_service('tab_errors', self)
         ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
 
     def install_tab(self):
-        ide = IDE.get_service('ide')
-        self.connect(ide, SIGNAL("goingDown()"), self.close)
+        ide = IDE.getInstance()
+        ide.goingDown.connect(self.close)
 
     def _turn_on_off_lint(self):
         """Change the status of the lint checker state."""
@@ -103,7 +107,7 @@ class ErrorsWidget(QDialog):
         else:
             self.btn_lint_activate.setText(self.tr("Lint: OFF"))
             self.listErrors.hide()
-        self.emit(SIGNAL("lintActivated(bool)"), settings.FIND_ERRORS)
+        self.lintActivated.emit(settings.FIND_ERRORS)
 
     def _turn_on_off_pep8(self):
         """Change the status of the lint checker state."""
@@ -114,7 +118,7 @@ class ErrorsWidget(QDialog):
         else:
             self.btn_pep8_activate.setText(self.tr("PEP8: OFF"))
             self.listPep8.hide()
-        self.emit(SIGNAL("pep8Activated(bool)"), settings.CHECK_STYLE)
+        self.pep8Activated.emit(settings.CHECK_STYLE)
 
     def errors_selected(self):
         main_container = IDE.get_service('main_container')
@@ -171,10 +175,10 @@ class ErrorsWidget(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+            self.dockWidget.emit(self)
 
     def closeEvent(self, event):
-        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        self.dockWidget.emit(self)
         event.ignore()
 
 

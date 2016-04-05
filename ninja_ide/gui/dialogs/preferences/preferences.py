@@ -18,21 +18,21 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QStackedLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QScrollArea
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QScrollArea
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 
@@ -47,10 +47,12 @@ SECTIONS = {
 
 
 class Preferences(QDialog):
-
+#
     configuration = {}
     weight = 0
-
+#
+    savePreferences = pyqtSignal()
+#
     def __init__(self, parent=None):
         super(Preferences, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(translations.TR_PREFERENCES_TITLE)
@@ -59,21 +61,21 @@ class Preferences(QDialog):
         hbox = QHBoxLayout()
         vbox.setContentsMargins(0, 0, 5, 5)
         hbox.setContentsMargins(0, 0, 0, 0)
-
+#
         self.tree = QTreeWidget()
         self.tree.header().setHidden(True)
         self.tree.setSelectionMode(QTreeWidget.SingleSelection)
         self.tree.setAnimated(True)
         self.tree.header().setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-        self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        self.tree.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.tree.header().setStretchLastSection(False)
         self.tree.setFixedWidth(200)
         self.stacked = QStackedLayout()
         hbox.addWidget(self.tree)
         hbox.addLayout(self.stacked)
         vbox.addLayout(hbox)
-
+#
         hbox_footer = QHBoxLayout()
         self._btnSave = QPushButton(translations.TR_SAVE)
         self._btnCancel = QPushButton(translations.TR_CANCEL)
@@ -81,20 +83,18 @@ class Preferences(QDialog):
         hbox_footer.addWidget(self._btnCancel)
         hbox_footer.addWidget(self._btnSave)
         vbox.addLayout(hbox_footer)
-
-        self.connect(self.tree, SIGNAL("itemSelectionChanged()"),
-                     self._change_current)
-        self.connect(self._btnCancel, SIGNAL("clicked()"), self.close)
-        self.connect(self._btnSave, SIGNAL("clicked()"),
-                     self._save_preferences)
-
+#
+        self.tree.itemSelectionChanged.connect(self._change_current)
+        self._btnCancel.clicked['bool'].connect(self.close)
+        self._btnSave.clicked['bool'].connect(self._save_preferences)
+#
         self.load_ui()
         self.tree.setCurrentItem(self.tree.topLevelItem(0))
-
+#
     def _save_preferences(self):
-        self.emit(SIGNAL("savePreferences()"))
+        self.savePreferences.emit()
         self.close()
-
+#
     def load_ui(self):
         sections = sorted(
             list(Preferences.configuration.keys()),
@@ -111,7 +111,7 @@ class Preferences(QDialog):
             item = QTreeWidgetItem([text])
             item.setData(0, Qt.UserRole, index)
             self.tree.addTopLevelItem(item)
-
+#
             #Sort Item Children
             subcontent = Preferences.configuration[section].get(
                 'subsections', {})
@@ -129,14 +129,14 @@ class Preferences(QDialog):
                 subitem = QTreeWidgetItem([text])
                 subitem.setData(0, Qt.UserRole, index)
                 item.addChild(subitem)
-
+#
         self.tree.expandAll()
-
+#
     def _change_current(self):
         item = self.tree.currentItem()
         index = item.data(0, Qt.UserRole)
         self.stacked.setCurrentIndex(index)
-
+#
     @classmethod
     def register_configuration(cls, section, widget, text, weight=None,
                                subsection=None):

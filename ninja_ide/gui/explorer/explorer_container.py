@@ -19,12 +19,12 @@ from __future__ import unicode_literals
 
 import collections
 
-from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QIcon
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
+from PyQt5.QtWidgets import QSplitter
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide.gui.ide import IDE
@@ -48,6 +48,12 @@ class ExplorerContainer(QSplitter):
     projectOpened(QString)
     projectClosed(QString)
     """
+    goToDefinition = pyqtSignal(int)
+    projectOpened = pyqtSignal(str)
+    projectClosed = pyqtSignal(str)
+    pep8Activated = pyqtSignal(bool)
+    lintActivated = pyqtSignal(bool)
+    changeWindowTitle = pyqtSignal(str)
 
 ###############################################################################
 
@@ -62,10 +68,10 @@ class ExplorerContainer(QSplitter):
 
         connections = (
             {'target': 'central_container',
-             'signal_name': "splitterBaseRotated()",
+             'signal_name': "splitterBaseRotated",#()
              'slot': self.rotate_tab_position},
             {'target': 'central_container',
-             'signal_name': 'splitterBaseRotated()',
+             'signal_name': 'splitterBaseRotated',#()
              'slot': self.rotate_tab_position},
         )
 
@@ -73,14 +79,11 @@ class ExplorerContainer(QSplitter):
         self._widget_index = 0
         self.menu = QMenu()
         self.actionSplit = self.menu.addAction(translations.TR_SPLIT_TAB)
-        self.connect(
-            self.actionSplit, SIGNAL("triggered()"), self._split_widget)
+        self.actionSplit.triggered.connect(self._split_widget)
         self.actionUndock = self.menu.addAction(translations.TR_UNDOCK)
-        self.connect(
-            self.actionUndock, SIGNAL("triggered()"), self._undock_widget)
+        self.actionUndock.triggered.connect(self._undock_widget)
         self.actionCloseSplit = self.menu.addAction(translations.TR_CLOSE_SPLIT)
-        self.connect(
-            self.actionCloseSplit, SIGNAL("triggered()"), self._close_split)
+        self.actionCloseSplit.triggered.connect(self._close_split)
         self.menuMoveToSplit = self.menu.addMenu(translations.TR_MOVE_TO_SPLIT)
 
         IDE.register_signals('explorer_container', connections)
@@ -94,18 +97,15 @@ class ExplorerContainer(QSplitter):
             explorer.add_tab(tab_name, obj, icon)
 
     def install(self):
-        ide = IDE.get_service('ide')
+        ide = IDE.getInstance()
         ide.place_me_on("explorer_container", self, "lateral")
 
         for obj in ExplorerContainer.__TABS:
             tabname, icon = ExplorerContainer.__TABS[obj]
             self.add_tab(tabname, obj, icon)
-            self.connect(obj, SIGNAL("dockWidget(PyQt_PyObject)"),
-                         self._dock_widget)
-            self.connect(obj, SIGNAL("undockWidget()"),
-                         self._undock_widget)
-            self.connect(obj, SIGNAL("changeTitle(PyQt_PyObject, QString)"),
-                         self._change_tab_title)
+            obj.dockWidget.connect(self._dock_widget)
+            obj.undockWidget.connect(self._undock_widget)
+            obj.changeTitle.connect(self._change_tab_title)
 
         if self.count() == 0:
             self.hide()
@@ -191,10 +191,8 @@ class ExplorerContainer(QSplitter):
         tabBar.setContextMenuPolicy(Qt.CustomContextMenu)
         self.addWidget(tab_widget)
         index = self.indexOf(tab_widget)
-        self.connect(
-            tabBar,
-            SIGNAL("customContextMenuRequested(const QPoint&)"),
-            lambda point: self.show_tab_context_menu(index, point))
+        tabBar.customContextMenuRequested['const QPoint&'].connect(
+            lambda point,i=index: self.show_tab_context_menu(i, point))
         return tab_widget
 
     def add_tab(self, tabname, obj, icon=None, widget_index=0):
@@ -235,8 +233,7 @@ class ExplorerContainer(QSplitter):
         if self.count() > 1:
             for i in range(1, self.count() + 1):
                 action = self.menuMoveToSplit.addAction("%d" % i)
-                self.connect(action, SIGNAL("triggered()"),
-                             self._move_to_split)
+                action.triggered.connect(self._move_to_split)
 
         self.menu.exec_(bar.mapToGlobal(point))
 

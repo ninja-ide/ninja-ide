@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 
 
 tr = QtCore.QCoreApplication.translate
@@ -76,6 +76,8 @@ TR_DEACTIVATE_PROFILE = tr("NINJA-IDE", "Deactivate Session")
 TR_CLOSE_ALL_PROJECTS = tr("NINJA-IDE", "Close All Projects")
 TR_EXIT = tr("NINJA-IDE", "Exit")
 TR_OPEN_PROJECT_PROPERTIES = tr("NINJA-IDE", "Open Project Properties")
+TR_INFO_TITLE_PROJECT_PROPERTIES = tr("NINJA-IDE", "Project Info")
+TR_INFO_MESSAGE_PROJECT_PROPERTIES = tr("NINJA-IDE", "This Session has not a project opened!")
 TR_PREVIEW_IN_BROWSER = tr("NINJA-IDE", "Preview Web in Default Browser")
 TR_TOOLS_VISIBILITY = tr("NINJA-IDE", "Show/Hide &Console")
 TR_EDITOR_VISIBILITY = tr("NINJA-IDE", "Show/Hide &Editor")

@@ -26,13 +26,13 @@ try:
 except:
     import queue as Queue  # lint:ok
 
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QTextStream
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QTextStream
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -94,9 +94,9 @@ class GoToDefinition(QObject):
     def __init__(self):
         super(GoToDefinition, self).__init__()
         self._thread = LocateSymbolsThread()
-        self.connect(self._thread, SIGNAL("finished()"), self._load_results)
-        self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
-        self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+        self._thread.finished.connect(self._load_results)
+        self._thread.finished.connect(self._cleanup)
+        self._thread.terminated.connect(self._cleanup)
 
     def _cleanup(self):
         self._thread.wait()
@@ -154,7 +154,7 @@ class ResultItem(object):
 
 
 class LocateSymbolsThread(QThread):
-
+    terminated = pyqtSignal()
     def __init__(self):
         super(LocateSymbolsThread, self).__init__()
         self.results = []
@@ -229,7 +229,7 @@ class LocateSymbolsThread(QThread):
 
     def locate_code(self):
         self._locator_db = sqlite3.connect(db_path)
-        ide = IDE.get_service('ide')
+        ide = IDE.getInstance()
         projects = ide.filesystem.get_projects()
         if not projects:
             return

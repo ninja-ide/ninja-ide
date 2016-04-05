@@ -18,17 +18,17 @@ from __future__ import absolute_import
 
 import os
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -69,12 +69,11 @@ class SessionsManager(QDialog):
         vbox.addWidget(self.contentList)
         vbox.addLayout(hbox)
 
-        self.connect(self.sessionList, SIGNAL("itemSelectionChanged()"),
-            self.load_session_content)
-        self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_session)
-        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_session)
-        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_session)
-        self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_session)
+        self.sessionList.itemSelectionChanged.connect(self.load_session_content)
+        self.btnOpen.clicked['bool'].connect(self.open_session)
+        self.btnUpdate.clicked['bool'].connect(self.save_session)
+        self.btnCreate.clicked['bool'].connect(self.create_session)
+        self.btnDelete.clicked['bool'].connect(self.delete_session)
         self.load_session_content()
 
     def load_session_content(self):

@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
@@ -167,11 +167,11 @@ Rectangle {
 
     Text {
         text: "Esc to exit"
-        anchors {
-            right: parent.right
-            top: parent.top
-            margins: 5
-        }
+        
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 5
+        
         color: "white"
         font.pointSize: 10
     }

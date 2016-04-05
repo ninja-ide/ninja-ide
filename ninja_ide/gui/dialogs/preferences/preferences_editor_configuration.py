@@ -19,19 +19,19 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QSpinBox
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -45,6 +45,9 @@ class EditorConfiguration(QWidget):
     def __init__(self, parent):
         super(EditorConfiguration, self).__init__()
         self._preferences, vbox = parent, QVBoxLayout(self)
+        print("\n\nEditorConfiguration", self)
+        self.destroyed['QObject*'].connect(lambda obj: print("\ndestroyed:", obj))
+
 
         # groups
         group1 = QGroupBox(translations.TR_PREFERENCES_EDITOR_CONFIG_INDENT)
@@ -65,6 +68,7 @@ class EditorConfiguration(QWidget):
         self._spin, self._checkUseTabs = QSpinBox(), QComboBox()
         self._spin.setRange(1, 10)
         self._spin.setValue(settings.INDENT)
+        self._spin.valueChanged[str].connect(lambda s: print("\n_spin:", s))
         hboxg1.addWidget(self._spin)
         self._checkUseTabs.addItems([
             translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES.capitalize(),
@@ -114,13 +118,11 @@ class EditorConfiguration(QWidget):
         self._checkErrors = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS)
         self._checkErrors.setChecked(settings.FIND_ERRORS)
-        self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
-                     self._disable_show_errors)
+        self._checkErrors.stateChanged[int].connect(self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS)
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
-        self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
-                     self._enable_errors_inline)
+        self._showErrorsOnLine.stateChanged[int].connect(self._enable_errors_inline)
         vboxg3.addWidget(self._checkErrors)
         vboxg3.addWidget(self._showErrorsOnLine)
         formFeatures.addWidget(group3, 2, 0)
@@ -131,14 +133,12 @@ class EditorConfiguration(QWidget):
         self._checkStyle = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8)
         self._checkStyle.setChecked(settings.CHECK_STYLE)
-        self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
-                     self._disable_check_style)
+        self._checkStyle.stateChanged[int].connect(self._disable_check_style)
         vboxg4.addWidget(self._checkStyle)
         self._checkStyleOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8)
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
-        self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
-                     self._enable_check_inline)
+        self._checkStyleOnLine.stateChanged[int].connect(self._enable_check_inline)
         vboxg4.addWidget(self._checkStyleOnLine)
         formFeatures.addWidget(group4, 2, 1)
 
@@ -189,7 +189,7 @@ class EditorConfiguration(QWidget):
         vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
                      QSizePolicy.Expanding))
 
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._preferences.savePreferences.connect(self.save)
 
     def _enable_check_inline(self, val):
         """Method that takes a value to enable the inline style checking"""

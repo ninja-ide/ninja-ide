@@ -24,29 +24,29 @@ from copy import copy
 from distutils import version
 import os
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QFormLayout
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QTextBrowser
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QTableWidget
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QDirModel
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QDir
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QFormLayout
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QTextBrowser
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QTableWidget
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QDirModel
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QDir
 
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
@@ -90,7 +90,7 @@ class PluginsManagerWidget(QDialog):
     """Plugin Manager widget"""
 
     def __init__(self, parent):
-        QDialog.__init__(self, parent, Qt.Dialog)
+        super(PluginsManagerWidget, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(translations.TR_PLUGIN_MANAGER)
         self.resize(700, 600)
 
@@ -119,20 +119,14 @@ class PluginsManagerWidget(QDialog):
         self._loading = True
         self._requirements = {}
 
-        self.connect(btnReload, SIGNAL("clicked()"), self._reload_plugins)
+        btnReload.clicked['bool'].connect(self._reload_plugins)
         self.thread = ThreadLoadPlugins(self)
-        self.connect(self.thread, SIGNAL("finished()"),
-            self._load_plugins_data)
-        self.connect(self.thread, SIGNAL("plugin_downloaded(PyQt_PyObject)"),
-            self._after_download_plugin)
-        self.connect(self.thread,
-            SIGNAL("plugin_manually_installed(PyQt_PyObject)"),
-            self._after_manual_install_plugin)
-        self.connect(self.thread, SIGNAL("plugin_uninstalled(PyQt_PyObject)"),
-            self._after_uninstall_plugin)
-        self.connect(self._txt_data, SIGNAL("anchorClicked(const QUrl&)"),
-            self._open_link)
-        self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        self.thread.finished.connect(self._load_plugins_data)
+        self.thread.plugin_downloaded.connect(self._after_download_plugin)
+        self.thread.plugin_manually_installed.connect(self._after_manual_install_plugin)
+        self.thread.plugin_uninstalled.connect(self._after_uninstall_plugin)
+        self._txt_data.anchorClicked['const QUrl&'].connect(self._open_link)
+        btn_close.clicked['bool'].connect(self.close)
         self.overlay.show()
         self._reload_plugins()
 
@@ -269,7 +263,7 @@ class UpdatesWidget(QWidget):
     """
 
     def __init__(self, parent, updates):
-        QWidget.__init__(self, parent)
+        super(UpdatesWidget, self).__init__(parent)
         self._parent = parent
         self._updates = updates
         vbox = QVBoxLayout(self)
@@ -287,9 +281,8 @@ class UpdatesWidget(QWidget):
         btnUpdate.setMaximumWidth(100)
         vbox.addWidget(btnUpdate)
 
-        self.connect(btnUpdate, SIGNAL("clicked()"), self._update_plugins)
-        self.connect(self._table, SIGNAL("itemSelectionChanged()"),
-            self._show_item_description)
+        btnUpdate.clicked['bool'].connect(self._update_plugins)
+        self._table.itemSelectionChanged.connect(self._show_item_description)
 
     def _show_item_description(self):
         """Get current item if any and show plugin information"""
@@ -318,7 +311,7 @@ class AvailableWidget(QWidget):
     """Available plugins widget"""
 
     def __init__(self, parent, available):
-        QWidget.__init__(self, parent)
+        super(AvailableWidget, self).__init__(parent)
         self._parent = parent
         self._available = available
         vbox = QVBoxLayout(self)
@@ -339,9 +332,8 @@ class AvailableWidget(QWidget):
         hbox.addWidget(QLabel(translations.TR_NINJA_NEEDS_TO_BE_RESTARTED))
         vbox.addLayout(hbox)
 
-        self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
-        self.connect(self._table, SIGNAL("itemSelectionChanged()"),
-            self._show_item_description)
+        btnInstall.clicked['bool'].connect(self._install_plugins)
+        self._table.itemSelectionChanged.connect(self._show_item_description)
 
     def _show_item_description(self):
         """Get current item if any and show plugin information"""
@@ -399,7 +391,7 @@ class InstalledWidget(QWidget):
     """
 
     def __init__(self, parent, installed):
-        QWidget.__init__(self, parent)
+        super(InstalledWidget, self).__init__(parent)
         self._parent = parent
         self._installed = installed
         vbox = QVBoxLayout(self)
@@ -417,11 +409,9 @@ class InstalledWidget(QWidget):
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
 
-        self.connect(btnUninstall, SIGNAL("clicked()"),
-            self._uninstall_plugins)
-        self.connect(self._table, SIGNAL("itemSelectionChanged()"),
-            self._show_item_description)
-
+        btnInstall.clicked['bool'].connect(self._uninstall_plugins)
+        self._table.itemSelectionChanged.connect(self._show_item_description)
+        
     def _show_item_description(self):
         """Get current item if any and show plugin information"""
         item = self._table.currentItem()
@@ -495,11 +485,9 @@ class ManualInstallWidget(QWidget):
         vbox.addLayout(hbox)
 
         #Signals
-        self.connect(self._btnFilePath,
-            SIGNAL("clicked()"), self._load_plugin_path)
-        self.connect(self._btnInstall, SIGNAL("clicked()"),
-            self.install_plugin)
-
+        self._btnFilePath.clicked['bool'].connect(self._load_plugin_path)
+        self._btnInstall.clicked['bool'].connect(self.install_plugin)
+        
     def _load_plugin_path(self):
         """Ask the user a plugin filename"""
         path = QFileDialog.getOpenFileName(self,
@@ -590,7 +578,7 @@ class ThreadLoadPlugins(QThread):
                 req_command = plugin_manager.has_dependencies(p)
                 if req_command[0]:
                     self._manager._requirements[p[0]] = req_command[1]
-                self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
+                self.plugin_downloaded.emit(p)
             except Exception as e:
                 logger.warning("Impossible to install (%s): %s", p[0], e)
 
@@ -606,8 +594,7 @@ class ThreadLoadPlugins(QThread):
                 req_command = plugin_manager.has_dependencies(p)
                 if req_command[0]:
                     self._manager._requirements[p[0]] = req_command[1]
-                self.emit(
-                    SIGNAL("plugin_manually_installed(PyQt_PyObject)"), p)
+                self.plugin_manually_installed.emit(p)
             except Exception as e:
                 logger.warning("Impossible to install (%s): %s", p[0], e)
 
@@ -616,7 +603,7 @@ class ThreadLoadPlugins(QThread):
         for p in self.plug:
             try:
                 plugin_manager.uninstall_plugin(p)
-                self.emit(SIGNAL("plugin_uninstalled(PyQt_PyObject)"), p)
+                self.plugin_uninstalled.emit(p)
             except Exception as e:
                 logger.warning("Impossible to uninstall (%s): %s", p[0], e)
 
@@ -654,7 +641,7 @@ class DependenciesHelpDialog(QDialog):
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
         #signals
-        self.connect(btnAccept, SIGNAL("clicked()"), self.close)
+        btnAccept.clicked['bool'].connect(self.close)
 
         command_tmpl = "<%s>:\n%s\n"
         for name, description in list(requirements_dict.items()):

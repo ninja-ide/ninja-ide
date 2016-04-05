@@ -22,27 +22,27 @@ import os
 import sys
 from getpass import getuser
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QDirModel
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QSpinBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QDirModel
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QSpinBox
+from PyQt5.QtCore import Qt
+#from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
@@ -103,8 +103,8 @@ class ProjectProperties(QDialog):
 
         vbox.addLayout(hbox)
 
-        self.connect(self.btnCancel, SIGNAL("clicked()"), self.close)
-        self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
+        self.btnCancel.clicked['bool'].connect(self.close)
+        self.btnSave.clicked['bool'].connect(self.save_properties)
 
     def save_properties(self):
         """Show warning message if Project Name is empty"""
@@ -318,15 +318,11 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.txtVenvPath, 9, 1)
         grid.addWidget(self.btnVenvPath, 9, 2)
 
-        self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
-        self.connect(self.btnPythonPath, SIGNAL("clicked()"),
-                     self._load_python_path)
-        self.connect(self.btnVenvPath, SIGNAL("clicked()"),
-                     self._load_python_venv)
-        self.connect(self.btnPreExec, SIGNAL("clicked()"),
-                     self.select_pre_exec_script)
-        self.connect(self.btnPostExec, SIGNAL("clicked()"),
-                     self.select_post_exec_script)
+        self.btnBrowse.clicked['bool'].connect(self.select_file)
+        self.btnPythonPath.clicked['bool'].connect(self._load_python_path)
+        self.btnVenvPath.clicked['bool'].connect(self._load_python_venv)
+        self.btnPreExec.clicked['bool'].connect(self.select_pre_exec_script)
+        self.btnPostExec.clicked['bool'].connect(self.select_post_exec_script)
 
     def _load_python_path(self):
         """Ask the user a python path and set its value"""

@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
@@ -7,8 +7,8 @@ Rectangle {
     smooth: true
     color: "#24262c"
 
-    signal install
-    signal close
+    signal install()
+    signal close()
 
     property int identifier: 0
     property alias title: txtTitle.text
@@ -33,94 +33,94 @@ Rectangle {
 
     Flickable {
         contentHeight: col.childrenRect.height
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            bottom: bottomBar.top
-            margins: 10
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: bottomBar.top
+        anchors.margins: 10
+        
         clip: true
 
         Column {
             id: col
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
+            
+            anchors.left: parent.left
+            anchors.right: parent.right
+            
             spacing: 30
 
             Column {
                 spacing: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
+                
+                anchors.left: parent.left
+                anchors.right: parent.right
+                
 
                 Text {
                     id: txtTitle
                     color: "white"
                     font.pixelSize: 30
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+                    
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                     horizontalAlignment: Text.AlignHCenter
                 }
                 Text {
                     text: "Author: " + root.author + " (" + root.authorEmail + ")"
                     visible: root.author ? true : false
                     color: "white"
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+                    
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                 }
                 Text {
                     text: "Version: " + root.version
                     visible: root.version ? true : false
                     color: "white"
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+                    
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                 }
                 Text {
                     text: "Home Page: " + root.homePage
                     visible: root.homePage ? true : false
                     color: "white"
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+                    
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                 }
                 Text {
                     text: "License: " + root.license
                     visible: root.license ? true : false
                     color: "white"
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+                    
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                 }
             }
             Text {
                 id: txtSummary
                 color: "white"
                 wrapMode: Text.WordWrap
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
+                
+                anchors.left: parent.left
+                anchors.right: parent.right
+                
             }
             Text {
                 id: txtDescription
                 color: "white"
                 wrapMode: Text.WordWrap
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
+                
+                anchors.left: parent.left
+                anchors.right: parent.right
+                
             }
         }
     }
@@ -131,11 +131,11 @@ Rectangle {
         border.color: "gray"
         border.width: 1
         height: 45
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        
 
         ToggleButton {
             id: btnClose
@@ -143,11 +143,11 @@ Rectangle {
             height: 20
             width: 110
             color: "#b8b8b8"
-            anchors {
-                left: parent.left
-                bottom: parent.bottom
-                margins: 10
-            }
+            
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            
             toggledEnagled: false
 
             onClicked: {
@@ -161,11 +161,11 @@ Rectangle {
             height: 20
             width: 110
             color: "#b8b8b8"
-            anchors {
-                right: parent.right
-                bottom: parent.bottom
-                margins: 10
-            }
+            
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            
             toggledEnagled: false
 
             onClicked: {

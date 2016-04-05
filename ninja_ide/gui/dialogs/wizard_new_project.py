@@ -22,8 +22,8 @@
 
 #We provide the first window of the wizard, to do this everyone will inherit
 # from us
-from PyQt4.QtGui import QDialog
-from PyQt4.QtCore import Qt
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import Qt
 
 
 class NewProjectTypeChooser(QDialog):

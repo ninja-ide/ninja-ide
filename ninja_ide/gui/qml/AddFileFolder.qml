@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
@@ -30,12 +30,12 @@ Rectangle {
         color: "white"
         font.pixelSize: 14
         font.bold: true
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            margins: 5
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 5
+        
     }
 
     Rectangle {
@@ -43,22 +43,22 @@ Rectangle {
         radius: 2
         color: "#2d2f31"
         height: 30
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: headerText.bottom
-            margins: 5
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: headerText.bottom
+        anchors.margins: 5
+        
         border.color: "black"
         border.width: 1
         smooth: true
 
         TextInput {
             id: input
-            anchors {
-                fill: parent
-                margins: 4
-            }
+
+            anchors.fill: parent
+            anchors.margins: 4
+            
             focus: true
             clip: true
             color: "white"

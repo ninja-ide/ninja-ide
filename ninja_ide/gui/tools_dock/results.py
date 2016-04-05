@@ -16,14 +16,14 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide import translations
@@ -42,20 +42,17 @@ class Results(QWidget):
             translations.TR_FILE, translations.TR_LINE))
         self._tree.header().setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-        self._tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
-        self._tree.header().setResizeMode(1, QHeaderView.ResizeToContents)
-        self._tree.header().setResizeMode(2, QHeaderView.ResizeToContents)
+        self._tree.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self._tree.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self._tree.header().setSectionResizeMode(2, QHeaderView.ResizeToContents)
         self._tree.header().setStretchLastSection(True)
         self._tree.sortByColumn(1, Qt.AscendingOrder)
 
         vbox.addWidget(self._tree)
 
         #Signals
-        self.connect(self._tree,
-            SIGNAL("itemActivated(QTreeWidgetItem*, int)"),
-            self._open_result)
-        self.connect(self._tree, SIGNAL("itemClicked(QTreeWidgetItem*, int)"),
-            self._open_result)
+        self._tree.itemActivated['QTreeWidgetItem*', int].connect(self._open_result)
+        self._tree.itemClicked['QTreeWidgetItem*', int].connect(self._open_result)
 
     def _open_result(self, item, col):
         """Get the data of the selected item and open the file."""

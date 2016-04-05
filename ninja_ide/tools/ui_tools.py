@@ -25,42 +25,42 @@ if sys.version_info[0] >= 3:
 else:
     from urlparse import urlparse, urlunparse
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QKeyEvent
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLinearGradient
-from PyQt4.QtGui import QTableWidgetItem
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QPrinter
-from PyQt4.QtGui import QPrintPreviewDialog
-from PyQt4.QtGui import QPalette
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPen
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QTableWidget
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QTimeLine
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QLinearGradient
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtPrintSupport import QPrintPreviewDialog
+from PyQt5.QtGui import QPalette
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPen
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QTableWidget
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QTimeLine
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -84,8 +84,7 @@ class CheckableHeaderTable(QTableWidget):
         """ init CheckableHeaderTable and add custom widgets and connections """
         super(QTableWidget, self).__init__(parent, *args)
         self.chkbox = QCheckBox(self.horizontalHeader())
-        self.connect(self.chkbox, SIGNAL("stateChanged(int)"),
-                     self.change_items_selection)
+        self.chkbox.stateChanged[int].connect(self.change_items_selection)
 
     def change_items_selection(self, state):
         """ de/select all items iterating over all table rows at column 0 """
@@ -154,7 +153,7 @@ class LoadingItem(QLabel):
 
 
 class ThreadExecution(QThread):
-
+    executionFinished = pyqtSignal(object)
     def __init__(self, functionInit=None, args=None, kwargs=None):
         super(ThreadExecution, self).__init__()
         QThread.__init__(self)
@@ -168,8 +167,7 @@ class ThreadExecution(QThread):
     def run(self):
         if self.execute:
             self.result = self.execute(*self.args, **self.kwargs)
-        self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
-            self.signal_return)
+        self.executionFinished.emit(self.signal_return)
         self.signal_return = None
 
 
@@ -211,7 +209,7 @@ class ThreadProjectExplore(QThread):
                                                 [None, None])[1] is not None):
             folderStructure[self._folder_path][1].sort()
             values = (self._folder_path, self._item, folderStructure)
-            self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
+            self.folderDataRefreshed.emit(values)
 
     def _thread_open_project(self):
         try:
@@ -224,11 +222,9 @@ class ThreadProjectExplore(QThread):
             else:
                 structure = file_manager.open_project(self._folder_path)
 
-            self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                (self._folder_path, structure))
+            self.folderDataAcquired.emit((self._folder_path, structure))
         except:
-            self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                (self._folder_path, None))
+            self.folderDataAcquired.emit((self._folder_path, None))
 
 
 ###############################################################################
@@ -239,7 +235,7 @@ class ThreadProjectExplore(QThread):
 class Overlay(QWidget):
 
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        super(Overlay, self).__init__(parent)
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
         self.setPalette(palette)
@@ -320,14 +316,14 @@ def print_file(fileName, printFunction):
 class FaderWidget(QWidget):
 
     def __init__(self, old_widget, new_widget):
-        QWidget.__init__(self, new_widget)
+        super(FaderWidget, self).__init__(new_widget)
 
         self.old_pixmap = QPixmap(new_widget.size())
         old_widget.render(self.old_pixmap)
         self.pixmap_opacity = 1.0
 
         self.timeline = QTimeLine()
-        self.timeline.valueChanged.connect(self.animate)
+        self.timeline.valueChanged['qreal'].connect(self.animate)
         self.timeline.finished.connect(self.close)
         self.timeline.setDuration(500)
         self.timeline.start()
@@ -355,7 +351,7 @@ class LineEditButton(object):
 
     def __init__(self, lineEdit, operation, icon=None):
         hbox = QHBoxLayout(lineEdit)
-        hbox.setMargin(0)
+        hbox.setSpacing(0)
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(lineEdit)
@@ -372,7 +368,7 @@ class ComboBoxButton(object):
     def __init__(self, combo, operation, icon=None):
         hbox = QHBoxLayout(combo)
         hbox.setDirection(hbox.RightToLeft)
-        hbox.setMargin(0)
+        hbox.setSpacing(0)
         combo.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(combo)
@@ -389,9 +385,9 @@ class LineEditCount(QObject):
     """Show summary results inside the line edit, for counting some property."""
 
     def __init__(self, lineEdit):
-        QObject.__init__(self)
+        super(LineEditCount, self).__init__()
         hbox = QHBoxLayout(lineEdit)
-        hbox.setMargin(0)
+        hbox.setSpacing(0)
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         self.counter = QLabel(lineEdit)
@@ -412,7 +408,7 @@ class LineEditCount(QObject):
 class LineEditTabCompleter(QLineEdit):
 
     def __init__(self, completer, type=QCompleter.PopupCompletion):
-        QLineEdit.__init__(self)
+        super(LineEditTabCompleter, self).__init__()
         self.completer = completer
         self.setTextMargins(0, 0, 5, 0)
         self.completionType = type
@@ -443,8 +439,7 @@ class LineEditTabCompleter(QLineEdit):
         else:
             actionCompletion = QAction(
                 self.tr("Set completion type to: Inline Completion"), self)
-        self.connect(actionCompletion, SIGNAL("triggered()"),
-            self.change_completion_type)
+        actionCompletion.triggered.connect(self.change_completion_type)
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertAction(popup_menu.actions()[0], actionCompletion)
 
@@ -466,6 +461,8 @@ def install_shortcuts(obj, actions, ide):
         short_key = action.get("shortcut", None)
         action_data = action.get("action", None)
         connect = action.get("connect", None)
+        if connect == "open_project_properties":
+            print("\nregistrando ::open_project_properties;  obj:", obj)
 
         shortcut = None
         item_ui = None
@@ -480,7 +477,7 @@ def install_shortcuts(obj, actions, ide):
                 shortcut = QShortcut(short(short_key), ide)
             shortcut.setContext(Qt.ApplicationShortcut)
             if isinstance(func, collections.Callable):
-                ide.connect(shortcut, SIGNAL("activated()"), func)
+                shortcut.activated.connect(func)
         if action_data:
             is_menu = action_data.get('is_menu', False)
             if is_menu:
@@ -507,7 +504,7 @@ def install_shortcuts(obj, actions, ide):
                 item_ui.setShortcut(short(keysequence))
                 item_ui.setShortcutContext(Qt.ApplicationShortcut)
             if isinstance(func, collections.Callable) and not is_menu:
-                ide.connect(item_ui, SIGNAL("triggered()"), func)
+                item_ui.triggered['bool'].connect(lambda s, f=func: f())
             if section and section[0] is not None and weight:
                 ide.register_menuitem(item_ui, section, weight)
                 if image_name and not is_menu:
@@ -520,8 +517,15 @@ def install_shortcuts(obj, actions, ide):
 def get_qml_resource(qmlpath):
     path_qml = QDir.fromNativeSeparators(
         os.path.join(resources.QML_FILES, qmlpath))
-    path_qml = urlunparse(urlparse(path_qml)._replace(scheme='file'))
-    return QUrl(path_qml)
+    print("get_qml_resource:1:",path_qml, urlparse(path_qml))
+    try:
+        import virtualenv
+        path_qml = urlunparse(urlparse(path_qml)._replace(scheme='file'))
+    except ImportError:
+        # path_qml = "file:///"+path_qml
+        pass
+    print("get_qml_resource:2:",path_qml)
+    return QUrl.fromLocalFile(path_qml)
 
 
 class TabShortcuts(QShortcut):

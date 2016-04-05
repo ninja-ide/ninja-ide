@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
-from PyQt4.QtGui import QPushButton, QVBoxLayout, QWidget, QMessageBox
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QWidget, QMessageBox
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -24,7 +24,7 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.ide import IDE
 
 try:
-    from PyQt4.QtWebKit import QWebInspector
+    from PyQt5.QtWebKitWidgets import QWebInspector
 except:
     settings.WEBINSPECTOR_SUPPORTED = False
 
@@ -33,7 +33,7 @@ class WebInspector(QWidget):
     """WebInspector widget class"""
 
     def __init__(self, parent):
-        QWidget.__init__(self, parent)
+        super(WebInspector, self).__init__(parent)
         vbox = QVBoxLayout(self)
         self._webInspector = QWebInspector(self)
         vbox.addWidget(self._webInspector)

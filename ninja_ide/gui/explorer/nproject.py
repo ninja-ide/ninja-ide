@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtCore import QObject, QDir, SIGNAL
+from PyQt5.QtCore import QObject, QDir, pyqtSignal
+from PyQt5.QtWidgets import QFileSystemModel
 
 import os
 
@@ -16,7 +17,8 @@ class NProject(QObject):
     SIGNALS:
     @projectPropertiesUpdated()
     """
-
+    projectPropertiesUpdated = pyqtSignal()
+    projectNameUpdated = pyqtSignal(str)
     def __init__(self, path):
         super(NProject, self).__init__()
         project = json_manager.read_ninja_project(path)
@@ -47,7 +49,8 @@ class NProject(QObject):
         self.added_to_console = False
         self.is_current = False
         #Model is a QFileSystemModel to be set on runtime
-        self.__model = None
+        self.__model = QFileSystemModel()
+        self.__model.setRootPath(path)
 
     def _get_name(self):
         return self._name
@@ -57,7 +60,7 @@ class NProject(QObject):
             self._name = file_manager.get_basename(self.path)
         else:
             self._name = name
-        self.emit(SIGNAL("projectNameUpdated(QString)"), self._name)
+        self.projectNameUpdated.emit(self._name)
 
     name = property(_get_name, _set_name)
 

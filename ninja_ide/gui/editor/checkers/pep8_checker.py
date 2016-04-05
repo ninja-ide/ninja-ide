@@ -17,9 +17,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QStyle
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -35,7 +35,7 @@ from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
 
 class Pep8Checker(QThread):
-
+    checkerCompleted = pyqtSignal()
     def __init__(self, editor):
         super(Pep8Checker, self).__init__()
         self._editor = editor
@@ -45,11 +45,9 @@ class Pep8Checker(QThread):
 
         self.checker_icon = QStyle.SP_MessageBoxWarning
 
-        ninjaide = IDE.get_service('ide')
-        self.connect(ninjaide,
-                     SIGNAL("ns_preferences_editor_checkStyle(PyQt_PyObject)"),
-                     lambda: remove_pep8_checker())
-        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
+        ninjaide = IDE.getInstance()
+        ninjaide.ns_preferences_editor_checkStyle.connect(lambda: remove_pep8_checker())
+        self.checkerCompleted.connect(self.refresh_display)
 
     @property
     def dirty(self):
@@ -90,7 +88,7 @@ class Pep8Checker(QThread):
                     self.checks[result["line_number"]] = original
         else:
             self.reset()
-        self.emit(SIGNAL("checkerCompleted()"))
+        self.checkerCompleted.emit()
 
     def message(self, index):
         if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
