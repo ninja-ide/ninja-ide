@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import (
+from PyQt5.QtWidgets import (
     QDialog,
     QVBoxLayout,
     QListWidget,
@@ -25,11 +25,11 @@ from PyQt4.QtGui import (
     QTextBrowser,
     QPushButton,
     QSpacerItem,
-    QSizePolicy,
+    QSizePolicy, QMessageBox
 )
-from PyQt4.QtCore import (
+from PyQt5.QtCore import (
     Qt,
-    SIGNAL,
+    pyqtSignal,
 )
 
 from ninja_ide import translations
@@ -75,14 +75,10 @@ class NewProjectManager(QDialog):
         for category in categories:
             self.list_projects.addItem(category)
 
-        self.connect(cancel, SIGNAL("clicked()"), self.close)
-        self.connect(choose, SIGNAL("clicked()"), self._start_wizard)
-        self.connect(self.list_projects,
-                     SIGNAL("itemSelectionChanged()"),
-                     self._project_selected)
-        self.connect(self.list_templates,
-                     SIGNAL("itemSelectionChanged()"),
-                     self._template_selected)
+        cancel.clicked['bool'].connect(self.close)
+        choose.clicked['bool'].connect(self._start_wizard)
+        self.list_projects.itemSelectionChanged.connect(self._project_selected)
+        self.list_templates.itemSelectionChanged.connect(self._template_selected)
 
     def _project_selected(self):
         self.list_templates.clear()
@@ -100,6 +96,7 @@ class NewProjectManager(QDialog):
         self.text_info.setText(ptype.description)
 
     def _start_wizard(self):
+        return QMessageBox.critical(self, "Beta Info", "Can not construct this segment!")
         item = self.list_templates.currentItem()
         if item is not None:
             ptype = item.data(Qt.UserRole)

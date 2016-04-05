@@ -15,31 +15,46 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+<<<<<<< 21ec68a546415da639101fdda67a65736ae37c69
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
+=======
+import datetime
+
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QFileInfo
+from PyQt5.QtQuickWidgets import QQuickWidget
+>>>>>>> toMerge
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 
+from ninja_ide import translations
 
 class StartPage(QWidget):
-
+    openPreferences = pyqtSignal()
+    newFile = pyqtSignal(str)
+    openProject = pyqtSignal(str)
+    openFiles = pyqtSignal(list)
     def __init__(self, parent=None):
         super(StartPage, self).__init__(parent)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        self.view = QDeclarativeView()
+        self.view = QQuickWidget()
         self.view.setMinimumWidth(400)
-        self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("StartPage.qml"))
         self.root = self.view.rootObject()
         vbox.addWidget(self.view)
 
         self.load_items()
 
+<<<<<<< 21ec68a546415da639101fdda67a65736ae37c69
         self.connect(self.root, SIGNAL("openProject(QString)"),
                      self._open_project)
         self.connect(self.root, SIGNAL("removeProject(QString)"),
@@ -50,6 +65,35 @@ class StartPage(QWidget):
                      lambda: self.emit(SIGNAL("openPreferences()")))
         self.connect(self.root, SIGNAL("newFile()"),
                      lambda: self.emit(SIGNAL("newFile()")))
+=======
+        self.root.openProject.connect(self._open_project)
+        self.root.removeProject.connect(self._on_click_on_delete)
+        self.root.markAsFavorite.connect(self._on_click_on_favorite)
+        self.root.openPreferences.connect(self.openPreferences.emit)
+        self.root.newFile.connect(lambda: self.newFile.emit(translations.TR_NEW_DOCUMENT))#self.test)
+        self.root.openFiles.connect(self.checkFiles)
+
+        self.root.set_year(str(datetime.datetime.now().year))
+>>>>>>> toMerge
+
+    def test(self, c= "-.-"):
+        print(c)
+        self.newFile.emit(c)
+
+    def checkFiles(self, lst):
+        f = QFileInfo()
+        newLst = []
+        for url in lst:
+            _file = url.toLocalFile()
+            print("FILE::", url, _file)
+            f.setFile(_file)
+            if f.suffix() not in ("tar", "exe", "mp3", "mp4", "flv", "zip", "rar", "iso"):
+                newLst.append(_file)
+
+        if newLst:
+            self.openFiles.emit(newLst)
+
+
 
     def _open_project(self, path):
         projects_explorer = IDE.get_service('projects_explorer')

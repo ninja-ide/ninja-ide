@@ -20,20 +20,35 @@ from __future__ import unicode_literals
 import os
 import collections
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QMainWindow
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QToolTip
-from PyQt4.QtGui import QFont
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSizeF
-from PyQt4.QtCore import QPointF
-from PyQt4.QtCore import QSize
-from PyQt4.QtNetwork import QLocalServer
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QToolTip
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QPaintDevice
+from PyQt5.QtGui import QStaticText
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QSizeF
+from PyQt5.QtCore import QPointF
+from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QSize
+from PyQt5.QtNetwork import QLocalServer
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import QByteArray
+from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -101,14 +116,343 @@ class IDE(QMainWindow):
     __instance = None
     __created = False
 
+
+    MessageStatusChanged = pyqtSignal(str)
+
+    goingDown = pyqtSignal()
+    # # ns_preferences_editor_font = pyqtSignal()
+    # ns_preferences_editor_showTabsAndSpaces = pyqtSignal()
+    # ns_preferences_editor_showIndentationGuide = pyqtSignal()
+    # ns_preferences_editor_indent = pyqtSignal()
+    # ns_preferences_editor_marginLine = pyqtSignal()#podría tener un argumento
+    # ns_preferences_editor_showLineNumbers = pyqtSignal()
+    # ns_preferences_editor_showMigrationTips = pyqtSignal()
+    # ns_preferences_editor_checkStyle = pyqtSignal()
+    # ns_preferences_editor_errors = pyqtSignal()
+    # ds_lastSession_projects = pyqtSignal()
+    # ds_lastSession_openedFiles = pyqtSignal()
+    # ds_lastSession_currentFile = pyqtSignal()
+    # ds_lastSession_recentFiles = pyqtSignal()
+    # ns_preferences_editor_bookmarks = pyqtSignal()
+    # ns_preferences_editor_breakpoints = pyqtSignal()
+    # ns_window_maximized = pyqtSignal()
+    # ns_preferences_general_loadFiles = pyqtSignal()
+    # ns_preferences_general_activatePlugins = pyqtSignal()
+    # ns_preferences_general_notifyUpdates = pyqtSignal()
+    # ns_preferences_general_showStartPage = pyqtSignal(bool)
+    # ns_preferences_general_confirmExit = pyqtSignal(bool)
+    # ns_preferences_general_workspace = pyqtSignal()
+    ns_preferences_general_supportedExtensions = pyqtSignal("QStringList")
+    #ns_preferences_general_notification_position = pyqtSignal(int)
+    #...
+    ns_preferences_general_loadFiles = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_general_activatePlugins = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_general_notifyUpdates = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_general_showStartPage = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_general_confirmExit = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_general_workspace = pyqtSignal(str)# dato: ''
+
+    #ns_preferences_general_supportedExtensions = pyqtSignal(list)# dato: '['.py', '.pyw', '.html', '.jpg','.png', '.ui', '.css', '.json', '.js', '.ini']'
+
+    ns_preferences_general_notification_position = pyqtSignal(int)# dato: '0'
+
+    ns_preferences_general_notification_color = pyqtSignal(str)# dato: '#000'
+
+    ns_pythonPath = pyqtSignal(str)# dato: 'D:\Python34\python.exe'
+
+    ns_executionOptions = pyqtSignal(str)# dato: ''
+
+    ns_Show_Code_Nav = pyqtSignal(str)# dato: 'Ctrl+3'
+
+    ns_Follow_mode = pyqtSignal(str)# dato: 'Ctrl+F10'
+
+    ns_Change_Tab = pyqtSignal(str)# dato: 'Ctrl+PgDown'
+
+    ns_Change_Tab_Reverse = pyqtSignal(str)# dato: 'Ctrl+PgUp'
+
+    ns_Close_file = pyqtSignal(str)# dato: 'Ctrl+W'
+
+    ns_Close_Split = pyqtSignal(str)# dato: 'Shift+F9'
+
+    ns_Comment = pyqtSignal(str)# dato: 'Ctrl+G'
+
+    ns_Complete_Declarations = pyqtSignal(str)# dato: 'Alt+Return'
+
+    ns_copy = pyqtSignal(str)# dato: 'Ctrl+C'
+
+    ns_History_Copy = pyqtSignal(str)# dato: 'Ctrl+Alt+C'
+
+    ns_New_project = pyqtSignal(str)# dato: 'Ctrl+Shift+N'
+
+    ns_New_file = pyqtSignal(str)# dato: 'Ctrl+N'
+
+    ns_cut = pyqtSignal(str)# dato: 'Ctrl+X'
+
+    ns_Debug = pyqtSignal(str)# dato: 'F7'
+
+    ns_Duplicate = pyqtSignal(str)# dato: 'Ctrl+R'
+
+    ns_Run_file = pyqtSignal(str)# dato: 'Ctrl+F6'
+
+    ns_Run_project = pyqtSignal(str)# dato: 'F6'
+
+    ns_expand_file_combo = pyqtSignal(str)# dato: 'Ctrl+Tab'
+
+    ns_expand_symbol_combo = pyqtSignal(str)# dato: 'Ctrl+2'
+
+    ns_Find = pyqtSignal(str)# dato: 'Ctrl+F'
+
+    ns_Find_replace = pyqtSignal(str)# dato: 'Ctrl+H'
+
+    ns_Find_in_files = pyqtSignal(str)# dato: 'Ctrl+L'
+
+    ns_Find_next = pyqtSignal(str)# dato: 'Ctrl+F3'
+
+    ns_Find_previous = pyqtSignal(str)# dato: 'Shift+F3'
+
+    ns_Find_with_word = pyqtSignal(str)# dato: 'Ctrl+Shift+F'
+
+    ns_Full_screen = pyqtSignal(str)# dato: 'Ctrl+F11'
+
+    ns_Go_to_definition = pyqtSignal(str)# dato: 'Ctrl+Return'
+
+    ns_Hide_all = pyqtSignal(str)# dato: 'F11'
+
+    ns_Hide_editor = pyqtSignal(str)# dato: 'F3'
+
+    ns_Hide_explorer = pyqtSignal(str)# dato: 'F2'
+
+    ns_Hide_misc = pyqtSignal(str)# dato: 'F4'
+
+    ns_Highlight_Word = pyqtSignal(str)# dato: 'Ctrl+Down'
+
+    ns_Import = pyqtSignal(str)# dato: 'Ctrl+I'
+
+    ns_Indent_less = pyqtSignal(str)# dato: 'Shift+Tab'
+
+    ns_Indent_more = pyqtSignal(str)# dato: 'Tab'
+
+    ns_Add_Bookmark_or_Breakpoint = pyqtSignal(str)# dato: 'Ctrl+B'
+
+    ns_Title_comment = pyqtSignal(str)# dato: ''
+
+    ns_Horizontal_line = pyqtSignal(str)# dato: ''
+
+    ns_Move_down = pyqtSignal(str)# dato: 'Alt+Down'
+
+    ns_Move_up = pyqtSignal(str)# dato: 'Alt+Up'
+
+    ns_Move_Tab_to_left = pyqtSignal(str)# dato: 'Ctrl+Shift+9'
+
+    ns_Move_Tab_to_right = pyqtSignal(str)# dato: 'Ctrl+Shift+0'
+
+    ns_Navigate_back = pyqtSignal(str)# dato: 'Alt+Left'
+
+    ns_Navigate_forward = pyqtSignal(str)# dato: 'Alt+Right'
+
+    ns_Open_file = pyqtSignal(str)# dato: 'Ctrl+O'
+
+    ns_Open_project = pyqtSignal(str)# dato: 'Ctrl+Shift+O'
+
+    ns_Open_recent_closed = pyqtSignal(str)# dato: 'Ctrl+Shift+T'
+
+    ns_paste = pyqtSignal(str)# dato: 'Ctrl+V'
+
+    ns_History_Paste = pyqtSignal(str)# dato: 'Ctrl+Alt+V'
+
+    ns_Print_file = pyqtSignal(str)# dato: 'Ctrl+P'
+
+    ns_Redo = pyqtSignal(str)# dato: 'Ctrl+Y'
+
+    ns_Reload_file = pyqtSignal(str)# dato: 'F5'
+
+    ns_Remove_line = pyqtSignal(str)# dato: 'Ctrl+E'
+
+    ns_Save_file = pyqtSignal(str)# dato: 'Ctrl+S'
+
+    ns_Save_project = pyqtSignal(str)# dato: 'Ctrl+Shift+S'
+
+    ns_Code_locator = pyqtSignal(str)# dato: 'Ctrl+K'
+
+    ns_Show_Paste_History = pyqtSignal(str)# dato: 'Ctrl+4'
+
+    ns_File_Opener = pyqtSignal(str)# dato: 'Ctrl+Alt+O'
+
+    ns_Help = pyqtSignal(str)# dato: 'F1'
+
+    ns_Show_Selector = pyqtSignal(str)# dato: 'Ctrl+`'
+
+    ns_Split_assistance = pyqtSignal(str)# dato: 'F10'
+
+    ns_change_tab_visibility = pyqtSignal(str)# dato: 'Shift+F1'
+
+    ns_Split_horizontal = pyqtSignal(str)# dato: 'F9'
+
+    ns_Split_vertical = pyqtSignal(str)# dato: 'Ctrl+F9'
+
+    ns_Stop_execution = pyqtSignal(str)# dato: 'Ctrl+Shift+F6'
+
+    ns_Uncomment = pyqtSignal(str)# dato: 'Ctrl+Shift+G'
+
+    ns_undo = pyqtSignal(str)# dato: 'Ctrl+Z'
+
+    ns_preferences_interface_showProjectExplorer = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_interface_showSymbolsList = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_interface_showWebInspector = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_interface_showErrorsList = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_interface_showMigrationList = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_interface_language = pyqtSignal(str)# dato: 'English'
+
+    ns_preferences_editor_font = pyqtSignal(QFont)# dato: '<PyQt5.QtGui.QFont object at 0x089D32F0>'
+
+    ns_preferences_editor_minimapMaxOpacity = pyqtSignal(float)# dato: '0.8'
+
+    ns_preferences_editor_minimapMinOpacity = pyqtSignal(float)# dato: '0.1'
+
+    ns_preferences_editor_minimapSizeProportion = pyqtSignal(float)# dato: '0.17'
+
+    ns_preferences_editor_minimapShow = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_editor_scheme = pyqtSignal(str)# dato: 'default'
+
+    ns_preferences_editor_useTabs = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_editor_marginLine = pyqtSignal(int)# dato: '80'
+
+    ns_preferences_editor_showMarginLine = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_indent = pyqtSignal(int)# dato: '4'
+
+    ns_preferences_editor_platformEndOfLine = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_editor_errorsUnderlineBackground = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_errors = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_errorsInLine = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_checkStyle = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_showMigrationTips = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_checkStyleInline = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_centerOnScroll = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_removeTrailingSpaces = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_allowWordWrap = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_editor_showTabsAndSpaces = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_editor_showIndentationGuide = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_checkForDocstrings = pyqtSignal(bool)# dato: 'False'
+
+    ns_preferences_editor_showLineNumbers = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_parentheses = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_brackets = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_keys = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_simpleQuotes = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_doubleQuotes = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_codeCompletion = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_editor_completeDeclarations = pyqtSignal(bool)# dato: 'True'
+
+    ns_preferences_theme_skin = pyqtSignal(str)# dato: 'Default'
+
+    ds_lastSession_projects = pyqtSignal(list)# dato: '[]'
+
+    ds_lastSession_openedFiles = pyqtSignal(list)# dato: '[]'
+
+    ds_lastSession_currentFile = pyqtSignal(str)# dato: ''
+
+    ds_lastSession_recentFiles = pyqtSignal(list)# dato: '[]'
+
+    ns_preferences_editor_bookmarks = pyqtSignal(dict)# dato: '{}'
+
+    ns_preferences_editor_breakpoints = pyqtSignal(dict)# dato: '{}'
+
+    ns_window_maximized = pyqtSignal(bool)# dato: 'True'
+
+    ns_window_central_baseSplitterSize = pyqtSignal(QByteArray)# dato: 'b'\x00\x00\x00\xff\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x03\x84\x00\x00\x00\xc8\x01\xff\xff\xff\xff\x01\x00\x00\x00\x01\x01''
+
+    ns_window_central_insideSplitterSize = pyqtSignal(QByteArray)# dato: 'b'\x00\x00\x00\xff\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x01B\x00\x00\x00\xa8\x01\xff\xff\xff\xff\x01\x00\x00\x00\x02\x01''
+
+    ns_window_central_lateralVisible = pyqtSignal(bool)# dato: 'True'
+
+    ns_window_hide_toolbar = pyqtSignal(bool)# dato: 'False'
+
+    ns_tools_dock_visible = pyqtSignal(bool)# dato: 'True'
+
+    #...
+    ds_recentProjects = pyqtSignal(dict)
+    ns_window_size = pyqtSignal(QSize)
+    ns_window_pos = pyqtSignal(QPoint)
+
     def __init__(self, start_server=False):
-        QMainWindow.__init__(self)
+        super(IDE, self).__init__()
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
         self.setMinimumSize(750, 500)
         QToolTip.setFont(QFont(settings.FONT.family(), 10))
         #Load the size and the position of the main window
         self.load_window_geometry()
         self.__project_to_open = 0
+
+        IDE.__instance = self
+
+        wid = QWidget()#adjustSize
+        wid.setContentsMargins(0, 0, 0, 0)
+        box = QHBoxLayout(wid)
+        box.setContentsMargins(0, 0, 0, 0)
+        # l1 = QLabel("Info Here")
+        # l1.setObjectName("Info")
+        # l1.setStyleSheet("background-color: rgb(88, 255, 85);")
+        # box.addWidget(l1)
+        space = QSpacerItem(10,10, QSizePolicy.Expanding)#, QSizePolicy.Maximum)
+        box.addSpacerItem(space)
+        l2 = QLabel("Tab Size: "+str(settings.INDENT))#int(qsettings.value('preferences/editor/indent', 4, type=int))))
+        l2.setObjectName("Det1")
+
+        font = l2.font()
+        font.setPointSize(8)
+        l2.setFont(font)
+        box.addWidget(l2)
+
+        box.addSpacing(50)
+
+        l3 = QLabel("Python")
+        l3.setObjectName("Det2")
+        font.setPointSize(9)
+        l3.setFont(font)
+        box.addWidget(l3)
+
+        box.addSpacing(30)
+
+        status = self.statusBar()
+        status.setMaximumHeight(20)
+        status.addPermanentWidget(wid)
+        # wid.show()
+        # self.__wid = wid
+        status.reformat()
+        status.showMessage("Info Here")
+        status.setStyleSheet("background-color: rgb(85, 85, 85);")
 
         #Editables
         self.__neditables = {}
@@ -138,6 +482,8 @@ class IDE(QMainWindow):
         #Notificator
         self.notification = notification.Notification(self)
 
+        self.statusBar().messageChanged[str].connect(self.MessageStatusChanged.emit)
+
         #Plugin Manager
         # CHECK ACTIVATE PLUGINS SETTING
         #services = {
@@ -157,8 +503,7 @@ class IDE(QMainWindow):
 
         #Tray Icon
         self.trayIcon = updates.TrayIconUpdates(self)
-        self.connect(self.trayIcon, SIGNAL("closeTrayIcon()"),
-                     self._close_tray_icon)
+        self.trayIcon.closeTrayIcon.connect(self._close_tray_icon)
         self.trayIcon.show()
 
         key = Qt.Key_1
@@ -170,9 +515,9 @@ class IDE(QMainWindow):
                 short = ui_tools.TabShortcuts(
                     QKeySequence(Qt.ALT + key), self, i)
             key += 1
-            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+            short.activated.connect(self._change_tab_index)
         short = ui_tools.TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
-        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        short.activated.connect(self._change_tab_index)
 
         # Register menu categories
         IDE.register_bar_category(translations.TR_MENU_FILE, 100)
@@ -191,27 +536,28 @@ class IDE(QMainWindow):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-             'signal_name': 'fileSaved(QString)',
+             'signal_name': 'fileSaved',#(QString)
              'slot': self.show_message},
             {'target': 'main_container',
-             'signal_name': 'currentEditorChanged(QString)',
+             'signal_name': 'currentEditorChanged',#(QString)
              'slot': self.change_window_title},
             {'target': 'main_container',
-             'signal_name': 'openPreferences()',
+             'signal_name': 'openPreferences',#()
              'slot': self.show_preferences},
             {'target': 'main_container',
-             'signal_name': 'allTabsClosed()',
+             'signal_name': 'allTabsClosed',#()
              'slot': self._last_tab_closed},
             {'target': 'explorer_container',
-             'signal_name': 'changeWindowTitle(QString)',
+             'signal_name': 'changeWindowTitle',#(QString)
              'slot': self.change_window_title},
             {'target': 'explorer_container',
-             'signal_name': 'projectClosed(QString)',
+             'signal_name': 'projectClosed',#(QString)
              'slot': self.close_project},
             )
         self.register_signals('ide', connections)
         # Central Widget MUST always exists
         self.central = IDE.get_service('central_container')
+        print("self.central:", self.central)
         self.setCentralWidget(self.central)
         # Install Services
         for service_name in self.__IDESERVICES:
@@ -233,10 +579,16 @@ class IDE(QMainWindow):
         if start_server:
             self.s_listener = QLocalServer()
             self.s_listener.listen("ninja_ide")
-            self.connect(self.s_listener, SIGNAL("newConnection()"),
-                         self._process_connection)
+            self.s_listener.newConnection.connect(self._process_connection)
 
-        IDE.__instance = self
+
+    @classmethod
+    def hasCreated(clss):
+        return clss.__created
+
+    @classmethod
+    def getInstance(clss):
+        return clss.__instance
 
     @classmethod
     def get_service(cls, service_name):
@@ -259,8 +611,8 @@ class IDE(QMainWindow):
     def register_service(cls, service_name, obj):
         """Register a service providing the service name and the instance."""
         cls.__IDESERVICES[service_name] = obj
-        if cls.__created:
-            cls.__instance.install_service(service_name)
+        if cls.hasCreated():
+            cls.getInstance().install_service(service_name)
 
     def install_service(self, service_name):
         """Activate the registered service."""
@@ -288,8 +640,8 @@ class IDE(QMainWindow):
             - 'signal_name': 'name of the signal in the other service',
             - 'slot': function object in this service"""
         cls.__IDECONNECTIONS[service_name] = connections
-        if cls.__created:
-            cls.__instance._connect_signals()
+        if cls.hasCreated():
+            cls.getInstance()._connect_signals()
 
     def _connect_signals(self):
         """Connect the signals between the different services."""
@@ -303,7 +655,7 @@ class IDE(QMainWindow):
                 slot = connection['slot']
                 signal_name = connection['signal_name']
                 if target and isinstance(slot, collections.Callable):
-                    self.connect(target, SIGNAL(signal_name), slot)
+                    getattr(target, signal_name).connect(slot)
                     connection['connected'] = True
 
     @classmethod
@@ -360,8 +712,7 @@ class IDE(QMainWindow):
         editable = self.__neditables.get(nfile)
         if editable is None:
             editable = neditable.NEditable(nfile)
-            self.connect(editable, SIGNAL("fileClosing(PyQt_PyObject)"),
-                         self._unload_neditable)
+            editable.fileClosing.connect(self._unload_neditable)
             self.__neditables[nfile] = editable
         return editable
 
@@ -400,6 +751,10 @@ class IDE(QMainWindow):
                 current_project = projects[project]
                 break
         return current_project
+
+    def showMessageStatus(self, msg):
+        QTimer.singleShot(1, Qt.PreciseTimer, lambda: self.statusBar().showMessage(msg))
+        # self.statusBar().showMessage(msg)
 
     @classmethod
     def select_current(cls, widget):
@@ -473,10 +828,13 @@ class IDE(QMainWindow):
         """Open the Preferences Dialog."""
         pref = preferences.Preferences(self)
         main_container = IDE.get_service("main_container")
+        print("\n\npreferences!!")
         if main_container:
             main_container.show_dialog(pref)
+            print("\n\nmain_container---")
         else:
             pref.show()
+            print("\n\nNONE---")
 
     def load_session_files_projects(self, files, projects,
                                     current_file, recent_files=None):
@@ -546,33 +904,52 @@ class IDE(QMainWindow):
             self.setWindowOpacity(self.opacity)
             event.ignore()
         else:
-            QMainWindow.wheelEvent(self, event)
+            super(IDE, self).wheelEvent(event)
 
     @classmethod
     def ninja_settings(cls):
         qsettings = nsettings.NSettings(resources.SETTINGS_PATH,
                                         prefix="ns")
-        if cls.__created:
-            cls.__instance.connect(
-                qsettings,
-                SIGNAL("valueChanged(QString, PyQt_PyObject)"),
-                cls.__instance._settings_value_changed)
+        if cls.hasCreated():
+            qsettings.valueChanged.connect(cls.getInstance()._settings_value_changed)
         return qsettings
 
     @classmethod
     def data_settings(cls):
         qsettings = nsettings.NSettings(resources.DATA_SETTINGS_PATH,
                                         prefix="ds")
-        if cls.__created:
-            cls.__instance.connect(
-                qsettings,
-                SIGNAL("valueChanged(QString, PyQt_PyObject)"),
-                cls.__instance._settings_value_changed)
+        if cls.hasCreated():
+            qsettings.valueChanged.connect(cls.getInstance()._settings_value_changed)
         return qsettings
 
     def _settings_value_changed(self, key, value):
-        signal_name = "%s(PyQt_PyObject)" % key.replace("/", "_")
-        self.emit(SIGNAL(signal_name), value)
+        # signal_name = "%s(PyQt_PyObject)" % key.replace("/", "_")
+        # self.emit(SIGNAL(signal_name), value)
+        key = key.replace("/", "_").replace("-", "_")
+        try:
+            getattr(self, key).emit(value)
+        except TypeError as reason:
+            print("\n:::", key, value, type(value))
+            print("\n\nerrors:-:", reason)
+            getattr(self, key).emit()
+        except AttributeError:
+            print("\n:::", key, value, type(value))
+
+        # if not value:
+        #     try:
+        #         getattr(self, key.replace("/", "_")).emit(value)
+        #     except TypeError:
+        #         getattr(self, key.replace("/", "_")).emit()
+
+        #     return
+
+        # try:
+        #     getattr(self, key.replace("/", "_")).emit(value)
+        # except TypeError as e:
+        #     print("\n\nerrors", e)
+        #     getattr(self, key.replace("/", "_")).emit()
+        ##getattr(self, key.replace("/", "_").replace("-", "_")).emit(value)
+
 
     def save_settings(self):
         """Save the settings before the application is closed with QSettings.
@@ -595,6 +972,9 @@ class IDE(QMainWindow):
             data_qsettings.setValue('lastSession/projects', projects)
             files_info = []
             for path in openedFiles:
+                if not openedFiles[path]._exists():
+                    print("\n\ncontinue", path)
+                    continue
                 editable = self.__neditables.get(openedFiles[path])
                 if editable is not None and editable.is_dirty:
                     stat_value = 0
@@ -666,10 +1046,10 @@ class IDE(QMainWindow):
         else:
             self.resize(qsettings.value(
                 "window/size",
-                QSizeF(800, 600).toSize(), type='QSize'))
+                QSize(800, 600), type='QSize'))
             self.move(qsettings.value(
                 "window/pos",
-                QPointF(100, 100).toPoint(), type='QPoint'))
+                QPoint(100, 100), type='QPoint'))
 
     def _get_unsaved_files(self):
         """Return an array with the path of the unsaved files."""
@@ -677,14 +1057,15 @@ class IDE(QMainWindow):
         files = self.opened_files
         for f in files:
             editable = self.__neditables.get(f)
-            if editable is not None and editable.editor.is_modified:
+            print("\n\neditable::", editable, getattr(editable, "editor", "-"))
+            if editable is not None and  editable.editor is not None and editable.editor.is_modified:
                 unsaved.append(f)
         return unsaved
 
     def _save_unsaved_files(self, files):
         """Save the files from the paths in the array."""
         for f in files:
-            editable = self.get_or_create_editable(nfile=f)
+            editable = self.get_or_create_editable(f)
             editable.ignore_checkers = True
             editable.save_content()
 
@@ -700,7 +1081,7 @@ class IDE(QMainWindow):
                 self,
                 translations.TR_IDE_CONFIRM_EXIT_TITLE,
                 (translations.TR_IDE_CONFIRM_EXIT_BODY % {'files': txt}),
-                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+                QMessageBox.Yes | QMessageBox.No, QMessageBox.Cancel)
             if val == QMessageBox.Yes:
                 #Saves all open files
                 self._save_unsaved_files(unsaved_files)
@@ -708,7 +1089,7 @@ class IDE(QMainWindow):
                 event.ignore()
                 return
         self.save_settings()
-        self.emit(SIGNAL("goingDown()"))
+        self.goingDown.emit()
         #close python documentation server (if running)
         main_container.close_python_doc()
         #Shutdown PluginManager
@@ -735,7 +1116,9 @@ class IDE(QMainWindow):
         """Open the Plugins Manager to install/uninstall plugins."""
         store = plugins_store.PluginsStore(self)
         main_container = IDE.get_service("main_container")
+        print("\nshow_plugins_store")
         if main_container:
+            print("\nshow_plugins_store::main_container")
             main_container.show_dialog(store)
         else:
             store.show()

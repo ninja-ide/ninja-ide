@@ -17,13 +17,14 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -42,6 +43,8 @@ class CentralWidget(QWidget):
     """
     splitterCentralRotated()
     """
+    splitterCentralRotated = pyqtSignal()
+    splitterBaseRotated = pyqtSignal()
 
 ###############################################################################
 
@@ -72,10 +75,11 @@ class CentralWidget(QWidget):
         IDE.register_service('central_container', self)
 
     def install(self):
-        ide = IDE.get_service('ide')
+        ide = IDE.getInstance()
         ui_tools.install_shortcuts(self, actions.ACTIONS_CENTRAL, ide)
 
     def show_copypaste_history_popup(self):
+        print("show_copypaste_history_popup")
         self.lateralPanel.combo.showPopup()
 
     def add_to_region(self, name, obj, region, top=False):
@@ -192,7 +196,8 @@ class CentralWidget(QWidget):
 
 
 class LateralPanel(QWidget):
-
+    splitEditor = pyqtSignal('QObject*', 'QObject*', bool)
+    closeSplit = pyqtSignal(QWidget)
     def __init__(self, parent=None):
         super(LateralPanel, self).__init__(parent)
         self.has_component = False
@@ -203,7 +208,7 @@ class LateralPanel(QWidget):
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
-        self.combo.setToolTip(self.trUtf8("Select the item from the Paste "
+        self.combo.setToolTip(self.tr("Select the item from the Paste "
             "History list.\nYou can Copy items into this list with: "
             "%s\nor Paste them using: %s") %
                 (resources.get_shortcut("History-Copy").toString(

@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 from ninja_ide.gui.ide import IDE
 

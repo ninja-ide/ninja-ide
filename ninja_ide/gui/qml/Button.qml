@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: button
@@ -7,10 +7,33 @@ Rectangle {
     property alias text: btnText.text
 
     height: 50
-    border.color:"#111"
-    radius: 2
+    border.color:"#6a6363"
 
-    color: "#323233"
+    gradient: off
+
+    Gradient {
+        id: off
+        GradientStop { position: 0.0; color: "lightsteelblue" }
+        // GradientStop { position: 0.5; color: "lightsteelblue" }
+        // GradientStop { position: 0.5; color: "black" }
+        GradientStop { position: 1.0; color: "black" }
+    }
+
+    Gradient {
+        id: onn
+        GradientStop { position: 0.0; color: "steelblue" }
+        // GradientStop { position: 0.7; color: "steelblue" }
+        // GradientStop { position: 0.7; color: "black" }
+        GradientStop { position: 1.0; color: "black" }
+    }
+
+    Gradient {
+        id: hover
+        GradientStop { position: 0.0; color: "lightsteelblue" }
+        // GradientStop { position: 0.7; color: "lightsteelblue" }
+        // GradientStop { position: 0.7; color: "black" }
+        GradientStop { position: 1.0; color: "black" }
+    }
 
     Text {
         id: btnText
@@ -28,27 +51,28 @@ Rectangle {
             }
 
             onPressed: {
-                button.color = "#6a6ea9";
-                border.color= "#6a6ea9";
+                button.gradient = onn;
+                border.color= "steelblue";
             }
 
             onReleased: {
-                button.color = "#323233";
+                button.gradient = hover;
+                border.color= "steelblue";
             }
 
             onEntered:{
-                button.color = "#434345";
-                border.color= "#6a6ea9";
+                button.gradient = hover;
+                border.color= "steelblue";
             }
 
             onCanceled:{
-                button.color = "#323233";
-                border.color = "#111";
+                border.color = "#6a6363";
+                button.gradient = off;
             }
 
             onExited: {
-                border.color= "#111"
-                button.color = "#323233";
+                border.color= "#6a6363"
+                button.gradient = off;
             }
         }
 }

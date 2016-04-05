@@ -22,13 +22,20 @@
 import os
 import sys
 
-from virtualenv import create_environment
+containEnv = False
+try:
+    from virtualenv import create_environment
+    containEnv = True
+except ImportError:
+    pass
 
-#This is here only for reference purposes
-#def create_environment(home_dir, site_packages=False, clear=False,
+
+# This is here only for reference purposes
+# def create_environment(home_dir, site_packages=False, clear=False,
 #                       unzip_setuptools=False,
 #                       prompt=None, search_dirs=None, never_download=False,
 #                       no_setuptools=False, no_pip=False, symlink=True):
+
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.encapsulated_env.nenvironement')
@@ -46,13 +53,29 @@ NINJA_ENV = os.path.join(HOME_NINJA_PATH, NINJA_ENV_NAME)
 NINJA_ENV_BIN = os.path.join(NINJA_ENV, "bin")
 
 if not os.path.isdir(NINJA_ENV):
-    create_environment(NINJA_ENV)
+    #print("se comento la inclusion de 'virtualenv'", NINJA_ENV)
+    if containEnv:
+        create_environment(NINJA_ENV)
+
 if not os.path.isdir(NINJA_ENV_BIN):
     NINJA_ENV_BIN = os.path.join(NINJA_ENV, "Scripts")
 
 
 NINJA_ENV_ACTIVATE = os.path.join(NINJA_ENV_BIN, "activate_this.py")
 
+if not containEnv:
+    try:
+        os.makedirs(NINJA_ENV_BIN)
+    except OSError:
+        pass # already exist!
+    try:
+        f = open(NINJA_ENV_ACTIVATE, "r")
+    except FileNotFoundError:
+        f = open(NINJA_ENV_ACTIVATE, "w")
+        f.write("# -*- coding: utf-8 -*-\n"
+                "# Miguel estubo aqui\n"
+                "print(\"Miguel estubo aqui\")")
+    f.close()
 
 exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
      dict(__file__=NINJA_ENV_ACTIVATE))
@@ -72,7 +95,7 @@ try:
 except:
     from pip.utils import get_installed_distributions
 #lint:enable
-from PyQt4.QtCore import QObject, SIGNAL, QThread
+from PyQt5.QtCore import QObject, pyqtSignal, QThread
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}
@@ -86,6 +109,9 @@ class AsyncRunner(QThread):
     @threadFailed(const QString&)
     @threadFinished(PyQt_PyObject)
     """
+    threadEnded = pyqtSignal()
+    threadFailed = pyqtSignal(str)
+    threadFinished = pyqtSignal(dict)
 
     def __init__(self, runable):
         self.__runable = runable
@@ -95,21 +121,20 @@ class AsyncRunner(QThread):
         self.__iserror = False
         self.__errmsg = ""
         super(AsyncRunner, self).__init__()
-        self.connect(self, SIGNAL("threadEnded()"), self._success_finish)
-        self.connect(self, SIGNAL("threadFailed(const QString&)"),
-                     self._fail_finish)
+        self.threadEnded.connect(self._success_finish)
+        self.threadFailed.connect(self._fail_finish)
 
     def _success_finish(self):
         self.__finished = True
         self.wait()
-        self.emit(SIGNAL("threadFinished(PyQt_PyObject)"), self.status)
+        self.threadFinished.emit(self.status())
 
     def _fail_finish(self, errmsg):
         self.__finished = True
         self.__iserror = True
         self.__errmsg = errmsg
         self.wait()
-        self.emit(SIGNAL("threadFinished(PyQt_PyObject)"), self.status)
+        self.threadFinished.emit(self.status())
 
     def status(self):
         """
@@ -135,13 +160,13 @@ class AsyncRunner(QThread):
     def run(self):
         try:
             self.__runable(*self.__args, **self.__kwargs)
-            self.emit(SIGNAL("threadEnded()"))
+            self.threadEnded.emit()
         except Exception as e:
             if hasattr(e, "message"):
                 errmsg = e.message
             else:  # Python 3
                 errmsg = str(e)
-            self.emit(SIGNAL("threadFailed(QString)"), errmsg)
+            self.threadFailed.emit(errmsg)
 
 
 def make_async(func):
@@ -160,6 +185,8 @@ class NenvEggSearcher(QObject):
     @searchTriggered()
     @searchCompleted(PyQt_PyObject)
     """
+    searchTriggered = pyqtSignal()
+    searchCompleted = pyqtSignal('QObject*')
 
     def __init__(self):
         super(NenvEggSearcher, self).__init__()
@@ -175,10 +202,9 @@ class NenvEggSearcher(QObject):
 
     @make_async
     def do_search(self):
-        self.emit(SIGNAL("searchTriggered()"))
+        self.searchTriggered.emit()
         plugins_found = self.pypi.search(PLUGIN_QUERY, "and")
-        self.emit(SIGNAL("searchCompleted(PyQt_PyObject)"),
-                  self.__iterate_results(plugins_found))
+        self.searchCompleted.emit(self.__iterate_results(plugins_found))
 
     def __iterate_results(self, result_list):
         for each_plugin in result_list:
@@ -206,6 +232,9 @@ class PluginMetadata(QObject):
     @pluginMetadataInflated()
     @pluginInstalled(PyQt_PyObject)
     """
+    willInflatePluginMetadata = pyqtSignal()
+    pluginMetadataInflated = pyqtSignal('QObject*')
+    pluginInstalled = pyqtSignal('QObject*')
 
     @classmethod
     def from_result(cls, r, pypi):
@@ -267,11 +296,11 @@ class PluginMetadata(QObject):
         Fill extra attributes of a shallow object
         """
         if self.shallow:
-            self.emit(SIGNAL("willInflatePluginMetadata()"))
+            self.willInflatePluginMetadata.emit()
             rdata = self.pypi.release_data(self.name, self.version)
             for each_arg, each_value in rdata.items():
                 setattr(self, each_arg, each_value)
-            self.emit(SIGNAL("pluginMetadataInflated(PyQt_PyObject)"), self)
+            self.pluginMetadataInflated.emit(self)
             self.shallow = False
 
     @make_async
@@ -283,17 +312,17 @@ class PluginMetadata(QObject):
         """
         pkg_string = "%s==%s" % (self.name, self.version)
         pipmain(["install", "-q", pkg_string])
-        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+        self.pluginInstalled.emit(self)
 
     @make_async
     def reinstall(self):
         pipmain(["install", "-q", "--force-reinstall", self.name])
-        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+        self.pluginInstalled.emit(self)
 
     @make_async
     def upgrade(self):
         pipmain(["install", "-q", "--ugprade", self.name])
-        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+        self.pluginInstalled.emit(self)
 
     @make_async
     def remove(self):

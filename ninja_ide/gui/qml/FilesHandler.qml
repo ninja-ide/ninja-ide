@@ -1,7 +1,10 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
+
+    width: 400
+    height: 400
 
     radius: 5
     color: "#202123"
@@ -25,6 +28,7 @@ Rectangle {
     function activateInput() {
         input.text = "";
         input.forceActiveFocus();
+        input.selectAll();
     }
 
     function show_animation() {
@@ -46,6 +50,7 @@ Rectangle {
     }
 
     function set_model(model) {
+        // print("set_model", model)
         listFiles.currentIndex = 0;
         for(var i = 0; i < model.length; i++) {
             listFiles.model.append(
@@ -80,6 +85,7 @@ Rectangle {
     }
 
     function next_item() {
+        print("next_item\n")
         if (listFiles.visible) {
             for (var i = 0; i < listFiles.model.count; i++) {
                 if (listFiles.currentIndex == (listFiles.count - 1)) {
@@ -123,29 +129,55 @@ Rectangle {
 
     Rectangle {
         id: inputArea
+        objectName: "--Rectangle--"
         radius: 2
         color: "#2d2f31"
         height: 30
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            margins: 10
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 10
+        
         border.color: "black"
         border.width: 1
         smooth: true
 
         TextInput {
             id: input
-            anchors {
-                fill: parent
-                margins: 4
-            }
+            objectName: "--TextInput--"
+            
+            anchors.fill: parent
+            anchors.margins: 4
+            
             focus: true
-            clip: true
-            color: "white"
+            //clip: true
+            color: "orange"
+            selectionColor: "red"
+            selectByMouse: true
             font.pixelSize: 18
+            activeFocusOnPress: true
+
+            Keys.onEscapePressed: {
+                print("Keys.onEscapePressed")
+                Qt.quit();
+            }
+            Keys.onDownPressed: {
+                print("Keys.onDownPressed")
+                root.next_item();
+            }
+            Keys.onUpPressed: {
+                root.previous_item();
+            }
+            Keys.onEnterPressed: {
+                root.open_item();
+            }
+            Keys.onReturnPressed: {
+                root.open_item();
+            }
+            /*Keys.onDigit8Pressed: {
+                rawObj.view_WinFlags();
+            }*/
 
             onTextChanged: {
                 var firstValidItem = -1;
@@ -167,19 +199,8 @@ Rectangle {
                 }
             }
 
-            Keys.onDownPressed: {
-                root.next_item();
-            }
-            Keys.onUpPressed: {
-                root.previous_item();
-            }
-            Keys.onEnterPressed: {
-                root.open_item();
-            }
-            Keys.onReturnPressed: {
-                root.open_item();
-            }
         }
+        
     }
 
     Text {
@@ -187,12 +208,12 @@ Rectangle {
         color: "white"
         font.pixelSize: 10
         font.bold: true
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: inputArea.bottom
-            margins: 5
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: inputArea.bottom
+        anchors.margins: 5
+        
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -205,7 +226,7 @@ Rectangle {
             property int defaultValues: checkers ? 70 : 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
-            color: item.current ? "#6a6ea9" : "#27292b"
+            color: item.current ? "#4182c4" : "#27292b"
 
             property string mainTextColor: item.current ? "white" : "#aaaaaa"
             property string mainTextModifiedColor: item.current ? "lightgreen" : "green"
@@ -255,18 +276,18 @@ Rectangle {
 
             Column {
                 id: col
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
+                
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 10
+                
                 Text {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        rightMargin: imgClose.width
-                    }
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: imgClose.width
+                    
                     color: modified ? mainTextModifiedColor : mainTextColor
                     font.pixelSize: 18
                     font.bold: true
@@ -275,20 +296,21 @@ Rectangle {
                     font.italic: modified
                 }
                 Text {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                     color: item.current ? "#aaaaaa" : "#555555"
                     elide: Text.ElideLeft
                     text: path
                 }
             }
             Row {
-                anchors {
-                    right: parent.right
-                    top: col.bottom
-                }
+
+                anchors.right: parent.right
+                anchors.top: col.bottom
+                anchors.margins: 5
+                
                 spacing: 10
                 Repeater {
                     model: checkers
@@ -305,16 +327,16 @@ Rectangle {
 
     ListView {
         id: listFiles
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            top: inputArea.bottom
-            margins: 5
-        }
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: inputArea.bottom
+        anchors.margins: 5
+        
         spacing: 2
 
-        focus: true
+        //focus: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200
@@ -322,17 +344,17 @@ Rectangle {
 
     ListView {
         id: listFuzzyFiles
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            top: fuzzyText.bottom
-            margins: 5
-        }
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: fuzzyText.bottom
+        anchors.margins: 5
+        
         visible: !listFiles.visible
         spacing: 2
 
-        focus: true
+        //focus: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200

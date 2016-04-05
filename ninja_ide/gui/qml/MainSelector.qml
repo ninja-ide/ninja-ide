@@ -1,27 +1,34 @@
-import QtQuick 1.1
+import QtQuick 2.3
 
 Rectangle {
     id: root
     color: "#33363b"
 
+    width: 100
+    height: 100
+
     signal open(int index)
-    signal ready
-    signal animationCompleted
+    signal ready()
+    signal animationCompleted()
+    signal closePreviewer()
 
     property int duration: 300
     property int indexSelected: 0
     property int currentIndex: 0
     property variant removed: new Array()
 
+    //property var image_path: null
+
     function get_removed() {
         return root.removed;
     }
 
     function select_item(index) {
+        print("select_item", index)
         preview.visible = true;
-        var image_path = repeater.model.get(index).image_path;
+        var image_of_path = repeater.model.get(index).image__path;
         var obj_index = repeater.model.get(index).obj_index;
-        imagePreview.source = Qt.resolvedUrl(image_path);
+        imagePreview.source = Qt.resolvedUrl(image_of_path);
         root.indexSelected = obj_index;
         animationSelected.start();
     }
@@ -43,7 +50,11 @@ Rectangle {
         NumberAnimation { target: preview; property: "height"; to: 200; duration: root.duration}
         NumberAnimation { target: preview; property: "opacity"; to: 0; duration: root.duration}
 
-        onCompleted: {
+        onStarted: {
+            preview.visible = false
+        }
+
+        Component.onCompleted: {
             preview.visible = false;
             root.animationCompleted();
         }
@@ -58,27 +69,89 @@ Rectangle {
         NumberAnimation { target: preview; property: "height"; to: root.height; duration: root.duration}
         NumberAnimation { target: preview; property: "opacity"; to: 1; duration: root.duration}
 
-        onCompleted: {
+        onStarted: {
+            preview.visible = true
+        }
+
+        Component.onCompleted: {
             root.open(root.indexSelected);
             imagePreview.source = "";
             repeater.model.clear();
         }
     }
 
+    Image {
+        id: imag
+        source: "img/delete-project_rojo.png"
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.margins: 7//margenes
+        visible: !preview.visible
+        z:2
+        fillMode: Image.PreserveAspectFit
+        //property double margenes: 7
+
+        Behavior on width {
+            NumberAnimation { easing.type: Easing.InOutBack; duration: 300 }
+        }
+        Behavior on height {
+            NumberAnimation { easing.type: Easing.InOutBack; duration: 300 }
+        }
+        Behavior on anchors.margins {
+            NumberAnimation { easing.type: Easing.InOutBack; duration: 300 }
+        }
+
+        states: [
+            State {
+                name: "zoomIn"
+                PropertyChanges { target: imag; width: 1.8*sourceSize.width }
+                PropertyChanges { target: imag; height: 1.8*sourceSize.height }
+                PropertyChanges { target: imag; anchors.margins: 1 }
+            },
+            State {
+                name: "zoomOut"
+                PropertyChanges { target: imag; width: 0.8*sourceSize.width }
+                PropertyChanges { target: imag; height: 0.8*sourceSize.height }
+                PropertyChanges { target: imag; anchors.margins: 7 }
+        }]
+
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+
+            onEntered: {
+                //print("onEntered")
+                imag.state = "zoomIn"
+            }
+            onExited: {
+                //print("onExited")
+                imag.state = "zoomOut"
+            }
+
+            onClicked: {
+                //print("closePreviewer")
+                closePreviewer()
+            }
+        }
+    }
+
     Flickable {
+        id: flip
         anchors.fill: parent
         contentHeight: grid.height
+        visible: !preview.visible
 
         Grid {
             id: grid
             columns: root.width > 700 ? 3 : 2
             spacing: 20
-            anchors {
-                left: parent.left
-                top: parent.top
-                right: parent.right
-                margins: 20
-            }
+            
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 20
+            
 
             Repeater {
                 id: repeater
@@ -101,9 +174,10 @@ Rectangle {
                         width: grid.width / grid.columns - grid.spacing - 5
                         anchors.centerIn: parent
                         asynchronous: true
-                        source: Qt.resolvedUrl(image_path)
+                        source: Qt.resolvedUrl(image__path)
                         fillMode: Image.PreserveAspectFit
                         smooth: true
+                        //Component.onCompleted: print("source",source, "\n")
                     }
 
                     Rectangle {
@@ -176,26 +250,58 @@ Rectangle {
             cache: false
             fillMode: Image.PreserveAspectFit
             smooth: true
+            asynchronous: true
+            // source: Qt.resolvedUrl(root.image_path)//agragado
+            // Component.onCompleted: print("Image", root.image_path)
 
             onStatusChanged: {
+                print("Image222222", source)
                 if (imagePreview.status == Image.Ready) {
                     root.ready();
+                }
+            }
+            Image {
+                source: "img/delete-project_rojo.png"
+                anchors.right: parent.right
+                anchors.top: parent.top
+                //anchors.margins: 5
+                fillMode: Image.PreserveAspectFit
+                width: 1.3*sourceSize.width
+                height: 1.3*sourceSize.height
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        start_animation()
+                    }
                 }
             }
         }
     }
 
-    function add_preview(index, image_path) {
-        imagePreview.source = Qt.resolvedUrl(image_path);
+    function add_preview(index, path) {
+        print("add_preview", index)
+        //print("Qt.resolvedUrl(path)", Qt.resolvedUrl(path), path, Qt.resolvedUrl(path))
+        imagePreview.source = Qt.resolvedUrl(path);//Qt.resolvedUrl(path);
         root.indexSelected = index;
     }
 
     function add_widget(index, path, closable) {
-        repeater.model.append({"obj_index": index, "image_path": path, "closable": closable});
+        //print("add_widget", index, path, closable)
+        /*if (!root.image_path) {
+            root.image_path = path
+        }*/
+        repeater.model.append({"obj_index": index, "image__path": path, "closable": closable});
     }
 
     function start_animation() {
         animation.start();
+    }
+
+    function showPreview() {
+        preview.visible = true;
+        animationSelected.start();
     }
 
     function close_selector() {

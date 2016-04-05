@@ -22,10 +22,10 @@ from __future__ import unicode_literals
 import os
 import sys
 
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import Qt
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import Qt
 
 
 ###############################################################################

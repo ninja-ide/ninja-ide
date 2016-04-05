@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
@@ -113,11 +113,11 @@ Rectangle {
 
     ListView {
         id: listProjects
-        anchors {
-            right: parent.right
-            top: txtProjects.bottom
-            margins: 10
-        }
+        
+        anchors.right: parent.right
+        anchors.top: txtProjects.bottom
+        anchors.margins: 10
+        
         width: parent.width
         height: 500
 

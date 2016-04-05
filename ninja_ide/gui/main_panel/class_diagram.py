@@ -15,18 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QRectF
-from PyQt4.QtGui import QGraphicsItem
-from PyQt4.QtGui import QRadialGradient
-from PyQt4.QtGui import QGraphicsTextItem
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QPen
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QGraphicsView
-from PyQt4.QtGui import QGraphicsScene
-from PyQt4.QtGui import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QRectF
+from PyQt5.QtWidgets import QGraphicsItem
+from PyQt5.QtWidgets import QRadialGradient
+from PyQt5.QtWidgets import QGraphicsTextItem
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QPen
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QGraphicsView
+from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5.QtWidgets import QVBoxLayout
 
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.tools import introspection
@@ -36,8 +36,7 @@ from ninja_ide.core.file_handling import file_manager
 class ClassDiagram(QWidget, itab_item.ITabItem):
 
     def __init__(self, actions, parent=None):
-        QWidget.__init__(self, parent)
-        itab_item.ITabItem.__init__(self)
+        super(ClassDiagram, self).__init__(parent)
         self.actions = actions
         self.graphicView = QGraphicsView(self)
         self.scene = QGraphicsScene()
@@ -110,7 +109,7 @@ class ClassDiagram(QWidget, itab_item.ITabItem):
 class ClassModel(QGraphicsItem):
 
     def __init__(self, parent=None, graphicView=None, graphicScene=None):
-        QGraphicsItem.__init__(self)
+        super(ClassModel, self).__init__()
         self.set_default_data()
         self.className = QGraphicsTextItem(self)
         self.functionsItem = FunctionsContainerModel(self)
@@ -197,7 +196,7 @@ class ClassModel(QGraphicsItem):
 class FunctionsContainerModel(QGraphicsItem):
 
     def __init__(self, parent=None):
-        QGraphicsItem.__init__(self, parent)
+        super(FunctionsContainerModel, self).__init__(parent)
         self.parent = parent
         self.maxWidth = self.parent._get_width()
         self.maxHeight = 0
