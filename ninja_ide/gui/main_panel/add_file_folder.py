@@ -30,8 +30,6 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 
-def Pomelo():
-    return None
 
 class AddFileFolderWidget(QDialog):
     """LocatorWidget class with the Logic for the QML UI"""

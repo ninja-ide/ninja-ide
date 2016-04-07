@@ -272,6 +272,6 @@ class FilesHandler(QFrame):
         super(FilesHandler, self).mousePressEvent(event)
 
 
-    def hideEvent(self, event):
-        print("hideEvent()", event)
-        super(FilesHandler, self).hideEvent(event)
+    # def hideEvent(self, event):
+    #     print("hideEvent()", event)
+    #     super(FilesHandler, self).hideEvent(event)

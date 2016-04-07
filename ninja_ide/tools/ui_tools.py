@@ -518,14 +518,19 @@ def get_qml_resource(qmlpath):
     path_qml = QDir.fromNativeSeparators(
         os.path.join(resources.QML_FILES, qmlpath))
     print("get_qml_resource:1:",path_qml, urlparse(path_qml))
+    contain = False
     try:
         import virtualenv
         path_qml = urlunparse(urlparse(path_qml)._replace(scheme='file'))
+        contain = True
     except ImportError:
         # path_qml = "file:///"+path_qml
         pass
     print("get_qml_resource:2:",path_qml)
-    return QUrl.fromLocalFile(path_qml)
+    if contain:
+        return QUrl(path_qml)
+    else:
+        return QUrl.fromLocalFile(path_qml)
 
 
 class TabShortcuts(QShortcut):
