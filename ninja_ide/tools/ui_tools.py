@@ -517,7 +517,7 @@ def install_shortcuts(obj, actions, ide):
 def get_qml_resource(qmlpath):
     path_qml = QDir.fromNativeSeparators(
         os.path.join(resources.QML_FILES, qmlpath))
-    print("get_qml_resource:1:",path_qml, urlparse(path_qml))
+    # print("get_qml_resource:1:",path_qml, urlparse(path_qml))
     contain = False
     try:
         import virtualenv
@@ -526,7 +526,7 @@ def get_qml_resource(qmlpath):
     except ImportError:
         # path_qml = "file:///"+path_qml
         pass
-    print("get_qml_resource:2:",path_qml)
+    # print("get_qml_resource:2:",path_qml)
     if contain:
         return QUrl(path_qml)
     else:

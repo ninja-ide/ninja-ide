@@ -46,8 +46,8 @@ class ErrorsWidget(QDialog):
     """
     pep8Activated = pyqtSignal(bool)
     lintActivated = pyqtSignal(bool)
-    dockWidget = pyqtSignal("QObject*")
-    undockWidget = pyqtSignal()
+    dockedWidget = pyqtSignal("QObject*")
+    undockedWidget = pyqtSignal()
     changeTitle = pyqtSignal(str)
 ###############################################################################
 
@@ -175,10 +175,10 @@ class ErrorsWidget(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.dockWidget.emit(self)
+            self.dockedWidget.emit(self)
 
     def closeEvent(self, event):
-        self.dockWidget.emit(self)
+        self.dockedWidget.emit(self)
         event.ignore()
 
 

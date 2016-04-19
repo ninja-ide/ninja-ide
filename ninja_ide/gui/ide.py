@@ -73,6 +73,7 @@ from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.gui.dialogs import plugins_store
 from ninja_ide.tools import ui_tools
+
 #from ninja_ide.tools.completion import completion_daemon
 
 ###############################################################################
@@ -117,7 +118,7 @@ class IDE(QMainWindow):
     __created = False
 
 
-    MessageStatusChanged = pyqtSignal(str)
+    # MessageStatusChanged = pyqtSignal(str)
 
     goingDown = pyqtSignal()
     # # ns_preferences_editor_font = pyqtSignal()
@@ -406,6 +407,8 @@ class IDE(QMainWindow):
     ns_window_size = pyqtSignal(QSize)
     ns_window_pos = pyqtSignal(QPoint)
 
+    __EditorFocused = None
+
     def __init__(self, start_server=False):
         super(IDE, self).__init__()
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
@@ -482,7 +485,7 @@ class IDE(QMainWindow):
         #Notificator
         self.notification = notification.Notification(self)
 
-        self.statusBar().messageChanged[str].connect(self.MessageStatusChanged.emit)
+        # self.statusBar().messageChanged[str].connect(self.MessageStatusChanged.emit)
 
         #Plugin Manager
         # CHECK ACTIVATE PLUGINS SETTING
@@ -581,6 +584,11 @@ class IDE(QMainWindow):
             self.s_listener.listen("ninja_ide")
             self.s_listener.newConnection.connect(self._process_connection)
 
+    @classmethod
+    def detectFocusInEditor(clss, editor):
+        #print("\n\ndetectFocusInEditor", editor, editor.parent() if editor else "---")
+        if clss.__EditorFocused != editor:
+            clss.__EditorFocused = editor
 
     @classmethod
     def hasCreated(clss):
@@ -716,6 +724,29 @@ class IDE(QMainWindow):
             self.__neditables[nfile] = editable
         return editable
 
+    def get_or_create_editable_EXTERNAL(self, filename="", nfile=None):# combo_editor=None
+        #pass
+        #l = [item.getEditable() for item in spliter]
+
+        if nfile is None:
+            nfile = self.filesystem.get_file(nfile_path=filename)
+        print("\nnfile is None:", nfile is None, filename, nfile, self.__neditables)
+        editable = self.__neditables.get(nfile)
+        if editable is None:
+            editable = neditable.NEditable(nfile)
+            editable.fileClosing.connect(self._unload_neditable)
+            print("get_or_create_editable_EXTERNAL:: \"editable is None\"", editable)
+            # if combo_editor:
+            # ... combo_editor.addOpenedFiles(editable)
+            self.__neditables[nfile] = editable
+        else:
+            print("get_or_create_editable_EXTERNAL:: \"editable living\"", editable)
+        return editable
+
+    def unload_NEditable(self, editable):
+        self.__neditables.pop(editable.nfile)
+
+
     def _unload_neditable(self, editable):
         self.__neditables.pop(editable.nfile)
         editable.nfile.deleteLater()
@@ -723,8 +754,29 @@ class IDE(QMainWindow):
         editable.deleteLater()
 
     @property
-    def opened_files(self):
+    def opened_files(self):# @@1
+        """ rtn: type->str
+        return the local environment file path"""
         return tuple(self.__neditables.keys())
+
+
+    def getCurrentEditor(self):
+        t = tuple()
+        if self.__EditorFocused:# and self.__EditorFocused.
+            #combo_editor.ComboEditor
+            from ninja_ide.gui.editor import editor
+
+            widget = self.__EditorFocused.parent().currentWidget()
+            if not isinstance(widget, editor.Editor):
+                widget = None
+
+            t = (self.__EditorFocused.parent(), widget)
+        # widget = self.current_widget.currentWidget()
+        # if isinstance(widget, editor.Editor):
+        #     return widget
+        # print("\n\n getCurrentEditor()", t)
+        return t
+
 
     def get_project_for_file(self, filename):
         project = None
@@ -951,6 +1003,7 @@ class IDE(QMainWindow):
         ##getattr(self, key.replace("/", "_").replace("-", "_")).emit(value)
 
 
+
     def save_settings(self):
         """Save the settings before the application is closed with QSettings.
 
@@ -976,13 +1029,17 @@ class IDE(QMainWindow):
                     print("\n\ncontinue", path)
                     continue
                 editable = self.__neditables.get(openedFiles[path])
+
                 if editable is not None and editable.is_dirty:
                     stat_value = 0
                 else:
                     stat_value = os.stat(path).st_mtime
+
+                # @@2
                 files_info.append([path,
                                   editable.editor.getCursorPosition(),
                                   stat_value])
+
             data_qsettings.setValue('lastSession/openedFiles', files_info)
             if current_file is not None:
                 data_qsettings.setValue('lastSession/currentFile', current_file)
@@ -1057,7 +1114,7 @@ class IDE(QMainWindow):
         files = self.opened_files
         for f in files:
             editable = self.__neditables.get(f)
-            print("\n\neditable::", editable, getattr(editable, "editor", "-"))
+            # print("\n\neditable::", editable, getattr(editable, "editor", "-"))
             if editable is not None and  editable.editor is not None and editable.editor.is_modified:
                 unsaved.append(f)
         return unsaved

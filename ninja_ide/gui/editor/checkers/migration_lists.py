@@ -41,8 +41,8 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 class MigrationWidget(QDialog):
     """2to3 Migration Assistance Widget Class"""
     
-    dockWidget = pyqtSignal("QObject*")
-    undockWidget = pyqtSignal()
+    dockedWidget = pyqtSignal("QObject*")
+    undockedWidget = pyqtSignal()
     changeTitle = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -141,11 +141,11 @@ class MigrationWidget(QDialog):
     def reject(self):
         """Reject"""
         if self.parent() is None:
-            self.dockWidget.emit(self)
+            self.dockedWidget.emit(self)
 
     def closeEvent(self, event):
         """Close"""
-        self.dockWidget.emit(self)
+        self.dockedWidget.emit(self)
         event.ignore()
 
 

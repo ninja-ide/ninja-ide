@@ -263,7 +263,7 @@ class SliderArea(QFrame):
         _view = self.minimap.Document.viewport()
         # height = _view.height() / self.minimap.Document.height() * self.minimap.height()# font_size /
         height = _view.height() * settings.SIZE_PROPORTION * 1.22#1.2# font_size /
-        print("\nHeight:", height)
+        # print("\nHeight:", height)#_-
         self.setFixedHeight(height)
         self.setFixedWidth(self.minimap.width())
         self.__scroll_margins = (height, self.minimap.height() - height)

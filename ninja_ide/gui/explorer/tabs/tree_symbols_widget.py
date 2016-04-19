@@ -37,8 +37,8 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 class TreeSymbolsWidget(QDialog):
     """Class of Dialog for Tree Symbols"""
-    dockWidget = pyqtSignal("QObject*")
-    undockWidget = pyqtSignal()
+    dockedWidget = pyqtSignal("QObject*")
+    undockedWidget = pyqtSignal()
     changeTitle = pyqtSignal(str)
     def __init__(self, parent=None):
         super(TreeSymbolsWidget, self).__init__(parent,
@@ -311,11 +311,11 @@ class TreeSymbolsWidget(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.dockWidget.emit(self)
+            self.dockedWidget.emit(self)
 
     def closeEvent(self, event):
         """On Close event handling"""
-        self.dockWidget.emit(self)
+        self.dockedWidget.emit(self)
         event.ignore()
 
 

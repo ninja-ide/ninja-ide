@@ -95,7 +95,7 @@ class NVirtualFileSystem(QObject):
             del self.__watchables[nfile_path]
 
     def __add_file(self, nfile):
-        print("\n\nnfile", nfile)
+        # print("\n\nnfile", nfile)
         nfile.fileClosing.connect(self.__closed_file)
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         self.__tree[nfile.file_path] = nfile
@@ -106,7 +106,7 @@ class NVirtualFileSystem(QObject):
                 return project
 
     def get_file(self, nfile_path=None):
-        print("\n\nnfile_path", nfile_path)
+        # print("\n\nnfile_path", nfile_path)
         if nfile_path is None:
             return NFile(nfile_path)
         if os.path.isdir(nfile_path):
