@@ -64,7 +64,7 @@ class raww(QObject):
 #WA_ShowWithoutActivating
 class FilesHandler(QFrame):
 #Qt.WindowStaysOnTopHint | 
-    def __init__(self, parent=None):#SplashScreen
+    def __init__(self, combofiles, Force_Free=False):#SplashScreen
         super(FilesHandler, self).__init__(None, Qt.SplashScreen)#, Qt.Popup | Qt.FramelessWindowHint
         # self.setAttribute(Qt.WA_TranslucentBackground)
         # self.setStyleSheet("background:transparent;")
@@ -72,8 +72,9 @@ class FilesHandler(QFrame):
         self.setWindowState(Qt.WindowActive)# | Qt.SplashScreen
         self.setAttribute(Qt.WA_AlwaysStackOnTop, False)
         # Create the QML user interface.
-        self._main_container = parent.container#IDE.get_service('main_container')
-        self.comboParent = parent
+        self._main_container = combofiles.container#IDE.get_service('main_container')
+        self.comboParent = combofiles
+        self.Force_Free = combofiles.undocked or Force_Free
         # self.rawObj = raww(self)
 
         self.view = QQuickWidget()
@@ -108,6 +109,7 @@ class FilesHandler(QFrame):
         # self._root.setVisible(True)
 
     def _open(self, path, temp, project):
+        print("\n\n_open", path, temp, project)
         if project:
             path = os.path.join(os.path.split(project)[0], path)
             self._main_container.open_file(path)
@@ -149,37 +151,50 @@ class FilesHandler(QFrame):
         self._root.set_fuzzy_model(model)
 
     def _add_model(self):
-        print("_add_model:_add_model")
+        # print("_add_model:_add_model")
         ninjaide = IDE.getInstance()
-        files = ninjaide.opened_files
-        # print("_add_model::", files, "\n", self._model.keys())
-        # Update model
-        # old = set(self._model.keys())
-        # now = set([nfile.file_path for nfile in files])
-        # new = old - now
-        # for item in new:
-        #     del self._model[item]
+        #files = ninjaide.opened_files# list<neditable>
+        # if True:#self.Force_Free:
+        #     files = self.comboParent.opened_files
+        # else:
+        #     files = ninjaide.opened_files
 
+        files = self.comboParent.opened_files
+        # print("_add_model::", files, "\n", self._model.keys())
         past = set(self._model.keys())
         now = set([nfile.file_path for nfile in files])
         old = past - now
         # print("\n_model:past:", past)
         # print("\n_model:now:", now)
         # print("\n_model:old:", old)
+
+        # Update model
         for item in old:
             del self._model[item]
 
-        current_editor = self._main_container.get_current_editor()
+        current_editor = ninjaide.getCurrentEditor()
         current_path = None
-        if current_editor:
-            current_path = current_editor.file_path
+        if current_editor and current_editor[0] == self.comboParent:
+            current_path = current_editor[1].file_path
         model = []
         # print("len(files)", len(files), [nfile.file_path for nfile in files], "\n\n")
         for nfile in files:
-            if (nfile.file_path not in self._model and
-                    nfile.file_path is not None):
-                self._model[nfile.file_path] = 0
-            neditable = ninjaide.get_or_create_editable(nfile=nfile)
+            # if self.Force_Free:
+            #     neditable = nfile
+            #     nfile = nfile.nfile
+
+            neditable = nfile
+            nfile = nfile.nfile
+
+            if nfile.file_path not in self._model and nfile.file_path is not None:
+                self._model[nfile.file_path] = 0# default position for NEW FILE
+
+            # print("\n_add_model->", not self.Force_Free, type(nfile))
+            # if not self.Force_Free:
+            #     neditable = ninjaide.get_or_create_editable_EXTERNAL(nfile=nfile)
+
+            # print("\n_add_model->->", neditable, self._model, neditable.editor)
+
             checkers = neditable.sorted_checkers
             checks = []
             for items in checkers:
@@ -197,7 +212,8 @@ class FilesHandler(QFrame):
                           temp_file])
             if temp_file:
                 self._temp_files[temp_file] = nfile
-        if current_path:
+
+        if current_path:# reasignate to trusted position
             index = self._model[current_path]
             self._max_index = max(self._max_index, index) + 1
             self._model[current_path] = self._max_index
@@ -206,7 +222,7 @@ class FilesHandler(QFrame):
         self._root.set_model(model)
 
     def showEvent(self, event):
-        print("\nshowEvent:::showEvent")
+        print("\nshowEvent:::showEvent", self.isVisible(), self.view.isVisible())
         self._add_model()
         widget = self._main_container.get_current_editor()
         if widget is None:
@@ -231,7 +247,7 @@ class FilesHandler(QFrame):
         #         item.hasFocus(), item.isFocusScope() ))
 
     def hideEvent(self, event):
-        print("\nhideEvent:::")
+        print("\nhideEvent:::", self.isVisible(), self.view.isVisible())
         super(FilesHandler, self).hideEvent(event)
         self._temp_files = {}
         self._root.clear_model()
@@ -265,13 +281,11 @@ class FilesHandler(QFrame):
         super(FilesHandler, self).keyPressEvent(event)
 
     def mousePressEvent(self, event):
+        print("\n\nFILESHANDLER.mousePressEvent", QApplication.instance().widgetAt( self.mapToGlobal(event.pos()) ))
         if QApplication.instance().widgetAt( self.mapToGlobal(event.pos()) ) == self.comboParent:
-            event.ignore()
+            print("TRUE!!!")
+            # event.ignore()
             self.comboParent.hidePopup()
             return
         super(FilesHandler, self).mousePressEvent(event)
 
-
-    # def hideEvent(self, event):
-    #     print("hideEvent()", event)
-    #     super(FilesHandler, self).hideEvent(event)

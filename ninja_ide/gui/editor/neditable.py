@@ -174,6 +174,7 @@ class NEditable(QObject):
         """Initialize the Checkers, should be refreshed on checkers change."""
         self.registered_checkers = sorted(checkers.get_checkers_for(lang),
                                           key=lambda x: x[2])
+        # print("\n\ninclude_checkers", self.registered_checkers)
         self._has_checkers = len(self.registered_checkers) > 0
         for i, values in enumerate(self.registered_checkers):
             Checker, color, priority = values

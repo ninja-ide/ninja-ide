@@ -22,6 +22,7 @@ import re
 import webbrowser
 
 from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QStackedLayout
@@ -62,6 +63,15 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 
+
+from ninja_ide.gui.editor import editor
+        
+QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
+    lambda w1, w2: IDE.getInstance().detectFocusInEditor(w2)\
+    if isinstance(w2, editor.Editor) else None)
+
+
+
 class _MainContainer(QWidget):
 
 ###############################################################################
@@ -88,14 +98,13 @@ class _MainContainer(QWidget):
     --------openProject(QString)
     ---------dontOpenStartPage()
     """
-    newFileOpened = pyqtSignal(str)
-    allTabClosed = pyqtSignal()
+    fileOpened = pyqtSignal(str)
+    closedFile = pyqtSignal(str)
     runFile = pyqtSignal(str)
     addToProject = pyqtSignal(str)
     showFileInExplorer = pyqtSignal(str)
     recentTabsModified = pyqtSignal()
     currentEditorChanged = pyqtSignal(str)
-    fileOpened = pyqtSignal(str)
     migrationAnalyzed = pyqtSignal()#-----------
     findOcurrences = pyqtSignal(str)
     updateFileMetadata = pyqtSignal()#-----------
@@ -145,7 +154,8 @@ class _MainContainer(QWidget):
         self.__operations = {
             0: self._navigate_code_jumps,
             1: self._navigate_bookmarks,
-            2: self._navigate_breakpoints}
+            2: self._navigate_breakpoints
+        }
 
         self.locateFunction.connect(self.locate_function)
 
@@ -164,8 +174,9 @@ class _MainContainer(QWidget):
              'slot': self.reset_pep8_warnings},
             {'target': 'explorer_container',
              'signal_name': 'lintActivated',#(bool)
-             'slot': self.reset_lint_warnings},
-            )
+             'slot': self.reset_lint_warnings
+            }
+        )
 
         IDE.register_signals('main_container', connections)
 
@@ -217,6 +228,7 @@ class _MainContainer(QWidget):
     def _close_dialog(self, widget):
         self.closeDialog.emit(widget)
         widget.finished[int].disconnect()#lambda i: self._close_dialog(widget))
+        ##self.closedFile.emit()
 
     def show_dialog(self, widget):
         print("\n\nshow_dialog", self.isVisible())
@@ -224,6 +236,18 @@ class _MainContainer(QWidget):
         widget.finished[int].connect(lambda i: self._close_dialog(widget))
         widget.setVisible(True)
         self.show_selector()
+
+        #pienso moverlo desde 'IDE' hasta aca, junto con 'self.__neditables'
+    # def get_or_create_editable(self, filename="", nfile=None):
+    #     if nfile is None:
+    #         nfile = self.filesystem.get_file(nfile_path=filename)
+    #     editable = self.__neditables.get(nfile)
+    #     if editable is None:
+    #         editable = neditable.NEditable(nfile)
+    #         editable.fileClosing.connect(self._unload_neditable)
+    #         self.__neditables[nfile] = editable
+    #     return editable
+
 
     def show_selector(self):
         print("\n\nshow_selector::", self.selector, self.stack.currentWidget())
@@ -743,17 +767,18 @@ class _MainContainer(QWidget):
         self.current_widget.split_editor(orientation_vertical)
 
     def add_editor(self, fileName=None, ignore_checkers=False):
-        print("filename::", fileName)
+        # print("filename::", fileName)
         ninjaide = IDE.getInstance()
         editable = ninjaide.get_or_create_editable(fileName)
         if editable.editor:
             self.current_widget.set_current(editable)
-            print("\n\nreturn")
+            # print("\n\nreturn")
             return self.current_widget.currentWidget()
         else:
             editable.ignore_checkers = ignore_checkers
 
         editorWidget = self.create_editor_from_editable(editable)
+        # print("\n\neditorWidget:::", editorWidget, editable)
 
         #add the tab
         keep_index = (self.splitter.count() > 1 and
@@ -894,7 +919,7 @@ class _MainContainer(QWidget):
         othersFileNames = []
         image_extensions = ('bmp', 'gif', 'jpeg', 'jpg', 'png')
         for filename in fileNames:
-            print("nombre", filename)
+            #print("nombre", filename)
             if QFileInfo(filename).isDir():
                 othersFileNames.extend( QFileDialog.getOpenFileNames(None,
                     "Select files", filename, "Files (*.*)")[0] )
@@ -911,7 +936,7 @@ class _MainContainer(QWidget):
                                  ignore_checkers)
 
         for filename in othersFileNames:
-            print("nombre", filename)
+            # print("nombre", filename)
             if QFileInfo(filename).isDir():
                 continue
             elif file_manager.get_file_extension(filename) in image_extensions:

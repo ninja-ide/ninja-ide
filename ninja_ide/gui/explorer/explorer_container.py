@@ -103,8 +103,8 @@ class ExplorerContainer(QSplitter):
         for obj in ExplorerContainer.__TABS:
             tabname, icon = ExplorerContainer.__TABS[obj]
             self.add_tab(tabname, obj, icon)
-            obj.dockWidget.connect(self._dock_widget)
-            obj.undockWidget.connect(self._undock_widget)
+            obj.dockedWidget.connect(self._dock_widget)
+            obj.undockedWidget.connect(self._undock_widget)
             obj.changeTitle.connect(self._change_tab_title)
 
         if self.count() == 0:

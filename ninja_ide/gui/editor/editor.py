@@ -282,8 +282,10 @@ class Editor(QsciScintilla):
         # Set the editor after initialization
         if self._neditable.editor:
             self.setDocument(self._neditable.document)
+            # print("EDITOR:: editable con editor++++", self, self._neditable)
         else:
             self._neditable.set_editor(self)
+            # print("EDITOR:: editable sin editor----", self, self._neditable)
 
         if self._neditable.file_path in settings.BREAKPOINTS:
             self.breakpoints = settings.BREAKPOINTS[self._neditable.file_path]

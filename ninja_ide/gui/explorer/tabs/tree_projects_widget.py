@@ -57,8 +57,8 @@ from ninja_ide.gui.explorer.nproject import NProject
 
 
 class ProjectTreeColumn(QDialog):
-    dockWidget = pyqtSignal("QObject*")
-    undockWidget = pyqtSignal()
+    dockedWidget = pyqtSignal("QObject*")
+    undockedWidget = pyqtSignal()
     changeTitle = pyqtSignal("QObject*", str)
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent,
@@ -307,10 +307,10 @@ class ProjectTreeColumn(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.dockWidget.emit(self)
+            self.dockedWidget.emit(self)
 
     def closeEvent(self, event):
-        self.dockWidget.emit(self)
+        self.dockedWidget.emit(self)
         event.ignore()
 
     def context_menu_for_root(self):
