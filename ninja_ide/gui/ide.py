@@ -1024,6 +1024,7 @@ class IDE(QMainWindow):
             projects = [projects_obj[proj].path for proj in projects_obj]
             data_qsettings.setValue('lastSession/projects', projects)
             files_info = []
+            print("\n\nsave_settings", openedFiles)
             for path in openedFiles:
                 if not openedFiles[path]._exists():
                     print("\n\ncontinue", path)

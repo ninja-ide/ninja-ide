@@ -109,7 +109,7 @@ class FilesHandler(QFrame):
         # self._root.setVisible(True)
 
     def _open(self, path, temp, project):
-        print("\n\n_open", path, temp, project)
+        print("\n\n_open", path, "|", temp, "|", project, "|")
         if project:
             path = os.path.join(os.path.split(project)[0], path)
             self._main_container.open_file(path)
@@ -117,6 +117,7 @@ class FilesHandler(QFrame):
             nfile = self._temp_files[temp]
             ninjaide = IDE.getInstance()
             neditable = ninjaide.get_or_create_editable(nfile=nfile)
+            print("nfile", nfile, neditable, self._temp_files, temp)
             self._main_container.current_widget.set_current(neditable)
         else:
             self._main_container.open_file(path)

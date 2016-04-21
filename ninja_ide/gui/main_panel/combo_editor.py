@@ -107,11 +107,23 @@ class ComboEditor(QDialog):
         self.bar.addToProject[str].connect(self._add_to_project)
         self.bar.showFileInExplorer.connect(self._show_file_in_explorer)
         self.bar.goToSymbol.connect(self._go_to_symbol)
-        self.bar.undockedEditor.connect(self.single_undock_editor)#undock_editor)
+        self.bar.undockedEditor.connect(self.undock_editor)
+        self.bar.undockedThisEditor.connect(self.single_undock_editor)
         self.bar.reopenTab[str].connect(self._main_container.open_file)
         self.bar.recentTabsModified.connect(self._main_container.recent_files_changed)
         self.bar.code_navigator.btnPrevious.clicked['bool'].connect(lambda: self._navigate_code(self.NAVIGATE.prev))
         self.bar.code_navigator.btnNext.clicked['bool'].connect(lambda: self._navigate_code(self.NAVIGATE.prev))
+
+        # QTimer.singleShot(39999, lambda : print("\n\ncombo:-:", self))
+
+    # def closeEvent(self, event):
+    #     for comboeditor in self._single_undocked:
+    #         print("has undocked", comboeditor)
+    #         comboeditor.reject()
+    #         comboeditor.deleteLater()
+
+    #     self.bar._close_all_files()
+    #     super(ComboEditor, self).closeEvent(event)
 
     def _navigate_code(self, val):
         op = self.bar.code_navigator.operation
@@ -142,7 +154,7 @@ class ComboEditor(QDialog):
         if neditable.editor:
             if self.__original or self.Force_Free:
                 editor = neditable.editor
-                #print("\n\nadd_editor() ignora por ahora!", editor)
+                print("\n\nadd_editor() ignora por ahora!", editor)
                 
                 # disconnect old Signals
                 try:
@@ -277,16 +289,21 @@ class ComboEditor(QDialog):
         self.splitEditor.emit(self, new_widget, orientationVertical)
 
     def single_undock_editor(self):
-        neditable = self.bar.take_editable()
-        print("\n\nsingle_undock_editor", neditable.editor)
         new_combo = ComboEditor(Force_Free=True)
         new_combo.setWindowTitle("NINJA-IDE")
         self.add_SingleUndocked(new_combo)
+ 
         wid = self.stacked.takeAt(self.stacked.currentIndex()).widget()
-        IDE.getInstance().unload_NEditable(wid)
+        ide = IDE.getInstance()
+        ide.unload_NEditable(wid)
+        neditable = self.bar.take_editable()
+        print("\n\nsingle_undock_editor:::", neditable, neditable.editor, wid, neditable.nfile)
+       
+        if self.stacked.isEmpty():
+            self.allFilesClosed.emit()
 
         new_combo.add_editor(neditable)
-        new_combo.stacked.setCurrentWidget(wid)
+        new_combo.stacked.setCurrentIndex(0)# new_combo.stacked.setCurrentWidget(wid)
         new_combo.resize(500, 500)
         new_combo.aboutToCloseComboEditor.connect(self.single__remove_undock)
         new_combo.show()
@@ -466,6 +483,12 @@ class ComboEditor(QDialog):
         self.bar.code_navigator.show_menu_navigation()
 
     def closeEvent(self, event):
+        for comboeditor in self._single_undocked:
+            print("has undocked", comboeditor)
+            comboeditor.reject()
+            comboeditor.deleteLater()
+
+        self.bar._close_all_files()
         self.aboutToCloseComboEditor.emit()
         super(ComboEditor, self).closeEvent(event)
 
@@ -494,6 +517,7 @@ class ActionBar(QFrame):
     dockedWidget = pyqtSignal("QObject*")
     undockedWidget = pyqtSignal()
     undockedEditor = pyqtSignal()
+    undockedThisEditor = pyqtSignal()
 
     class ORIENTATION:
         Horizontal = 0
@@ -587,6 +611,9 @@ class ActionBar(QFrame):
     def get_editables(self):
         return self.combo.get_editables()
 
+    # def clearItems(self):
+    #     self.combo.clearItems()
+        
     def add_symbols(self, symbols):
         """Add the symbols to the symbols's combo."""
         self.symbols_combo.clear()
@@ -647,6 +674,8 @@ class ActionBar(QFrame):
             translations.TR_SHOW_FILE_IN_EXPLORER)
         actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
         actionUndock = menu.addAction(translations.TR_UNDOCK_EDITOR)
+        actionUndockThis = menu.addAction("UndockThis")
+
         if len(settings.LAST_OPENED_FILES) == 0:
             actionReopen.setEnabled(False)
         #Connect actions
@@ -661,6 +690,7 @@ class ActionBar(QFrame):
         actionShowFileInExplorer.triggered['bool'].connect(lambda s: self._show_file_in_explorer())
         actionReopen.triggered['bool'].connect(lambda s: self._reopen_last_tab())
         actionUndock.triggered['bool'].connect(lambda s: self.undockedEditor.emit())
+        actionUndockThis.triggered['bool'].connect(lambda s: self.undockedThisEditor.emit())
 
     def _context_menu_requested(self, point):
         """Display context menu for the combo file."""
@@ -693,6 +723,7 @@ class ActionBar(QFrame):
 
     def about_to_close_file(self, index=None):
         """Close the NFile object."""
+        print("\n\nabout_to_close_file")
         if index is None:
             index = self.combo.currentIndex()
         neditable = self.combo.itemData(index)
@@ -745,6 +776,7 @@ class ActionBar(QFrame):
 
     def _close_all_files(self):
         """Close all the files opened."""
+        print("_close_all_files")
         for i in range(self.combo.count()):
             self.about_to_close_file(0)
 
