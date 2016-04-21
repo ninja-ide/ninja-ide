@@ -200,3 +200,6 @@ class NEditable(QObject):
             func = getattr(checker, 'refresh_display', None)
             if isinstance(func, collections.Callable):
                 func()
+
+    def closeArchive(self):
+        self._nfile.close()

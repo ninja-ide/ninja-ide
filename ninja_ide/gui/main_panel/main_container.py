@@ -769,16 +769,16 @@ class _MainContainer(QWidget):
     def add_editor(self, fileName=None, ignore_checkers=False):
         # print("filename::", fileName)
         ninjaide = IDE.getInstance()
-        editable = ninjaide.get_or_create_editable(fileName)
+        editable = ninjaide.get_or_create_editable_EXTERNAL(fileName)
         if editable.editor:
             self.current_widget.set_current(editable)
-            # print("\n\nreturn")
+            print("\n\nreturn")
             return self.current_widget.currentWidget()
         else:
             editable.ignore_checkers = ignore_checkers
 
         editorWidget = self.create_editor_from_editable(editable)
-        # print("\n\neditorWidget:::", editorWidget, editable)
+        print("\n\neditorWidget:::", editorWidget, editable, editable.editor, fileName)
 
         #add the tab
         keep_index = (self.splitter.count() > 1 and
