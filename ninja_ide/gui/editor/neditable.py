@@ -38,6 +38,7 @@ class NEditable(QObject):
     checkersUpdated = pyqtSignal('QObject*')
     askForSaveFileClosing = pyqtSignal('QObject*')
     fileClosing = pyqtSignal('QObject*')
+    unDockedAndReparentFile = pyqtSignal(str, bool)
     fileSaved = pyqtSignal('QObject*')
     fileChanged = pyqtSignal('QObject*')
 
@@ -57,8 +58,12 @@ class NEditable(QObject):
         # Connect signals
         if self._nfile:
             self._nfile.fileClosing.connect(self._about_to_close_file)
+            self.unDockedAndReparentFile.connect(self._nfile.unDockAndReparent)
             self._nfile.fileChanged.connect(
                 lambda this=self: this.fileChanged.emit(this))
+
+    # def hasReparent(self, path, B):
+    #     self.unDockedAndReparentFile.emit(path, B)
 
     def extension(self):
         #FIXME This sucks, we should have a way to define lang

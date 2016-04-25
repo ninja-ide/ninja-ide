@@ -200,12 +200,12 @@ class _MainContainer(QWidget):
         ide = IDE.getInstance()
         ide.place_me_on("main_container", self, "central", top=True)
 
-        self.combo_area = combo_editor.ComboEditor(original=True)
-        self.combo_area.allFilesClosed.connect(self._files_closed)
-        self.splitter.add_widget(self.combo_area)
+        self.comboEditor_area = combo_editor.ComboEditor(original=True)
+        self.comboEditor_area.allFilesClosed.connect(self._files_closed)
+        self.splitter.add_widget(self.comboEditor_area)
         self.add_widget(self.splitter)
 
-        self.current_widget = self.combo_area
+        self.current_comboEditor = self.comboEditor_area
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
@@ -214,7 +214,7 @@ class _MainContainer(QWidget):
 
     @property
     def combo_header_size(self):
-        return self.combo_area.bar.height()
+        return self.comboEditor_area.bar.height()
 
     def add_widget(self, widget):
         i = self.stack.addWidget(widget)
@@ -358,12 +358,12 @@ class _MainContainer(QWidget):
 
     def expand_symbol_combo(self):
         self.stack.setCurrentWidget(self.splitter)
-        self.current_widget.show_combo_symbol()
+        self.current_comboEditor.show_combo_symbol()
 
     def expand_file_combo(self):
         print("expand_file_combo")
         self.stack.setCurrentWidget(self.splitter)
-        self.current_widget.show_combo_file()
+        self.current_comboEditor.show_combo_file()
 
     def locate_function(self, function, filePath, isVariable):
         """Move the cursor to the proper position in the navigate stack."""
@@ -430,16 +430,16 @@ class _MainContainer(QWidget):
         """Add a bookmark or breakpoint to the current file in the editor."""
         editorWidget = self.get_current_editor()
         if editorWidget and editorWidget.hasFocus():
-            if self.current_widget.bar.code_navigator.operation == 1:
+            if self.current_comboEditor.bar.code_navigator.operation == 1:
                 editorWidget.handle_bookmarks_breakpoints(
                     editorWidget.getCursorPosition()[0], Qt.ControlModifier)
-            elif self.current_widget.bar.code_navigator.operation == 2:
+            elif self.current_comboEditor.bar.code_navigator.operation == 2:
                 editorWidget.handle_bookmarks_breakpoints(
                     editorWidget.getCursorPosition()[0], Qt.NoModifier)
 
     def __navigate_with_keyboard(self, val):
         """Navigate between the positions in the jump history stack."""
-        op = self.current_widget.bar.code_navigator.operation
+        op = self.current_comboEditor.bar.code_navigator.operation
         self.navigate_code_history(val, op)
 
     def navigate_code_history(self, val, op):
@@ -752,7 +752,7 @@ class _MainContainer(QWidget):
         # self.open_file(file_path)
 
     def setFocus(self):
-        widget = self.get_current_widget()
+        widget = self.get_current_editor()
         if widget:
             widget.setFocus()
 
@@ -763,17 +763,17 @@ class _MainContainer(QWidget):
         self.currentEditorChanged.emit(filename)
 
     def show_split(self, orientation_vertical=False):
-        #IDE.select_current(self.current_widget.currentWidget())
-        self.current_widget.split_editor(orientation_vertical)
+        #IDE.select_current(self.current_comboEditor.currentEditor())
+        self.current_comboEditor.split_editor(orientation_vertical)
 
-    def add_editor(self, fileName=None, ignore_checkers=False):
+    def add_editor(self, fileName=None, ignore_checkers=False):# open_Editor
         # print("filename::", fileName)
         ninjaide = IDE.getInstance()
         editable = ninjaide.get_or_create_editable_EXTERNAL(fileName)
         if editable.editor:
-            self.current_widget.set_current(editable)
+            self.current_comboEditor.set_current(editable)
             print("\n\nreturn")
-            return self.current_widget.currentWidget()
+            return self.current_comboEditor.currentEditor()
         else:
             editable.ignore_checkers = ignore_checkers
 
@@ -782,13 +782,13 @@ class _MainContainer(QWidget):
 
         #add the tab
         keep_index = (self.splitter.count() > 1 and
-                      self.combo_area.stacked.count() > 0)
-        self.combo_area.add_editor(editable, keep_index)
+                      self.comboEditor_area.countEditors() > 0)
+        self.comboEditor_area.add_editor(editable, keep_index)
 
         #emit a signal about the file open
         self.fileOpened.emit(fileName)
         if keep_index:
-            self.current_widget.set_current(editable)
+            self.current_comboEditor.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
         return editorWidget
@@ -844,17 +844,18 @@ class _MainContainer(QWidget):
         self.updateLocator.emit(editable.file_path)
 
     def get_current_widget(self):
-        return self.current_widget.currentWidget()
+        return self.current_comboEditor.currentEditor()
 
     def get_current_editor(self):
         """Return the Actual Editor or None
 
         Return an instance of Editor if the Current Tab contains
         an Editor or None if it is not an instance of Editor"""
-        widget = self.current_widget.currentWidget()
-        if isinstance(widget, editor.Editor):
-            return widget
-        return None
+        # widget = self.current_comboEditor.currentEditor()
+        # if isinstance(widget, editor.Editor):
+        #     return widget
+        # return None
+        return self.current_comboEditor.currentEditor()
 
     def reload_file(self, editorWidget=None):
         if editorWidget is None:
@@ -886,6 +887,32 @@ class _MainContainer(QWidget):
     def open_files_fromUrlList(self, lst):
         for f in lst:
             self.open_file(f.toLocalFile())
+
+    def open_file_from_nEditable(self, editable, combo_editor):
+        # print("filename::", fileName)
+        if editable.editor:
+            combo_editor.set_current(editable)
+            print("\n\nreturn")
+            return self.current_comboEditor.currentEditor()
+        else:
+            editable.ignore_checkers = ignore_checkers
+
+        editorWidget = self.create_editor_from_editable(editable)
+        print("\n\neditorWidget:::", editorWidget, editable, editable.editor, fileName)
+
+        #add the tab
+        keep_index = (self.splitter.count() > 1 and
+                      self.comboEditor_area.countEditors() > 0)
+        self.comboEditor_area.add_editor(editable, keep_index)
+
+        #emit a signal about the file open
+        self.fileOpened.emit(fileName)
+        if keep_index:
+            self.current_comboEditor.set_current(editable)
+
+        self.stack.setCurrentWidget(self.splitter)
+        return editorWidget
+
 
     def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
         logger.debug("will try to open %s" % filename)
@@ -1232,7 +1259,7 @@ class _MainContainer(QWidget):
 
     def close_file(self):
         """Close the current tab in the current TabWidget."""
-        self.current_widget.close_current_file()
+        self.current_comboEditor.close_current_file()
 
     def create_file(self, base_path, project_path):
         self._add_file_folder.create_file(base_path, project_path)
@@ -1264,7 +1291,7 @@ class _MainContainer(QWidget):
     def show_navigation_buttons(self):
         """Show Navigation menu."""
         self.stack.setCurrentWidget(self.splitter)
-        self.combo_area.show_menu_navigation()
+        self.comboEditor_area.show_menu_navigation()
 
     def change_split_focus(self):
         pass
@@ -1300,8 +1327,8 @@ class _MainContainer(QWidget):
         dialog.show()
 
     def close_split(self):
-        if self.current_widget != self.combo_area:
-            self.current_widget.bar.close_split()
+        if self.current_comboEditor != self.comboEditor_area:
+            self.current_comboEditor.bar.close_split()
 
     def split_vertically(self):
         self.show_split(False)
