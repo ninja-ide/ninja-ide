@@ -722,6 +722,7 @@ class IDE(QMainWindow):
             editable = neditable.NEditable(nfile)
             editable.fileClosing.connect(self._unload_neditable)
             self.__neditables[nfile] = editable
+            print("get_or_create_editable:: \"editable is None\"", editable)
         return editable
 
     def get_or_create_editable_EXTERNAL(self, filename="", nfile=None):# combo_editor=None
@@ -745,6 +746,8 @@ class IDE(QMainWindow):
 
     def unload_NEditable(self, editable):
         self.__neditables.pop(editable.nfile)
+        editable.nfile.unDockAndReparent(True)
+        print("\n\nunload_NEditable::", self.__neditables)
 
 
     def _unload_neditable(self, editable):
@@ -766,7 +769,7 @@ class IDE(QMainWindow):
             #combo_editor.ComboEditor
             from ninja_ide.gui.editor import editor
 
-            widget = self.__EditorFocused.parent().currentWidget()
+            widget = self.__EditorFocused.parent().currentEditor()
             if not isinstance(widget, editor.Editor):
                 widget = None
 

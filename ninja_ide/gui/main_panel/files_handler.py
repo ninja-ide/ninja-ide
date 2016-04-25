@@ -91,6 +91,7 @@ class FilesHandler(QFrame):
         self._model = {}
         self._temp_files = {}
         self._max_index = 0
+        print("\n\nFilesHandler", self)
 
 
         # QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
@@ -109,7 +110,7 @@ class FilesHandler(QFrame):
         # self._root.setVisible(True)
 
     def _open(self, path, temp, project):
-        print("\n\n_open", path, "|", temp, "|", project, "|")
+        print("\n\n_open", path, "|", temp, "|", project, "|", self)
         if project:
             path = os.path.join(os.path.split(project)[0], path)
             self._main_container.open_file(path)
@@ -118,9 +119,14 @@ class FilesHandler(QFrame):
             ninjaide = IDE.getInstance()
             neditable = ninjaide.get_or_create_editable(nfile=nfile)
             print("nfile", nfile, neditable, self._temp_files, temp)
-            self._main_container.current_widget.set_current(neditable)
+            self._main_container.current_comboEditor.set_current(neditable)
         else:
-            self._main_container.open_file(path)
+            # self._main_container.open_file(path)
+            # self._main_container.open_file_from_nEditable(self.comboParent.get_editable_fromPath(path),\
+                # self.comboParent.ParentalComboEditor)
+            self.comboParent.ParentalComboEditor.set_current(\
+                self.comboParent.get_editable_fromPath(path) )
+            
             index = self._model[path]
             self._max_index = max(self._max_index, index) + 1
             self._model[path] = self._max_index
@@ -161,9 +167,9 @@ class FilesHandler(QFrame):
         #     files = ninjaide.opened_files
 
         files = self.comboParent.opened_files
-        # print("_add_model::", files, "\n", self._model.keys())
+        print("_add_model::", files, "\n", self._model.keys())
         past = set(self._model.keys())
-        now = set([nfile.file_path for nfile in files])
+        now = set([neditable.file_path for neditable in files])
         old = past - now
         # print("\n_model:past:", past)
         # print("\n_model:now:", now)
@@ -179,13 +185,8 @@ class FilesHandler(QFrame):
             current_path = current_editor[1].file_path
         model = []
         # print("len(files)", len(files), [nfile.file_path for nfile in files], "\n\n")
-        for nfile in files:
-            # if self.Force_Free:
-            #     neditable = nfile
-            #     nfile = nfile.nfile
-
-            neditable = nfile
-            nfile = nfile.nfile
+        for neditable in files:
+            nfile = neditable.nfile
 
             if nfile.file_path not in self._model and nfile.file_path is not None:
                 self._model[nfile.file_path] = 0# default position for NEW FILE

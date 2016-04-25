@@ -180,7 +180,7 @@ class _StatusBar(QWidget):
         main_container = IDE.get_service("main_container")
         widget = None
         if main_container:
-            widget = main_container.get_current_widget()
+            widget = main_container.get_current_editor()
         if widget:
             widget.setFocus()
             if widget == main_container.get_current_editor():

@@ -59,6 +59,7 @@ class NFile(QObject):
     @willAttachToExistingFile(PyQt_PyObject, QString)
     """
     askForSaveFileClosing = pyqtSignal(str)
+    unDockedAndReparentFile = pyqtSignal(str, bool)
     fileClosing = pyqtSignal(str, bool)
     fileChanged = pyqtSignal()
     willDelete = pyqtSignal(object, object)
@@ -82,6 +83,9 @@ class NFile(QObject):
             self.__created = True
         # else:
             # self.__empty = False
+
+    def unDockAndReparent(self, B):
+        self.unDockedAndReparentFile.emit(self._file_path, B)
 
     @property
     def file_name(self):

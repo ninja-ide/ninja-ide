@@ -26,11 +26,12 @@ logger = NinjaLogger('ninja_ide.core.file_handling.nfilesystem')
 class NVirtualFileSystem(QObject):
     projectOpened = pyqtSignal(str)
     projectClosed = pyqtSignal(str)
-    fileClosing = pyqtSignal(str, bool)
+    # fileClosing = pyqtSignal(str, bool)
     savedAsNewFile = pyqtSignal(object, str, str)
     def __init__(self, *args, **kwargs):
         self.__tree = {}
-        self.__watchables = {}
+        self.__watchables = {}# unUsed Dictionary
+        self.__tempTree = {}
         self.__projects = {}
         # bc maps are cheap but my patience is not
         self.__reverse_project_map = {}
@@ -94,9 +95,13 @@ class NVirtualFileSystem(QObject):
         if nfile_path in self.__watchables:
             del self.__watchables[nfile_path]
 
+    def reparent_path(self, path):
+        self.__tempTree[path] = self.__tree.pop(path)
+
     def __add_file(self, nfile):
         # print("\n\nnfile", nfile)
         nfile.fileClosing.connect(self.__closed_file)
+        nfile.unDockedAndReparentFile.connect(self.reparent_path)
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         self.__tree[nfile.file_path] = nfile
         for each_path in existing_paths:
