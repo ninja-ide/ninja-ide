@@ -68,7 +68,7 @@ from ninja_ide.gui.editor import editor
         
 QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
     lambda old, now: IDE.getInstance().detectFocusInEditor(now)\
-    if isinstance(now, editor.Editor) or isinstance(now, combo_editor.ComboFiles) else None)
+    if isinstance(now, editor.Editor) or isinstance(now, combo_editor.ComboFiles) else print("\n\nnow", now))
 
 
 
