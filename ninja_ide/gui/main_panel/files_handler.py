@@ -64,6 +64,13 @@ class raww(QObject):
                 self.parent().visibleRegion() )
 
 
+class Tools(QObject):
+    def __init__(self, parent=None):
+        super(raww, self).__init__(parent)
+    @pyqtSlot("QPoint", result=QJsonValue)
+    def mapToGlobal(self, p):
+        return {x, y}#QCursor
+
 #WA_AlwaysStackOnTop
 #WA_ShowWithoutActivating
 class FilesHandler(QFrame):
@@ -73,9 +80,9 @@ class FilesHandler(QFrame):
         super(FilesHandler, self).__init__(None, Qt.SplashScreen)#, Qt.Popup | Qt.FramelessWindowHint
         # self.setAttribute(Qt.WA_TranslucentBackground)
         # self.setStyleSheet("background:transparent;")
-        #self.setStyleSheet("background-color: rgb(25, 255, 60);")
+        # self.setStyleSheet("background-color: rgb(25, 255, 60);")
         self.setWindowState(Qt.WindowActive)# | Qt.SplashScreen
-        self.setAttribute(Qt.WA_AlwaysStackOnTop, False)
+        # self.setAttribute(Qt.WA_AlwaysStackOnTop, False)
         # Create the QML user interface.
         self._main_container = combofiles.container#IDE.get_service('main_container')
         self.comboParent = combofiles
@@ -88,6 +95,10 @@ class FilesHandler(QFrame):
         # self.view.rootContext().setContextProperty("rawObj", self.rawObj)
         self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
         self._root = self.view.rootObject()
+        cntx = self.view.rootContext()
+        cntx.setProperty("tools", Tools())
+        self._contextMenu_Incert = self._root.property("_window_")
+
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -108,7 +119,7 @@ class FilesHandler(QFrame):
         self._filesModel = []
         self._temp_files = {}
         self._max_index = 0
-        print("\n\nFilesHandler", self)
+        print("\n\nFilesHandler", self, self._contextMenu_Incert)
 
 
         # QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
@@ -116,7 +127,7 @@ class FilesHandler(QFrame):
         #     else "_No es un widget",  w2, w2.geometry() if w2 else "_No es un widget"))
 
         QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
-            lambda w1, w2, this=self: this.hide() if w1 == this.view else None)
+            lambda old, now, this=self:  print("\n\n:focusChanged:", this.hide(), old, now) if old == this.view else None)
 
         self._root.open.connect(self._open)
         self._root.close.connect(self._close)
@@ -325,15 +336,12 @@ class FilesHandler(QFrame):
         self.view.setFixedWidth(width)
         self.view.setFixedHeight(height)
 
-        super(FilesHandler, self).showEvent(event)
-        self._root.show_animation()
         point = widget.mapToGlobal(self.view.pos())
         self.move(point.x(), point.y())
+        super(FilesHandler, self).showEvent(event)
+        self._root.show_animation()
         self.view.setFocus()
         self._root.activateInput()
-        # QTimer.singleShot(5000, lambda item=self._root.childItems()[0].childItems()[0]:\
-        #     print("QTimer::", item, item.hasActiveFocus(), item.scopedFocusItem(),\
-        #         item.hasFocus(), item.isFocusScope() ))
 
     def hideEvent(self, event):
         print("\nhideEvent:::", self.isVisible(), self.view.isVisible())
@@ -374,7 +382,8 @@ class FilesHandler(QFrame):
         if QApplication.instance().widgetAt( self.mapToGlobal(event.pos()) ) == self.comboParent:
             print("TRUE!!!")
             # event.ignore()
-            self.comboParent.hidePopup()
+            # self.comboParent.hidePopup()
             return
         super(FilesHandler, self).mousePressEvent(event)
+        # self.view.mousePressEvent(event)
 

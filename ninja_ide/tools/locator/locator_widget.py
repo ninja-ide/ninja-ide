@@ -64,7 +64,7 @@ class LocatorWidget(QDialog):
         self.locate_symbols.terminated.connect(self._cleanup)
 
         QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
-            lambda w1, w2, this=self: this.hide() if w1 == this.view else None)
+            lambda old, now, this=self: this.hide() if old == this.view else None)
 
         # Locator things
         self.filterPrefix = re.compile(r'(@|<|>|-|!|\.|/|:)')

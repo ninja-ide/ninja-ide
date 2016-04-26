@@ -1,23 +1,97 @@
-import QtQuick 2.4
+import QtQuick 2.5
 import QtQuick.Controls 1.4
+import QtQuick.Window 2.2 as WIN
+import QtQuick.Layouts 1.2
 
 Rectangle {
     id: root
 
-    width: 400
+    width: 500
     height: 400
 
     radius: 5
     color: "#202123"
     border.width: 1
     border.color: "gray"
+    
+    property var _window_: WIN.Window {
+        modality: Qt.ApplicationModal
+        //visibility: Window.Windowed
+        visible: false
+        width: 135
+        height: 40
+        color: "white"
+        flags: Qt.Popup
+
+        ColumnLayout{
+            id: columnLayout1
+            spacing: 2
+            anchors.fill: parent
+            Rectangle{
+                id: rectangle1
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.bottom: sep.top
+                Layout.fillWidth: true
+                Text{
+                    id: t1
+                    Layout.fillHeight: true
+                    anchors.leftMargin: 5
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: parent.height
+                    text: "Incert File in..."
+                    verticalAlignment: Text.AlignVCenter
+                    font.pointSize: 11
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: _window_.close()
+                }
+            }
+
+            Rectangle{
+                id: sep
+                height: 2
+                Layout.fillWidth: true
+                Layout.maximumHeight: 2
+                anchors.verticalCenter: parent.verticalCenter
+                color: "gray"
+            }
+
+            Rectangle{
+                id: rectangle2
+                anchors.right: parent.rights
+                anchors.bottom: parent.bottom
+                anchors.top: sep.bottom
+                Layout.fillWidth: true
+                Text{
+                    id: t2
+                    Layout.fillHeight: true
+                    anchors.leftMargin: 5
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: parent.height
+                    text: "Incert All Files in..."
+                    verticalAlignment: Text.AlignVCenter
+                    font.pointSize: 11
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: _window_.close()
+                }
+            }
+        }
+    }
 
     PropertyAnimation {
         id: showAnim
         target: root
         properties: "opacity"
         easing.type: Easing.InOutQuad
-        to: 1
+        to: 1.0
         duration: 300
     }
 
@@ -26,6 +100,15 @@ Rectangle {
     signal hide
     signal fuzzySearch(string search)
 
+    function toGlobalPOINT(item, x,y){
+        var referToRoot
+        //for (var item: ) {
+        referToRoot = item.mapToItem(root, x, y);
+        //tools.mapToGlobal(referToRoot)
+        //}
+        return tools.mapToGlobal(referToRoot)//[x, y]
+    }
+
     function activateInput() {
         input.text = "";
         input.forceActiveFocus();
@@ -33,7 +116,7 @@ Rectangle {
     }
 
     function show_animation() {
-        root.opacity = 0;
+        //root.opacity = 0; # @@6
         showAnim.running = true;
     }
 
@@ -194,8 +277,8 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.rightMargin: 0
                 anchors.verticalCenter: parent.verticalCenter
-                height: 20
-                width: 20
+                height: 18
+                width: 18
                 source: "img/delete-project_rojo.png"
                 fillMode: Image.PreserveAspectFit
 
@@ -212,15 +295,15 @@ Rectangle {
                 states: [
                     State {
                         name: "zoomIn"
-                        PropertyChanges { target: imag; width: 20; }
-                        PropertyChanges { target: imag; height: 20;  }
+                        PropertyChanges { target: imag; width: 18; }
+                        PropertyChanges { target: imag; height: 18;  }
                         PropertyChanges { target: imag; anchors.rightMargin: 0; }
                     },
                     State {
                         name: "zoomOut"
                         PropertyChanges { target: imag; width: 15; }
                         PropertyChanges { target: imag; height: 15; }
-                        PropertyChanges { target: imag; anchors.rightMargin: 2.5; }
+                        PropertyChanges { target: imag; anchors.rightMargin: 1.5; }
                     }
                 ]
 
@@ -235,7 +318,10 @@ Rectangle {
                         imag.state = "zoomIn"
                     }
 
-                    onClicked: input.text= ""
+                    onClicked: {
+                        input.text= ""
+
+                    }
                 }
             }
 
@@ -311,17 +397,31 @@ Rectangle {
 
             property string mainTextColor: item.current ? "white" : "#aaaaaa"
             property string mainTextModifiedColor: item.current ? "lightgreen" : "green"
+ 
 
             MouseArea {
                 anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onPressed: {
+                    if (mouse.button === Qt.RightButton) {
+                        print("onPressed")
+                        _window_.x = mouse.x
+                        _window_.y = mouse.y
+                        _window_.show()
+                    }
+                }
 
                 onClicked: {
-                    if (listFiles.visible) {
-                        listFiles.currentIndex = index;
-                    } else {
-                        listFuzzyFiles.currentIndex = index;
+                    if (mouse.button === Qt.RightButton) {
+                        print("onClicked")
+                    }else {
+                        if (listFiles.visible) {
+                            listFiles.currentIndex = index;
+                        } else {
+                            listFuzzyFiles.currentIndex = index;
+                        }
+                        root.open_item();
                     }
-                    root.open_item();
                 }
             }
 

@@ -770,24 +770,7 @@ class IDE(QMainWindow):
 
     def getCurrentEditor(self):
         """ rtn -> Editor()# global QsciScintilla"""
-        e = None
-        if self.__text_EditorFocused:# and self.__text_EditorFocused.
-            #combo_editor.ComboEditor
-            # from ninja_ide.gui.editor import editor
-
-            # print("\n\n__text_EditorFocused", self.__text_EditorFocused,\
-            #     self.__text_EditorFocused.ParentalComboEditor,\
-                # self.__text_EditorFocused.ParentalComboEditor.currentEditor())
-            # widget = self.__text_EditorFocused.ParentalComboEditor.currentEditor()
-            # if not isinstance(widget, editor.Editor):
-            #     widget = None
-
-            e = self.__text_EditorFocused
-        # widget = self.current_widget.currentWidget()
-        # if isinstance(widget, editor.Editor):
-        #     return widget
-        # print("\n\n getCurrentEditor()", t)
-        return e
+        return self.__text_EditorFocused
 
 
     def get_project_for_file(self, filename):
