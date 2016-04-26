@@ -20,15 +20,19 @@ from __future__ import unicode_literals
 import os
 import re
 import uuid
+from collections import namedtuple
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger(__name__)
 
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QFrame
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QJsonValue
+from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import QUrl
@@ -64,6 +68,7 @@ class raww(QObject):
 #WA_ShowWithoutActivating
 class FilesHandler(QFrame):
 #Qt.WindowStaysOnTopHint | 
+    _changedForJava = pyqtSignal()
     def __init__(self, combofiles, Force_Free=False):#SplashScreen
         super(FilesHandler, self).__init__(None, Qt.SplashScreen)#, Qt.Popup | Qt.FramelessWindowHint
         # self.setAttribute(Qt.WA_TranslucentBackground)
@@ -88,7 +93,19 @@ class FilesHandler(QFrame):
         vbox.setSpacing(0)
         vbox.addWidget(self.view)
 
-        self._model = {}
+                # {"name": model[i][0],
+                # "path": model[i][1],
+                # "checkers": model[i][2],
+                # "modified": model[i][3],
+                # "tempFile": model[i][4],
+                # "project": "",
+                # "itemVisible": true});
+
+        self._ntup = ("name", "path", "checkers", "modified", "tempFile", "project", "itemVisible")
+        # self._Ndtup = namedtuple("_Ndtup", self._ntup)
+
+        self._filePathPosition = {}
+        self._filesModel = []
         self._temp_files = {}
         self._max_index = 0
         print("\n\nFilesHandler", self)
@@ -126,10 +143,10 @@ class FilesHandler(QFrame):
                 # self.comboParent.ParentalComboEditor)
             self.comboParent.ParentalComboEditor.set_current(\
                 self.comboParent.get_editable_fromPath(path) )
-            
-            index = self._model[path]
+
+            index = self._filePathPosition[path]
             self._max_index = max(self._max_index, index) + 1
-            self._model[path] = self._max_index
+            self._filePathPosition[path] = self._max_index
         self.hide()
 
     def _close(self, path, temp):
@@ -157,6 +174,67 @@ class FilesHandler(QFrame):
                                   project_path])
         self._root.set_fuzzy_model(model)
 
+    def getNewIndex(self):
+        self._max_index += 1
+        return self._max_index-1
+
+    def currentEditable(self):
+        return self.comboParent.get_editable()
+
+    def removeFile(self, nedit):
+        self.removeFilePath(nedit.file_path)
+
+    def removeFilePath(self, path):
+        # del self._filesModel[self._filePathPosition[path]]
+        del self._filePathPosition[path]
+        self._changedForJava.emit()
+
+    @pyqtProperty(QJsonValue, notify= _changedForJava)
+    def fileModel(self):
+        return self._filesModel
+
+    def add_Data(self, dat):
+        self._filesModel.append(dict( zip(self._tup, dat) ))
+        # sort by Path
+        model = sorted(self._filesModel,\
+            key=lambda x: self._filePathPosition.get(x[1], False), reverse=True)
+
+        self._filesModel = model
+        self._changedForJava.emit()
+
+
+    def addFile(self, neditable):
+        nfile = neditable.nfile
+        current_editor = ninjaide.getCurrentEditor()
+
+        current_path = current_editor.file_path if current_editor else ""
+        model = []
+        if nfile.file_path not in self._filePathPosition and nfile.file_path is not None:
+            self._filePathPosition[nfile.file_path] = 0# default position for NEW FILE
+
+        checkers = neditable.sorted_checkers
+        checks = []
+        for items in checkers:
+            checker, color, _ = items
+            if checker.dirty:
+                # Colors needs to be reversed for QML
+                color = "#%s" % color[::-1]
+                checks.append(
+                    {"checker_text": checker.dirty_text,
+                     "checker_color": color})
+                
+        modified = neditable.editor.is_modified
+        temp_file = str(uuid.uuid4()) if nfile.file_path is None else ""
+        filepath = nfile.file_path if nfile.file_path is not None else ""
+
+        if temp_file:
+            self._temp_files[temp_file] = nfile
+
+        self.add_Data( (nfile.file_name, filepath, checks, modified, temp_file,\
+            "", current_path and current_path != nfile.file_path) )
+
+
+
     def _add_model(self):
         # print("_add_model:_add_model")
         ninjaide = IDE.getInstance()
@@ -167,8 +245,8 @@ class FilesHandler(QFrame):
         #     files = ninjaide.opened_files
 
         files = self.comboParent.opened_files
-        print("_add_model::", files, "\n", self._model.keys())
-        past = set(self._model.keys())
+        print("_add_model::", len(files))
+        past = set(self._filePathPosition.keys())
         now = set([neditable.file_path for neditable in files])
         old = past - now
         # print("\n_model:past:", past)
@@ -177,25 +255,28 @@ class FilesHandler(QFrame):
 
         # Update model
         for item in old:
-            del self._model[item]
+            # print("\n to Delete", item)
+            del self._filePathPosition[item]
 
         current_editor = ninjaide.getCurrentEditor()
-        current_path = None
-        if current_editor and current_editor[0] == self.comboParent:
-            current_path = current_editor[1].file_path
+        # if current_editor.neditable != self.currentEditable():
+        #     QMessageBox.critical(None, "current_editor", "el QSCiEditor que la aplicación dice que es el actual\n"\
+        #         "NO coincide con el Editor de éste FilesHandler()")
+        
+        current_path = current_editor.file_path if current_editor else ""
         model = []
         # print("len(files)", len(files), [nfile.file_path for nfile in files], "\n\n")
         for neditable in files:
             nfile = neditable.nfile
 
-            if nfile.file_path not in self._model and nfile.file_path is not None:
-                self._model[nfile.file_path] = 0# default position for NEW FILE
+            if nfile.file_path not in self._filePathPosition and nfile.file_path is not None:
+                self._filePathPosition[nfile.file_path] = self.getNewIndex()
 
             # print("\n_add_model->", not self.Force_Free, type(nfile))
             # if not self.Force_Free:
             #     neditable = ninjaide.get_or_create_editable_EXTERNAL(nfile=nfile)
 
-            # print("\n_add_model->->", neditable, self._model, neditable.editor)
+            # print("\n_add_model->->", neditable, self._filePathPosition, neditable.editor)
 
             checkers = neditable.sorted_checkers
             checks = []
@@ -207,28 +288,34 @@ class FilesHandler(QFrame):
                     checks.append(
                         {"checker_text": checker.dirty_text,
                          "checker_color": color})
+
             modified = neditable.editor.is_modified
             temp_file = str(uuid.uuid4()) if nfile.file_path is None else ""
             filepath = nfile.file_path if nfile.file_path is not None else ""
             model.append([nfile.file_name, filepath, checks, modified,
-                          temp_file])
+                          temp_file, "", current_path and current_path != nfile.file_path])
             if temp_file:
                 self._temp_files[temp_file] = nfile
 
-        if current_path:# reasignate to trusted position
-            index = self._model[current_path]
-            self._max_index = max(self._max_index, index) + 1
-            self._model[current_path] = self._max_index
-        model = sorted(model, key=lambda x: self._model.get(x[1], False),
+        # if current_path:
+        #     index = self._filePathPosition[current_path]
+        #     self._max_index = max(self._max_index, index) + 1
+        #     self._filePathPosition[current_path] = self._max_index
+
+        # print("\n\nmodel:1:", self._filePathPosition, "\n///", model)
+        # sort by Path
+        model = sorted(model, key=lambda x: self._filePathPosition.get(x[1], False),
                        reverse=True)
+        # print("\n\nmodel:2:", model)
         self._root.set_model(model)
 
     def showEvent(self, event):
         print("\nshowEvent:::showEvent", self.isVisible(), self.view.isVisible())
         self._add_model()
-        widget = self._main_container.get_current_editor()
+        widget = self.comboParent.ParentalComboEditor.currentEditor()
         if widget is None:
             widget = self._main_container
+        
         if self._main_container.splitter.count() < 2:
             width = max(widget.width() / 2, 500)
             height = max(widget.height() / 2, 400)

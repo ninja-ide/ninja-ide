@@ -304,6 +304,9 @@ class Editor(QsciScintilla):
 
         #QTimer.singleShot(5000, lambda: print("\n\neditable.isReadOnly()::", self.isReadOnly()))
 
+    @property
+    def ParentalComboEditor(self):
+        return self.parent()
 
     @property
     def display_name(self):
@@ -444,7 +447,7 @@ class Editor(QsciScintilla):
         # Margin 0 is used for line numbers
         fontmetrics = QFontMetricsF(self.__font)
         maxLine = math.ceil(math.log10(self.lines()))
-        print("\n\n_update_sidebar", settings.SHOW_LINE_NUMBERS)
+        # print("\n\n_update_sidebar", settings.SHOW_LINE_NUMBERS)
         if settings.SHOW_LINE_NUMBERS:
             self.setMarginWidth(0, fontmetrics.width('0' * int(maxLine)) + 10)
         else:

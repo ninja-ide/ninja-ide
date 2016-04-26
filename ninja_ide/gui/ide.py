@@ -62,6 +62,7 @@ from ninja_ide.core import ipc
 from ninja_ide.gui import actions
 from ninja_ide.gui import updates
 from ninja_ide.gui import notification
+from ninja_ide.gui import editor as editor_Dir
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
@@ -407,7 +408,7 @@ class IDE(QMainWindow):
     ns_window_size = pyqtSignal(QSize)
     ns_window_pos = pyqtSignal(QPoint)
 
-    __EditorFocused = None
+    __text_EditorFocused = None
 
     def __init__(self, start_server=False):
         super(IDE, self).__init__()
@@ -585,10 +586,14 @@ class IDE(QMainWindow):
             self.s_listener.newConnection.connect(self._process_connection)
 
     @classmethod
-    def detectFocusInEditor(clss, editor):
-        #print("\n\ndetectFocusInEditor", editor, editor.parent() if editor else "---")
-        if clss.__EditorFocused != editor:
-            clss.__EditorFocused = editor
+    def detectFocusInEditor(clss, widget):
+        if not isinstance(widget, editor_Dir.editor.Editor):
+            widget = widget.get_editable().editor
+        # print("\n\ndetectFocusInEditor", widget, "\n",\
+        #  widget.ParentalComboEditor,widget.file_path  if widget else "---")
+
+        if clss.__text_EditorFocused != widget:
+            clss.__text_EditorFocused = widget
 
     @classmethod
     def hasCreated(clss):
@@ -764,21 +769,25 @@ class IDE(QMainWindow):
 
 
     def getCurrentEditor(self):
-        t = tuple()
-        if self.__EditorFocused:# and self.__EditorFocused.
+        """ rtn -> Editor()# global QsciScintilla"""
+        e = None
+        if self.__text_EditorFocused:# and self.__text_EditorFocused.
             #combo_editor.ComboEditor
-            from ninja_ide.gui.editor import editor
+            # from ninja_ide.gui.editor import editor
 
-            widget = self.__EditorFocused.parent().currentEditor()
-            if not isinstance(widget, editor.Editor):
-                widget = None
+            # print("\n\n__text_EditorFocused", self.__text_EditorFocused,\
+            #     self.__text_EditorFocused.ParentalComboEditor,\
+                # self.__text_EditorFocused.ParentalComboEditor.currentEditor())
+            # widget = self.__text_EditorFocused.ParentalComboEditor.currentEditor()
+            # if not isinstance(widget, editor.Editor):
+            #     widget = None
 
-            t = (self.__EditorFocused.parent(), widget)
+            e = self.__text_EditorFocused
         # widget = self.current_widget.currentWidget()
         # if isinstance(widget, editor.Editor):
         #     return widget
         # print("\n\n getCurrentEditor()", t)
-        return t
+        return e
 
 
     def get_project_for_file(self, filename):
@@ -1027,7 +1036,6 @@ class IDE(QMainWindow):
             projects = [projects_obj[proj].path for proj in projects_obj]
             data_qsettings.setValue('lastSession/projects', projects)
             files_info = []
-            print("\n\nsave_settings", openedFiles)
             for path in openedFiles:
                 if not openedFiles[path]._exists():
                     print("\n\ncontinue", path)

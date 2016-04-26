@@ -67,8 +67,8 @@ logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 from ninja_ide.gui.editor import editor
         
 QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
-    lambda w1, w2: IDE.getInstance().detectFocusInEditor(w2)\
-    if isinstance(w2, editor.Editor) else None)
+    lambda old, now: IDE.getInstance().detectFocusInEditor(now)\
+    if isinstance(now, editor.Editor) or isinstance(now, combo_editor.ComboFiles) else None)
 
 
 
@@ -777,8 +777,8 @@ class _MainContainer(QWidget):
         else:
             editable.ignore_checkers = ignore_checkers
 
-        editorWidget = self.create_editor_from_editable(editable)
-        print("\n\neditorWidget:::", editorWidget, editable, editable.editor, fileName)
+        editor = self.create_text_editor_from_editable(editable)
+        print("\n\neditorWidget:::", editor, editable, editable.editor, fileName)
 
         #add the tab
         keep_index = (self.splitter.count() > 1 and
@@ -791,9 +791,9 @@ class _MainContainer(QWidget):
             self.current_comboEditor.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
-        return editorWidget
+        return editor
 
-    def create_editor_from_editable(self, editable):
+    def create_text_editor_from_editable(self, editable):
         editorWidget = editor.create_editor(editable)
 
         #Connect signals
@@ -897,8 +897,8 @@ class _MainContainer(QWidget):
         else:
             editable.ignore_checkers = ignore_checkers
 
-        editorWidget = self.create_editor_from_editable(editable)
-        print("\n\neditorWidget:::", editorWidget, editable, editable.editor, fileName)
+        text_editor = self.create_text_editor_from_editable(editable)
+        print("\n\ntext_editor:::", text_editor, editable, editable.editor, fileName)
 
         #add the tab
         keep_index = (self.splitter.count() > 1 and
@@ -911,7 +911,7 @@ class _MainContainer(QWidget):
             self.current_comboEditor.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
-        return editorWidget
+        return text_editor
 
 
     def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):

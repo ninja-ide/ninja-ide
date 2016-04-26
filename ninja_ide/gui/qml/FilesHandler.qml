@@ -1,4 +1,5 @@
-import QtQuick 2.5
+import QtQuick 2.4
+import QtQuick.Controls 1.4
 
 Rectangle {
     id: root
@@ -49,6 +50,36 @@ Rectangle {
         root.open(path, tempFile, project);
     }
 
+    function add_File(item) {
+        print("add_File", item)
+        listFiles.model.append(
+            {"name": item[i][0],
+            "path": item[i][1],
+            "checkers": item[i][2],
+            "modified": item[i][3],
+            "tempFile": item[i][4],
+            "project": "",
+            "itemVisible": true});
+    }
+
+    function remove_File(file_path) {
+        print("remove_File", file_path)
+        listFiles.currentIndex = 0;
+        for(var i = 0; i < listFiles.model.length; i++) {
+            if (listFiles.model[i]["path"] === file_path) {
+                listFiles.model.remove(i)
+            }
+        }
+    }
+/*
+    function sort_model() 
+        for(var i = 0; i < listFiles.model.length; i++) {
+            if (listFiles.model[i]["path"] === file_path) {
+                listFiles.model.remove(i)
+            }
+        }        
+    }*/
+
     function set_model(model) {
         // print("set_model", model)
         listFiles.currentIndex = 0;
@@ -59,8 +90,8 @@ Rectangle {
                 "checkers": model[i][2],
                 "modified": model[i][3],
                 "tempFile": model[i][4],
-                "project": "",
-                "itemVisible": true});
+                "project": model[i][5],
+                "itemVisible": model[i][6]});
         }
     }
 
@@ -158,6 +189,56 @@ Rectangle {
             font.pixelSize: 18
             activeFocusOnPress: true
 
+            Image {
+                id: imag
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.verticalCenter: parent.verticalCenter
+                height: 20
+                width: 20
+                source: "img/delete-project_rojo.png"
+                fillMode: Image.PreserveAspectFit
+
+                Behavior on width {
+                    NumberAnimation { easing.type: Easing.InOutBack; duration: 100 }
+                }
+                Behavior on height {
+                    NumberAnimation { easing.type: Easing.InOutBack; duration: 100 }
+                }
+                Behavior on anchors.rightMargin {
+                    NumberAnimation { easing.type: Easing.InOutBack; duration: 100 }
+                }
+
+                states: [
+                    State {
+                        name: "zoomIn"
+                        PropertyChanges { target: imag; width: 20; }
+                        PropertyChanges { target: imag; height: 20;  }
+                        PropertyChanges { target: imag; anchors.rightMargin: 0; }
+                    },
+                    State {
+                        name: "zoomOut"
+                        PropertyChanges { target: imag; width: 15; }
+                        PropertyChanges { target: imag; height: 15; }
+                        PropertyChanges { target: imag; anchors.rightMargin: 2.5; }
+                    }
+                ]
+
+                MouseArea{
+                    id: but
+                    anchors.fill: parent
+                    onPressed:{
+                        imag.state = "zoomOut"
+                    }
+
+                    onReleased:{
+                        imag.state = "zoomIn"
+                    }
+
+                    onClicked: input.text= ""
+                }
+            }
+
             Keys.onEscapePressed: {
                 print("Keys.onEscapePressed")
                 Qt.quit();
@@ -200,7 +281,7 @@ Rectangle {
             }
 
         }
-        
+
     }
 
     Text {
