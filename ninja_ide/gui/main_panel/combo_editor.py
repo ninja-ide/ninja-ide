@@ -195,7 +195,7 @@ class ComboEditor(QDialog):
                         pass
 
             else:
-                editor = self._main_container.create_editor_from_editable(
+                editor = self._main_container.create_text_editor_from_editable(
                     neditable)
 
             index = self.stackedEditor.currentIndex()
@@ -406,6 +406,7 @@ class ComboEditor(QDialog):
         return self.stackedEditor.count()
 
     def currentEditor(self):
+        """ rtn -> Editor()# local QsciScintilla"""
         return self.stackedEditor.currentWidget()
 
     def _update_cursor_position(self, line=0, col=0, ignore_sender=False):
@@ -614,7 +615,7 @@ class ActionBar(QFrame):
         self.combo.setCurrentIndex(self.combo.count() - 1)
 
     def take_editable(self, index=-1):
-        return self.combo.take_editable()
+        return self.combo.take_editable(index)
 
     def get_editable(self, index=-1):
         return self.combo.get_editable(index)
@@ -856,18 +857,23 @@ class ComboFiles(QComboBox):
         return self.get_editables()
 
     def take_editable(self, index=-1):#dismiss
+        """ rtn -> NEditable()"""
         if index == -1:
             index = self.currentIndex()
-        edit = self.itemData(index)
+        nedit = self.itemData(index)
+        # print("\n\nremoveFile", self._files_handler._filePathPosition)
         self.removeItem(index)
-        return edit
+        self._files_handler.removeFile(nedit)
+        return nedit
 
     def get_editable(self, index=-1):
+        """ rtn -> NEditable()"""
         if index == -1:
             index = self.currentIndex()
         return self.itemData(index)
 
     def get_editable_fromPath(self, path):
+        """ rtn -> NEditable()"""
         files = self.get_editables()
         for index in range(self.count()):
             neditable = self.itemData(index)
