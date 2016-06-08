@@ -12,9 +12,9 @@ before_install:
   - sudo apt-get update -qqm
   - sudo apt-get install -qqm wget build-essential python3-dev python-dev
   #- sudo apt-get install -qqm pyqt5-common
-  - sudo apt-get install -qqm python-qt5-dev
-  - sudo apt-get install -qqm libqt5-dev
-  - sudo apt-get install -qqm python-sip-dev
+  #- sudo apt-get install -qqm python-qt5-dev
+  #- sudo apt-get install -qqm libqt5-dev
+  #- sudo apt-get install -qqm python-sip-dev
   - sudo apt-get install -qqm python3-pyqt5 python3-sip-dev
   # install SIP
   - cd /tmp
