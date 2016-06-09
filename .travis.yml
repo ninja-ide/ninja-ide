@@ -16,9 +16,9 @@ before_install:
   #- sudo apt-get install -qqm python-qt5-dev
   #- sudo apt-get install -qqm libqt5-dev
   #- sudo apt-get install -qqm python-sip-dev
-  - sudo apt-get install  python3-sip
+  #- sudo apt-get install  python3-sip
   #- sudo apt-get install  python3-sip-dbg
-  - sudo apt-get install  python3-pyqt5
+  #- sudo apt-get install  python3-pyqt5
   # install SIP
   - cd /tmp
   - wget --quiet --output-document=sip.tar.gz https://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
@@ -37,6 +37,7 @@ before_install:
   - sudo make --quiet install
   # - python -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
   - cd $TRAVIS_BUILD_DIR
+  - sudo apt-get update -qqm
 
 install: true
 
