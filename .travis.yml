@@ -13,7 +13,7 @@ before_install:
   - sudo apt-get install -qqm wget build-essential python3
   #- sudo apt-get install -qqm wget build-essential python3 python3-dbg# python-dev
   #- sudo apt-get install  pyqt5-dev-tools
-  - sudo apt-get install -qqm qtbase5
+  #- sudo apt-get install -qqm qtbase5
   - sudo apt-get install -qqm qt5-qmake
   - sudo apt-get install -qqm qtbase5-dev-tools
   - sudo apt-get install -qqm libqt5-dev
