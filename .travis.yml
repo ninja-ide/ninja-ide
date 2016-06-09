@@ -15,13 +15,15 @@ before_install:
   #- sudo apt-get install  pyqt5-dev-tools
   #- sudo apt-get install -qqm qtbase5
   #- sudo apt-get install -qqm qt5-qmake
-  - sudo apt-get install  qtbase5-dev-tools
+  #- sudo apt-get install  qtbase5-dev-tools
   #- sudo apt-get install -qqm qtbase5-dev-tools
   #- sudo apt-get install -qqm libqt5-dev
   #- sudo apt-get install -qqm python-sip-dev
   #- sudo apt-get install  python3-sip
   #- sudo apt-get install  python3-sip-dbg
   #- sudo apt-get install  python3-pyqt5
+  - wget --quiet --output-document=QT_5.run http://download.qt.io/development_releases/qt/5.5/5.5.0-rc/qt-opensource-linux-x64-5.5.0-rc.run
+  - ./QT_5.run
   # install SIP
   - cd /tmp
   - wget --quiet --output-document=sip.tar.gz https://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
