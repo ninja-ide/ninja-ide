@@ -23,7 +23,7 @@ before_install:
   #- sudo apt-get install  python3-sip-dbg
   #- sudo apt-get install  python3-pyqt5
   - wget --quiet --output-document=QT_5.run http://download.qt.io/development_releases/qt/5.5/5.5.0-rc/qt-opensource-linux-x64-5.5.0-rc.run
-  - sudo chmod QT_5.run +r +w +x
+  - sudo chmod +r +w +x QT_5.run
   - ./QT_5.run
   # install SIP
   - cd /tmp
