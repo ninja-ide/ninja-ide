@@ -41,12 +41,12 @@ before_install:
   - wget --quiet --output-document=pyqt.tar.gz https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz 
   - tar -xf pyqt.tar.gz
   - cd PyQt-gpl-5.5.1
-  - python -B configure.py --qmake ~/Qt5.5.1/5.5/gcc_64/bin/qmake --sip-incdir ../sip-4.17/siplib --confirm-license
+  - python configure.py --qmake ~/Qt5.5.1/5.5/gcc_64/bin/qmake --sip-incdir ../sip-4.17/siplib
   - make --quiet
   - sudo make --quiet install
-  # - python -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
   - cd $TRAVIS_BUILD_DIR
   - sudo apt-get update
+   - python -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
 
 install: true
 
