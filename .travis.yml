@@ -25,7 +25,7 @@ install:
   - tar xzf /downloads/pyqt.tar.gz -C /builds --keep-newer-files
   - cd /builds/sip-4.17 && python configure.py && sudo make && sudo make install
   - cd /builds/PyQt-gpl-5.5.1 && python configure.py --confirm-license && sudo make && sudo make install
-  - python3 -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
+  #- python3 -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
 
 #install: true
 
