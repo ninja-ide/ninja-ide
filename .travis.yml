@@ -2,8 +2,8 @@
 language: python
 
 python:
-  #- 2.7
-  #- 3.3
+  - 2.7
+  - 3.3
   - 3.4
   
 sudo: required
@@ -25,12 +25,6 @@ install:
   - tar xzf /downloads/pyqt.tar.gz -C /builds --keep-newer-files
   - cd /builds/sip-4.17 && python configure.py && sudo make && sudo make install
   - cd /builds/PyQt-gpl-5.5.1 && python configure.py --confirm-license && sudo make && sudo make install
-  - sudo ls .
-  - sudo ls ..
-  - sudo ls ~/
-  - sudo ls ~/build
-  - sudo ls ~/builds
-  - cd $TRAVIS_BUILD_DIR
   - python3 -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
 
 #install: true
