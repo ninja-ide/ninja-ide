@@ -29,6 +29,7 @@ before_install:
   #- sudo chmod +x QT_5.run
   #- ./QT_5.run
   # install SIP
+  - sudo ls .
   - cd /tmp
   - wget --quiet --output-document=sip.tar.gz https://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
   - tar -xf sip.tar.gz
@@ -42,8 +43,11 @@ before_install:
   - tar -xf pyqt.tar.gz
   - cd PyQt-gpl-5.5.1
   - sudo ls .
+  - sudo ls ..
   - sudo ls ~/
-  - sudo ls ~/Qt5/5.5.1/
+  - sudo ls ~/build
+  - sudo ls ~/builds
+#  - sudo ls ~/Qt5/5.5.1/
   - sudo python configure.py --qmake ~/Qt5/5.5.1/gcc_64/bin/qmake --sip-incdir ../sip-4.17/siplib
   #- sudo python configure –prefix /usr
   - make --quiet
