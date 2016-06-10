@@ -8,23 +8,19 @@ python:
   
 sudo: required
 
-#virtualenv:
-  #system_site_packages: true
-
-
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sudo apt-add-repository ppa:beineri/opt-qt551 -y
-  - sudo apt-get update
-  - sudo apt-get install qt-latest
+  - sudo apt-get update -qmm
+  - sudo apt-get install -qmm qt-latest
   - source /opt/qt55/bin/qt55-env.sh
 
 install:
   - sudo mkdir -p /builds && sudo chmod a+rw /builds
   - sudo mkdir -p /downloads && sudo chmod a+rw /downloads
   - curl -L -o /downloads/sip.tar.gz http://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
-  - curl -L -o /downloads/pyqt.tar.gz http://skylink.dl.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz
+  - curl -L -o /downloads/pyqt.tar.gz https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz
   - tar xzf /downloads/sip.tar.gz -C /builds --keep-newer-files
   - tar xzf /downloads/pyqt.tar.gz -C /builds --keep-newer-files
   - cd /builds/sip-4.17 && python configure.py && sudo make && sudo make install
