@@ -10,11 +10,11 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sudo apt-get update -qqm
-  - sudo apt-get install -qqm wget build-essential python3
+  - sudo apt-get install -qqm wget build-essential python3 python3-pyqt5
   #- sudo apt-get uninstall -qqm python
-  - sudo python3 -m pip install --upgrade pip
-  - sudo python3 -m pip install pyqt5
-  - sudo python3 -m pip install sip
+  #- sudo python3 -m pip install --upgrade pip
+  #- sudo python3 -m pip install pyqt5
+  #- sudo python3 -m pip install sip
   - sudo ls .
   - sudo ls ..
   - sudo ls ~/
