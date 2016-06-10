@@ -11,12 +11,12 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
   #- sudo apt-add-repository ppa:ubuntu-sdk-team/ppa
   - sudo apt-add-repository ppa:beineri/opt-qt551 -y
-  - sudo apt-get update -qqm
+  - sudo apt-get update
   - sudo apt-get install -qqm wget build-essential python3
   #- sudo apt-get install -qqm wget build-essential python3 python3-dbg# python-dev
   - sudo apt-get install  qt-latest
-  - sudo apt-get install  python3-pyqt5
-  - sudo apt-get install  pyqt5-dev-tools
+  #- sudo apt-get install  python3-pyqt5
+  #- sudo apt-get install  pyqt5-dev-tools
   #- sudo apt-get install -qqm qtbase5
   #- sudo apt-get install -qqm qt5-qmake
   #- sudo apt-get install  qtbase5-dev-tools
@@ -46,7 +46,7 @@ before_install:
   - sudo make --quiet install
   # - python -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
   - cd $TRAVIS_BUILD_DIR
-  - sudo apt-get update -qqm
+  - sudo apt-get update
 
 install: true
 
