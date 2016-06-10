@@ -12,16 +12,16 @@ before_install:
   - sudo apt-get update -qqm
   - sudo apt-get install -qqm wget build-essential python3
   #- sudo apt-get uninstall -qqm python
-  - sudo "python -3.4 -m pip install --upgrade pip"
-  - sudo "python -3.4 -m pip install pyqt5"
-  - sudo "python -3.4 -m pip install sip"
+  - sudo python3 -m pip install --upgrade pip
+  - sudo python3 -m pip install pyqt5
+  - sudo python3 -m pip install sip
   - sudo ls .
   - sudo ls ..
   - sudo ls ~/
   - sudo ls ~/build
   - sudo ls ~/builds
   - cd $TRAVIS_BUILD_DIR
-  - python -3.4 -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
+  - python3 -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
 
 install: true
 
