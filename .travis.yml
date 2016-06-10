@@ -30,29 +30,31 @@ before_install:
   #- sudo chmod +x QT_5.run
   #- ./QT_5.run
   # install SIP
-  - sudo ls /home/travis/
-  - cd /tmp
-  - wget --quiet --output-document=sip.tar.gz https://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
-  - tar -xf sip.tar.gz
-  - cd sip-4.17
-  - python -B configure.py
-  - make --quiet
-  - sudo make --quiet install
+  #- sudo ls /home/travis/
+  #- cd /tmp
+  #- wget --quiet --output-document=sip.tar.gz https://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
+  #- tar -xf sip.tar.gz
+  #- cd sip-4.17
+  #- python -B configure.py
+  #- make --quiet
+  #- sudo make --quiet install
   # install PyQt
-  - cd /tmp
-  - wget --quiet --output-document=pyqt.tar.gz https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz 
-  - tar -xf pyqt.tar.gz
-  - cd PyQt-gpl-5.5.1
+  #- cd /tmp
+  #- wget --quiet --output-document=pyqt.tar.gz https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz 
+  #- tar -xf pyqt.tar.gz
+  #- cd PyQt-gpl-5.5.1
+  - sudo python pip install pyqt5
+  - sudo python pip install sip
   - sudo ls .
   - sudo ls ..
   - sudo ls ~/
   - sudo ls ~/build
   - sudo ls ~/builds
-#  - sudo ls ~/Qt5/5.5.1/
-  - sudo python configure.py --qmake ~/Qt5/5.5.1/gcc_64/bin/qmake --sip-incdir ../sip-4.17/siplib
+  #- sudo ls ~/Qt5/5.5.1/
+  #- sudo python configure.py --qmake ~/Qt5/5.5.1/gcc_64/bin/qmake --sip-incdir ../sip-4.17/siplib
   #- sudo python configure –prefix /usr
-  - make --quiet
-  - sudo make --quiet install
+  #- make --quiet
+  #- sudo make --quiet install
   - cd $TRAVIS_BUILD_DIR
   - sudo apt-get update -qqm
    - python -c 'import PyQt5, PyQt5.QtGui, PyQt5.QtCore, PyQt5.QtWidgets, sip'  # to test if compile its ok
