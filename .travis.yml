@@ -12,9 +12,9 @@ before_install:
   - sudo apt-get update -qqm
   - sudo apt-get install -qqm wget build-essential python3
   #- sudo apt-get uninstall -qqm python
-  - sudo python -3.4 -m pip install --upgrade pip3
-  - sudo python -3.4 -m pip install pyqt5
-  - sudo python -3.4 -m pip install sip
+  - sudo "python -3.4 -m pip install --upgrade pip"
+  - sudo "python -3.4 -m pip install pyqt5"
+  - sudo "python -3.4 -m pip install sip"
   - sudo ls .
   - sudo ls ..
   - sudo ls ~/
