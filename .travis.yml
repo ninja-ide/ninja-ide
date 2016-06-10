@@ -9,10 +9,12 @@ python:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+  - sudo apt-add-repository ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update -qqm
   - sudo apt-get install -qqm wget build-essential python3
   #- sudo apt-get install -qqm wget build-essential python3 python3-dbg# python-dev
   #- sudo apt-get install  pyqt5-dev-tools
+  - sudo apt-get install -qqm qt5
   #- sudo apt-get install -qqm qtbase5
   #- sudo apt-get install -qqm qt5-qmake
   #- sudo apt-get install  qtbase5-dev-tools
@@ -22,9 +24,9 @@ before_install:
   #- sudo apt-get install  python3-sip
   #- sudo apt-get install  python3-sip-dbg
   #- sudo apt-get install  python3-pyqt5
-  - wget --quiet --output-document=QT_5.run http://download.qt.io/development_releases/qt/5.5/5.5.0-rc/qt-opensource-linux-x64-5.5.0-rc.run
-  - sudo chmod +x QT_5.run
-  - ./QT_5.run
+  #- wget --quiet --output-document=QT_5.run http://download.qt.io/development_releases/qt/5.5/5.5.0-rc/qt-opensource-linux-x64-5.5.0-rc.run
+  #- sudo chmod +x QT_5.run
+  #- ./QT_5.run
   # install SIP
   - cd /tmp
   - wget --quiet --output-document=sip.tar.gz https://sourceforge.net/projects/pyqt/files/sip/sip-4.17/sip-4.17.tar.gz
