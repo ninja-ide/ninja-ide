@@ -14,8 +14,9 @@ before_install:
   - sudo apt-get update -qqm
   - sudo apt-get install -qqm wget build-essential python3
   #- sudo apt-get install -qqm wget build-essential python3 python3-dbg# python-dev
-  #- sudo apt-get install  pyqt5-dev-tools
-  - sudo apt-get install -qqm qt-latest
+  - sudo apt-get install  qt-latest
+  - sudo apt-get install  python3-pyqt5
+  - sudo apt-get install  pyqt5-dev-tools
   #- sudo apt-get install -qqm qtbase5
   #- sudo apt-get install -qqm qt5-qmake
   #- sudo apt-get install  qtbase5-dev-tools
@@ -24,7 +25,6 @@ before_install:
   #- sudo apt-get install -qqm python-sip-dev
   #- sudo apt-get install  python3-sip
   #- sudo apt-get install  python3-sip-dbg
-  #- sudo apt-get install  python3-pyqt5
   #- wget --quiet --output-document=QT_5.run http://download.qt.io/development_releases/qt/5.5/5.5.0-rc/qt-opensource-linux-x64-5.5.0-rc.run
   #- sudo chmod +x QT_5.run
   #- ./QT_5.run
