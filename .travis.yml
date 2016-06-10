@@ -11,9 +11,10 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
   - sudo apt-get update -qqm
   - sudo apt-get install -qqm wget build-essential python3
-  - sudo pip install --upgrade pip
-  - sudo pip install pyqt5
-  - sudo pip install sip
+  - sudo apt-get unstall -qqm python
+  - sudo pip3 install --upgrade pip3
+  - sudo pip3 install pyqt5
+  - sudo pip3 install sip
   - sudo ls .
   - sudo ls ..
   - sudo ls ~/
