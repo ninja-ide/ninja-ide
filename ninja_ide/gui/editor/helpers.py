@@ -120,7 +120,7 @@ def remove_trailing_spaces(editorWidget):
     editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
     lines = editorWidget.lines()
     linenumber, index = editorWidget.getCursorPosition()
-    for line in xrange(lines):
+    for line in range(lines):
         text = editorWidget.text(line)
         if text.endswith((' \n', '\t\n')):
             text = "%s\n" % text.rstrip()
