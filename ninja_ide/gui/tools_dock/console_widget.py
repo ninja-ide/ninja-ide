@@ -19,19 +19,19 @@ from __future__ import unicode_literals
 
 import re
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QTextFormat
-from PyQt4.QtGui import QTextEdit
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QKeyEvent
-from PyQt4.QtGui import QFont
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QProcess
-from PyQt4.QtCore import QRegExp
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextFormat
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QProcess
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -109,21 +109,16 @@ class ConsoleWidget(QPlainTextEdit):
             self.document(),
             parts_scanner, code_scanner, formats)
 
-        self.connect(self, SIGNAL("cursorPositionChanged()"),
-            self.highlight_current_line)
+        self.cursorPositionChanged.connect(self.highlight_current_line)
         self.highlight_current_line()
 
         self._proc = QProcess(self)
-        self.connect(self._proc, SIGNAL("readyReadStandardOutput()"),
-            self._python_path_detected)
-        self.connect(self._proc, SIGNAL("error(QProcess::ProcessError)"),
-            self.process_error)
+        self._proc.readyReadStandardOutput.connect(self._python_path_detected)
+        self._proc.error['QProcess::ProcessError'].connect(self.process_error)
         self._add_system_path_for_frozen()
 
-        ninjaide = IDE.get_service('ide')
-        self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_font(PyQt_PyObject)"),
-            self.set_font)
+        ninjaide = IDE.getInstance()
+        ninjaide.ns_preferences_editor_font.connect(self.set_font)
 
     def _add_system_path_for_frozen(self):
         try:
@@ -132,7 +127,7 @@ class ConsoleWidget(QPlainTextEdit):
             logger.warning('Could not get system path, error: %r' % reason)
 
     def _python_path_detected(self):
-        paths = self._proc.readAllStandardOutput().data().decode('utf8')
+        paths = self._proc.readAllStandardOutput().data()#.decode('utf8')
         add_system_path = ('import sys; '
                            'sys.path = list(set(sys.path + %s))' % paths)
         self._write(add_system_path)
@@ -175,14 +170,12 @@ class ConsoleWidget(QPlainTextEdit):
         self.popup_menu.addAction(actionCopyHistory)
         self.popup_menu.addAction(actionCopyConsoleContent)
 
-        self.connect(actionCut, SIGNAL("triggered()"), self._cut)
-        self.connect(actionCopy, SIGNAL("triggered()"), self.copy)
-        self.connect(actionPaste, SIGNAL("triggered()"), self._paste)
-        self.connect(actionClean, SIGNAL("triggered()"), self._clean_console)
-        self.connect(actionCopyHistory, SIGNAL("triggered()"),
-            self._copy_history)
-        self.connect(actionCopyConsoleContent, SIGNAL("triggered()"),
-            self._copy_console_content)
+        actionCut.triggered['bool'].connect(lambda s: self._cut())
+        actionCopy.triggered['bool'].connect(lambda s: self.copy())
+        actionPaste.triggered['bool'].connect(lambda s: self._paste())
+        actionClean.triggered['bool'].connect(lambda s: self._clean_console())
+        actionCopyHistory.triggered['bool'].connect(lambda s: self._copy_history())
+        actionCopyConsoleContent.triggered['bool'].connect(lambda s: self._copy_console_content())
 
     def _cut(self):
         event = QKeyEvent(QEvent.KeyPress, Qt.Key_X, Qt.ControlModifier, "x")
@@ -496,8 +489,9 @@ class ConsoleWidget(QPlainTextEdit):
             output = self._read()
             if output is not None:
                 if isinstance(output, str):
-                    output = output.encode('utf8')
-                self.appendPlainText(output.decode('utf8'))
+                    pass
+                    ##output = output.encode('utf8')
+                self.appendPlainText(output)#.decode('utf8'))
         self._add_prompt(incomplete)
 
     def _set_command(self, command):

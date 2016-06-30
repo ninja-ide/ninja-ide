@@ -18,16 +18,17 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import Qt
+#from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -90,7 +91,7 @@ class EditorCompletion(QWidget):
         vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
             QSizePolicy.Expanding))
 
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._preferences.savePreferences.connect(self.save)
 
     def save(self):
         qsettings = IDE.ninja_settings()

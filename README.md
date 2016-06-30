@@ -23,9 +23,9 @@
 ## Requirements
 On any system you want **Ninja-IDE**, you'll need to have this dependencies installed:
 
--   [Python](http://python.org "Python Homepage") >= 2.7  *(or Python3)*
--   [PyQt4](http://www.riverbankcomputing.com/software/pyqt/intro "PyQt Homepage") >= 4.8  *(Not Qt5)*
--   [PyQt4-QScintilla2](http://www.riverbankcomputing.com/software/qscintilla/intro "QScintilla2 Homepage") >= 2.0  *(Not Qt5)*
+-   [Python](http://python.org "Python Homepage") >= 2.7  *(or Python3, tested on 3.4)*
+-   [PyQt5](http://www.riverbankcomputing.com/software/pyqt/intro "PyQt Homepage") >= 5.4
+-   [PyQt5-QScintilla2](http://www.riverbankcomputing.com/software/qscintilla/intro "QScintilla2 Homepage") >= 2.0
 -   [PIP](https://pip.pypa.io/en/latest/installing.html "About Installing PIP")  *(Not PIP3)*
 -   [Virtualenv](https://pypi.python.org/pypi/virtualenv "About Installing Virtualenv")
 

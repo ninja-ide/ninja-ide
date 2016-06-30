@@ -20,11 +20,11 @@ from __future__ import unicode_literals
 
 import os
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
@@ -44,8 +44,8 @@ class AddFileFolderWidget(QDialog):
         self.setFixedHeight(70)
         self.setFixedWidth(650)
         # Create the QML user interface.
-        self.view = QDeclarativeView()
-        self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.view = QQuickWidget()
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("AddFileFolder.qml"))
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
@@ -57,7 +57,7 @@ class AddFileFolderWidget(QDialog):
 
         self._create_file_operation = True
 
-        self.connect(self._root, SIGNAL("create(QString)"), self._create)
+        self._root.create.connect(self._create)
 
     def create_file(self, base_path, project_path):
         self._create_file_operation = True
@@ -92,7 +92,7 @@ class AddFileFolderWidget(QDialog):
             folder = os.path.split(path)[0]
             if not os.path.exists(folder):
                 file_manager.create_folder(folder)
-            ninjaide = IDE.get_service('ide')
+            ninjaide = IDE.getInstance()
             current_nfile = ninjaide.get_or_create_nfile(path)
             current_nfile.create()
             main_container = IDE.get_service('main_container')

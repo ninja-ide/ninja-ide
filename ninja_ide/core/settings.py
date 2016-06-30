@@ -20,10 +20,10 @@ import os
 import sys
 import datetime
 
-from PyQt4.QtGui import QFont
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFileInfo
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFileInfo
 
 from ninja_ide import resources
 from ninja_ide.dependencies import pep8mod
@@ -41,8 +41,8 @@ OS_KEY = "Ctrl"
 
 FONT = QFont('Monospace', 12)
 if sys.platform == "darwin":
-    from PyQt4.QtGui import QKeySequence
-    from PyQt4.QtCore import Qt
+    from PyQt5.QtGui import QKeySequence
+    from PyQt5.QtCore import Qt
 
     FONT = QFont('Monaco', 12)
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)

@@ -23,21 +23,21 @@ import copy
 from getpass import getuser
 from string import ascii_letters
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QScrollArea
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QColorDialog
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QScrollArea
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QColorDialog
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -71,7 +71,7 @@ class EditorSchemeDesigner(QDialog):
         self.line_name.setPlaceholderText(getuser().capitalize() + "s_scheme")
         group0_hbox.addWidget(self.line_name)
         group0_hbox.addWidget(btnSave)
-        self.connect(btnSave, SIGNAL("clicked()"), self.save_scheme)
+        btnSave.clicked['bool'].connect(self.save_scheme)
         _demo = "<center>" + ascii_letters  # demo text for preview
         self.preview_label1, self.preview_label2 = QLabel(_demo), QLabel(_demo)
         group2_vbox.addWidget(self.preview_label1)
@@ -113,13 +113,10 @@ class EditorSchemeDesigner(QDialog):
             self.apply_button_style(btn, scheme[key])
             self._grid.addWidget(btn, row, 2)
 
-            self.connect(text, SIGNAL("textChanged(QString)"),
-                         lambda: self.apply_button_style(btn, text.text()))
-            self.connect(btn, SIGNAL("clicked()"),
-                         lambda: self._pick_color(text, btn))
+            text.textChanged[str].connect(lambda t=text, b=btn: self.apply_button_style(b, t.text()))
+            btn.clicked['bool'].connect(lambda t=text, b=btn: self._pick_color(t, b))
         else:
-            self.connect(text, SIGNAL("textChanged(QString)"),
-                         self._preview_style)
+            text.textChanged[str].connect(self._preview_style)
         self._components[key] = (text, isnum)
 
     def apply_button_style(self, btn, color_name):

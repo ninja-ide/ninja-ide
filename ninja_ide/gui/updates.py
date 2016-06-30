@@ -19,13 +19,13 @@ import urllib
 import webbrowser
 from distutils import version
 
-from PyQt4.QtGui import QSystemTrayIcon
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QSystemTrayIcon
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
 
 import ninja_ide
 from ninja_ide import resources
@@ -40,6 +40,7 @@ class TrayIconUpdates(QSystemTrayIcon):
     @ SIGNALS:
     @ closeTrayIcon()
     """
+    closeTrayIcon = pyqtSignal()
 
     def __init__(self, parent):
         super(TrayIconUpdates, self).__init__(parent)
@@ -53,9 +54,7 @@ class TrayIconUpdates(QSystemTrayIcon):
             'preferences/general/notifyUpdates', True, type=bool)
         if notify:
             self.thread = ThreadUpdates()
-            self.connect(self.thread,
-                SIGNAL("versionReceived(QString, QString)"),
-                self._show_messages)
+            self.thread.versionReceived[str, str].connect(self._show_messages)
             self.thread.start()
 
     def setup_menu(self, show_downloads=False):
@@ -103,7 +102,7 @@ class TrayIconUpdates(QSystemTrayIcon):
             self.thread.wait()
 
     def _close(self):
-        self.emit(SIGNAL("closeTrayIcon()"))
+        self.closeTrayIcon.emit()
 
     def _show_download(self):
         webbrowser.open(self.download_link)
@@ -111,7 +110,7 @@ class TrayIconUpdates(QSystemTrayIcon):
 
 
 class ThreadUpdates(QThread):
-
+    versionReceived = pyqtSignal(str, str)
     def __init__(self):
         super(ThreadUpdates, self).__init__()
 
@@ -123,5 +122,4 @@ class ThreadUpdates(QThread):
         except:
             ide = {}
             logger.info('no connection available')
-        self.emit(SIGNAL("versionReceived(QString, QString)"),
-            ide.get('version', '0'), ide.get('downloads', ''))
+        self.versionReceived.emit(ide.get('version', '0'), ide.get('downloads', ''))

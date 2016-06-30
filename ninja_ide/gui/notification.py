@@ -23,11 +23,11 @@ import sys
 if not sys.version_info[0] >= 3:
     from string import maketrans
 
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
@@ -47,8 +47,8 @@ class Notification(QFrame):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setFixedHeight(30)
         # Create the QML user interface.
-        view = QDeclarativeView()
-        view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        view = QQuickWidget()
+        view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("Notification.qml"))
         self._root = view.rootObject()
         vbox = QVBoxLayout(self)
@@ -56,7 +56,7 @@ class Notification(QFrame):
         vbox.setSpacing(0)
         vbox.addWidget(view)
 
-        self.connect(self._root, SIGNAL("close()"), self.close)
+        self._root.close.connect(self.close)
 
     def showEvent(self, event):
         """Method takes an event to show the Notification"""

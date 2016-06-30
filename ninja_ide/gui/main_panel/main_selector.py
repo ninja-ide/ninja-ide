@@ -17,39 +17,47 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.tools import ui_tools
 
 
 class MainSelector(QWidget):
-
+    removeWidget = pyqtSignal(int)
+    changeCurrent = pyqtSignal(int)
+    ready = pyqtSignal()
+    animationCompleted = pyqtSignal()
+    closePreviewer = pyqtSignal()
     def __init__(self, parent=None):
         super(MainSelector, self).__init__(parent)
         # Create the QML user interface.
-        view = QDeclarativeView()
-        view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-        view.setSource(ui_tools.get_qml_resource("MainSelector.qml"))
-        self._root = view.rootObject()
+        self.view = QQuickWidget()
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
+        self.view.engine().quit.connect(self.hide)
+        self.view.setSource(ui_tools.get_qml_resource("MainSelector.qml"))
+        self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        vbox.addWidget(view)
+        vbox.addWidget(self.view)
 
-        self.connect(self._root, SIGNAL("open(int)"),
-                     lambda i: self.emit(SIGNAL("changeCurrent(int)"), i))
-        self.connect(self._root, SIGNAL("open(int)"), self._clean_removed)
-        self.connect(self._root, SIGNAL("ready()"),
-                     lambda: self.emit(SIGNAL("ready()")))
-        self.connect(self._root, SIGNAL("animationCompleted()"),
-                     lambda: self.emit(SIGNAL("animationCompleted()")))
+        self._root.open[int].connect(self.changeCurrent.emit)
+        self._root.open[int].connect(self._clean_removed)
+        self._root.ready.connect(self.ready.emit)
+        self._root.closePreviewer.connect(self.closePreviewer.emit)
+        self._root.animationCompleted.connect(self.animationCompleted.emit)
 
     def set_model(self, model):
         for index, path, closable in model:
-            self._root.add_widget(index, path, closable)
+            self.add_to_model(index, path, closable)
+
+    @pyqtSlot(int, "QString", bool)
+    def add_to_model(self, i, path, type_state):
+        self._root.add_widget(i, path, type_state)
 
     def set_preview(self, index, preview_path):
         self._root.add_preview(index, preview_path)
@@ -57,8 +65,12 @@ class MainSelector(QWidget):
     def close_selector(self):
         self._root.close_selector()
 
-    def start_animation(self):
+    def GoTo_GridPreviews(self):#start_animation
         self._root.start_animation()
+        self._root.forceActiveFocus()
+
+    def showPreview(self):
+        self._root.showPreview()
         self._root.forceActiveFocus()
 
     def open_item(self, index):
@@ -67,6 +79,7 @@ class MainSelector(QWidget):
 
     def _clean_removed(self):
         removed = sorted(self._root.get_removed(), reverse=True)
+        print("_clean_removed", removed)
         for r in removed:
-            self.emit(SIGNAL("removeWidget(int)"), r)
+            self.removeWidget.emit(r)
         self._root.clean_removed()

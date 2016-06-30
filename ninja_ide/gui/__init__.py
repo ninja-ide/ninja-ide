@@ -19,15 +19,15 @@ from __future__ import print_function
 
 import sys
 
-from PyQt4.QtGui import QSplashScreen
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QTextCodec
-from PyQt4.QtCore import QCoreApplication
-from PyQt4.QtCore import QTranslator
-from PyQt4.QtCore import QLibraryInfo
-from PyQt4.QtCore import QLocale
+from PyQt5.QtWidgets import QSplashScreen
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTextCodec
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QTranslator
+from PyQt5.QtCore import QLibraryInfo
+from PyQt5.QtCore import QLocale
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -109,7 +109,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         #app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)
-    QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
+    ##QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     #Translator
     qsettings = ide.IDE.ninja_settings()

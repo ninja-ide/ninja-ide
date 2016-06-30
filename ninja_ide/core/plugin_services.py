@@ -18,9 +18,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtCore import QObject
-#from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
@@ -41,15 +40,15 @@ class MainService(QObject):
     Main Interact whith NINJA-IDE
     """
     # SIGNALS
-    editorKeyPressEvent = pyqtSignal("QEvent")
-    beforeFileSaved = pyqtSignal("QString")
-    fileSaved = pyqtSignal("QString")
-    currentTabChanged = pyqtSignal("QString")
-    fileExecuted = pyqtSignal("QString")
-    fileOpened = pyqtSignal("QString")
+    editorKeyPressEvent = pyqtSignal("QEvent*")
+    beforeFileSaved = pyqtSignal(str)
+    fileSaved = pyqtSignal(str)
+    currentTabChanged = pyqtSignal(str)
+    fileExecuted = pyqtSignal(str)
+    fileOpened = pyqtSignal(str)
 
     def __init__(self):
-        QObject.__init__(self)
+        super(MainService, self).__init__()
         #self._main = main_container.MainContainer()
         #self._action = actions.Actions()
         #self._explorer = explorer_container.ExplorerContainer()
@@ -131,6 +130,7 @@ class MainService(QObject):
         """
         Create a new editor
         """
+        print("MainService:::add_editor", fileName)
         editor = self._main.add_editor(fileName=fileName, syntax=syntax)
         if content:
             editor.setPlainText(content)
@@ -197,6 +197,7 @@ class MainService(QObject):
         """
         Jump to a specific line in the current editor
         """
+        print("\njump_to_line::paso por este")
         self._main.editor_jump_to_line(lineno=lineno)
 
     def get_lines_count(self):
@@ -285,7 +286,7 @@ class ToolbarService(QObject):
     Interact with the Toolbar
     """
     def __init__(self, toolbar):
-        QObject.__init__(self)
+        super(ToolbarService, self).__init__()
         self._toolbar = toolbar
 
     def add_action(self, action):
@@ -302,7 +303,7 @@ class MenuAppService(QObject):
     Interact with the Plugins Menu
     """
     def __init__(self, plugins_menu):
-        QObject.__init__(self)
+        super(MenuAppService, self).__init__()
         self._plugins_menu = plugins_menu
 
     def add_menu(self, menu):
@@ -363,11 +364,11 @@ class MenuAppService(QObject):
 
 class ExplorerService(QObject):
     # SIGNALS
-    projectOpened = pyqtSignal("QString")
-    projectExecuted = pyqtSignal("QString")
+    projectOpened = pyqtSignal(str)
+    projectExecuted = pyqtSignal(str)
 
     def __init__(self):
-        QObject.__init__(self)
+        super(ExplorerService, self).__init__()
         #self._explorer = explorer_container.ExplorerContainer()
         #self._action = actions.Actions()
         #self.connect(self._explorer, SIGNAL("projectOpened(QString)"),

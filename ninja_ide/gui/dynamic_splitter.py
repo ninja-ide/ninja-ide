@@ -15,13 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QSplitter
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QSplitter
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 
 class DynamicSplitter(QSplitter):
-
+    closeDynamicSplit = pyqtSignal("QWidget*", "QWidget*")
     def __init__(self, orientation=Qt.Horizontal):
         super(DynamicSplitter, self).__init__(orientation)
         self.setOpaqueResize(False)
@@ -31,21 +31,15 @@ class DynamicSplitter(QSplitter):
             self.insertWidget(0, widget)
         else:
             self.addWidget(widget)
-        self.connect(widget,
-                     SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-                     self.split)
-        self.connect(widget,
-                     SIGNAL("closeSplit(PyQt_PyObject)"),
-                     self.close_split)
+        print("\nadd_widget", widget)
+        widget.splitEditor.connect(self.split)
+        widget.closeSplit.connect(self.close_split)
 
     def insert_widget(self, index, widget):
         self.insertWidget(index, widget)
-        self.connect(widget,
-                     SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-                     self.split)
-        self.connect(widget,
-                     SIGNAL("closeSplit(PyQt_PyObject)"),
-                     self.close_split)
+        print("\ninsert_widget", widget)
+        widget.splitEditor.connect(self.split)
+        widget.closeSplit.connect(self.close_split)
 
     def _get_sizes(self, widget, orientation):
         sizes = [1, 1]
@@ -67,10 +61,7 @@ class DynamicSplitter(QSplitter):
         if self.count() == 2:
             sizes = self._get_sizes(current, orientationVertical)
             splitter = DynamicSplitter(orientation)
-            self.connect(
-                splitter,
-                SIGNAL("closeDynamicSplit(PyQt_PyObject, PyQt_PyObject)"),
-                self.close_dynamic_split)
+            splitter.closeDynamicSplit.connect(self.close_dynamic_split)
             self.insertWidget(index, splitter)
             splitter.add_widget(current)
             splitter.add_widget(new_widget)
@@ -83,6 +74,7 @@ class DynamicSplitter(QSplitter):
         new_widget.setFocus()
 
     def close_split(self, widget):
+        print("\nclose_split_dinamic", widget)
         index = self.indexOf(widget)
         if index == -1:
             return
@@ -90,8 +82,7 @@ class DynamicSplitter(QSplitter):
         combo_widget = self.widget(new_index)
         widget.unlink_editors()
         widget.deleteLater()
-        self.emit(SIGNAL("closeDynamicSplit(PyQt_PyObject, PyQt_PyObject)"),
-                  self, combo_widget)
+        self.closeDynamicSplit.emit(self, combo_widget)
         combo_widget.setFocus()
 
     def close_dynamic_split(self, split, widget):

@@ -19,17 +19,17 @@ from __future__ import absolute_import
 
 import webbrowser
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import pyqtSignal
 
 import ninja_ide
 from ninja_ide import translations
@@ -38,7 +38,7 @@ from ninja_ide import translations
 class AboutNinja(QDialog):
 
     def __init__(self, parent=None):
-        QDialog.__init__(self, parent, Qt.Dialog)
+        super(AboutNinja, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(self.tr("About NINJA-IDE"))
         self.setMaximumSize(QSize(0, 0))
 
@@ -86,12 +86,9 @@ situations thanks to its rich extensibility.""")))
         hbox2.addWidget(btn_close)
         vbox.addLayout(hbox2)
 
-        self.connect(link_ninja, SIGNAL("linkActivated(QString)"),
-                     self.link_activated)
-        self.connect(link_source, SIGNAL("linkActivated(QString)"),
-                     self.link_activated)
-        self.connect(btn_close, SIGNAL("clicked()"),
-                     self.close)
+        link_ninja.linkActivated[str].connect(self.link_activated)
+        link_source.linkActivated[str].connect(self.link_activated)
+        btn_close.clicked.connect(self.close)
 
     def link_activated(self, link):
         webbrowser.open(str(link))

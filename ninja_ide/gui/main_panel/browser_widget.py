@@ -19,12 +19,12 @@ from __future__ import unicode_literals
 
 import time
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtWebKit import QWebView
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWebKitWidgets import QWebView
 
 from ninja_ide.core.file_handling import file_manager
 
@@ -39,10 +39,13 @@ class BrowserWidget(QWidget):
     openPreferences()
     dontOpenStartPage()
     """
+    openProject = pyqtSignal(str)
+    openPreferences = pyqtSignal()
+    dontOpenStartPage = pyqtSignal()
 ###############################################################################
 
     def __init__(self, url, process=None, parent=None):
-        QWidget.__init__(self, parent)
+        super(BrowserWidget, self).__init__(parent)
         self._process = process
         vbox = QVBoxLayout(self)
         #Web Frame
@@ -64,7 +67,9 @@ class BrowserWidget(QWidget):
 
     def start_page_operations(self, url):
         opt = file_manager.get_basename(url.toString())
-        self.emit(SIGNAL(opt))
+        #self.emit(SIGNAL(opt))
+        getattr(self, url.toString()).emit()
+
 
     def shutdown_pydoc(self):
         if self._process is not None:

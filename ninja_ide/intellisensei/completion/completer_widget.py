@@ -16,16 +16,16 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QStackedLayout
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtGui import QIcon
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QListWidget
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QListWidget
 
 from ninja_ide.core import settings
 from ninja_ide.tools.completion import code_completion
@@ -76,12 +76,8 @@ class CodeCompletionWidget(QFrame):
 
         self.desktop = QApplication.instance().desktop()
 
-        self.connect(self.completion_list,
-            SIGNAL("itemClicked(QListWidgetItem*)"),
-            self.pre_key_insert_completion)
-        self.connect(self._editor.document(),
-            SIGNAL("cursorPositionChanged(QTextCursor)"),
-            self.update_metadata)
+        self.completion_list.itemClicked['QListWidgetItem*'].connect(self.pre_key_insert_completion)
+        self._editor.document().cursorPositionChanged['const QTextCursor &'].connect(self.update_metadata)
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
@@ -250,7 +246,7 @@ class CodeCompletionWidget(QFrame):
 class CompleterWidget(QCompleter):
 
     def __init__(self, editor):
-        QCompleter.__init__(self, [], editor)
+        super(CompleterWidget, self).__init__([], editor)
         self._editor = editor
 
         self.setWidget(editor)
@@ -260,8 +256,7 @@ class CompleterWidget(QCompleter):
         self.cc = code_completion.CodeCompletion()
         self.completion_results = {}
 
-        self.connect(self, SIGNAL("activated(const QString&)"),
-            self.insert_completion)
+        self.activated['const QString &'].connect(self.insert_completion)
 
     def insert_completion(self, insert):
         self.widget().textCursor().insertText(

@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>. #
 import os
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL, QThread
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal, QThread
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.Watcher')
@@ -88,7 +88,7 @@ class BaseWatcher(QObject):
 #
 # fileChanged(int, QString)  [added, deleted, modified, rename, remove]
 ###############################################################################
-
+    fileChanged(int, str)#  [added, deleted, modified, rename, remove]
     def __init__(self):
         super(BaseWatcher, self).__init__()
         self._single_file_watcher = None
@@ -98,8 +98,7 @@ class BaseWatcher(QObject):
         if not self._single_file_watcher:
             self._single_file_watcher = \
                 SingleFileWatcher(self._emit_signal_on_change)
-            self.connect(self._single_file_watcher,
-                SIGNAL("destroyed(QObject*)"), self.on_destroy)
+            self._single_file_watcher.destroyed['QObject*'].connect(self.on_destroy)
             self._single_file_watcher.start()
         self._single_file_watcher.add_watch(file_path)
 

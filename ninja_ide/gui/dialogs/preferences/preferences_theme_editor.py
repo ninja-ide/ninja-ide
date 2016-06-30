@@ -21,19 +21,19 @@ from __future__ import unicode_literals
 
 from getpass import getuser
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -82,8 +82,8 @@ class ThemeEditor(QDialog):
         vbox.addLayout(hbox)
         vbox.addLayout(hbox2)
 
-        self.connect(self.btn_apply, SIGNAL("clicked()"), self.apply_stylesheet)
-        self.connect(self.btn_save, SIGNAL("clicked()"), self.save_stylesheet)
+        self.btn_apply.clicked['bool'].connect(self.apply_stylesheet)
+        self.btn_save.clicked['bool'].connect(self.save_stylesheet)
 
     def apply_stylesheet(self):
         qss = self.edit_qss.toPlainText()

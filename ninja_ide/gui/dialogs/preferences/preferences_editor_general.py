@@ -21,24 +21,24 @@ from __future__ import unicode_literals
 
 import copy
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QFontDialog
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QSpinBox
+from PyQt5.QtWidgets import QFontDialog
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+#from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -110,19 +110,18 @@ class EditorGeneral(QWidget):
         btnDownload = QPushButton(
             translations.TR_PREFERENCES_EDITOR_DOWNLOAD_SCHEME)
         btnDownload.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.connect(btnDownload, SIGNAL("clicked()"),
-                     self._open_schemes_manager)
+        btnDownload.clicked['bool'].connect(self._open_schemes_manager)
         hbox.addWidget(btnDownload)
         btnAdd = QPushButton(QIcon(":img/add"),
                              translations.TR_EDITOR_CREATE_SCHEME)
         btnAdd.setIconSize(QSize(16, 16))
         btnAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.connect(btnAdd, SIGNAL("clicked()"), self._open_schemes_designer)
+        btnAdd.clicked['bool'].connect(self._open_schemes_designer)
         btnRemove = QPushButton(QIcon(":img/delete"),
                                 translations.TR_EDITOR_REMOVE_SCHEME)
         btnRemove.setIconSize(QSize(16, 16))
         btnRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.connect(btnRemove, SIGNAL("clicked()"), self._remove_scheme)
+        btnRemove.clicked['bool'].connect(self._remove_scheme)
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         hbox.addWidget(btnAdd)
         hbox.addWidget(btnRemove)
@@ -164,14 +163,12 @@ class EditorGeneral(QWidget):
         qsettings.endGroup()
 
         #Signals
-        self.connect(self._btnEditorFont,
-                     SIGNAL("clicked()"), self._load_editor_font)
-        self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
-                     self._preview_style)
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._btnEditorFont.clicked['bool'].connect(self._load_editor_font)
+        self._listScheme.itemSelectionChanged.connect(self._preview_style)
+        self._preferences.savePreferences.connect(self.save)
 
     def _open_schemes_manager(self):
-        ninjaide = IDE.get_service("ide")
+        ninjaide = IDE.getInstance()
         ninjaide.show_schemes()
         # refresh schemes
 

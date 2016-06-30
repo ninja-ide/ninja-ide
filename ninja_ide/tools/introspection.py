@@ -117,11 +117,11 @@ def _parse_function(symbol, with_docstrings):
     if symbol.args.vararg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '*' + symbol.args.vararg
+        func_name += '*' + symbol.args.vararg.arg# antes no terminaba con '.arg'
     if symbol.args.kwarg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '**' + symbol.args.kwarg
+        func_name += '**' + symbol.args.kwarg.arg# antes no terminaba con '.arg'
     func_name += ')'
 
     for sym in symbol.body:
@@ -149,6 +149,7 @@ def _parse_function(symbol, with_docstrings):
 def obtain_symbols(source, with_docstrings=False, filename='',
                    simple=False, only_simple=False):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
+    #print("this is a source:", source)
     try:
         module = ast.parse(source)
     except:
@@ -287,11 +288,11 @@ def _parse_function_simplified(symbol, member_of=""):
     if symbol.args.vararg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '*' + symbol.args.vararg
+        func_name += '*' + symbol.args.vararg.arg# antes no terminaba con '.arg'
     if symbol.args.kwarg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '**' + symbol.args.kwarg
+        func_name += '**' + symbol.args.kwarg.arg# antes no terminaba con '.arg'
     func_name += ')'
 
     for sym in symbol.body:

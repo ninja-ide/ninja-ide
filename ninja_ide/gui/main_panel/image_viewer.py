@@ -16,9 +16,9 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QScrollArea
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QPixmap
+from PyQt5.QtWidgets import QScrollArea
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QPixmap
 
 
 class ImageViewer(QScrollArea):

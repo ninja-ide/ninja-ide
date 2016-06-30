@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: button
@@ -14,24 +14,24 @@ Rectangle {
     Gradient {
         id: off
         GradientStop { position: 0.0; color: "lightsteelblue" }
-        GradientStop { position: 0.5; color: "lightsteelblue" }
-        GradientStop { position: 0.5; color: "black" }
+        // GradientStop { position: 0.5; color: "lightsteelblue" }
+        // GradientStop { position: 0.5; color: "black" }
         GradientStop { position: 1.0; color: "black" }
     }
 
     Gradient {
         id: onn
         GradientStop { position: 0.0; color: "steelblue" }
-        GradientStop { position: 0.7; color: "steelblue" }
-        GradientStop { position: 0.7; color: "black" }
+        // GradientStop { position: 0.7; color: "steelblue" }
+        // GradientStop { position: 0.7; color: "black" }
         GradientStop { position: 1.0; color: "black" }
     }
 
     Gradient {
         id: hover
         GradientStop { position: 0.0; color: "lightsteelblue" }
-        GradientStop { position: 0.7; color: "lightsteelblue" }
-        GradientStop { position: 0.7; color: "black" }
+        // GradientStop { position: 0.7; color: "lightsteelblue" }
+        // GradientStop { position: 0.7; color: "black" }
         GradientStop { position: 1.0; color: "black" }
     }
 
