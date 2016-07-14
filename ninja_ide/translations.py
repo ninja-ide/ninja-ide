@@ -447,7 +447,9 @@ TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8 = tr(
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION = tr(
     "NINJA-IDE",
     "Show Python3 Migration Tips.")
-TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL = tr("NINJA-IDE", "Center on Scroll")
+TR_PREFERENCES_EDITOR_CONFIG_END_AT_LAST_LINE = tr(
+    "NINJA-IDE",
+    "Stop Scrolling At Last Line")
 TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING = tr(
     "NINJA-IDE",
     "Remove Trailing Spaces and\nAdd Last Line Automatically")

@@ -163,17 +163,17 @@ class EditorConfiguration(QWidget):
         vboxg5.addWidget(self._checkIndentationGuide)
         formFeatures.addWidget(group5, 3, 0)
 
-        # End of line, Center On Scroll, Trailing space, Word wrap
+        # End of line, Stop Scrolling At Last Line, Trailing space, Word wrap
         vboxg6 = QVBoxLayout(group6)
         vboxg6.setContentsMargins(5, 15, 5, 5)
         self._checkEndOfLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_END_OF_LINE)
         self._checkEndOfLine.setChecked(settings.USE_PLATFORM_END_OF_LINE)
         vboxg6.addWidget(self._checkEndOfLine)
-        self._checkCenterScroll = QCheckBox(
-            translations.TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL)
-        self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        vboxg6.addWidget(self._checkCenterScroll)
+        self._checkEndAtLastLine = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_END_AT_LAST_LINE)
+        self._checkEndAtLastLine.setChecked(settings.END_AT_LAST_LINE)
+        vboxg6.addWidget(self._checkEndAtLastLine)
         self._checkTrailing = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING)
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
@@ -247,9 +247,9 @@ class EditorConfiguration(QWidget):
         settings.CHECK_HIGHLIGHT_LINE = self._checkStyleOnLine.isChecked()
         qsettings.setValue('preferences/editor/checkStyleInline',
                            settings.CHECK_HIGHLIGHT_LINE)
-        settings.CENTER_ON_SCROLL = self._checkCenterScroll.isChecked()
-        qsettings.setValue('preferences/editor/centerOnScroll',
-                           settings.CENTER_ON_SCROLL)
+        settings.END_AT_LAST_LINE = self._checkEndAtLastLine.isChecked()
+        qsettings.setValue('preferences/editor/endAtLastLine',
+                           settings.END_AT_LAST_LINE)
         settings.REMOVE_TRAILING_SPACES = self._checkTrailing.isChecked()
         qsettings.setValue('preferences/editor/removeTrailingSpaces',
                            settings.REMOVE_TRAILING_SPACES)

@@ -174,7 +174,7 @@ COPY_HISTORY_BUFFER = 20
 
 FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = COMPLETE_DECLARATIONS = SHOW_MIGRATION_TIPS = True
-UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = CENTER_ON_SCROLL = True
+UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = AND_AT_LAST_LINE = True
 SHOW_LINE_NUMBERS = True
 
 SYNTAX = {}
@@ -393,7 +393,7 @@ def load_settings():
     global CHECK_HIGHLIGHT_LINE
     global SHOW_MIGRATION_TIPS
     global CODE_COMPLETION
-    global CENTER_ON_SCROLL
+    global END_AT_LAST_LINE
     global SHOW_PROJECT_EXPLORER
     global SHOW_SYMBOLS_LIST
     global SHOW_WEB_INSPECTOR
@@ -515,8 +515,8 @@ def load_settings():
         'preferences/editor/checkStyleInline', True, type=bool)
     CODE_COMPLETION = qsettings.value(
         'preferences/editor/codeCompletion', True, type=bool)
-    CENTER_ON_SCROLL = qsettings.value(
-        'preferences/editor/centerOnScroll', True, type=bool)
+    END_AT_LAST_LINE = qsettings.value(
+        'preferences/editor/endAtLastLine', True, type=bool)
     parentheses = qsettings.value('preferences/editor/parentheses', True,
                                   type=bool)
     if not parentheses:

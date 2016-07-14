@@ -524,6 +524,8 @@ class Editor(QsciScintilla):
             self.setWhitespaceVisibility(QsciScintilla.WsInvisible)
         self.setIndentationGuides(settings.SHOW_INDENTATION_GUIDE)
         self.setEolVisibility(settings.USE_PLATFORM_END_OF_LINE)
+        self.SendScintilla(QsciScintilla.SCI_SETENDATLASTLINE,
+                           settings.END_AT_LAST_LINE)
 
     def _update_file_metadata(self):
         """Update the info of bookmarks, breakpoint and checkers."""
