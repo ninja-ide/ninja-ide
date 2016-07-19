@@ -44,11 +44,11 @@ class MiniMap(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_SETREADONLY, 1)
         self.SendScintilla(QsciScintilla.SCI_HIDESELECTION, 1)
         self.SendScintilla(QsciScintilla.SCI_SETCURSOR, 8)
-        self.SendScintilla(QsciScintilla.SCI_SETMARGINWIDTHN, 1, 1)
-        self.setMarginsBackgroundColor(QColor(
-            resources.CUSTOM_SCHEME.get(
-                'EditorBackground',
-                resources.COLOR_SCHEME.get('EditorBackground'))))
+        # Hide markers
+        for i in range(1, 5):
+            self.SendScintilla(
+                QsciScintilla.SCI_MARKERDEFINE, i, QsciScintilla.SC_MARK_EMPTY)
+        self.SendScintilla(QsciScintilla.SCI_SETMARGINWIDTHN, 1, 0)
 
         self.setMouseTracking(True)
 
