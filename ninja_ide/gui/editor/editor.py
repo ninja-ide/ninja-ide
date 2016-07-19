@@ -615,7 +615,7 @@ class Editor(QsciScintilla):
 
     def set_font(self, font):
         self.__font = font
-        self.setFont(font)
+        self.lexer.setFont(font)
         self._show_line_numbers()
         background = resources.CUSTOM_SCHEME.get(
             'SidebarBackground',
