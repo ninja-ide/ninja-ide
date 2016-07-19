@@ -47,7 +47,7 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
-#from ninja_ide.gui.editor import minimap
+from ninja_ide.gui.editor import minimap
 from ninja_ide.extensions import handlers
 
 from PyQt4.Qsci import QsciScintilla  # , QsciCommand
@@ -258,9 +258,9 @@ class Editor(QsciScintilla):
             SIGNAL("ns_preferences_editor_showIndentationGuide(PyQt_PyObject)"),
             self.set_flags)
         #TODO: figure it out it doesn´t work if gets shown after init
-        ##self.connect(ninjaide,
-            ##SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
-            ##self._load_minimap)
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
+            self._load_minimap)
         self.connect(
             ninjaide,
             SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
@@ -346,6 +346,8 @@ class Editor(QsciScintilla):
             self.markerDelete(nline, self._fold_collapsed_marker)
             self.markerAdd(nline, self._fold_expanded_marker)
             self.foldLine(nline)
+            if self._mini:
+                self._mini.fold(nline)
         elif nline in self.foldable_lines:
             self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT,
                                self.__indicator_folded)
@@ -354,6 +356,8 @@ class Editor(QsciScintilla):
             self.markerDelete(nline, self._fold_expanded_marker)
             self.markerAdd(nline, self._fold_collapsed_marker)
             self.foldLine(nline)
+            if self._mini:
+                self._mini.fold(nline)
         else:
             self.handle_bookmarks_breakpoints(nline, modifiers)
 
@@ -392,7 +396,7 @@ class Editor(QsciScintilla):
         painted_lines = []
         for items in checkers:
             checker, color, _ = items
-            color = color.replace("#","")
+            color = color.replace("#", "")
             lines = list(checker.checks.keys())
             # Set current
             self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT,
@@ -401,7 +405,7 @@ class Editor(QsciScintilla):
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE,
                                0, len(self.text()))
             # Set Color
-            color = color.replace("#","")
+            color = color.replace("#", "")
             self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                                indicator_index, int(color, 16))
             # Set Style
@@ -467,21 +471,21 @@ class Editor(QsciScintilla):
                     self.markerAdd(line, self._fold_expanded_marker)
 
     def _load_minimap(self, show):
-        pass
-        #if show:
-            #self._mini = minimap.MiniMap(self)
-            ##self._mini.set_code(self.toPlainText())
-            #self._mini.setDocument(self.document())
-            #self._mini.setLexer(self.lexer)
-            #self._mini.setReadOnly(True)
-            #for i in range(100):
-                #self._mini.zoomOut()
-            ##FIXME: register syntax
-            #self._mini.show()
-        #else:
-            #self._mini.shutdown()
+        if show and self._mini is None:
+            self._mini = minimap.MiniMap(self)
+            # Signals
+            self.SCN_UPDATEUI.connect(self._mini.scroll_map)
+            self.SCN_ZOOM.connect(self._mini.slider.update_position)
+            self._mini.setDocument(self.document())
+            self._mini.setLexer(self.lexer)
+            #FIXME: register syntax
+            self._mini.show()
+            self._mini.adjust_to_parent()
+        elif not show and self._mini is not None:
+            self._mini.shutdown()
             #self._mini.deleteLater()
-            #self._mini = None
+            self._mini.setParent(None)
+            self._mini = None
 
     #def __retreat_to_keywords(self, event):
         #"""Unindent some kind of blocks if needed."""
@@ -867,7 +871,7 @@ class Editor(QsciScintilla):
         if text in list(settings.BRACES.values()):
             line, index = self.getCursorPosition()
             line_text = self.text(line)
-            portion = line_text[index-1:index+1]
+            portion = line_text[index - 1:index + 1]
             brace_open = portion[0]
             brace_close = (len(portion) > 1) and portion[1] or None
             balance = BRACE_DICT.get(brace_open, None) == text == brace_close

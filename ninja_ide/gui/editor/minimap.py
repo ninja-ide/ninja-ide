@@ -14,146 +14,158 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-import sys
 
 from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QTextOption
-from PyQt4.QtGui import QGraphicsOpacityEffect
-from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QPen
+from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QPropertyAnimation
-
+from PyQt4.QtGui import QGraphicsOpacityEffect
+from PyQt4.QtCore import Qt
 from PyQt4.Qsci import QsciScintilla
 
-from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide import resources
 
-
-#QGraphicsOpacityEffect doesn't work in mac cause a Qt Issue: QTBUG-15367
-ACTIVATE_OPACITY = True if sys.platform != 'darwin' else False
+ACTIVATE_OPACITY = True if not settings.IS_MAC_OS else False
 
 
 class MiniMap(QsciScintilla):
 
-    def __init__(self, parent):
-        super(MiniMap, self).__init__(parent)
-        #self.setWordWrapMode(QTextOption.NoWrap)
-        #self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        #self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setReadOnly(True)
+    def __init__(self, editor):
+        super(MiniMap, self).__init__(editor)
+        self._editor = editor
+        self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE, 0)
         self.SendScintilla(QsciScintilla.SCI_SETBUFFEREDDRAW, 0)
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
         self.SendScintilla(QsciScintilla.SCI_SETVSCROLLBAR, 0)
-        self.setMarginWidth(1, 0)
-        self.setFolding(self.NoFoldStyle, 2)
-        #self.setCenterOnScroll(True)
+        self.SendScintilla(QsciScintilla.SCI_SETZOOM, -10)
+        self.SendScintilla(QsciScintilla.SCI_SETREADONLY, 1)
+        self.SendScintilla(QsciScintilla.SCI_HIDESELECTION, 1)
+        self.SendScintilla(QsciScintilla.SCI_SETCURSOR, 8)
+        self.SendScintilla(QsciScintilla.SCI_SETMARGINWIDTHN, 1, 1)
+        self.setMarginsBackgroundColor(QColor(
+            resources.CUSTOM_SCHEME.get(
+                'EditorBackground',
+                resources.COLOR_SCHEME.get('EditorBackground'))))
+
         self.setMouseTracking(True)
-        #self.viewport().setCursor(Qt.PointingHandCursor)
-        #self.setTextInteractionFlags(Qt.NoTextInteraction)
-
-        self._parent = parent
-        #self.highlighter = None
-        #self.lines_count = 0
-
-        self.connect(self._parent, SIGNAL("updateRequest(const QRect&, int)"),
-            self.update_visible_area)
 
         if ACTIVATE_OPACITY:
             self.goe = QGraphicsOpacityEffect()
             self.setGraphicsEffect(self.goe)
             self.goe.setOpacity(settings.MINIMAP_MIN_OPACITY)
             self.animation = QPropertyAnimation(self.goe, "opacity")
+            self.animation.setDuration(300)
 
-        #self.slider = SliderArea(self)
-        #self.slider.show()
-
-    def shutdown(self):
-        self.disconnect(self._parent,
-            SIGNAL("updateRequest(const QRect&, int)"),
-            self.update_visible_area)
-
-    def __calculate_max(self):
-        #line_height = self._parent.cursorRect().height()
-        #if line_height > 0:
-            #self.lines_count = self._parent.viewport().height() / line_height
-        #self.slider.update_position()
-        self.update_visible_area()
-
-    def set_code(self, source):
-        #self.setPlainText(source)
-        self.__calculate_max()
+        self.slider = SliderArea(self)
+        self.slider.show()
 
     def adjust_to_parent(self):
-        self.setFixedHeight(self._parent.height())
-        self.setFixedWidth(self._parent.width() * settings.SIZE_PROPORTION)
-        x = self._parent.width() - self.width()
+        self.setFixedHeight(self._editor.height())
+        self.setFixedWidth(self._editor.width() * settings.SIZE_PROPORTION)
+        x = self._editor.width() - self.width()
         self.move(x, 0)
-        #fontsize = int(self.width() / settings.MARGIN_LINE)
-        #if fontsize < 1:
-            #fontsize = 1
-        #font = self.document().defaultFont()
-        #font.setPointSize(fontsize)
-        #self.setFont(font)
-        self.__calculate_max()
+        self.slider.update_position()
 
-    def update_visible_area(self):
-        pass
-        #if not self.slider.pressed:
-        #line_number = self._parent.firstVisibleBlock().blockNumber()
-        #block = self.document().findBlockByLineNumber(line_number)
-        #cursor = self.textCursor()
-        #cursor.setPosition(block.position())
-        #rect = self.cursorRect(cursor)
-        #self.setTextCursor(cursor)
-            #self.slider.move_slider(rect.y())
+    def shutdown(self):
+        self._editor.SCN_UPDATEUI.disconnect()
+        self._editor.SCN_ZOOM.disconnect()
 
-    #def enterEvent(self, event):
-        #if ACTIVATE_OPACITY:
-            #self.animation.setDuration(300)
-            #self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
-            #self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
-            #self.animation.start()
+    def fold(self, line):
+        self.foldLine(line)
 
-    #def leaveEvent(self, event):
-        #if ACTIVATE_OPACITY:
-            #self.animation.setDuration(300)
-            #self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
-            #self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
-            #self.animation.start()
+    def scroll_map(self):
+        # Visible document line for the code view
+        first_visible_line = self._editor.SendScintilla(
+            QsciScintilla.SCI_GETFIRSTVISIBLELINE)
+        first_doc_line = self._editor.SendScintilla(
+            QsciScintilla.SCI_DOCLINEFROMVISIBLE, first_visible_line)
+        lines_on_screen = self._editor.SendScintilla(
+            QsciScintilla.SCI_LINESONSCREEN, first_visible_line)
+        last_doc_line = self._editor.SendScintilla(
+            QsciScintilla.SCI_DOCLINEFROMVISIBLE,
+            first_visible_line + lines_on_screen)
 
-    #def mousePressEvent(self, event):
-        #super(MiniMap, self).mousePressEvent(event)
-        #cursor = self.cursorForPosition(event.pos())
-        #self._parent.jump_to_line(cursor.blockNumber())
+        # Visible document line for the map view
+        first_visible_line_map = self.SendScintilla(
+            QsciScintilla.SCI_GETFIRSTVISIBLELINE)
+        lines_on_map = self.SendScintilla(
+            QsciScintilla.SCI_LINESONSCREEN, first_visible_line_map)
+        last_map_line = self.SendScintilla(
+            QsciScintilla.SCI_DOCLINEFROMVISIBLE,
+            first_visible_line_map + lines_on_map)
 
-    #def resizeEvent(self, event):
-        #super(MiniMap, self).resizeEvent(event)
-        #self.slider.update_position()
+        # If part of editor view is out of map, then scroll map
+        if last_map_line < last_doc_line:
+            self.SendScintilla(QsciScintilla.SCI_GOTOLINE, last_doc_line)
+        else:
+            self.SendScintilla(QsciScintilla.SCI_GOTOLINE, first_doc_line)
 
-    #def scroll_area(self, pos_parent, pos_slider):
-        #pos_parent.setY(pos_parent.y() - pos_slider.y())
-        #cursor = self.cursorForPosition(pos_parent)
-        #self._parent.verticalScrollBar().setValue(cursor.blockNumber())
+        higher_pos = self._editor.SendScintilla(
+            QsciScintilla.SCI_POSITIONFROMPOINT, 0, 0)
+        y = self.SendScintilla(
+            QsciScintilla.SCI_POINTYFROMPOSITION, 0, higher_pos)
+        self.slider.move(0, y)
+        self._current_scroll_value = self._editor.verticalScrollBar().value()
 
-    #def wheelEvent(self, event):
-        #super(MiniMap, self).wheelEvent(event)
-        #self._parent.wheelEvent(event)
+    def scroll_area(self, pos_parent, pos_slider):
+        pos_parent.setY(pos_parent.y() - pos_slider.y())
+        line = self.__line_from_position(pos_parent)
+        self._editor.verticalScrollBar().setValue(line)
+
+    def mousePressEvent(self, event):
+        super(MiniMap, self).mousePressEvent(event)
+        line = self.__line_from_position(event.pos())
+        self._editor.jump_to_line(line)
+
+        # Go to center
+        los = self._editor.SendScintilla(
+            QsciScintilla.SCI_LINESONSCREEN) / 2
+        scroll_value = self._editor.verticalScrollBar().value()
+
+        if self._current_scroll_value < scroll_value:
+            self._editor.verticalScrollBar().setValue(scroll_value + los)
+        else:
+            self._editor.verticalScrollBar().setValue(scroll_value - los)
+
+    def __line_from_position(self, point):
+        position = self.SendScintilla(QsciScintilla.SCI_POSITIONFROMPOINT,
+                                      point.x(), point.y())
+        return self.SendScintilla(QsciScintilla.SCI_LINEFROMPOSITION, position)
+
+    def enterEvent(self, event):
+        if ACTIVATE_OPACITY:
+            self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
+            self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
+            self.animation.start()
+
+    def leaveEvent(self, event):
+        if ACTIVATE_OPACITY:
+            self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
+            self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
+            self.animation.start()
+
+    def wheelEvent(self, event):
+        super(MiniMap, self).wheelEvent(event)
+        self._editor.wheelEvent(event)
+
+    def resizeEvent(self, event):
+        super(MiniMap, self).resizeEvent(event)
+        self.slider.update_position()
 
 
 class SliderArea(QFrame):
 
-    def __init__(self, parent):
-        super(SliderArea, self).__init__(parent)
-        self._parent = parent
+    def __init__(self, minimap):
+        super(SliderArea, self).__init__(minimap)
+        self._minimap = minimap
+        self.pressed = False
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
         color = resources.CUSTOM_SCHEME.get(
-            'CurrentLine', resources.COLOR_SCHEME['CurrentLine'])
+            'MinimapVisibleArea', resources.COLOR_SCHEME['MinimapVisibleArea'])
         if ACTIVATE_OPACITY:
             self.setStyleSheet("background: %s;" % color)
             self.goe = QGraphicsOpacityEffect()
@@ -162,8 +174,24 @@ class SliderArea(QFrame):
         else:
             self.setStyleSheet("background: transparent;")
 
+    def mousePressEvent(self, event):
+        super(SliderArea, self).mousePressEvent(event)
+        self.pressed = True
+        self.setCursor(Qt.ClosedHandCursor)
+
+    def mouseReleaseEvent(self, event):
+        super(SliderArea, self).mouseReleaseEvent(event)
         self.pressed = False
-        self.__scroll_margins = None
+        self.setCursor(Qt.OpenHandCursor)
+
+    def update_position(self):
+        font_size = round(self._minimap.font().pointSize() / 2.5)
+        lines_count = self._minimap._editor.SendScintilla(
+            QsciScintilla.SCI_LINESONSCREEN)
+        height = lines_count * font_size
+        self.setFixedHeight(height)
+        self.setFixedWidth(self._minimap.width())
+        self.__scroll_margins = (height, self._minimap.height() - height)
 
     def paintEvent(self, event):
         """Paint over the widget to overlay its content."""
@@ -178,26 +206,6 @@ class SliderArea(QFrame):
             painter.end()
         super(SliderArea, self).paintEvent(event)
 
-    def update_position(self):
-        font_size = QFontMetrics(self._parent.font()).height()
-        height = self._parent.lines_count * font_size
-        self.setFixedHeight(height)
-        self.setFixedWidth(self._parent.width())
-        self.__scroll_margins = (height, self._parent.height() - height)
-
-    def move_slider(self, y):
-        self.move(0, y)
-
-    def mousePressEvent(self, event):
-        super(SliderArea, self).mousePressEvent(event)
-        self.pressed = True
-        self.setCursor(Qt.ClosedHandCursor)
-
-    def mouseReleaseEvent(self, event):
-        super(SliderArea, self).mouseReleaseEvent(event)
-        self.pressed = False
-        self.setCursor(Qt.OpenHandCursor)
-
     def mouseMoveEvent(self, event):
         super(SliderArea, self).mouseMoveEvent(event)
         if self.pressed:
@@ -205,11 +213,11 @@ class SliderArea(QFrame):
             y = pos.y() - (self.height() / 2)
             if y < 0:
                 y = 0
-            if y < self.__scroll_margins[0]:
-                self._parent.verticalScrollBar().setSliderPosition(
-                    self._parent.verticalScrollBar().sliderPosition() - 2)
+            if y == 0 and y < self.__scroll_margins[0]:
+                self._minimap.verticalScrollBar().setSliderPosition(
+                    self._minimap.verticalScrollBar().sliderPosition() - 2)
             elif y > self.__scroll_margins[1]:
-                self._parent.verticalScrollBar().setSliderPosition(
-                    self._parent.verticalScrollBar().sliderPosition() + 2)
+                self._minimap.verticalScrollBar().setSliderPosition(
+                    self._minimap.verticalScrollBar().sliderPosition() + 2)
             self.move(0, y)
-            self._parent.scroll_area(pos, event.pos())
+            self._minimap.scroll_area(pos, event.pos())

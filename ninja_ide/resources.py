@@ -128,6 +128,7 @@ COLOR_SCHEME = {
     "EditorSelectionColor": "#000000",
     "EditorSelectionBackground": "#aaaaaa",
     "CurrentLine": "#313233",
+    "MinimapVisibleArea": "#e20000",
     "SelectedWord": "#a8ff60",
     "Pending": "#FF0000",
     "SelectedWordBackground": "#009B00",
