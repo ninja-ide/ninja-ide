@@ -77,41 +77,41 @@ class MiniMap(QsciScintilla):
         self.foldLine(line)
 
     def scroll_map(self):
-        # Visible document line for the code view
         first_visible_line = self._editor.SendScintilla(
             QsciScintilla.SCI_GETFIRSTVISIBLELINE)
-        first_doc_line = self._editor.SendScintilla(
-            QsciScintilla.SCI_DOCLINEFROMVISIBLE, first_visible_line)
+        num_doc_lines = self._editor.SendScintilla(
+            QsciScintilla.SCI_GETLINECOUNT)
+        num_visible_lines = self._editor.SendScintilla(
+            QsciScintilla.SCI_DOCLINEFROMVISIBLE, num_doc_lines)
         lines_on_screen = self._editor.SendScintilla(
-            QsciScintilla.SCI_LINESONSCREEN, first_visible_line)
-        last_doc_line = self._editor.SendScintilla(
-            QsciScintilla.SCI_DOCLINEFROMVISIBLE,
-            first_visible_line + lines_on_screen)
+            QsciScintilla.SCI_LINESONSCREEN)
 
-        # Visible document line for the map view
-        first_visible_line_map = self.SendScintilla(
-            QsciScintilla.SCI_GETFIRSTVISIBLELINE)
-        lines_on_map = self.SendScintilla(
-            QsciScintilla.SCI_LINESONSCREEN, first_visible_line_map)
-        last_map_line = self.SendScintilla(
-            QsciScintilla.SCI_DOCLINEFROMVISIBLE,
-            first_visible_line_map + lines_on_map)
+        if num_visible_lines > lines_on_screen:
+            last_top_visible_line = num_visible_lines - lines_on_screen
+            num_map_visible_lines = self.SendScintilla(
+                QsciScintilla.SCI_DOCLINEFROMVISIBLE, num_doc_lines)
+            # Lines on screen map
+            lines_on_screenm = self.SendScintilla(
+                QsciScintilla.SCI_LINESONSCREEN)
+            # Last top visible line on map
+            last_top_visible_linem = num_map_visible_lines - lines_on_screenm
+            # Portion covered
+            portion = first_visible_line / last_top_visible_line
+            first_visible_linem = round(last_top_visible_linem * portion)
+            # Scroll
+            self.verticalScrollBar().setValue(first_visible_linem)
 
-        # If part of editor view is out of map, then scroll map
-        if last_map_line < last_doc_line:
-            self.SendScintilla(QsciScintilla.SCI_GOTOLINE, last_doc_line)
-        else:
-            self.SendScintilla(QsciScintilla.SCI_GOTOLINE, first_doc_line)
+            # Move slider
+            higher_pos = self._editor.SendScintilla(
+                QsciScintilla.SCI_POSITIONFROMPOINT, 0, 0)
+            y = self.SendScintilla(
+                QsciScintilla.SCI_POINTYFROMPOSITION, 0, higher_pos)
 
-        higher_pos = self._editor.SendScintilla(
-            QsciScintilla.SCI_POSITIONFROMPOINT, 0, 0)
-        y = self.SendScintilla(
-            QsciScintilla.SCI_POINTYFROMPOSITION, 0, higher_pos)
-        self.slider.move(0, y)
+            self.slider.move(0, y)
+
         self._current_scroll_value = self._editor.verticalScrollBar().value()
 
-    def scroll_area(self, pos_parent, pos_slider):
-        pos_parent.setY(pos_parent.y() - pos_slider.y())
+    def scroll_area(self, pos_parent):
         line = self.__line_from_position(pos_parent)
         self._editor.verticalScrollBar().setValue(line)
 
@@ -121,8 +121,7 @@ class MiniMap(QsciScintilla):
         self._editor.jump_to_line(line)
 
         # Go to center
-        los = self._editor.SendScintilla(
-            QsciScintilla.SCI_LINESONSCREEN) / 2
+        los = self._editor.SendScintilla(QsciScintilla.SCI_LINESONSCREEN) / 2
         scroll_value = self._editor.verticalScrollBar().value()
 
         if self._current_scroll_value < scroll_value:
@@ -191,17 +190,17 @@ class SliderArea(QFrame):
         height = lines_count * font_size
         self.setFixedHeight(height)
         self.setFixedWidth(self._minimap.width())
-        self.__scroll_margins = (height, self._minimap.height() - height)
 
     def paintEvent(self, event):
         """Paint over the widget to overlay its content."""
+
         if not ACTIVATE_OPACITY:
             painter = QPainter()
             painter.begin(self)
             painter.setRenderHint(QPainter.TextAntialiasing, True)
             painter.setRenderHint(QPainter.Antialiasing, True)
             painter.fillRect(event.rect(), QBrush(
-                QColor(255, 255, 255, 80)))
+                QColor(226, 0, 0, 80)))
             painter.setPen(QPen(Qt.NoPen))
             painter.end()
         super(SliderArea, self).paintEvent(event)
@@ -210,14 +209,4 @@ class SliderArea(QFrame):
         super(SliderArea, self).mouseMoveEvent(event)
         if self.pressed:
             pos = self.mapToParent(event.pos())
-            y = pos.y() - (self.height() / 2)
-            if y < 0:
-                y = 0
-            if y == 0 and y < self.__scroll_margins[0]:
-                self._minimap.verticalScrollBar().setSliderPosition(
-                    self._minimap.verticalScrollBar().sliderPosition() - 2)
-            elif y > self.__scroll_margins[1]:
-                self._minimap.verticalScrollBar().setSliderPosition(
-                    self._minimap.verticalScrollBar().sliderPosition() + 2)
-            self.move(0, y)
-            self._minimap.scroll_area(pos, event.pos())
+            self._minimap.scroll_area(pos)
