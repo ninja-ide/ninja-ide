@@ -58,4 +58,4 @@ Piece of cake, huh?
 
 
 ## License
--   **GPLv3+** *(GPLv3 or any other version later published by FSF at your option)*
+-   **GPLv3+** *(GPLv3 or any other later version published by FSF at your option)*
