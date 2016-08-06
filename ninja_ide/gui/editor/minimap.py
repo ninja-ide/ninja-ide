@@ -111,9 +111,9 @@ class MiniMap(QsciScintilla):
 
         self._current_scroll_value = self._editor.verticalScrollBar().value()
 
-    def scroll_area(self, pos_parent):
+    def scroll_area(self, pos_parent, line_area):
         line = self.__line_from_position(pos_parent)
-        self._editor.verticalScrollBar().setValue(line)
+        self._editor.verticalScrollBar().setValue(line - line_area)
 
     def mousePressEvent(self, event):
         super(MiniMap, self).mousePressEvent(event)
@@ -177,6 +177,16 @@ class SliderArea(QFrame):
         super(SliderArea, self).mousePressEvent(event)
         self.pressed = True
         self.setCursor(Qt.ClosedHandCursor)
+        # Get line number from lines on screen
+        # This is to moving the slider from the point where you clicked
+        first_visible_line = self._minimap._editor.SendScintilla(
+            QsciScintilla.SCI_GETFIRSTVISIBLELINE)
+        pos_parent = self.mapToParent(event.pos())
+        position = self._minimap.SendScintilla(
+            QsciScintilla.SCI_POSITIONFROMPOINT, pos_parent.x(), pos_parent.y())
+        line = self._minimap.SendScintilla(
+            QsciScintilla.SCI_LINEFROMPOSITION, position)
+        self.line_on_visible_area = (line - first_visible_line) + 1
 
     def mouseReleaseEvent(self, event):
         super(SliderArea, self).mouseReleaseEvent(event)
@@ -209,4 +219,4 @@ class SliderArea(QFrame):
         super(SliderArea, self).mouseMoveEvent(event)
         if self.pressed:
             pos = self.mapToParent(event.pos())
-            self._minimap.scroll_area(pos)
+            self._minimap.scroll_area(pos, self.line_on_visible_area)
