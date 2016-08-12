@@ -1032,7 +1032,7 @@ class Editor(QsciScintilla):
         reset_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
         self.__positions = []
         self.SendScintilla(QsciScintilla.SCI_CLEARSELECTIONS)
-        self.SendScintilla(QsciScintilla.SCI_ADDSELECTION,
+        self.SendScintilla(QsciScintilla.SCI_SETSELECTION,
                            reset_pos, reset_pos)
 
     def keyPressEvent(self, event):
