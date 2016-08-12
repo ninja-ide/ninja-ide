@@ -1047,6 +1047,10 @@ class Editor(QsciScintilla):
         self.selected_text = self.selectedText()
 
         self._check_auto_copy_cut(event)
+        # Clear additional carets if undo
+        undo = event.matches(QKeySequence.Undo)
+        if undo and self.__positions:
+            self.clear_additional_carets()
 
         super(Editor, self).keyPressEvent(event)
         if event.key() == Qt.Key_Escape:
