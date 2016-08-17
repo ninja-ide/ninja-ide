@@ -131,6 +131,9 @@ class Editor(QsciScintilla):
 
         # Sets QScintilla into unicode mode
         self.SendScintilla(QsciScintilla.SCI_SETCODEPAGE, 65001)
+        # Enable multiple selection
+        self.SendScintilla(QsciScintilla.SCI_SETMULTIPLESELECTION, 1)
+        self.SendScintilla(QsciScintilla.SCI_SETADDITIONALSELECTIONTYPING, 1)
 
     def __init__(self, neditable):
         super(Editor, self).__init__()
@@ -205,6 +208,8 @@ class Editor(QsciScintilla):
         self._indent = 0
         self.__font = None
         self.__encoding = None
+        self.__positions = []  # Caret positions
+        self.SCN_CHARADDED.connect(self._on_char_added)
 
         #FIXME these should be language bound
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
@@ -676,6 +681,40 @@ class Editor(QsciScintilla):
             self._cursor_line = self._cursor_index = -1
             self.setCursorPosition(line, index)
 
+    def add_caret(self):
+        """ Adds additional caret in current position """
+
+        cur_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
+        if cur_pos not in self.__positions:
+            self.__positions.append(cur_pos)
+
+        # Same position arguments is use for just adding carets
+        # rather than selections.
+        for e, pos in enumerate(self.__positions):
+            if e == 0:
+                # The first selection should be added with SCI_SETSELECTION
+                # and later selections added with SCI_ADDSELECTION
+                self.SendScintilla(QsciScintilla.SCI_CLEARSELECTIONS)
+                self.SendScintilla(QsciScintilla.SCI_SETSELECTION, pos, pos)
+            else:
+                self.SendScintilla(QsciScintilla.SCI_ADDSELECTION, pos, pos)
+
+    def _on_char_added(self):
+        """
+        When char is added, cursors change position. This function obtains
+        new positions and adds them to the list of positions.
+        """
+
+        # For rectangular selection
+        if not self.__positions:
+            return
+        selections = self.SendScintilla(QsciScintilla.SCI_GETSELECTIONS)
+        if selections > 1:
+            for sel in range(selections):
+                new_pos = self.SendScintilla(
+                    QsciScintilla.SCI_GETSELECTIONNCARET, sel)
+                self.__positions[sel] = new_pos
+
     def indent_less(self):
         if self.hasSelectedText():
             self.SendScintilla(QsciScintilla.SCI_BEGINUNDOACTION, 1)
@@ -989,6 +1028,13 @@ class Editor(QsciScintilla):
                 self.insertAt(symbol, line, index)
             self.insertAt(self.selected_text, line, index)
 
+    def clear_additional_carets(self):
+        reset_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
+        self.__positions = []
+        self.SendScintilla(QsciScintilla.SCI_CLEARSELECTIONS)
+        self.SendScintilla(QsciScintilla.SCI_SETSELECTION,
+                           reset_pos, reset_pos)
+
     def keyPressEvent(self, event):
         #Completer pre key event
         #if self.completer.process_pre_key_event(event):
@@ -1001,8 +1047,23 @@ class Editor(QsciScintilla):
         self.selected_text = self.selectedText()
 
         self._check_auto_copy_cut(event)
+        # Clear additional carets if undo
+        undo = event.matches(QKeySequence.Undo)
+        if undo and self.__positions:
+            self.clear_additional_carets()
 
         super(Editor, self).keyPressEvent(event)
+        if event.key() == Qt.Key_Escape:
+            self.clear_additional_carets()
+        elif event.key() in (Qt.Key_Left, Qt.Key_Right,
+                             Qt.Key_Up, Qt.Key_Down):
+            if self.__positions:
+                self.clear_additional_carets()
+
+        if event.modifiers() == Qt.AltModifier:
+            cur_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
+            if not self.__positions:
+                self.__positions = [cur_pos]
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
@@ -1110,6 +1171,10 @@ class Editor(QsciScintilla):
         super(Editor, self).mousePressEvent(event)
         if event.modifiers() == Qt.ControlModifier:
             self.go_to_definition()
+        elif event.modifiers() == Qt.AltModifier:
+            self.add_caret()
+        else:
+            self.clear_additional_carets()
 
         line, _ = self.getCursorPosition()
         if line != self._last_block_position:
