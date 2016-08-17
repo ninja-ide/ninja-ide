@@ -904,7 +904,7 @@ class _MainContainer(QWidget):
             return False
         try:
             filters = '(*.py);;(*.*)'
-            if editorWidget.file_path:
+            if editorWidget.file_path:  # existing file
                 ext = file_manager.get_file_extension(editorWidget.file_path)
                 if ext != 'py':
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
@@ -917,9 +917,13 @@ class _MainContainer(QWidget):
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
 
+            ext = file_manager.get_file_extension(fileName)
+            if not ext:
+                fileName = '%s.%s' % (fileName, 'py',)
+
             editorWidget.neditable.save_content(path=fileName)
-            editorWidget.register_syntax(
-                file_manager.get_file_extension(fileName))
+            # editorWidget.register_syntax(
+            #     file_manager.get_file_extension(fileName))
 
             self.emit(SIGNAL("fileSaved(QString)"),
                             (self.tr("File Saved: %s") % fileName))
