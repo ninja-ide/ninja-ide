@@ -288,7 +288,6 @@ Rectangle {
                 anchors {
                     right: parent.right
                     top: col.bottom
-                    margins: 5
                 }
                 spacing: 10
                 Repeater {
