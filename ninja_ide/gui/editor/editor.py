@@ -18,7 +18,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import re
-import math
 import bisect
 
 from tokenize import generate_tokens, TokenError
@@ -29,7 +28,6 @@ except:
     from io import StringIO
 #lint:enable
 
-from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QInputDialog
@@ -452,10 +450,11 @@ class Editor(QsciScintilla):
 
     def _update_sidebar(self):
         # Margin 0 is used for line numbers
-        fontmetrics = QFontMetricsF(self.__font)
-        maxLine = math.ceil(math.log10(self.lines()))
         if settings.SHOW_LINE_NUMBERS:
-            self.setMarginWidth(0, fontmetrics.width('0' * int(maxLine)) + 10)
+            nwidth = len(str(self.lines()))  # Width number
+            text_width = self.SendScintilla(QsciScintilla.SCI_TEXTWIDTH,
+                                            0, b'0')
+            self.setMarginWidth(0, nwidth * text_width + 10)
         else:
             self.setMarginWidth(0, 0)
 
