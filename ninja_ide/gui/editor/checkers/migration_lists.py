@@ -28,7 +28,6 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QTextCursor
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
@@ -87,14 +86,15 @@ class MigrationWidget(QDialog):
         main_container = IDE.get_service('main_container')
         if main_container:
             editorWidget = main_container.get_current_editor()
-            block_start = editorWidget.document().findBlockByLineNumber(lineno)
-            block_end = editorWidget.document().findBlockByLineNumber(lineno +
-                                                                      remove)
-            cursor = editorWidget.textCursor()
-            cursor.setPosition(block_start.position())
-            cursor.setPosition(block_end.position(), QTextCursor.KeepAnchor)
-            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-            cursor.insertText(code[:-1])
+            position = editorWidget.SendScintilla(
+                editorWidget.SCI_POSITIONFROMLINE, lineno)
+            curpos = editorWidget.SendScintilla(editorWidget.SCI_GETCURRENTPOS)
+            if curpos != position:
+                editorWidget.SendScintilla(editorWidget.SCI_GOTOPOS, position)
+            endpos = editorWidget.SendScintilla(
+                editorWidget.SCI_GETLINEENDPOSITION, lineno)
+            editorWidget.SendScintilla(editorWidget.SCI_SETCURRENTPOS, endpos)
+            editorWidget.replaceSelectedText(code[:-1])
 
     def load_suggestion(self, item):
         """Take an argument item and load the suggestion."""
