@@ -451,10 +451,7 @@ class Editor(QsciScintilla):
     def _update_sidebar(self):
         # Margin 0 is used for line numbers
         if settings.SHOW_LINE_NUMBERS:
-            nwidth = len(str(self.lines()))  # Width number
-            text_width = self.SendScintilla(QsciScintilla.SCI_TEXTWIDTH,
-                                            0, b'0')
-            self.setMarginWidth(0, nwidth * text_width + 10)
+            self.setMarginWidth(0, '0' * (len(str(self.lines())) + 1))
         else:
             self.setMarginWidth(0, 0)
 
