@@ -114,14 +114,25 @@ def _parse_function(symbol, with_docstrings):
             argument += '=' + arg_default
         arguments.append(argument)
     func_name += ', '.join(reversed(arguments))
+
     if symbol.args.vararg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '*' + symbol.args.vararg
+        func_name += '*'
+        try:
+            # Python 2
+            func_name += symbol.args.vararg
+        except:
+            # Python 3
+            func_name += symbol.args.vararg.arg
     if symbol.args.kwarg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '**' + symbol.args.kwarg
+        func_name += '**'
+        try:
+            func_name += symbol.args.kwarg
+        except:
+            func_name += symbol.args.kwarg.arg
     func_name += ')'
 
     for sym in symbol.body:
@@ -287,11 +298,19 @@ def _parse_function_simplified(symbol, member_of=""):
     if symbol.args.vararg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '*' + symbol.args.vararg
+        func_name += '*'
+        try:
+            func_name += symbol.args.vararg
+        except:
+            func_name += symbol.args.vararg.arg
     if symbol.args.kwarg is not None:
         if not func_name.endswith('('):
             func_name += ', '
-        func_name += '**' + symbol.args.kwarg
+        func_name += '**'
+        try:
+            func_name += symbol.args.kwarg
+        except:
+            func_name += symbol.args.kwarg.arg
     func_name += ')'
 
     for sym in symbol.body:
