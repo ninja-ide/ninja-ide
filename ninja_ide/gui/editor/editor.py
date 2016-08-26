@@ -276,6 +276,10 @@ class Editor(QsciScintilla):
             ninjaide,
             SIGNAL("ns_preferences_editor_showLineNumbers(PyQt_PyObject)"),
             self._show_line_numbers)
+        self.connect(ninjaide,
+                     SIGNAL(
+            "ns_preferences_editor_errorsUnderlineBackground(PyQt_PyObject)"),
+                self._change_indicator_style)
         #self.connect(
             #ninjaide,
             #SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
@@ -382,6 +386,17 @@ class Editor(QsciScintilla):
 
         self._save_breakpoints_bookmarks()
 
+    def _change_indicator_style(self, underline):
+        ncheckers = len(self._neditable.sorted_checkers)
+        indicator_style = QsciScintilla.INDIC_SQUIGGLE
+        if not underline:
+            indicator_style = QsciScintilla.INDIC_STRAIGHTBOX
+        indicator_index = 4
+        for i in range(ncheckers):
+            self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE,
+                               indicator_index, indicator_style)
+            indicator_index += 1
+
     def _save_breakpoints_bookmarks(self):
         if self.bookmarks and not self._neditable.new_document:
             settings.BOOKMARKS[self._neditable.file_path] = self.bookmarks
@@ -412,8 +427,11 @@ class Editor(QsciScintilla):
             self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                                indicator_index, int(color, 16))
             # Set Style
+            indicator_style = QsciScintilla.INDIC_SQUIGGLE
+            if not settings.UNDERLINE_NOT_BACKGROUND:
+                indicator_style = QsciScintilla.INDIC_STRAIGHTBOX
             self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE,
-                               indicator_index, 13)
+                               indicator_index, indicator_style)
             # Paint Lines
             for line in lines:
                 if line in painted_lines:
