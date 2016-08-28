@@ -366,7 +366,7 @@ class LocateSymbolsThread(QThread):
         mtime = int(os.stat(file_path).st_mtime)
         if data is not None and (mtime == int(data[1])):
             try:
-                results = pickle.loads(str(data[2]))
+                results = pickle.loads(data[2])
                 mapping_symbols[file_path] += results
                 return
             except:
