@@ -18,7 +18,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import pyqtSignal
 
 
 class NSettings(QSettings):
@@ -28,6 +28,7 @@ class NSettings(QSettings):
     @signals:
     valueChanged(QString, PyQt_PyObject)
     """
+    valueChanged = pyqtSignal('QString', 'PyQt_PyObject')
 
     def __init__(self, path, fformat=QSettings.IniFormat, prefix=''):
         super(NSettings, self).__init__(path, fformat)
@@ -36,4 +37,4 @@ class NSettings(QSettings):
     def setValue(self, key, value):
         super(NSettings, self).setValue(key, value)
         key = "%s_%s" % (self.__prefix, key)
-        self.emit(SIGNAL("valueChanged(QString, PyQt_PyObject)"), key, value)
+        self.valueChanged.emit(key, value)
