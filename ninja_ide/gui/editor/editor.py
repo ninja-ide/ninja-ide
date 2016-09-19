@@ -414,7 +414,6 @@ class Editor(QsciScintilla):
         painted_lines = []
         for items in checkers:
             checker, color, _ = items
-            color = color.replace("#", "")
             lines = list(checker.checks.keys())
             # Set current
             self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT,
