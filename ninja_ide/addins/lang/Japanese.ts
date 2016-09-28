@@ -423,7 +423,7 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Symbols</source>
-        <translation>Symboles</translation>
+        <translation>シンボル</translation>
     </message>
     <message>
         <source>Projects Disabled</source>
@@ -743,11 +743,11 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     <name>FindInFilesDialog</name>
     <message>
         <source>Main</source>
-        <translation>Principal</translation>
+        <translation>メイン</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Ouvrir</translation>
+        <translation>開く</translation>
     </message>
     <message>
         <source>Filter: </source>
@@ -755,7 +755,7 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Find!</source>
-        <translation>Rechercher !</translation>
+        <translation>検索!</translation>
     </message>
     <message>
         <source>Search for all the words (anywhere in the document, not together).</source>
@@ -763,7 +763,7 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>R&amp;egular Expression</source>
-        <translation>Expr&amp;ession Régulière</translation>
+        <translation>正規表現</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -771,15 +771,15 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Text: </source>
-        <translation>Texte : </translation>
+        <translation>テキスト: </translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Options</translation>
+        <translation>オプション</translation>
     </message>
     <message>
         <source>Replace: </source>
-        <translation>Remplacer : </translation>
+        <translation>置換: </translation>
     </message>
     <message>
         <source>Search by Phrase (Exact Match).</source>
@@ -787,19 +787,19 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Directory: </source>
-        <translation>Répertoire : </translation>
+        <translation>フォルダー: </translation>
     </message>
     <message>
         <source>C&amp;ase sensitive</source>
-        <translation>Sensible à la c&amp;asse</translation>
+        <translation>大文字/小文字を区別</translation>
     </message>
     <message>
         <source>Rec&amp;ursive</source>
-        <translation>Réc&amp;ursif</translation>
+        <translation>サブフォルダ</translation>
     </message>
     <message>
         <source>Open Directory</source>
-        <translation>Ouvrir le Répertoire</translation>
+        <translation>フォルダを開く</translation>
     </message>
 </context>
 <context>
@@ -972,11 +972,11 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     <name>FindInFilesWidget</name>
     <message>
         <source>Stop</source>
-        <translation>停止</translation>
+        <translation>中止</translation>
     </message>
     <message>
         <source>Find!</source>
-        <translation>Trouver !</translation>
+        <translation>検索!</translation>
     </message>
     <message>
         <source>Are you sure you want to replace the content in this files?
@@ -986,11 +986,11 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Clear!</source>
-        <translation>Effacer !</translation>
+        <translation>消去!</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation>Remplacer</translation>
+        <translation>置換</translation>
     </message>
     <message>
         <source>No Results</source>
@@ -1033,15 +1033,15 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Find using word under cursor (%s)</source>
-        <translation>Rechercher le mot sous le curseur (%s)</translation>
+        <translation>カーソルの下の単語を検索 (%s)</translation>
     </message>
     <message>
         <source>Convert selected Text to: UPPER</source>
-        <translation>Convertir le Texte séléctionné en : HAUT DE CASSE</translation>
+        <translation>選択したテキストを大文字に変換 : UPPER</translation>
     </message>
     <message>
         <source>Convert selected Text to: lower</source>
-        <translation>Convertir le Texte sélectionné en : bas de casse</translation>
+        <translation>選択したテキストを小文字に変換 : lower</translation>
     </message>
     <message>
         <source>&amp;Paste (%s+V)</source>
@@ -1053,7 +1053,7 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Convert selected Text to: Title Word</source>
-        <translation>Convertir le texte sélectionné en : Mot Titre</translation>
+        <translation>選択したテキストをタイトル形式に変換 : Title Word</translation>
     </message>
     <message>
         <source>Find/Replace (%s)</source>
