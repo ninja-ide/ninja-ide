@@ -142,7 +142,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation>Zoomer</translation>
+        <translation>表示拡大</translation>
     </message>
     <message>
         <source>Show Migration Tips.</source>
@@ -150,7 +150,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Save Project</source>
-        <translation>Enregistrer le Projet</translation>
+        <translation>プロジェクトを保存</translation>
     </message>
     <message>
         <source>Central Orientation</source>
@@ -162,7 +162,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Open Project</source>
-        <translation>Ouvrir le Projet</translation>
+        <translation>プロジェクトを開く</translation>
     </message>
     <message>
         <source>Toolbar Items:</source>
@@ -186,7 +186,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Language:</source>
-        <translation>Langue :</translation>
+        <translation>言語 :</translation>
     </message>
     <message>
         <source>Split Horizontally</source>
@@ -218,7 +218,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation>Dézoomer</translation>
+        <translation>表示縮小</translation>
     </message>
     <message>
         <source>Follow Mode</source>
@@ -290,7 +290,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Close Projects</source>
-        <translation>Fermer les Projets</translation>
+        <translation>プロジェクトを閉じる</translation>
     </message>
     <message>
         <source>Save File</source>
@@ -318,7 +318,7 @@ Voulez-vous le recharger ?</translation>
     </message>
     <message>
         <source>Select Language:</source>
-        <translation>Sélectioner la Langue :</translation>
+        <translation>言語を選択 :</translation>
     </message>
     <message>
         <source>Preview Web</source>
@@ -516,7 +516,7 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     </message>
     <message>
         <source>Open a Project</source>
-        <translation>Ouvrir un Projet</translation>
+        <translation>プロジェクトを開く</translation>
     </message>
     <message>
         <source>Hide Explorer</source>
@@ -972,7 +972,7 @@ Si vous voulez le régler ou le modifier, allez dans les propriétés du projet<
     <name>FindInFilesWidget</name>
     <message>
         <source>Stop</source>
-        <translation>Arrêter</translation>
+        <translation>停止</translation>
     </message>
     <message>
         <source>Find!</source>
@@ -1357,7 +1357,7 @@ Voulez-vous les enregistrer ?</translation>
     </message>
     <message>
         <source>Languages</source>
-        <translation>Langues</translation>
+        <translation>言語</translation>
     </message>
     <message>
         <source>Reload</source>
@@ -1365,7 +1365,7 @@ Voulez-vous les enregistrer ?</translation>
     </message>
     <message>
         <source>Language Manager</source>
-        <translation>Gestionnaire de Langue</translation>
+        <translation>言語管理</translation>
     </message>
 </context>
 <context>
@@ -2048,11 +2048,11 @@ Le contenu sera entièrement supprimé.</translation>
     </message>
     <message>
         <source>Simple Quotes: &apos;&apos;</source>
-        <translation>Apostrophes Simples : &apos;&apos;</translation>
+        <translation>引用符 : &apos;&apos;</translation>
     </message>
     <message>
         <source>Double Quotes: &quot;&quot;</source>
-        <translation>Apostrophes Doubles : &quot;&quot;</translation>
+        <translation>二重引用符 : &quot;&quot;</translation>
     </message>
     <message>
         <source>Activate Code Completion with: &quot;.&quot;</source>
@@ -2060,7 +2060,7 @@ Le contenu sera entièrement supprimé.</translation>
     </message>
     <message>
         <source>Keys: {}</source>
-        <translation>Accolades : {}</translation>
+        <translation>波括弧 : {}</translation>
     </message>
     <message>
         <source>Complete Declarations
@@ -2299,7 +2299,7 @@ dans un autre projet et revenir exactement là où vous en étiez.</translation>
     <name>MenuView</name>
     <message>
         <source>Zoom &amp;Out (Ctrl+Wheel-Down)</source>
-        <translation>&amp;Dézoomer (Ctrl+Wheel-Down)</translation>
+        <translation>表示縮小 (Ctrl+Wheel-Down)</translation>
     </message>
     <message>
         <source>Deactivate Group Tabs</source>
@@ -2351,7 +2351,7 @@ dans un autre projet et revenir exactement là où vous en étiez.</translation>
     </message>
     <message>
         <source>Zoom &amp;In (Ctrl+Wheel-Up)</source>
-        <translation>&amp;Zoomer (Ctrl+Wheel-Up)</translation>
+        <translation>表示拡大 (Ctrl+Wheel-Up)</translation>
     </message>
     <message>
         <source>Show/Hide &amp;Editor (%s)</source>
@@ -2466,7 +2466,7 @@ dans un autre projet et revenir exactement là où vous en étiez.</translation>
     </message>
     <message>
         <source>Close Project</source>
-        <translation>Fermer le Projet</translation>
+        <translation>プロジェクトを閉じる</translation>
     </message>
     <message>
         <source>Delete Folder</source>
@@ -2645,7 +2645,7 @@ afin d&apos;améliorer le Complètement de Code.</translation>
     </message>
     <message>
         <source>Languages Manager</source>
-        <translation>Gestionnaire de Langue</translation>
+        <translation>言語管理</translation>
     </message>
     <message>
         <source>Manage Plugins</source>
@@ -2926,7 +2926,7 @@ Consulez le Menu Mise à Jour de l&apos;Icône Système de NINJA-IDE pour Télé
     </message>
     <message>
         <source>Execution</source>
-        <translation>Exécution</translation>
+        <translation>実行</translation>
     </message>
     <message>
         <source>General</source>
@@ -2937,19 +2937,19 @@ Consulez le Menu Mise à Jour de l&apos;Icône Système de NINJA-IDE pour Télé
     <name>EditorTab</name>
     <message>
         <source>Configuration</source>
-        <translation>Configuration</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <source>Completion</source>
-        <translation>Complètement</translation>
+        <translation>補完</translation>
     </message>
     <message>
         <source>Editor Scheme Designer</source>
-        <translation>Créateur de Palette pour l&apos;Éditeur</translation>
+        <translation>編集領域のデザイン</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Général</translation>
+        <translation>一般</translation>
     </message>
 </context>
 <context>
