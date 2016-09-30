@@ -80,6 +80,10 @@
         <file alias="selector">img/main_selector.png</file>
         <file alias="checkbox-checked">img/checkbox-checked.png</file>
         <file alias="checkbox-unchecked">img/checkbox-unchecked.png</file>
+        <file alias="down_arrow">img/down_arrow.png</file>
+        <file alias="down_arrow_disabled">img/down_arrow_disabled.png</file>
+        <file alias="up_arrow">img/up_arrow.png</file>
+        <file alias="up_arrow_disabled">img/up_arrow_disabled.png</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">img/help/help_locator.png</file>
