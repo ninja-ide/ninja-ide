@@ -130,7 +130,7 @@ QScrollBar::sub-page:horizontal{
     border: none;
 }
 
-QLineEdit, QSpinBox, QDoubleSpinBox {
+/*QLineEdit, QSpinBox, QDoubleSpinBox {
     color: #444;
     background: #ddd;
     border-radius: 6px;
@@ -140,11 +140,49 @@ QLineEdit, QSpinBox, QDoubleSpinBox {
     border-top: 2px solid #ddd;
     margin-top: 2px;
 }
+*/
+QAbstractSpinBox, QLineEdit {
+    padding: 1px 4px 3px 2px;
+    border: 1px solid #76797C;
+    background-color: #363636;
+    color: #eff0f1;
+    border-radius: 3px;
+    margin-top: 2px;
+}
+
+QAbstractSpinBox:up-button,
+QAbstractSpinBox:down-button {
+    background-color: transparent;
+    subcontrol-origin: border;
+}
+
+QAbstractSpinBox::up-arrow,
+QAbstractSpinBox::up-arrow:disabled,
+QAbstractSpinBox::up-arrow:off {
+    image: url(:img/up_arrow_disabled);
+    width: 10px;
+    height: 10px;
+}
+QAbstractSpinBox::up-arrow:hover {
+    image: url(:img/up_arrow);
+}
+
+
+QAbstractSpinBox::down-arrow,
+QAbstractSpinBox::down-arrow:disabled,
+QAbstractSpinBox::down-arrow:off {
+    image: url(:img/down_arrow_disabled);
+    width: 10px;
+    height: 10px;
+}
+QAbstractSpinBox::down-arrow:hover {
+    image: url(:img/down_arrow);
+}
 
 QLineEdit:focus {
-    color: #000;
-    border-left-color: #888;
-    border-top-color: #555;
+    color: #eff0f1;
+    border-left-color: lightblue;
+    /*border-top-color: #555;*/
 }
 
 QTabWidget::pane {
