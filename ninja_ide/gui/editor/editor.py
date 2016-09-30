@@ -46,6 +46,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
+from ninja_ide.gui.editor import document_map
 from ninja_ide.extensions import handlers
 
 from PyQt4.Qsci import QsciScintilla  # , QsciCommand
@@ -144,6 +145,7 @@ class Editor(QsciScintilla):
         self.foldable_lines = []
         self.breakpoints = []
         self.bookmarks = []
+        self.search_lines = []
         self._fold_expanded_marker = 1
         self._fold_collapsed_marker = 2
         self._bookmark_marker = 3
@@ -195,6 +197,10 @@ class Editor(QsciScintilla):
         self._mini = None
         if settings.SHOW_MINIMAP:
             self._load_minimap(settings.SHOW_MINIMAP)
+        self._docmap = None
+        if settings.SHOW_DOCMAP:
+            self._load_docmap(settings.SHOW_DOCMAP)
+
         self._last_block_position = 0
         self.set_flags()
         #FIXME this lang should be guessed in the same form as lexer.
@@ -264,6 +270,9 @@ class Editor(QsciScintilla):
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
             self._load_minimap)
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_docmapShow(PyQt_PyObject)"),
+            self._load_docmap)
         self.connect(
             ninjaide,
             SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
@@ -489,22 +498,31 @@ class Editor(QsciScintilla):
                     self.markerAdd(line, self._fold_expanded_marker)
 
     def _load_minimap(self, show):
-        if show and self._mini is None:
-            self._mini = minimap.MiniMap(self)
-            # Signals
-            self.SCN_UPDATEUI.connect(self._mini.scroll_map)
-            self.SCN_ZOOM.connect(self._mini.slider.update_position)
-            self._mini.setDocument(self.document())
-            self._mini.setLexer(self.lexer)
-            #FIXME: register syntax
-            self._mini.show()
+        if show:
+            if self._mini is None:
+                self._mini = minimap.MiniMap(self)
+                # Signals
+                self.SCN_UPDATEUI.connect(self._mini.scroll_map)
+                self.SCN_ZOOM.connect(self._mini.slider.update_position)
+                self._mini.setDocument(self.document())
+                self._mini.setLexer(self.lexer)
+                #FIXME: register syntax
+                self._mini.show()
             self._mini.adjust_to_parent()
-        elif not show and self._mini is not None:
+        elif self._mini is not None:
+            #FIXME: lost doc pointer?
             self._mini.shutdown()
-            #self._mini.deleteLater()
-            self._mini.setParent(None)
+            self._mini.deleteLater()
             self._mini = None
 
+    def _load_docmap(self, show):
+        if show:
+            if self._docmap is None:
+                self._docmap = document_map.DocumentMap(self)
+            self._docmap.initialize()
+        elif self._docmap is not None:
+            self._docmap.deleteLater()
+            self._docmap = None
     #def __retreat_to_keywords(self, event):
         #"""Unindent some kind of blocks if needed."""
         #previous_text = unicode(self.textCursor().block().previous().text())
@@ -850,6 +868,8 @@ class Editor(QsciScintilla):
         super(Editor, self).resizeEvent(event)
         if self._mini:
             self._mini.adjust_to_parent()
+        if self._docmap:
+            self._docmap.adjust()
 
     def __backspace(self, event):
         if self.hasSelectedText():
@@ -1260,10 +1280,19 @@ class Editor(QsciScintilla):
                 search = search.lower()
                 text = text.lower()
             index = text.find(search)
-            while index != -1:
+            self.search_lines = []  # Restore search lines
+            appendLine = self.search_lines.append
+            while index != -1 and word:
+                line = self.SendScintilla(QsciScintilla.SCI_LINEFROMPOSITION,
+                                          index)
+                if line not in self.search_lines:
+                    appendLine(line)
                 self.SendScintilla(QsciScintilla.SCI_INDICATORFILLRANGE,
                                    index, word_length)
                 index = text.find(search, index + 1)
+            #FIXME:
+            if self._docmap is not None:
+                self._docmap.update()
         elif ((word == self._selected_word) and (word_find is None)) or reset:
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE, 0,
                                len(self.text()))
