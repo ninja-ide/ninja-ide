@@ -201,6 +201,18 @@ SIZE_PROPORTION = 0.17
 
 
 ###############################################################################
+# DOCUMENT MAP
+###############################################################################
+
+SHOW_DOCMAP = True
+DOCMAP_SLIDER = False
+EDITOR_SCROLLBAR = True
+DOCMAP_CURRENT_LINE = False
+DOCMAP_SEARCH_LINES = True
+DOCMAP_WIDTH = 15
+
+
+###############################################################################
 # FILE MANAGER
 ###############################################################################
 
@@ -409,6 +421,12 @@ def load_settings():
     global MINIMAP_MAX_OPACITY
     global MINIMAP_MIN_OPACITY
     global SIZE_PROPORTION
+    global SHOW_DOCMAP
+    global DOCMAP_SLIDER
+    global EDITOR_SCROLLBAR
+    global DOCMAP_WIDTH
+    global DOCMAP_CURRENT_LINE
+    global DOCMAP_SEARCH_LINES
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
@@ -474,6 +492,18 @@ def load_settings():
         'preferences/editor/minimapMinOpacity', 0.1, type=float))
     SIZE_PROPORTION = float(qsettings.value(
         'preferences/editor/minimapSizeProportion', 0.17, type=float))
+    SHOW_DOCMAP = qsettings.value(
+        'preferences/editor/docmapShow', True, type=bool)
+    DOCMAP_SLIDER = qsettings.value(
+        'preferences/editor/docmapSlider', False, type=bool)
+    EDITOR_SCROLLBAR = qsettings.value(
+        'preferences/editor/editorScrollBar', True, type=bool)
+    DOCMAP_WIDTH = int(qsettings.value(
+        'preferences/editor/docmapWidth', 15, type=int))
+    DOCMAP_CURRENT_LINE = qsettings.value(
+        'preferences/editor/docmapCurrentLine', False, type=bool)
+    DOCMAP_SEARCH_LINES = qsettings.value(
+        'preferences/editor/docmapSearchLines', True, type=bool)
     INDENT = int(qsettings.value('preferences/editor/indent', 4, type=int))
 
     USE_PLATFORM_END_OF_LINE = qsettings.value(

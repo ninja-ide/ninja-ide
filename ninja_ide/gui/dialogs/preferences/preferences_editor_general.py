@@ -62,12 +62,15 @@ class EditorGeneral(QWidget):
 
         groupBoxMini = QGroupBox(
             translations.TR_PREFERENCES_EDITOR_GENERAL_MINIMAP)
+        groupBoxDocMap = QGroupBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_DOCMAP)
         groupBoxTypo = QGroupBox(
             translations.TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY)
         groupBoxScheme = QGroupBox(
             translations.TR_PREFERENCES_EDITOR_GENERAL_SCHEME)
 
-        #Minimap
+        boxMiniAndDocMap = QHBoxLayout()
+        # Minimap
         formMini = QGridLayout(groupBoxMini)
         formMini.setContentsMargins(5, 15, 5, 5)
         self._checkShowMinimap = QCheckBox(
@@ -93,7 +96,31 @@ class EditorGeneral(QWidget):
             Qt.AlignRight)
         formMini.addWidget(self._spinMinOpacity, 2, 1)
         formMini.addWidget(self._spinMaxOpacity, 2, 2)
-        #Typo
+        boxMiniAndDocMap.addWidget(groupBoxMini)
+        # Document Map
+        formDocMap = QGridLayout(groupBoxDocMap)
+        self._checkShowDocMap = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_DOCMAP)
+        self._checkShowSlider = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_DOCMAP_SLIDER)
+        self._checkOriginalScroll = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_ORIGINAL_SCROLLBAR)
+        self._checkCurrentLine = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_DOCMAP_CURRENT_LINE)
+        self._checkSearchLines = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_DOCMAP_SEARCH_LINES)
+        self._spinWidth = QSpinBox()
+        self._spinWidth.setRange(5, 40)
+        formDocMap.addWidget(self._checkShowDocMap, 0, 0)
+        formDocMap.addWidget(self._checkShowSlider, 0, 1)
+        formDocMap.addWidget(self._checkOriginalScroll, 0, 2)
+        formDocMap.addWidget(self._checkCurrentLine, 1, 0)
+        formDocMap.addWidget(self._checkSearchLines, 1, 1)
+        formDocMap.addWidget(QLabel(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_DOCMAP_WIDTH), 2, 0)
+        formDocMap.addWidget(self._spinWidth, 2, 1)
+        boxMiniAndDocMap.addWidget(groupBoxDocMap)
+        # Typo
         gridTypo = QGridLayout(groupBoxTypo)
         gridTypo.setContentsMargins(5, 15, 5, 5)
         self._btnEditorFont = QPushButton('')
@@ -128,7 +155,7 @@ class EditorGeneral(QWidget):
         hbox.addWidget(btnRemove)
         vboxScheme.addLayout(hbox)
 
-        vbox.addWidget(groupBoxMini)
+        vbox.addLayout(boxMiniAndDocMap)
         vbox.addWidget(groupBoxTypo)
         vbox.addWidget(groupBoxScheme)
 
@@ -145,6 +172,12 @@ class EditorGeneral(QWidget):
         else:
             self._spinMinOpacity.setValue(settings.MINIMAP_MIN_OPACITY * 100)
             self._spinMaxOpacity.setValue(settings.MINIMAP_MAX_OPACITY * 100)
+        self._checkShowDocMap.setChecked(settings.SHOW_DOCMAP)
+        self._checkShowSlider.setChecked(settings.DOCMAP_SLIDER)
+        self._checkOriginalScroll.setChecked(settings.EDITOR_SCROLLBAR)
+        self._checkCurrentLine.setChecked(settings.DOCMAP_CURRENT_LINE)
+        self._checkSearchLines.setChecked(settings.DOCMAP_SEARCH_LINES)
+        self._spinWidth.setValue(settings.DOCMAP_WIDTH)
         self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
         btnText = ', '.join(self._font.toString().split(',')[0:2])
         self._btnEditorFont.setText(btnText)
@@ -251,6 +284,24 @@ class EditorGeneral(QWidget):
                            settings.SIZE_PROPORTION)
         qsettings.setValue('preferences/editor/minimapShow',
                            settings.SHOW_MINIMAP)
+        settings.SHOW_DOCMAP = self._checkShowDocMap.isChecked()
+        settings.DOCMAP_SLIDER = self._checkShowSlider.isChecked()
+        settings.EDITOR_SCROLLBAR = self._checkOriginalScroll.isChecked()
+        settings.DOCMAP_CURRENT_LINE = self._checkCurrentLine.isChecked()
+        settings.DOCMAP_SEARCH_LINES = self._checkSearchLines.isChecked()
+        settings.DOCMAP_WIDTH = self._spinWidth.value()
+        qsettings.setValue('preferences/editor/docmapShow',
+                           settings.SHOW_DOCMAP)
+        qsettings.setValue('preferences/editor/docmapSlider',
+                           settings.DOCMAP_SLIDER)
+        qsettings.setValue('preferences/editor/editorScrollBar',
+                           settings.EDITOR_SCROLLBAR)
+        qsettings.setValue('preferences/editor/docmapCurrentLine',
+                           settings.DOCMAP_CURRENT_LINE)
+        qsettings.setValue('preferences/editor/docmapSearchLines',
+                           settings.DOCMAP_SEARCH_LINES)
+        qsettings.setValue('preferences/editor/docmapWidth',
+                           settings.DOCMAP_WIDTH)
         scheme = self._listScheme.currentItem().text()
         resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                                                     resources.COLOR_SCHEME)
