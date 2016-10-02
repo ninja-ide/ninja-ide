@@ -121,7 +121,6 @@ class DocumentMap(QWidget):
             curline, _ = self.__editor.getCursorPosition()
             painter.drawRect(0, self.__get_position(curline),
                              self.__width - 1, 1)
-        self.update()
 
     def __draw_marker(self, line, painter, color):
         color = QColor(color)
