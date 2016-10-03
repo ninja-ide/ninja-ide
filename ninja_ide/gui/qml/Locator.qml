@@ -305,7 +305,7 @@ Rectangle {
                 }
                 height: 70
                 property bool current: ListView.isCurrentItem
-                color: listItem.current ? "#4182c4" : "#27292b"
+                color: listItem.current ? "#6a6ea9" : "#27292b"
 
                 MouseArea {
                     anchors.fill: parent

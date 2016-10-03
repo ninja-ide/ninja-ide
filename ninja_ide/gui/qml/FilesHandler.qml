@@ -205,7 +205,7 @@ Rectangle {
             property int defaultValues: checkers ? 70 : 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
-            color: item.current ? "#4182c4" : "#27292b"
+            color: item.current ? "#6a6ea9" : "#27292b"
 
             property string mainTextColor: item.current ? "white" : "#aaaaaa"
             property string mainTextModifiedColor: item.current ? "lightgreen" : "green"

@@ -26,7 +26,7 @@ from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
-from ninja_ide.dependencies import pep8mod
+from ninja_ide.dependencies import pycodestylemod
 from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
@@ -75,7 +75,7 @@ class Pep8Checker(QThread):
         if file_ext in exts:
             self.reset()
             source = self._editor.text()
-            tempData = pep8mod.run_check(self._path, source)
+            tempData = pycodestylemod.run_check(self._path, source)
             for result in tempData:
                 message = "\n".join(("%s %s" % (
                     result["code"],

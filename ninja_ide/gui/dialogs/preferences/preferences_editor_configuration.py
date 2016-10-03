@@ -24,6 +24,10 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
+from PyQt4.QtGui import QTreeWidget
+from PyQt4.QtGui import QTreeWidgetItem
+from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QLabel
@@ -35,6 +39,7 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import translations
 from ninja_ide.core import settings
+from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 
@@ -123,24 +128,57 @@ class EditorConfiguration(QWidget):
                      self._enable_errors_inline)
         vboxg3.addWidget(self._checkErrors)
         vboxg3.addWidget(self._showErrorsOnLine)
+        vboxg3.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding))
         formFeatures.addWidget(group3, 2, 0)
 
         # Find PEP8 Errors (highlighter)
-        vboxg4 = QVBoxLayout(group4)
+        vboxg4 = QHBoxLayout(group4)
         vboxg4.setContentsMargins(5, 15, 5, 5)
+        vvbox = QVBoxLayout()
         self._checkStyle = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8)
         self._checkStyle.setChecked(settings.CHECK_STYLE)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
                      self._disable_check_style)
-        vboxg4.addWidget(self._checkStyle)
+        vvbox.addWidget(self._checkStyle)
         self._checkStyleOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8)
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
                      self._enable_check_inline)
-        vboxg4.addWidget(self._checkStyleOnLine)
-        formFeatures.addWidget(group4, 2, 1)
+        vvbox.addWidget(self._checkStyleOnLine)
+        vvbox.addItem(QSpacerItem(0, 0,
+                      QSizePolicy.Expanding, QSizePolicy.Expanding))
+        vboxg4.addLayout(vvbox)
+        # Container for tree widget and buttons
+        widget = QWidget()
+        hhbox = QHBoxLayout(widget)
+        hhbox.setContentsMargins(0, 0, 0, 0)
+        # Tree Widget with custom item delegate
+        # always adds uppercase text
+        self._listIgnoreViolations = QTreeWidget()
+        self._listIgnoreViolations.setItemDelegate(ui_tools.CustomDelegate())
+        self._listIgnoreViolations.setMaximumHeight(80)
+        self._listIgnoreViolations.setHeaderLabel(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_IGNORE_PEP8)
+        for ic in settings.IGNORE_PEP8_LIST:
+            self._listIgnoreViolations.addTopLevelItem(QTreeWidgetItem([ic]))
+        hhbox.addWidget(self._listIgnoreViolations)
+        box = QVBoxLayout()
+        box.setContentsMargins(0, 0, 0, 0)
+        btn_add = QPushButton(QIcon(":img/add_small"), '')
+        btn_add.setMaximumSize(26, 24)
+        btn_add.clicked.connect(self._add_code_pep8)
+        box.addWidget(btn_add)
+        btn_remove = QPushButton(QIcon(":img/delete_small"), '')
+        btn_remove.setMaximumSize(26, 24)
+        btn_remove.clicked.connect(self._remove_code_pep8)
+        box.addWidget(btn_remove)
+        box.addItem(QSpacerItem(0, 0,
+                    QSizePolicy.Fixed, QSizePolicy.Expanding))
+        hhbox.addLayout(box)
+        vboxg4.addWidget(widget)
+        formFeatures.addWidget(group4)
 
         # Show Python3 Migration, DocStrings and Spaces (highlighter)
         vboxg5 = QVBoxLayout(group5)
@@ -191,6 +229,18 @@ class EditorConfiguration(QWidget):
 
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
+    def _add_code_pep8(self):
+        item = QTreeWidgetItem()
+        item.setFlags(item.flags() | Qt.ItemIsEditable)
+        self._listIgnoreViolations.addTopLevelItem(item)
+        self._listIgnoreViolations.setCurrentItem(item)
+        self._listIgnoreViolations.editItem(item, 0)
+
+    def _remove_code_pep8(self):
+        index = self._listIgnoreViolations.indexOfTopLevelItem(
+            self._listIgnoreViolations.currentItem())
+        self._listIgnoreViolations.takeTopLevelItem(index)
+
     def _enable_check_inline(self, val):
         """Method that takes a value to enable the inline style checking"""
         if val == Qt.Checked:
@@ -219,7 +269,7 @@ class EditorConfiguration(QWidget):
                            settings.USE_TABS)
         margin_line = self._spinMargin.value()
         settings.MARGIN_LINE = margin_line
-        settings.pep8mod_update_margin_line_length(margin_line)
+        settings.pycodestylemod_update_margin_line_length(margin_line)
         qsettings.setValue('preferences/editor/marginLine', margin_line)
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
         qsettings.setValue('preferences/editor/showMarginLine',
@@ -269,12 +319,31 @@ class EditorConfiguration(QWidget):
         settings.SHOW_LINE_NUMBERS = self._checkDisplayLineNumbers.isChecked()
         qsettings.setValue('preferences/editor/showLineNumbers',
                            settings.SHOW_LINE_NUMBERS)
-
+        current_ignores = set(settings.IGNORE_PEP8_LIST)
+        new_ignore_codes = []
+        # Get pep8 from tree widget
+        for index in range(self._listIgnoreViolations.topLevelItemCount()):
+            ignore_code = self._listIgnoreViolations.topLevelItem(
+                index).text(0)
+            if ignore_code:
+                new_ignore_codes.append(ignore_code.strip())
+        # pep8 list that will be removed
+        to_remove = [x for x in current_ignores
+                     if x not in new_ignore_codes]
+        # Update list
+        settings.IGNORE_PEP8_LIST = new_ignore_codes
+        qsettings.setValue('preferences/editor/defaultIgnorePep8',
+                           settings.IGNORE_PEP8_LIST)
+        # Add
+        for ignore_code in settings.IGNORE_PEP8_LIST:
+            settings.pycodestylemod_add_ignore(ignore_code)
+        # Remove
+        for ignore_code in to_remove:
+            settings.pycodestylemod_remove_ignore(ignore_code)
         if settings.USE_TABS:
-            settings.pep8mod_add_ignore("W191")
+            settings.pycodestylemod_add_ignore("W191")
         else:
-            settings.pep8mod_remove_ignore("W191")
-        settings.pep8mod_refresh_checks()
+            settings.pycodestylemod_remove_ignore("W191")
 
 
 preferences.Preferences.register_configuration(

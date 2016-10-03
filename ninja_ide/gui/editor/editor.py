@@ -200,6 +200,7 @@ class Editor(QsciScintilla):
         self._docmap = None
         if settings.SHOW_DOCMAP:
             self._load_docmap(settings.SHOW_DOCMAP)
+            self.cursorPositionChanged.connect(self._docmap.update)
 
         self._last_block_position = 0
         self.set_flags()
