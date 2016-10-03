@@ -141,7 +141,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     #Set Stylesheet
     style_applied = False
-    print(settings.NINJA_SKIN)
     if settings.NINJA_SKIN not in ('Default'):
         file_name = ("%s.qss" % settings.NINJA_SKIN)
         qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
