@@ -37,6 +37,7 @@ from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QMimeData
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QTimer
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -243,6 +244,15 @@ class Editor(QsciScintilla):
             Qt.Key_ParenLeft: self.__complete_braces,
             Qt.Key_Apostrophe: self.__complete_quotes,
             Qt.Key_QuoteDbl: self.__complete_quotes}
+
+        # Highlight word timer
+        self._highlight_word_timer = QTimer()
+        self._highlight_word_timer.setSingleShot(True)
+        self._highlight_word_timer.timeout.connect(self.highlight_selected_word)
+        # Highlight the words under cursor after 500 msec, starting when
+        # the cursor changes position
+        self.cursorPositionChanged.connect(
+            lambda: self._highlight_word_timer.start(500))
 
         self.connect(self, SIGNAL("linesChanged()"), self._update_sidebar)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
@@ -1215,10 +1225,10 @@ class Editor(QsciScintilla):
             self._last_block_position = line
             self.emit(SIGNAL("currentLineChanged(int)"), line)
 
-    def mouseReleaseEvent(self, event):
-        super(Editor, self).mouseReleaseEvent(event)
-        if event.button() == Qt.LeftButton:
-            self.highlight_selected_word()
+    # def mouseReleaseEvent(self, event):
+        # super(Editor, self).mouseReleaseEvent(event)
+        # if event.button() == Qt.LeftButton:
+        #    self.highlight_selected_word()
 
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:

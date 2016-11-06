@@ -157,6 +157,7 @@ class EditorConfiguration(QWidget):
         # Tree Widget with custom item delegate
         # always adds uppercase text
         self._listIgnoreViolations = QTreeWidget()
+        self._listIgnoreViolations.setObjectName("ignore_pep8")
         self._listIgnoreViolations.setItemDelegate(ui_tools.CustomDelegate())
         self._listIgnoreViolations.setMaximumHeight(80)
         self._listIgnoreViolations.setHeaderLabel(
