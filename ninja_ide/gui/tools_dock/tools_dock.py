@@ -101,7 +101,7 @@ class _ToolsDock(QWidget):
         #Last Element in the Stacked widget
         self._results = results.Results(self)
         self.stack.addWidget(self._results)
-        self.__toolbar.addSeparator()
+        # self.__toolbar.addSeparator()
 
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         btn_close = QPushButton(
