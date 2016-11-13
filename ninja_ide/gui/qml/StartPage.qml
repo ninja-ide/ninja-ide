@@ -11,15 +11,10 @@ Rectangle {
     signal removeProject(string path)
     signal openPreferences
 
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: "#2f2f2f" }
-        GradientStop { position: 0.5; color: "#2f2f2f" }
-        GradientStop { position: 0.5; color: "#454545" }
-        GradientStop { position: 1.0; color: "#454545" }
-    }
+    color: "#252526"
 
     onWidthChanged: {
-        if(root.width < 650){
+        if(root.width < 850){
             compressed = true;
         }else{
             compressed = false;
@@ -28,8 +23,7 @@ Rectangle {
 
     Rectangle {
         id: mainArea
-        color: "white"
-        border.color: "gray"
+        color: "#252526"
         anchors.fill: parent
         radius: 15
         anchors.margins: parent.height / 14
@@ -64,8 +58,8 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     horizontalAlignment: Text.AlignHCenter
-                    color: "#2f2d2d"
-                    text: "Welcome!"
+                    color: "#eeeeec"
+                    text: qsTr("Welcome!")
                     font.bold: true
                     font.pointSize: 45
                 }
@@ -75,8 +69,9 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     horizontalAlignment: Text.AlignHCenter
-                    text: "NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specifically designed to build Python Applications. NINJA-IDE provides the tools necessary to simplify the Python software development process and handles all kinds of situations thanks to its rich extensibility."
+                    text: qsTr("NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specifically designed to build Python Applications. NINJA-IDE provides the tools necessary to simplify the Python software development process and handles all kinds of situations thanks to its rich extensibility.")
                     wrapMode: Text.WordWrap
+                    color: "#eeeeec"
                 }
 
                 Column {
@@ -92,7 +87,7 @@ Rectangle {
                         Button {
                             width: colButtons.buttonWidth
                             height: 35
-                            text: "New File"
+                            text: qsTr("New File")
                             onClicked: root.newFile();
                         }
                         /*Button {
@@ -107,13 +102,13 @@ Rectangle {
                         Button {
                             width: colButtons.buttonWidth
                             height: 35
-                            text: "Chat with us!"
+                            text: qsTr("Chat with us!")
                             onClicked: Qt.openUrlExternally("https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja|?&theme=cli#ninja-ide")
                         }
                         Button {
                             width: colButtons.buttonWidth
                             height: 35
-                            text: "Preferences"
+                            text: qsTr("Preferences")
                             onClicked: openPreferences();
                         }
                     }
@@ -149,13 +144,13 @@ Rectangle {
         spacing: 10
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
+        anchors.bottomMargin: 5
         anchors.rightMargin: parent.height / 14
         visible: !root.compressed
 
         Text {
             text: "Powered by:"
-            color: "white"
+            color: "#eeeeec"
             style: Text.Raised
             styleColor: "black"
             height: logoPy.height
@@ -163,11 +158,11 @@ Rectangle {
         }
         Image {
             id: logoPy
-            source: "img/powered_py.png"
+            source: "img/python-logo.png"
         }
         Image {
             id: logoQt
-            source: "img/powered_qt.png"
+            source: "img/bwqt.png"
         }
     }
 
@@ -178,15 +173,11 @@ Rectangle {
         anchors.leftMargin: parent.height / 14
         anchors.bottomMargin: 10
         font.pixelSize: 12
-        color: "white"
+        color: "#eeeeec"
+        text: "Copyright © 2010-" + new Date().getFullYear() + " NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license"
     }
 
     function add_project(name, path, favorite){
         projectList.add_project(name, path, favorite);
     }
-
-    function set_year(year){
-        copyright.text = "Copyright © 2010-" + year + " NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license";
-    }
-
 }

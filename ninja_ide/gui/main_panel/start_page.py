@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-import datetime
-
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import SIGNAL
@@ -43,17 +41,15 @@ class StartPage(QWidget):
         self.load_items()
 
         self.connect(self.root, SIGNAL("openProject(QString)"),
-            self._open_project)
+                     self._open_project)
         self.connect(self.root, SIGNAL("removeProject(QString)"),
-            self._on_click_on_delete)
+                     self._on_click_on_delete)
         self.connect(self.root, SIGNAL("markAsFavorite(QString, bool)"),
-            self._on_click_on_favorite)
+                     self._on_click_on_favorite)
         self.connect(self.root, SIGNAL("openPreferences()"),
-            lambda: self.emit(SIGNAL("openPreferences()")))
+                     lambda: self.emit(SIGNAL("openPreferences()")))
         self.connect(self.root, SIGNAL("newFile()"),
-            lambda: self.emit(SIGNAL("newFile()")))
-
-        self.root.set_year(str(datetime.datetime.now().year))
+                     lambda: self.emit(SIGNAL("newFile()")))
 
     def _open_project(self, path):
         projects_explorer = IDE.get_service('projects_explorer')
@@ -80,23 +76,23 @@ class StartPage(QWidget):
         listByFavorites = []
         listNoneFavorites = []
         recent_projects_dict = dict(settings.value('recentProjects', {}))
-        #Filter for favorites
+        # Filter for favorites
         for recent_project_path, content in list(recent_projects_dict.items()):
             if bool(dict(content)["isFavorite"]):
                 listByFavorites.append((recent_project_path,
-                    content["lastopen"]))
+                                        content["lastopen"]))
             else:
                 listNoneFavorites.append((recent_project_path,
-                    content["lastopen"]))
+                                          content["lastopen"]))
         if len(listByFavorites) > 1:
             # sort by date favorites
             listByFavorites = sorted(listByFavorites,
-                key=lambda date: listByFavorites[1])
+                                     key=lambda date: listByFavorites[1])
 
         if len(listNoneFavorites) > 1:
-            #sort by date last used
+            # sort by date last used
             listNoneFavorites = sorted(listNoneFavorites,
-                key=lambda date: listNoneFavorites[1])
+                                       key=lambda date: listNoneFavorites[1])
 
         for recent_project_path in listByFavorites:
             path = recent_project_path[0]
