@@ -11,8 +11,8 @@ Rectangle {
 
     Text {
         id: txtProjects
-        color: "#2f2d2d"
-        text: "Recent Projects:"
+        color: "#eeeeec"
+        text: qsTr("Recent Projects:")
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
@@ -76,8 +76,8 @@ Rectangle {
                 Column {
                     id: col
                     anchors.fill: parent
-                    Text { text: 'NAME: ' + name; width: texts.width; elide: Text.ElideMiddle }
-                    Text { text: 'PATH: ' + path; width: texts.width; elide: Text.ElideMiddle }
+                    Text { text: qsTr('NAME: ') + name; width: texts.width; elide: Text.ElideMiddle; color: "#eeeeec" }
+                    Text { text: qsTr('PATH: ') + path; width: texts.width; elide: Text.ElideMiddle; color: "#eeeeec" }
                 }
 
                 MouseArea {
@@ -126,7 +126,7 @@ Rectangle {
         focus: true
         model: ListModel {}
         delegate: contactDelegate
-        highlight: Rectangle { color: "lightsteelblue"; radius: 5; width: (root.width - 10) }
+        highlight: Rectangle { color: "#6a6ea9"; radius: 2; width: (root.width - 10) }
 
         Keys.onReturnPressed: {
             var path = listProjects.model.get(listProjects.currentIndex).path;
