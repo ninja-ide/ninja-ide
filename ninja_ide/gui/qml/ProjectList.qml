@@ -103,8 +103,6 @@ Rectangle {
                     anchors.fill: parent
 
                     onClicked: {
-                        var coord = mapToItem(_projects, mouseX, mouseY)
-                        var index = _projects.indexAt(coord.x, coord.y);
                         _projects.model.remove(index);
                         root.removeProject(item._path);
                     }
