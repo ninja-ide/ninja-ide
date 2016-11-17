@@ -19,6 +19,7 @@
 -   [+Ninja-IDE](https://plus.google.com/103973182574871451647 "Ninja-IDE at Google Plus") at Google Plus
 -   [Ninja-IDE](https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja%7C?&theme=cli#ninja-ide "ninja-ide at Freenode.net") at Freenode.net
 -   [Ninja-IDE](https://gitter.im/ninja-ide/ninja-ide) at Gitter
+-   [ninja_ide](https://telegram.me/ninja_ide) at Telegram
 
 
 ## Requirements
