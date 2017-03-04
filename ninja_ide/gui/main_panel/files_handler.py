@@ -66,10 +66,12 @@ class raww(QObject):
 
 class Tools(QObject):
     def __init__(self, parent=None):
-        super(raww, self).__init__(parent)
+        super(Tools, self).__init__(parent)
     @pyqtSlot("QPoint", result=QJsonValue)
     def mapToGlobal(self, p):
-        return {x, y}#QCursor
+        # necesito corregir como devolver un valor con sentido
+        return #{x, y}#QCursor
+
 
 #WA_AlwaysStackOnTop
 #WA_ShowWithoutActivating
