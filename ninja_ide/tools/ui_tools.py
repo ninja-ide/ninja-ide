@@ -34,6 +34,7 @@ from PyQt4.QtGui import QKeyEvent
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QLinearGradient
+from PyQt4.QtGui import QItemDelegate
 from PyQt4.QtGui import QTableWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QPrinter
@@ -458,6 +459,21 @@ class LineEditTabCompleter(QLineEdit):
             self.completionType = QCompleter.InlineCompletion
         self.completer.setCompletionMode(self.completionType)
         self.setFocus()
+
+
+class CustomDelegate(QItemDelegate):
+    """ Always adds uppercase text """
+
+    def __init__(self, parent=None):
+        QItemDelegate.__init__(self, parent)
+
+    def setEditorData(self, editor, index):
+        if editor.text().strip():
+            QItemDelegate.setEditorData(self, editor, index)
+
+    def setModelData(self, editor, model, index):
+        text = editor.text().upper()
+        model.setData(index, text)
 
 
 def install_shortcuts(obj, actions, ide):

@@ -7,33 +7,10 @@ Rectangle {
     property alias text: btnText.text
 
     height: 50
-    border.color:"#6a6363"
+    border.color:"#111"
+    radius: 2
 
-    gradient: off
-
-    Gradient {
-        id: off
-        GradientStop { position: 0.0; color: "lightsteelblue" }
-        GradientStop { position: 0.5; color: "lightsteelblue" }
-        GradientStop { position: 0.5; color: "black" }
-        GradientStop { position: 1.0; color: "black" }
-    }
-
-    Gradient {
-        id: onn
-        GradientStop { position: 0.0; color: "steelblue" }
-        GradientStop { position: 0.7; color: "steelblue" }
-        GradientStop { position: 0.7; color: "black" }
-        GradientStop { position: 1.0; color: "black" }
-    }
-
-    Gradient {
-        id: hover
-        GradientStop { position: 0.0; color: "lightsteelblue" }
-        GradientStop { position: 0.7; color: "lightsteelblue" }
-        GradientStop { position: 0.7; color: "black" }
-        GradientStop { position: 1.0; color: "black" }
-    }
+    color: "#323233"
 
     Text {
         id: btnText
@@ -51,28 +28,27 @@ Rectangle {
             }
 
             onPressed: {
-                button.gradient = onn;
-                border.color= "steelblue";
+                button.color = "#6a6ea9";
+                border.color= "#6a6ea9";
             }
 
             onReleased: {
-                button.gradient = hover;
-                border.color= "steelblue";
+                button.color = "#323233";
             }
 
             onEntered:{
-                button.gradient = hover;
-                border.color= "steelblue";
+                button.color = "#434345";
+                border.color= "#6a6ea9";
             }
 
             onCanceled:{
-                border.color = "#6a6363";
-                button.gradient = off;
+                button.color = "#323233";
+                border.color = "#111";
             }
 
             onExited: {
-                border.color= "#6a6363"
-                button.gradient = off;
+                border.color= "#111"
+                button.color = "#323233";
             }
         }
 }

@@ -26,7 +26,7 @@ from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFileInfo
 
 from ninja_ide import resources
-from ninja_ide.dependencies import pep8mod
+from ninja_ide.dependencies import pycodestylemod
 
 
 ###############################################################################
@@ -162,7 +162,7 @@ SHOW_TABS_AND_SPACES = False
 
 INDENT = 4
 
-MARGIN_LINE = 80
+MARGIN_LINE = 79
 
 BRACES = {'{': '}', '[': ']', '(': ')'}
 QUOTES = {'"': '"', "'": "'"}
@@ -172,9 +172,10 @@ FONT_MIN_SIZE = 6
 MAX_REMEMBER_TABS = 50
 COPY_HISTORY_BUFFER = 20
 
+IGNORE_PEP8_LIST = []
 FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = COMPLETE_DECLARATIONS = SHOW_MIGRATION_TIPS = True
-UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = CENTER_ON_SCROLL = True
+UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = AND_AT_LAST_LINE = True
 SHOW_LINE_NUMBERS = True
 
 SYNTAX = {}
@@ -198,6 +199,18 @@ SHOW_MINIMAP = False
 MINIMAP_MAX_OPACITY = 0.8
 MINIMAP_MIN_OPACITY = 0.1
 SIZE_PROPORTION = 0.17
+
+
+###############################################################################
+# DOCUMENT MAP
+###############################################################################
+
+SHOW_DOCMAP = True
+DOCMAP_SLIDER = False
+EDITOR_SCROLLBAR = True
+DOCMAP_CURRENT_LINE = False
+DOCMAP_SEARCH_LINES = True
+DOCMAP_WIDTH = 15
 
 
 ###############################################################################
@@ -297,40 +310,44 @@ def use_platform_specific_eol():
 ###############################################################################
 
 
-def pep8mod_refresh_checks():
+def pycodestylemod_refresh_checks():
     """
     Force to reload all checks in pep8mod.py
     """
     #pep8mod.refresh_checks()
 
 
-def pep8mod_add_ignore(ignore_code):
+def pycodestylemod_add_ignore(ignore_code):
     """
-    Patch pep8mod.py to ignore a given check by code
+    Patch pycodestyle.py to ignore a given check by code
     EXAMPLE:
-        pep8mod_add_ignore('W191')
+        pycodestylemod_add_ignore('W191')
         'W1919': 'indentation contains tabs'
     """
-    pep8mod.options.ignore.append(ignore_code)
+    if ignore_code not in pycodestylemod.DEFAULT_IGNORE:
+        default_ignore = pycodestylemod.DEFAULT_IGNORE.split(',')
+        default_ignore.append(ignore_code)
+        pycodestylemod.DEFAULT_IGNORE = ','.join(default_ignore)
 
 
-def pep8mod_remove_ignore(ignore_code):
+def pycodestylemod_remove_ignore(ignore_code):
     """
-    Patch pep8mod.py to remove the ignore of a give check
+    Patch pycodestylemod.py to remove the ignore of a give check
     EXAMPLE:
-        pep8mod_remove_ignore('W191')
+        pycodestylemod_remove_ignore('W191')
         'W1919': 'indentation contains tabs'
     """
-    if ignore_code in pep8mod.options.ignore:
-        pep8mod.options.ignore.remove(ignore_code)
+    if ignore_code in pycodestylemod.DEFAULT_IGNORE:
+        default_ignore = pycodestylemod.DEFAULT_IGNORE.split(',')
+        default_ignore.remove(ignore_code)
+        pycodestylemod.DEFAULT_IGNORE = ','.join(default_ignore)
 
 
-def pep8mod_update_margin_line_length(new_margin_line):
+def pycodestylemod_update_margin_line_length(new_margin_line):
     """
-    Patch pep8mod.py to update the margin line length with a new value
+    Patch pycodestylemod.py to update the margin line length with a new value
     """
-    pep8mod.MAX_LINE_LENGTH = new_margin_line
-    pep8mod.options.max_line_length = new_margin_line
+    pycodestylemod.MAX_LINE_LENGTH = new_margin_line
 
 ###############################################################################
 # LOAD SETTINGS
@@ -387,13 +404,14 @@ def load_settings():
     global FONT
     global SHOW_MARGIN_LINE
     global SHOW_INDENTATION_GUIDE
+    global IGNORE_PEP8_LIST
     global FIND_ERRORS
     global ERRORS_HIGHLIGHT_LINE
     global CHECK_STYLE
     global CHECK_HIGHLIGHT_LINE
     global SHOW_MIGRATION_TIPS
     global CODE_COMPLETION
-    global CENTER_ON_SCROLL
+    global END_AT_LAST_LINE
     global SHOW_PROJECT_EXPLORER
     global SHOW_SYMBOLS_LIST
     global SHOW_WEB_INSPECTOR
@@ -409,6 +427,12 @@ def load_settings():
     global MINIMAP_MAX_OPACITY
     global MINIMAP_MIN_OPACITY
     global SIZE_PROPORTION
+    global SHOW_DOCMAP
+    global DOCMAP_SLIDER
+    global EDITOR_SCROLLBAR
+    global DOCMAP_WIDTH
+    global DOCMAP_CURRENT_LINE
+    global DOCMAP_SEARCH_LINES
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
@@ -433,23 +457,24 @@ def load_settings():
     sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     # Fix later
     try:
-      for key in sessionDict:
-          session_list = list(sessionDict[key])
-          files = []
-          if session_list:
-              files = [item for item in tuple(session_list[0])]
-          tempFiles = []
-          for file_ in files:
-              fileData = tuple(file_)
-              if len(fileData) > 0:
-                  tempFiles.append([fileData[0], int(fileData[1]), fileData[2]])
-          files = tempFiles
-          projects = []
-          if len(session_list) > 1:
-              projects = [item for item in tuple(session_list[1])]
-          SESSIONS[key] = [files, projects]
+        for key in sessionDict:
+            session_list = list(sessionDict[key])
+            files = []
+            if session_list:
+                files = [item for item in tuple(session_list[0])]
+            tempFiles = []
+            for file_ in files:
+                fileData = tuple(file_)
+                if len(fileData) > 0:
+                    tempFiles.append([fileData[0], int(fileData[1]),
+                                     fileData[2]])
+            files = tempFiles
+            projects = []
+            if len(session_list) > 1:
+                projects = [item for item in tuple(session_list[1])]
+            SESSIONS[key] = [files, projects]
     except:
-      pass
+        pass
     #TODO
     #toolbar_items = [item for item in list(qsettings.value(
         #'preferences/interface/toolbar', []))]
@@ -474,13 +499,25 @@ def load_settings():
         'preferences/editor/minimapMinOpacity', 0.1, type=float))
     SIZE_PROPORTION = float(qsettings.value(
         'preferences/editor/minimapSizeProportion', 0.17, type=float))
+    SHOW_DOCMAP = qsettings.value(
+        'preferences/editor/docmapShow', True, type=bool)
+    DOCMAP_SLIDER = qsettings.value(
+        'preferences/editor/docmapSlider', False, type=bool)
+    EDITOR_SCROLLBAR = qsettings.value(
+        'preferences/editor/editorScrollBar', True, type=bool)
+    DOCMAP_WIDTH = int(qsettings.value(
+        'preferences/editor/docmapWidth', 15, type=int))
+    DOCMAP_CURRENT_LINE = qsettings.value(
+        'preferences/editor/docmapCurrentLine', False, type=bool)
+    DOCMAP_SEARCH_LINES = qsettings.value(
+        'preferences/editor/docmapSearchLines', True, type=bool)
     INDENT = int(qsettings.value('preferences/editor/indent', 4, type=int))
 
     USE_PLATFORM_END_OF_LINE = qsettings.value(
         'preferences/editor/platformEndOfLine', False, type=bool)
-    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 80,
+    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 79,
                                   type=int)
-    pep8mod_update_margin_line_length(MARGIN_LINE)
+    pycodestylemod_update_margin_line_length(MARGIN_LINE)
     SHOW_LINE_NUMBERS = qsettings.value(
         'preferences/editor/showLineNumbers', True, type=bool)
     REMOVE_TRAILING_SPACES = qsettings.value(
@@ -489,8 +526,8 @@ def load_settings():
         'preferences/editor/showTabsAndSpaces', False, type=bool)
     USE_TABS = qsettings.value('preferences/editor/useTabs', False, type=bool)
     if USE_TABS:
-        pep8mod_add_ignore("W191")
-        pep8mod_refresh_checks()
+        pycodestylemod_add_ignore("W191")
+        pycodestylemod_refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', False, type=bool)
     COMPLETE_DECLARATIONS = qsettings.value(
@@ -504,6 +541,10 @@ def load_settings():
         'preferences/editor/showMarginLine', True, type=bool)
     SHOW_INDENTATION_GUIDE = qsettings.value(
         'preferences/editor/showIndentationGuide', True, type=bool)
+    IGNORE_PEP8_LIST = list(qsettings.value(
+        'preferences/editor/defaultIgnorePep8', [], type='QStringList'))
+    for ignore_code in IGNORE_PEP8_LIST:
+        pycodestylemod_add_ignore(ignore_code)
     FIND_ERRORS = qsettings.value('preferences/editor/errors', True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
         'preferences/editor/showMigrationTips', True, type=bool)
@@ -515,8 +556,8 @@ def load_settings():
         'preferences/editor/checkStyleInline', True, type=bool)
     CODE_COMPLETION = qsettings.value(
         'preferences/editor/codeCompletion', True, type=bool)
-    CENTER_ON_SCROLL = qsettings.value(
-        'preferences/editor/centerOnScroll', True, type=bool)
+    END_AT_LAST_LINE = qsettings.value(
+        'preferences/editor/endAtLastLine', True, type=bool)
     parentheses = qsettings.value('preferences/editor/parentheses', True,
                                   type=bool)
     if not parentheses:

@@ -57,10 +57,8 @@ class TreeSymbolsWidget(QDialog):
         self.docstrings = {}
         self.collapsedItems = {}
 
-        self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-                     self._go_to_definition)
-        self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-                     self._go_to_definition)
+        self.tree.itemClicked.connect(self._go_to_definition)
+        self.tree.itemActivated.connect(self._go_to_definition)
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(
             self,

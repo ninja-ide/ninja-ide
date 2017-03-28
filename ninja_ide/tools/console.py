@@ -36,10 +36,9 @@ class Cache(object):
 
     def flush(self):
         """Join together all the outputs and return it to be displayed."""
-        if len(self.out) > 1:
-            output = ''.join(self.out)[:-1]
-            self.reset()
-            return output
+        output = ''.join(self.out)[:-1]
+        self.reset()
+        return output
 
 
 class ExitWrapper(object):

@@ -120,7 +120,7 @@ def remove_trailing_spaces(editorWidget):
     editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
     lines = editorWidget.lines()
     linenumber, index = editorWidget.getCursorPosition()
-    for line in xrange(lines):
+    for line in range(lines):
         text = editorWidget.text(line)
         if text.endswith((' \n', '\t\n')):
             text = "%s\n" % text.rstrip()
@@ -205,7 +205,7 @@ def insert_debugging_prints(editorWidget):
         editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
         lstart, istart, lend, iend = editorWidget.getSelection()
         lines = lend - lstart
-        for i in xrange(lines):
+        for i in range(lines):
             pos = lstart + (i * 2)
             indentation = get_indentation(editorWidget.text(pos))
             editorWidget.insertAt("%sprint('%s%i')\n" % (
@@ -236,7 +236,7 @@ def remove_line(editorWidget):
         lines = (lend - lstart) + 1
         editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
         editorWidget.setCursorPosition(lstart, istart)
-        for l in xrange(lines):
+        for l in range(lines):
             editorWidget.SendScintilla(editorWidget.SCI_LINEDELETE, 1)
         editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
     else:
@@ -283,7 +283,7 @@ def uncomment(editorWidget):
         lines = (lend - lstart) + 1
 
     editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
-    for l in xrange(lines):
+    for l in range(lines):
         index = len(get_indentation(editorWidget.text(lstart + l)))
         editorWidget.setSelection(lstart + l, index, lstart + l,
                                   index + len(wildopen))
@@ -327,7 +327,7 @@ def comment(editorWidget):
         lines = (lend - lstart) + 1
 
     editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
-    for l in xrange(lines):
+    for l in range(lines):
         index = len(get_indentation(editorWidget.text(lstart + l)))
         editorWidget.insertAt(wildopen, lstart + l, index)
         if is_multi:
