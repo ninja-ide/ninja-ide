@@ -1,4 +1,6 @@
 ![Travis report](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master "Travis-C.I. Testing report")
+[![Stories in Ready](https://badge.waffle.io/ninja-ide/ninja-ide.svg?label=ready&title=Ready)](http://waffle.io/ninja-ide/ninja-ide)
+
 
 # Ninja-ide Is Not Just Another IDE.
 **Ninja-IDE** is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
@@ -57,6 +59,15 @@ Piece of cake, huh?
 
 ## Videos
 [![Ninja-IDE Videos and Screencasts](http://img.youtube.com/vi/xShpNY5w-64/0.jpg)](https://www.youtube.com/channel/UCPopm5397ozfsS8FOSSOWGQ "Ninja-IDE Videos and Screencasts")
+
+
+## Agile Development
+
+- [**Ninja KanBan**](https://waffle.io/ninja-ide/ninja-ide "Agile Developent Kanban") *Whats Ninja Team working on ?*
+
+- **Throughput Graph:** *Statistics about our work...*
+
+[![Throughput Graph](https://graphs.waffle.io/ninja-ide/ninja-ide/throughput.svg)](https://waffle.io/ninja-ide/ninja-ide/metrics)
 
 
 ## License
