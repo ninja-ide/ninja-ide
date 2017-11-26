@@ -73,11 +73,7 @@ class MigrationTo3(QThread):
             parsing_adds = False
             try:
                 output = subprocess.check_output(self._command + [self._path])
-<<<<<<< 21ec68a546415da639101fdda67a65736ae37c69
-                output = output.decode('utf-8').split('\n')
-=======
                 output = output.split(b'\n')
->>>>>>> toMerge
             except OSError:
                 settings.VALID_2TO3 = False
                 return

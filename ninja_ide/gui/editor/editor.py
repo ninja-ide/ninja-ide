@@ -18,7 +18,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import re
-import math
 import bisect
 
 from tokenize import generate_tokens, TokenError
@@ -49,6 +48,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
+from ninja_ide.gui.editor import document_map
 from ninja_ide.extensions import handlers
 
 from PyQt5.Qsci import QsciScintilla  # , QsciCommand
@@ -148,6 +148,9 @@ class Editor(QsciScintilla):
 
         # Sets QScintilla into unicode mode
         self.SendScintilla(QsciScintilla.SCI_SETCODEPAGE, 65001)
+        # Enable multiple selection
+        self.SendScintilla(QsciScintilla.SCI_SETMULTIPLESELECTION, 1)
+        self.SendScintilla(QsciScintilla.SCI_SETADDITIONALSELECTIONTYPING, 1)
 
     def __init__(self, neditable):
         super(Editor, self).__init__()
@@ -160,6 +163,7 @@ class Editor(QsciScintilla):
         self.foldable_lines = []
         self.breakpoints = []
         self.bookmarks = []
+        self.search_lines = []
         self._fold_expanded_marker = 1
         self._fold_collapsed_marker = 2
         self._bookmark_marker = 3
@@ -210,6 +214,11 @@ class Editor(QsciScintilla):
         self._mini = None
         if settings.SHOW_MINIMAP:
             self._load_minimap(settings.SHOW_MINIMAP)
+        self._docmap = None
+        if settings.SHOW_DOCMAP:
+            self._load_docmap(settings.SHOW_DOCMAP)
+            self.cursorPositionChanged.connect(self._docmap.update)
+
         self._last_block_position = 0
         self.set_flags()
         #FIXME this lang should be guessed in the same form as lexer.
@@ -221,6 +230,8 @@ class Editor(QsciScintilla):
         self._indent = 0
         self.__font = None
         self.__encoding = None
+        self.__positions = []  # Caret positions
+        self.SCN_CHARADDED.connect(self._on_char_added)
 
         #FIXME these should be language bound
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
@@ -250,6 +261,15 @@ class Editor(QsciScintilla):
             Qt.Key_Apostrophe: self.__complete_quotes,
             Qt.Key_QuoteDbl: self.__complete_quotes}
 
+        # Highlight word timer
+        self._highlight_word_timer = QTimer()
+        self._highlight_word_timer.setSingleShot(True)
+        self._highlight_word_timer.timeout.connect(self.highlight_selected_word)
+        # Highlight the words under cursor after 500 msec, starting when
+        # the cursor changes position
+        self.cursorPositionChanged.connect(
+            lambda: self._highlight_word_timer.start(500))
+
         self.linesChanged.connect(self._update_sidebar)
         self.blockCountChanged[int].connect(self._update_file_metadata)
 
@@ -266,6 +286,8 @@ class Editor(QsciScintilla):
         ##self.connect(ninjaide,
             ##SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
             ##self._load_minimap)
+        ninjaide.ns_preferences_editor_docmapShow.connect(self._load_docmap)
+        ninjaide.ns_preferences_editor_errorsUnderlineBackground.connect(self._change_indicator_style)
         ninjaide.ns_preferences_editor_indent.connect(self.load_project_config)
         ninjaide.ns_preferences_editor_marginLine.connect(self._set_margin_line)
         ninjaide.ns_preferences_editor_showLineNumbers.connect(self._show_line_numbers)
@@ -349,6 +371,8 @@ class Editor(QsciScintilla):
             self.markerDelete(nline, self._fold_collapsed_marker)
             self.markerAdd(nline, self._fold_expanded_marker)
             self.foldLine(nline)
+            if self._mini:
+                self._mini.fold(nline)
         elif nline in self.foldable_lines:
             self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT,
                                self.__indicator_folded)
@@ -357,6 +381,8 @@ class Editor(QsciScintilla):
             self.markerDelete(nline, self._fold_expanded_marker)
             self.markerAdd(nline, self._fold_collapsed_marker)
             self.foldLine(nline)
+            if self._mini:
+                self._mini.fold(nline)
         else:
             self.handle_bookmarks_breakpoints(nline, modifiers)
 
@@ -378,6 +404,17 @@ class Editor(QsciScintilla):
 
         self._save_breakpoints_bookmarks()
 
+    def _change_indicator_style(self, underline):
+        ncheckers = len(self._neditable.sorted_checkers)
+        indicator_style = QsciScintilla.INDIC_SQUIGGLE
+        if not underline:
+            indicator_style = QsciScintilla.INDIC_STRAIGHTBOX
+        indicator_index = 4
+        for i in range(ncheckers):
+            self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE,
+                               indicator_index, indicator_style)
+            indicator_index += 1
+
     def _save_breakpoints_bookmarks(self):
         if self.bookmarks and not self._neditable.new_document:
             settings.BOOKMARKS[self._neditable.file_path] = self.bookmarks
@@ -395,7 +432,6 @@ class Editor(QsciScintilla):
         painted_lines = []
         for items in checkers:
             checker, color, _ = items
-            color = color.replace("#","")
             lines = list(checker.checks.keys())
             # Set current
             self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT,
@@ -404,12 +440,15 @@ class Editor(QsciScintilla):
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE,
                                0, len(self.text()))
             # Set Color
-            color = color.replace("#","")
+            color = color.replace("#", "")
             self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                                indicator_index, int(color, 16))
             # Set Style
+            indicator_style = QsciScintilla.INDIC_SQUIGGLE
+            if not settings.UNDERLINE_NOT_BACKGROUND:
+                indicator_style = QsciScintilla.INDIC_STRAIGHTBOX
             self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE,
-                               indicator_index, 13)
+                               indicator_index, indicator_style)
             # Paint Lines
             for line in lines:
                 if line in painted_lines:
@@ -449,7 +488,7 @@ class Editor(QsciScintilla):
         maxLine = math.ceil(math.log10(self.lines()))
         # print("\n\n_update_sidebar", settings.SHOW_LINE_NUMBERS)
         if settings.SHOW_LINE_NUMBERS:
-            self.setMarginWidth(0, fontmetrics.width('0' * int(maxLine)) + 10)
+            self.setMarginWidth(0, '0' * (len(str(self.lines())) + 1))
         else:
             self.setMarginWidth(0, 0)
 
@@ -490,6 +529,33 @@ class Editor(QsciScintilla):
     def move_Document(self, y):
         print("\nEditor:move_Document", y)
         super(Editor, self).scrollContentsBy(0, y)
+        #old code PyQt4
+        if show:
+            if self._mini is None:
+                self._mini = minimap.MiniMap(self)
+                # Signals
+                self.SCN_UPDATEUI.connect(self._mini.scroll_map)
+                self.SCN_ZOOM.connect(self._mini.slider.update_position)
+                self._mini.setDocument(self.document())
+                self._mini.setLexer(self.lexer)
+                #FIXME: register syntax
+                self._mini.show()
+            self._mini.adjust_to_parent()
+        elif self._mini is not None:
+            #FIXME: lost doc pointer?
+            self._mini.shutdown()
+            self._mini.deleteLater()
+            self._mini = None
+
+    def _load_docmap(self, show):
+        if show:
+            if self._docmap is None:
+                self._docmap = document_map.DocumentMap(self)
+            self._docmap.initialize()
+        elif self._docmap is not None:
+            self._docmap.deleteLater()
+            self._docmap = None
+
 
     #def __retreat_to_keywords(self, event):
         #"""Unindent some kind of blocks if needed."""
@@ -532,6 +598,8 @@ class Editor(QsciScintilla):
             self.setWhitespaceVisibility(QsciScintilla.WsInvisible)
         self.setIndentationGuides(settings.SHOW_INDENTATION_GUIDE)
         self.setEolVisibility(settings.USE_PLATFORM_END_OF_LINE)
+        self.SendScintilla(QsciScintilla.SCI_SETENDATLASTLINE,
+                           settings.END_AT_LAST_LINE)
 
     def _update_file_metadata(self):
         """Update the info of bookmarks, breakpoint and checkers."""
@@ -617,7 +685,7 @@ class Editor(QsciScintilla):
 
     def set_font(self, font):
         self.__font = font
-        self.setFont(font)
+        self.lexer.setFont(font)
         self._show_line_numbers()
         background = resources.CUSTOM_SCHEME.get(
             'SidebarBackground',
@@ -708,6 +776,40 @@ class Editor(QsciScintilla):
             self._first_visible_line = line
             self._cursor_line = self._cursor_index = -1
             self.setCursorPosition(line, index)
+
+    def add_caret(self):
+        """ Adds additional caret in current position """
+
+        cur_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
+        if cur_pos not in self.__positions:
+            self.__positions.append(cur_pos)
+
+        # Same position arguments is use for just adding carets
+        # rather than selections.
+        for e, pos in enumerate(self.__positions):
+            if e == 0:
+                # The first selection should be added with SCI_SETSELECTION
+                # and later selections added with SCI_ADDSELECTION
+                self.SendScintilla(QsciScintilla.SCI_CLEARSELECTIONS)
+                self.SendScintilla(QsciScintilla.SCI_SETSELECTION, pos, pos)
+            else:
+                self.SendScintilla(QsciScintilla.SCI_ADDSELECTION, pos, pos)
+
+    def _on_char_added(self):
+        """
+        When char is added, cursors change position. This function obtains
+        new positions and adds them to the list of positions.
+        """
+
+        # For rectangular selection
+        if not self.__positions:
+            return
+        selections = self.SendScintilla(QsciScintilla.SCI_GETSELECTIONS)
+        if selections > 1:
+            for sel in range(selections):
+                new_pos = self.SendScintilla(
+                    QsciScintilla.SCI_GETSELECTIONNCARET, sel)
+                self.__positions[sel] = new_pos
 
     def indent_less(self):
         if self.hasSelectedText():
@@ -831,6 +933,8 @@ class Editor(QsciScintilla):
         super(Editor, self).resizeEvent(event)
         if self._mini:
             self._mini.adjust_to_parent()
+        if self._docmap:
+            self._docmap.adjust()
 
     def __backspace(self, event):
         if self.hasSelectedText():
@@ -904,7 +1008,7 @@ class Editor(QsciScintilla):
         if text in list(settings.BRACES.values()):
             line, index = self.getCursorPosition()
             line_text = self.text(line)
-            portion = line_text[index-1:index+1]
+            portion = line_text[index - 1:index + 1]
             brace_open = portion[0]
             brace_close = (len(portion) > 1) and portion[1] or None
             balance = BRACE_DICT.get(brace_open, None) == text == brace_close
@@ -1022,6 +1126,13 @@ class Editor(QsciScintilla):
                 self.insertAt(symbol, line, index)
             self.insertAt(self.selected_text, line, index)
 
+    def clear_additional_carets(self):
+        reset_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
+        self.__positions = []
+        self.SendScintilla(QsciScintilla.SCI_CLEARSELECTIONS)
+        self.SendScintilla(QsciScintilla.SCI_SETSELECTION,
+                           reset_pos, reset_pos)
+
     def keyPressEvent(self, event):
         #Completer pre key event
         #if self.completer.process_pre_key_event(event):
@@ -1034,8 +1145,23 @@ class Editor(QsciScintilla):
         self.selected_text = self.selectedText()
 
         self._check_auto_copy_cut(event)
+        # Clear additional carets if undo
+        undo = event.matches(QKeySequence.Undo)
+        if undo and self.__positions:
+            self.clear_additional_carets()
 
         super(Editor, self).keyPressEvent(event)
+        if event.key() == Qt.Key_Escape:
+            self.clear_additional_carets()
+        elif event.key() in (Qt.Key_Left, Qt.Key_Right,
+                             Qt.Key_Up, Qt.Key_Down):
+            if self.__positions:
+                self.clear_additional_carets()
+
+        if event.modifiers() == Qt.AltModifier:
+            cur_pos = self.SendScintilla(QsciScintilla.SCI_GETCURRENTPOS)
+            if not self.__positions:
+                self.__positions = [cur_pos]
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
@@ -1147,16 +1273,20 @@ class Editor(QsciScintilla):
         super(Editor, self).mousePressEvent(event)
         if event.modifiers() == Qt.ControlModifier:
             self.go_to_definition()
+        elif event.modifiers() == Qt.AltModifier:
+            self.add_caret()
+        else:
+            self.clear_additional_carets()
 
         line, _ = self.getCursorPosition()
         if line != self._last_block_position:
             self._last_block_position = line
             self.currentLineChanged.emit(line)
 
-    def mouseReleaseEvent(self, event):
-        super(Editor, self).mouseReleaseEvent(event)
-        if event.button() == Qt.LeftButton:
-            self.highlight_selected_word()
+    # def mouseReleaseEvent(self, event):
+        # super(Editor, self).mouseReleaseEvent(event)
+        # if event.button() == Qt.LeftButton:
+        #    self.highlight_selected_word()
 
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:
@@ -1217,10 +1347,19 @@ class Editor(QsciScintilla):
                 search = search.lower()
                 text = text.lower()
             index = text.find(search)
-            while index != -1:
+            self.search_lines = []  # Restore search lines
+            appendLine = self.search_lines.append
+            while index != -1 and word:
+                line = self.SendScintilla(QsciScintilla.SCI_LINEFROMPOSITION,
+                                          index)
+                if line not in self.search_lines:
+                    appendLine(line)
                 self.SendScintilla(QsciScintilla.SCI_INDICATORFILLRANGE,
                                    index, word_length)
                 index = text.find(search, index + 1)
+            #FIXME:
+            if self._docmap is not None:
+                self._docmap.update()
         elif ((word == self._selected_word) and (word_find is None)) or reset:
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE, 0,
                                len(self.text()))
