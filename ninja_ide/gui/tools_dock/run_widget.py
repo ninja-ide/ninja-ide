@@ -21,22 +21,22 @@ import sys
 import time
 import re
 
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QTextCharFormat
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QBrush
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QProcess
-from PyQt4.QtCore import QProcessEnvironment
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextCharFormat
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QBrush
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QProcess
+from PyQt5.QtCore import QProcessEnvironment
+from PyQt5.QtCore import QFile
+#from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -70,33 +70,17 @@ class RunWidget(QWidget):
         self._proc = QProcess(self)
         self._preExecScriptProc = QProcess(self)
         self._postExecScriptProc = QProcess(self)
-        self.connect(self._proc, SIGNAL("readyReadStandardOutput()"),
-                     self.output.refresh_output)
-        self.connect(self._proc, SIGNAL("readyReadStandardError()"),
-                     self.output.refresh_error)
-        self.connect(self._proc, SIGNAL("finished(int, QProcess::ExitStatus)"),
-                     self.finish_execution)
-        self.connect(self._proc, SIGNAL("error(QProcess::ProcessError)"),
-                     self.process_error)
-        self.connect(self.input, SIGNAL("returnPressed()"), self.insert_input)
-        self.connect(self._preExecScriptProc,
-                     SIGNAL("finished(int, QProcess::ExitStatus)"),
-                     self.__main_execution)
-        self.connect(self._preExecScriptProc,
-                     SIGNAL("readyReadStandardOutput()"),
-                     self.output.refresh_output)
-        self.connect(self._preExecScriptProc,
-                     SIGNAL("readyReadStandardError()"),
-                     self.output.refresh_error)
-        self.connect(self._postExecScriptProc,
-                     SIGNAL("finished(int, QProcess::ExitStatus)"),
-                     self.__post_execution_message)
-        self.connect(self._postExecScriptProc,
-                     SIGNAL("readyReadStandardOutput()"),
-                     self.output.refresh_output)
-        self.connect(self._postExecScriptProc,
-                     SIGNAL("readyReadStandardError()"),
-                     self.output.refresh_error)
+        self._proc.readyReadStandardOutput.connect(self.output.refresh_output)
+        self._proc.readyReadStandardError.connect(self.output.refresh_error)
+        self._proc.finished[int, 'QProcess::ExitStatus'].connect(self.finish_execution)
+        self._proc.error['QProcess::ProcessError'].connect(self.process_error)
+        self.input.returnPressed.connect(self.insert_input)
+        self._preExecScriptProc.finished[int, 'QProcess::ExitStatus'].connect(self.__main_execution)
+        self._preExecScriptProc.readyReadStandardOutput.connect(self.output.refresh_output)
+        self._preExecScriptProc.readyReadStandardError.connect(self.output.refresh_error)
+        self._postExecScriptProc.finished[int, 'QProcess::ExitStatus'].connect(self.__post_execution_message)
+        self._postExecScriptProc.readyReadStandardOutput.connect(self.output.refresh_output)
+        self._postExecScriptProc.readyReadStandardError.connect(self.output.refresh_error)
 
     def set_font(self, font):
         """Set the font for the output widget."""
@@ -289,8 +273,7 @@ class OutputWidget(QPlainTextEdit):
                     "ErrorUnderline",
                     resources.COLOR_SCHEME["ErrorUnderline"]))))
 
-        self.connect(self, SIGNAL("blockCountChanged(int)"),
-                     lambda: self.moveCursor(QTextCursor.End))
+        self.blockCountChanged[int].connect(lambda i: self.moveCursor(QTextCursor.End))
 
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
@@ -316,7 +299,7 @@ class OutputWidget(QPlainTextEdit):
         """Read the output buffer from the process and append the text."""
         #we should decode the bytes!
         currentProcess = self._parent.currentProcess
-        text = currentProcess.readAllStandardOutput().data().decode('utf8')
+        text = currentProcess.readAllStandardOutput().data()#.decode('utf8')
         self.textCursor().insertText(text, self.plain_format)
 
     def refresh_error(self):
@@ -324,7 +307,7 @@ class OutputWidget(QPlainTextEdit):
         #we should decode the bytes!
         cursor = self.textCursor()
         currentProcess = self._parent.currentProcess
-        text = currentProcess.readAllStandardError().data().decode('utf8')
+        text = currentProcess.readAllStandardError().data()#.decode('utf8')
         text_lines = text.split('\n')
         for t in text_lines:
             cursor.insertBlock()
@@ -366,7 +349,6 @@ class OutputWidget(QPlainTextEdit):
 
         # This is a hack because if we leave the widget text empty
         # it throw a violent segmentation fault in start_process
-        self.connect(cleanAction, SIGNAL("triggered()"),
-                     lambda: self.setPlainText('\n\n'))
+        cleanAction.triggered['bool'].connect(lambda s: self.setPlainText('\n\n'))
 
         popup_menu.exec_(event.globalPos())

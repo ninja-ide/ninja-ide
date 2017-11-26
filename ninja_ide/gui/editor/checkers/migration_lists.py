@@ -18,18 +18,19 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -39,6 +40,10 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 class MigrationWidget(QDialog):
     """2to3 Migration Assistance Widget Class"""
+    
+    dockedWidget = pyqtSignal("QObject*")
+    undockedWidget = pyqtSignal()
+    changeTitle = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(MigrationWidget, self).__init__(parent, Qt.WindowStaysOnTopHint)
@@ -59,18 +64,16 @@ class MigrationWidget(QDialog):
         vbox.addWidget(self.suggestion)
         vbox.addLayout(hbox)
         # connections
-        self.connect(
-            self.current_list, SIGNAL("itemClicked(QListWidgetItem*)"),
-            self.load_suggestion)
-        self.connect(self.btn_apply, SIGNAL("clicked()"), self.apply_changes)
+        self.current_list.itemClicked['QListWidgetItem*'].connect(self.load_suggestion)
+        self.btn_apply.clicked['bool'].connect(self.apply_changes)
         # registers
         IDE.register_service('tab_migration', self)
         ExplorerContainer.register_tab(translations.TR_TAB_MIGRATION, self)
 
     def install_tab(self):
         """Install the Tab on the IDE."""
-        ide = IDE.get_service('ide')
-        self.connect(ide, SIGNAL("goingDown()"), self.close)
+        ide = IDE.getInstance()
+        ide.goingDown.connect(self.close)
 
     def apply_changes(self):
         """Apply the suggested changes on the Python code."""
@@ -86,15 +89,14 @@ class MigrationWidget(QDialog):
         main_container = IDE.get_service('main_container')
         if main_container:
             editorWidget = main_container.get_current_editor()
-            position = editorWidget.SendScintilla(
-                editorWidget.SCI_POSITIONFROMLINE, lineno)
-            curpos = editorWidget.SendScintilla(editorWidget.SCI_GETCURRENTPOS)
-            if curpos != position:
-                editorWidget.SendScintilla(editorWidget.SCI_GOTOPOS, position)
-            endpos = editorWidget.SendScintilla(
-                editorWidget.SCI_GETLINEENDPOSITION, lineno)
-            editorWidget.SendScintilla(editorWidget.SCI_SETCURRENTPOS, endpos)
-            editorWidget.replaceSelectedText(code[:-1])
+            block_start = editorWidget.document().findBlockByLineNumber(lineno)
+            block_end = editorWidget.document().findBlockByLineNumber(lineno +
+                                                                      remove)
+            cursor = editorWidget.textCursor()
+            cursor.setPosition(block_start.position())
+            cursor.setPosition(block_end.position(), QTextCursor.KeepAnchor)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            cursor.insertText(code[:-1])
 
     def load_suggestion(self, item):
         """Take an argument item and load the suggestion."""
@@ -139,11 +141,11 @@ class MigrationWidget(QDialog):
     def reject(self):
         """Reject"""
         if self.parent() is None:
-            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+            self.dockedWidget.emit(self)
 
     def closeEvent(self, event):
         """Close"""
-        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        self.dockedWidget.emit(self)
         event.ignore()
 
 

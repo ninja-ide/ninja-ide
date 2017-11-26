@@ -1,16 +1,19 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
     color: "#616161"
 
+    width: 100
+    height: 100
+
     signal showPluginDetails(int identifier)
-    signal loadPluginsGrid
-    signal loadTagsGrid
-    signal loadAuthorGrid
+    signal loadPluginsGrid()
+    signal loadTagsGrid()
+    signal loadAuthorGrid()
     signal loadPluginsForCategory(string tag)
     signal search(string key)
-    signal close
+    signal close()
     property int currentDownloads: 0
     property int pluginsSelected: 0
     property int categoryCounter: 0
@@ -150,12 +153,11 @@ Rectangle {
 
     Row {
         id: rowButtons
-        anchors {
-            left: parent.left
-            top: parent.top
-            leftMargin: 10
-            topMargin: 10
-        }
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+        
         spacing: 1
 
         property int buttonsPadding: 20
@@ -257,11 +259,10 @@ Rectangle {
             color: "#b8b8b8"
             toggled: true
             visible: false
-            anchors {
-                left: rowButtons.left
-                top: rowButtons.bottom
-                topMargin: 3
-            }
+            anchors.left: rowButtons.left
+            anchors.top: rowButtons.bottom
+            anchors.topMargin: 3
+            
 
             onVisibleChanged: {
                 if (btnSelection.visible) {
@@ -281,11 +282,10 @@ Rectangle {
         radius: 5
         smooth: true
         visible: false
-        anchors {
-            right: btnClose.left
-            top: parent.top
-            margins: 10
-        }
+        anchors.right: btnClose.left
+        anchors.top: parent.top
+        anchors.margins: 10
+        
 
         TextInput {
             id: textInput
@@ -320,15 +320,15 @@ Rectangle {
         text: "Close"
         height: 20
         width: 50
+        z: 2
         visible: true
         toggledEnagled: false
-        anchors {
-            right: parent.right
-            top: parent.top
-            margins: 10
-        }
-
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 10
+        
         onClicked: {
+            print("toClose...")
             root.close();
         }
     }
@@ -340,13 +340,12 @@ Rectangle {
         clip: true
         opacity: 0
 
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: bottomBar.visible ? bottomBar.top : parent.bottom
-            top: btnSelection.visible ? btnSelection.bottom : searchComponent.bottom
-            margins: (root.width - parseInt(root.width / gridPlugins.cellWidth) * gridPlugins.cellWidth) / 2
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: bottomBar.visible ? bottomBar.top : parent.bottom
+        anchors.top: btnSelection.visible ? btnSelection.bottom : searchComponent.bottom
+        anchors.margins: (root.width - parseInt(root.width / gridPlugins.cellWidth) * gridPlugins.cellWidth) / 2
+        
 
         model: pluginsModel
 
@@ -388,13 +387,12 @@ Rectangle {
         clip: true
         opacity: 0
 
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: bottomBar.visible ? bottomBar.top : parent.bottom
-            top: btnSelection.visible ? btnSelection.bottom : searchComponent.bottom
-            margins: (root.width - parseInt(root.width / gridCategories.cellWidth) * gridCategories.cellWidth) / 2
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: bottomBar.visible ? bottomBar.top : parent.bottom
+        anchors.top: btnSelection.visible ? btnSelection.bottom : searchComponent.bottom
+        anchors.margins: (root.width - parseInt(root.width / gridCategories.cellWidth) * gridCategories.cellWidth) / 2
+        
 
         model: categoryModel
 
@@ -495,11 +493,10 @@ Rectangle {
         border.width: 1
         height: 45
         visible: (root.currentDownloads > 0 || root.pluginsSelected > 0) ? true : false
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        
         Text {
             id: txtInstalling
             text: "Installing..."
@@ -544,14 +541,14 @@ Rectangle {
             width: 110
             color: "#b8b8b8"
             visible: root.pluginsSelected > 0 ? true : false
-            anchors {
-                right: parent.right
-                bottom: parent.bottom
-                margins: 10
-            }
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 10
+            
 
             onClicked: {
                 //call func
+                print("other Button")
             }
         }
     }

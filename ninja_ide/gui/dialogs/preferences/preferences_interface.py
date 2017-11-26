@@ -21,21 +21,21 @@ from __future__ import unicode_literals
 
 import os
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSize
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QSize
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -140,7 +140,7 @@ class Interface(QWidget):
         #self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
                      #self.toolbar_items_default)
 
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._preferences.savePreferences.connect(self.save)
 
     #def toolbar_item_added(self):
         #data = self._comboToolbarItems.itemData(
@@ -300,7 +300,7 @@ class Interface(QWidget):
         qsettings.setValue('preferences/interface/language', lang)
         lang = lang + '.qm'
         settings.LANGUAGE = os.path.join(resources.LANGS, lang)
-        #ide = IDE.get_service('ide')
+        #ide = IDE.getInstance()
         #if ide:
             #ide.reload_toolbar()
 

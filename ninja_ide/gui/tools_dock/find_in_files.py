@@ -24,36 +24,36 @@ try:
 except:
     import queue as Queue  # lint:ok
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QTextStream
-from PyQt4.QtCore import QRegExp
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QTextStream
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
 
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QRadioButton
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QCompleter
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QRadioButton
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QCompleter
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
@@ -66,6 +66,7 @@ class FindInFilesThread(QThread):
     Emit the signal
     found_pattern(PyQt_PyObject)
     '''
+    found_pattern = pyqtSignal(tuple)#'QObject*')
 
     def find_in_files(self, dir_name, filters, reg_exp, recursive, by_phrase):
         """Trigger the find in files thread and return the lines found."""
@@ -135,8 +136,7 @@ class FindInFilesThread(QThread):
         #emit a signal!
         relative_file_name = file_manager.convert_to_relative(
             self.root_dir, file_path)
-        self.emit(SIGNAL("found_pattern(PyQt_PyObject)"),
-            (relative_file_name, lines))
+        self.found_pattern.emit((relative_file_name, lines))
 
     def cancel(self):
         """Cancel the thread execution."""
@@ -151,8 +151,8 @@ class FindInFilesResult(QTreeWidget):
         super(FindInFilesResult, self).__init__()
         self.setHeaderLabels((translations.TR_FILE, translations.TR_LINE))
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
-        self.header().setResizeMode(1, QHeaderView.ResizeToContents)
+        self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.sortByColumn(0, Qt.AscendingOrder)
 
@@ -180,7 +180,7 @@ class FindInFilesRootItem(QTreeWidgetItem):
 class FindInFilesDialog(QDialog):
 
     """Dialog to configure and trigger the search in the files."""
-
+    findStarted = pyqtSignal()
     def __init__(self, result_widget, parent):
         super(FindInFilesDialog, self).__init__(parent)
         self._find_thread = FindInFilesThread()
@@ -262,21 +262,14 @@ class FindInFilesDialog(QDialog):
         self.open_button.setFocusPolicy(Qt.NoFocus)
 
         #signal
-        self.connect(self.open_button, SIGNAL("clicked()"), self._select_dir)
-        self.connect(self.find_button, SIGNAL("clicked()"),
-            self._find_in_files)
-        self.connect(self.cancel_button, SIGNAL("clicked()"),
-            self._kill_thread)
-        self.connect(self._find_thread, SIGNAL("found_pattern(PyQt_PyObject)"),
-            self._found_match)
-        self.connect(self._find_thread, SIGNAL("finished()"),
-            self._find_thread_finished)
-        self.connect(self.type_checkbox, SIGNAL("stateChanged(int)"),
-            self._change_radio_enabled)
-        self.connect(self.check_replace, SIGNAL("stateChanged(int)"),
-            self._replace_activated)
-        self.connect(self.words_radio, SIGNAL("clicked(bool)"),
-            self._words_radio_pressed)
+        self.open_button.clicked['bool'].connect(self._select_dir)
+        self.find_button.clicked['bool'].connect(self._find_in_files)
+        self.cancel_button.clicked['bool'].connect(self._kill_thread)
+        self._find_thread.found_pattern.connect(self._found_match)
+        self._find_thread.finished.connect(self._find_thread_finished)
+        self.type_checkbox.stateChanged[int].connect(self._change_radio_enabled)
+        self.check_replace.stateChanged[int].connect(self._replace_activated)
+        self.words_radio.clicked['bool'].connect(self._words_radio_pressed)
 
     def _replace_activated(self):
         """If replace is activated, display the replace widgets."""
@@ -317,7 +310,7 @@ class FindInFilesDialog(QDialog):
 
     def _find_thread_finished(self):
         """Wait on thread finished."""
-        self.emit(SIGNAL("finished()"))
+        self.finished.emit(0)
         self._find_thread.wait()
 
     def _select_dir(self):
@@ -347,7 +340,7 @@ class FindInFilesDialog(QDialog):
 
     def _find_in_files(self):
         """Trigger the search on the files."""
-        self.emit(SIGNAL("findStarted()"))
+        self.findStarted.emit()
         self._kill_thread()
         self.result_widget.clear()
         pattern = self.pattern_line_edit.text()
@@ -423,21 +416,14 @@ class FindInFilesWidget(QWidget):
 
         self._open_find_button.setFocus()
         #signals
-        self.connect(self._open_find_button, SIGNAL("clicked()"),
-            self.open)
-        self.connect(self._stop_button, SIGNAL("clicked()"), self._find_stop)
-        self.connect(self._clear_button, SIGNAL("clicked()"),
-            self._clear_results)
-        self.connect(self._result_widget, SIGNAL(
-            "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
-        self.connect(self._result_widget, SIGNAL(
-            "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
-        self.connect(self._find_widget, SIGNAL("finished()"),
-            self._find_finished)
-        self.connect(self._find_widget, SIGNAL("findStarted()"),
-            self._find_started)
-        self.connect(self._replace_button, SIGNAL("clicked()"),
-            self._replace_results)
+        self._open_find_button.clicked['bool'].connect(self.open)
+        self._stop_button.clicked['bool'].connect(self._find_stop)
+        self._clear_button.clicked['bool'].connect(self._clear_results)
+        self._result_widget.itemActivated['QTreeWidgetItem*', int].connect(self._go_to)
+        self._result_widget.itemClicked['QTreeWidgetItem*', int].connect(self._go_to)
+        self._find_widget.finished.connect(self._find_finished)
+        self._find_widget.findStarted.connect(self._find_started)
+        self._replace_button.clicked['bool'].connect(self._replace_results)
 
     def _find_finished(self):
         """Search has finished."""
@@ -483,7 +469,7 @@ class FindInFilesWidget(QWidget):
     def open(self):
         """Open the selected file in the proper line."""
         if not self._find_widget.isVisible():
-            ninjaide = IDE.get_service('ide')
+            ninjaide = IDE.getInstance()
             actual_projects_obj = ninjaide.filesystem.get_projects()
             actual_projects = [path for path in actual_projects_obj]
             actual = ninjaide.get_current_project()
@@ -496,11 +482,20 @@ class FindInFilesWidget(QWidget):
     def find_occurrences(self, word):
         """Trigger the find occurrences mode with pre-search data."""
         self._find_widget.pattern_line_edit.setText(word)
-        ninjaide = IDE.get_service('ide')
+        ninjaide = IDE.getInstance()
         editorWidget = self._main_container.get_current_editor()
         nproject = ninjaide.get_project_for_file(editorWidget.file_path)
         if nproject is None:
             nproject = ninjaide.get_current_project()
+            if nproject is None:
+                # self._find_widget.dir_combo.clear()
+                print("editorWidget.file_path",editorWidget.file_path)
+                #self._find_widget.dir_combo.addItem(nproject.path)
+                # self._find_widget.case_checkbox.setChecked(True)
+                self._find_widget._find_in_files()
+                print("añadido!")
+                return
+        print("\n\n\nnproject.path", nproject.path)
         self._find_widget.dir_combo.clear()
         self._find_widget.dir_combo.addItem(nproject.path)
         self._find_widget.case_checkbox.setChecked(True)

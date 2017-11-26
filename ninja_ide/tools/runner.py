@@ -17,8 +17,8 @@
 import code
 import subprocess
 
-from PyQt4.QtNetwork import QHostAddress
-from PyQt4.QtNetwork import QTcpServer
+from PyQt5.QtNetwork import QHostAddress
+from PyQt5.QtNetwork import QTcpServer
 
 
 def run_code(codes):

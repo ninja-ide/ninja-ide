@@ -19,8 +19,8 @@ from __future__ import unicode_literals
 
 import collections
 
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.editor import checkers
@@ -35,6 +35,12 @@ class NEditable(QObject):
     @fileClosing(PyQt_PyObject)
     @fileSaved(PyQt_PyObject)
     """
+    checkersUpdated = pyqtSignal('QObject*')
+    askForSaveFileClosing = pyqtSignal('QObject*')
+    fileClosing = pyqtSignal('QObject*')
+    unDockedAndReparentFile = pyqtSignal(str, bool)
+    fileSaved = pyqtSignal('QObject*')
+    fileChanged = pyqtSignal('QObject*')
 
     def __init__(self, nfile=None):
         super(NEditable, self).__init__()
@@ -51,11 +57,13 @@ class NEditable(QObject):
 
         # Connect signals
         if self._nfile:
-            self.connect(self._nfile, SIGNAL("fileClosing(QString, bool)"),
-                         self._about_to_close_file)
-            self.connect(
-                self._nfile, SIGNAL("fileChanged()"),
-                lambda: self.emit(SIGNAL("fileChanged(PyQt_PyObject)"), self))
+            self._nfile.fileClosing.connect(self._about_to_close_file)
+            self.unDockedAndReparentFile.connect(self._nfile.unDockAndReparent)
+            self._nfile.fileChanged.connect(
+                lambda this=self: this.fileChanged.emit(this))
+
+    # def hasReparent(self, path, B):
+    #     self.unDockedAndReparentFile.emit(path, B)
 
     def extension(self):
         #FIXME This sucks, we should have a way to define lang
@@ -68,10 +76,10 @@ class NEditable(QObject):
         if self.__editor:
             modified = self.__editor.is_modified
         if modified and not force_close:
-            self.emit(SIGNAL("askForSaveFileClosing(PyQt_PyObject)"), self)
+            self.askForSaveFileClosing.emit(self)
         else:
             self._nfile.remove_watcher()
-            self.emit(SIGNAL("fileClosing(PyQt_PyObject)"), self)
+            self.fileClosing.emit(self)
 
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""
@@ -165,19 +173,19 @@ class NEditable(QObject):
             else:
                 self.ignore_checkers = False
             self.__editor.setModified(False)
-            self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
+            self.fileSaved.emit(self)
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
         self.registered_checkers = sorted(checkers.get_checkers_for(lang),
                                           key=lambda x: x[2])
+        # print("\n\ninclude_checkers", self.registered_checkers)
         self._has_checkers = len(self.registered_checkers) > 0
         for i, values in enumerate(self.registered_checkers):
             Checker, color, priority = values
             check = Checker(self.__editor)
             self.registered_checkers[i] = (check, color, priority)
-            self.connect(check, SIGNAL("finished()"),
-                         self.show_checkers_notifications)
+            check.finished.connect(self.show_checkers_notifications)
 
     def run_checkers(self, content, path=None, encoding=None):
         for items in self.registered_checkers:
@@ -189,7 +197,7 @@ class NEditable(QObject):
         self._checkers_executed += 1
         if self._checkers_executed == len(self.registered_checkers):
             self._checkers_executed = 0
-            self.emit(SIGNAL("checkersUpdated(PyQt_PyObject)"), self)
+            self.checkersUpdated.emit(self)
 
     def update_checkers_display(self):
         for items in self.registered_checkers:
@@ -197,3 +205,6 @@ class NEditable(QObject):
             func = getattr(checker, 'refresh_display', None)
             if isinstance(func, collections.Callable):
                 func()
+
+    def closeArchive(self):
+        self._nfile.close()

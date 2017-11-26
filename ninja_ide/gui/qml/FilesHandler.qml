@@ -1,19 +1,97 @@
-import QtQuick 1.1
+import QtQuick 2.5
+import QtQuick.Controls 1.4
+import QtQuick.Window 2.2 as WIN
+import QtQuick.Layouts 1.2
 
 Rectangle {
     id: root
+
+    width: 500
+    height: 400
 
     radius: 5
     color: "#202123"
     border.width: 1
     border.color: "gray"
+    
+    property var _window_: WIN.Window {
+        modality: Qt.ApplicationModal
+        //visibility: Window.Windowed
+        visible: false
+        width: 135
+        height: 40
+        color: "white"
+        flags: Qt.Popup
+
+        ColumnLayout{
+            id: columnLayout1
+            spacing: 2
+            anchors.fill: parent
+            Rectangle{
+                id: rectangle1
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.top: parent.top
+                anchors.topMargin: 0
+                anchors.bottom: sep.top
+                Layout.fillWidth: true
+                Text{
+                    id: t1
+                    Layout.fillHeight: true
+                    anchors.leftMargin: 5
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: parent.height
+                    text: "Incert File in..."
+                    verticalAlignment: Text.AlignVCenter
+                    font.pointSize: 11
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: _window_.close()
+                }
+            }
+
+            Rectangle{
+                id: sep
+                height: 2
+                Layout.fillWidth: true
+                Layout.maximumHeight: 2
+                anchors.verticalCenter: parent.verticalCenter
+                color: "gray"
+            }
+
+            Rectangle{
+                id: rectangle2
+                anchors.right: parent.rights
+                anchors.bottom: parent.bottom
+                anchors.top: sep.bottom
+                Layout.fillWidth: true
+                Text{
+                    id: t2
+                    Layout.fillHeight: true
+                    anchors.leftMargin: 5
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: parent.height
+                    text: "Incert All Files in..."
+                    verticalAlignment: Text.AlignVCenter
+                    font.pointSize: 11
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: _window_.close()
+                }
+            }
+        }
+    }
 
     PropertyAnimation {
         id: showAnim
         target: root
         properties: "opacity"
         easing.type: Easing.InOutQuad
-        to: 1
+        to: 1.0
         duration: 300
     }
 
@@ -22,13 +100,23 @@ Rectangle {
     signal hide
     signal fuzzySearch(string search)
 
+    function toGlobalPOINT(item, x,y){
+        var referToRoot
+        //for (var item: ) {
+        referToRoot = item.mapToItem(root, x, y);
+        //tools.mapToGlobal(referToRoot)
+        //}
+        return tools.mapToGlobal(referToRoot)//[x, y]
+    }
+
     function activateInput() {
         input.text = "";
         input.forceActiveFocus();
+        input.selectAll();
     }
 
     function show_animation() {
-        root.opacity = 0;
+        //root.opacity = 0; # @@6
         showAnim.running = true;
     }
 
@@ -45,7 +133,38 @@ Rectangle {
         root.open(path, tempFile, project);
     }
 
+    function add_File(item) {
+        print("add_File", item)
+        listFiles.model.append(
+            {"name": item[i][0],
+            "path": item[i][1],
+            "checkers": item[i][2],
+            "modified": item[i][3],
+            "tempFile": item[i][4],
+            "project": "",
+            "itemVisible": true});
+    }
+
+    function remove_File(file_path) {
+        print("remove_File", file_path)
+        listFiles.currentIndex = 0;
+        for(var i = 0; i < listFiles.model.length; i++) {
+            if (listFiles.model[i]["path"] === file_path) {
+                listFiles.model.remove(i)
+            }
+        }
+    }
+/*
+    function sort_model() 
+        for(var i = 0; i < listFiles.model.length; i++) {
+            if (listFiles.model[i]["path"] === file_path) {
+                listFiles.model.remove(i)
+            }
+        }        
+    }*/
+
     function set_model(model) {
+        // print("set_model", model)
         listFiles.currentIndex = 0;
         for(var i = 0; i < model.length; i++) {
             listFiles.model.append(
@@ -54,8 +173,8 @@ Rectangle {
                 "checkers": model[i][2],
                 "modified": model[i][3],
                 "tempFile": model[i][4],
-                "project": "",
-                "itemVisible": true});
+                "project": model[i][5],
+                "itemVisible": model[i][6]});
         }
     }
 
@@ -80,6 +199,7 @@ Rectangle {
     }
 
     function next_item() {
+        print("next_item\n")
         if (listFiles.visible) {
             for (var i = 0; i < listFiles.model.count; i++) {
                 if (listFiles.currentIndex == (listFiles.count - 1)) {
@@ -123,29 +243,108 @@ Rectangle {
 
     Rectangle {
         id: inputArea
+        objectName: "--Rectangle--"
         radius: 2
         color: "#2d2f31"
         height: 30
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            margins: 10
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 10
+        
         border.color: "black"
         border.width: 1
         smooth: true
 
         TextInput {
             id: input
-            anchors {
-                fill: parent
-                margins: 4
-            }
+            objectName: "--TextInput--"
+            
+            anchors.fill: parent
+            anchors.margins: 4
+            
             focus: true
-            clip: true
-            color: "white"
+            //clip: true
+            color: "orange"
+            selectionColor: "red"
+            selectByMouse: true
             font.pixelSize: 18
+            activeFocusOnPress: true
+
+            Image {
+                id: imag
+                anchors.right: parent.right
+                anchors.rightMargin: 0
+                anchors.verticalCenter: parent.verticalCenter
+                height: 18
+                width: 18
+                source: "img/delete-project_rojo.png"
+                fillMode: Image.PreserveAspectFit
+
+                Behavior on width {
+                    NumberAnimation { easing.type: Easing.InOutBack; duration: 100 }
+                }
+                Behavior on height {
+                    NumberAnimation { easing.type: Easing.InOutBack; duration: 100 }
+                }
+                Behavior on anchors.rightMargin {
+                    NumberAnimation { easing.type: Easing.InOutBack; duration: 100 }
+                }
+
+                states: [
+                    State {
+                        name: "zoomIn"
+                        PropertyChanges { target: imag; width: 18; }
+                        PropertyChanges { target: imag; height: 18;  }
+                        PropertyChanges { target: imag; anchors.rightMargin: 0; }
+                    },
+                    State {
+                        name: "zoomOut"
+                        PropertyChanges { target: imag; width: 15; }
+                        PropertyChanges { target: imag; height: 15; }
+                        PropertyChanges { target: imag; anchors.rightMargin: 1.5; }
+                    }
+                ]
+
+                MouseArea{
+                    id: but
+                    anchors.fill: parent
+                    onPressed:{
+                        imag.state = "zoomOut"
+                    }
+
+                    onReleased:{
+                        imag.state = "zoomIn"
+                    }
+
+                    onClicked: {
+                        input.text= ""
+
+                    }
+                }
+            }
+
+            Keys.onEscapePressed: {
+                print("Keys.onEscapePressed")
+                Qt.quit();
+            }
+            Keys.onDownPressed: {
+                print("Keys.onDownPressed")
+                root.next_item();
+            }
+            Keys.onUpPressed: {
+                root.previous_item();
+            }
+            Keys.onEnterPressed: {
+                root.open_item();
+            }
+            Keys.onReturnPressed: {
+                root.open_item();
+            }
+            /*Keys.onDigit8Pressed: {
+                rawObj.view_WinFlags();
+            }*/
 
             onTextChanged: {
                 var firstValidItem = -1;
@@ -167,19 +366,8 @@ Rectangle {
                 }
             }
 
-            Keys.onDownPressed: {
-                root.next_item();
-            }
-            Keys.onUpPressed: {
-                root.previous_item();
-            }
-            Keys.onEnterPressed: {
-                root.open_item();
-            }
-            Keys.onReturnPressed: {
-                root.open_item();
-            }
         }
+
     }
 
     Text {
@@ -187,12 +375,12 @@ Rectangle {
         color: "white"
         font.pixelSize: 10
         font.bold: true
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: inputArea.bottom
-            margins: 5
-        }
+        
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: inputArea.bottom
+        anchors.margins: 5
+        
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -205,21 +393,35 @@ Rectangle {
             property int defaultValues: checkers ? 70 : 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
-            color: item.current ? "#6a6ea9" : "#27292b"
+            color: item.current ? "#4182c4" : "#27292b"
 
             property string mainTextColor: item.current ? "white" : "#aaaaaa"
             property string mainTextModifiedColor: item.current ? "lightgreen" : "green"
+ 
 
             MouseArea {
                 anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onPressed: {
+                    if (mouse.button === Qt.RightButton) {
+                        print("onPressed")
+                        _window_.x = mouse.x
+                        _window_.y = mouse.y
+                        _window_.show()
+                    }
+                }
 
                 onClicked: {
-                    if (listFiles.visible) {
-                        listFiles.currentIndex = index;
-                    } else {
-                        listFuzzyFiles.currentIndex = index;
+                    if (mouse.button === Qt.RightButton) {
+                        print("onClicked")
+                    }else {
+                        if (listFiles.visible) {
+                            listFiles.currentIndex = index;
+                        } else {
+                            listFuzzyFiles.currentIndex = index;
+                        }
+                        root.open_item();
                     }
-                    root.open_item();
                 }
             }
 
@@ -255,18 +457,18 @@ Rectangle {
 
             Column {
                 id: col
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
+                
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 10
+                
                 Text {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        rightMargin: imgClose.width
-                    }
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: imgClose.width
+                    
                     color: modified ? mainTextModifiedColor : mainTextColor
                     font.pixelSize: 18
                     font.bold: true
@@ -275,20 +477,21 @@ Rectangle {
                     font.italic: modified
                 }
                 Text {
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                    }
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
                     color: item.current ? "#aaaaaa" : "#555555"
                     elide: Text.ElideLeft
                     text: path
                 }
             }
             Row {
-                anchors {
-                    right: parent.right
-                    top: col.bottom
-                }
+
+                anchors.right: parent.right
+                anchors.top: col.bottom
+                anchors.margins: 5
+                
                 spacing: 10
                 Repeater {
                     model: checkers
@@ -305,16 +508,16 @@ Rectangle {
 
     ListView {
         id: listFiles
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            top: inputArea.bottom
-            margins: 5
-        }
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: inputArea.bottom
+        anchors.margins: 5
+        
         spacing: 2
 
-        focus: true
+        //focus: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200
@@ -322,17 +525,17 @@ Rectangle {
 
     ListView {
         id: listFuzzyFiles
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            top: fuzzyText.bottom
-            margins: 5
-        }
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: fuzzyText.bottom
+        anchors.margins: 5
+        
         visible: !listFiles.visible
         spacing: 2
 
-        focus: true
+        //focus: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200

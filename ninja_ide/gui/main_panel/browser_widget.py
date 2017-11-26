@@ -19,12 +19,18 @@ from __future__ import unicode_literals
 
 import time
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtWebKit import QWebView
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSignal
+
+from PyQt5.QtCore import QT_VERSION
+
+if QT_VERSION < 0x50700:
+    from PyQt5.QtWebKitWidgets import QWebView
+else:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 from ninja_ide.core.file_handling import file_manager
 
@@ -39,14 +45,21 @@ class BrowserWidget(QWidget):
     openPreferences()
     dontOpenStartPage()
     """
+    openProject = pyqtSignal(str)
+    openPreferences = pyqtSignal()
+    dontOpenStartPage = pyqtSignal()
 ###############################################################################
 
     def __init__(self, url, process=None, parent=None):
-        QWidget.__init__(self, parent)
+        super(BrowserWidget, self).__init__(parent)
         self._process = process
         vbox = QVBoxLayout(self)
         #Web Frame
-        self.webFrame = QWebView(self)
+        if QT_VERSION < 0x50700:
+            self.webFrame = QWebView(self)
+        else:
+            self.webFrame = QWebEngineView(self)
+
         self.webFrame.setAcceptDrops(False)
 
         self.webFrame.load(QUrl(url))
@@ -57,18 +70,30 @@ class BrowserWidget(QWidget):
             time.sleep(0.5)
             self.webFrame.load(QUrl(url))
 
-        self.webFrame.page().currentFrame().setScrollBarPolicy(
-            Qt.Vertical, Qt.ScrollBarAsNeeded)
-        self.webFrame.page().currentFrame().setScrollBarPolicy(
-            Qt.Horizontal, Qt.ScrollBarAsNeeded)
+        if QT_VERSION < 0x50700:
+            self.webFrame.page().currentFrame().setScrollBarPolicy(
+                Qt.Vertical, Qt.ScrollBarAsNeeded)
+            self.webFrame.page().currentFrame().setScrollBarPolicy(
+                Qt.Horizontal, Qt.ScrollBarAsNeeded)
+        # else:
+            # self.webFrame.page().view().setSizePolicy(
+            #     Qt.Vertical, Qt.ScrollBarAsNeeded)
+            # self.webFrame.page().view().setSizePolicy(
+            #     Qt.Horizontal, Qt.ScrollBarAsNeeded)
+
+
 
     def start_page_operations(self, url):
         opt = file_manager.get_basename(url.toString())
-        self.emit(SIGNAL(opt))
+        #self.emit(SIGNAL(opt))
+        print("BrowserWidget::start_page_operations() ->", self.webFrame)
+        getattr(self, url.toString()).emit()
+
 
     def shutdown_pydoc(self):
         if self._process is not None:
             self._process.kill()
 
     def find_match(self, word, back=False, sensitive=False, whole=False):
+        print("BrowserWidget::find_match() ->", self.webFrame)
         self.webFrame.page().findText(word)

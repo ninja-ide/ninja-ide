@@ -16,22 +16,25 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QStackedWidget
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtWebKit import QWebPage
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QStackedWidget
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWebKitWidgets import QWebPage
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QMessageBox
+
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
@@ -49,15 +52,19 @@ from ninja_ide import translations
 class _ToolsDock(QWidget):
     """Former Miscellaneous, contains all the widgets in the bottom area."""
 
+    findStarted = pyqtSignal()
+    splitEditor = pyqtSignal(QWidget, QWidget, bool)
+    closeSplit = pyqtSignal(QWidget)
+    
     def __init__(self, parent=None):
         super(_ToolsDock, self).__init__(parent)
         #Register signals connections
         connections = (
             {'target': 'main_container',
-             'signal_name': "findOcurrences(QString)",
+             'signal_name': "findOcurrences",#(QString)
              'slot': self.show_find_occurrences},
             {'target': 'main_container',
-             'signal_name': "runFile(QString)",
+             'signal_name': "runFile",#(QString)
              'slot': self.execute_file},
         )
         IDE.register_signals('tools_dock', connections)
@@ -86,7 +93,7 @@ class _ToolsDock(QWidget):
         # Not Configurable Shortcuts
         shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
-        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
+        shortEscMisc.activated.connect(self.hide)
 
         #Toolbar
         hbox.addWidget(self.__toolbar)
@@ -110,20 +117,21 @@ class _ToolsDock(QWidget):
         btn_close.setObjectName('navigation_button')
         btn_close.setToolTip('F4: ' + translations.TR_ALL_VISIBILITY)
         hbox.addWidget(btn_close)
-        self.connect(btn_close, SIGNAL('clicked()'), self.hide)
+        btn_close.clicked['bool'].connect(self.hide)
 
     def install(self):
         """Install triggered by the ide."""
         self.setup_ui()
-        ninjaide = IDE.get_service('ide')
+        ninjaide = IDE.getInstance()
         ninjaide.place_me_on("tools_dock", self, "central")
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
 
-        self.connect(ninjaide, SIGNAL("goingDown()"), self.save_configuration)
+        ninjaide.goingDown.connect(self.save_configuration)
 
         qsettings = IDE.ninja_settings()
         value = qsettings.value("tools_dock/visible", True, type=bool)
         self.setVisible(value)
+        print("\ninstall")
 
     def save_configuration(self):
         qsettings = IDE.ninja_settings()
@@ -131,6 +139,7 @@ class _ToolsDock(QWidget):
 
     def change_visibility(self):
         """Change tools dock visibility."""
+        print("change_visibility22",self.isVisible())
         if self.isVisible():
             self.hide()
         else:
@@ -146,6 +155,7 @@ class _ToolsDock(QWidget):
 
     def _item_changed(self, val):
         """Change the current item."""
+        print("_item_changed", val)
         if not self.isVisible():
             self.show()
         self.stack.show_display(val)
@@ -172,8 +182,7 @@ class _ToolsDock(QWidget):
         editorWidget = main_container.get_current_editor()
         if editorWidget:
             #emit a signal for plugin!
-            self.emit(SIGNAL("fileExecuted(QString)"),
-                      editorWidget.file_path)
+            self.fileExecuted.emit(editorWidget.file_path)
             main_container.save_file(editorWidget)
             ext = file_manager.get_file_extension(editorWidget.file_path)
             #TODO: Remove the IF statment and use Handlers
@@ -195,7 +204,7 @@ class _ToolsDock(QWidget):
             elif main_file:
                 projects_explorer.save_project()
                 #emit a signal for plugin!
-                self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
+                self.projectExecuted.emit(nproject.path)
 
                 main_file = file_manager.create_path(nproject.path,
                                                      nproject.main_file)
@@ -206,6 +215,9 @@ class _ToolsDock(QWidget):
                     programParams=nproject.program_params,
                     preExec=nproject.pre_exec_script,
                     postExec=nproject.post_exec_script)
+        else:
+            QMessageBox.information(self, translations.TR_INFO_TITLE_PROJECT_PROPERTIES,
+                translations.TR_INFO_MESSAGE_PROJECT_PROPERTIES)
 
     def _run_application(self, fileName, pythonExec=False, PYTHONPATH=None,
                          programParams='', preExec='', postExec=''):
@@ -256,8 +268,7 @@ class _ToolsDock(QWidget):
         button.setIconSize(QSize(16, 16))
         button.setToolTip(description)
         index = self.stack.count() - 1
-        func = lambda: self._item_changed(index)
-        self.connect(button, SIGNAL("clicked()"), func)
+        button.clicked['bool'].connect(lambda s, i=index: self._item_changed(i))
         self.__toolbar.addWidget(button)
 
     def showEvent(self, event):
@@ -273,9 +284,12 @@ class StackedWidget(QStackedWidget):
 
     def setCurrentIndex(self, index):
         """Change the current widget being displayed with an animation."""
-        self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
+        try:
+            self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
                                                  self.widget(index))
-        QStackedWidget.setCurrentIndex(self, index)
+        except Exception as e:
+            print("\nFallo:", e)
+        super(StackedWidget, self).setCurrentIndex(index)
 
     def show_display(self, index):
         """Change the current widget and trigger the animation."""

@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.5
 
 Rectangle {
     id: root
@@ -7,9 +7,9 @@ Rectangle {
     smooth: true
     color: "#24262c"
 
-    signal install
+    signal install()
     signal selection(bool value)
-    signal showPlugin
+    signal showPlugin()
     property bool selected: false
     property alias title: txtTitle.text
     property alias summary: txtSummary.text
@@ -55,11 +55,10 @@ Rectangle {
         height: 15
         width: 15
         color: root.selected ? "lightgreen" : "white"
-        anchors {
-            left: parent.left
-            top: parent.top
-            margins: 10
-        }
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.margins: 10
+        
 
         MouseArea {
             anchors.fill: parent
@@ -75,20 +74,18 @@ Rectangle {
         spacing: 15
 
         Column {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
+            anchors.left: parent.left
+            anchors.right: parent.right
+            
             spacing: 5
             Text {
                 id: txtTitle
                 color: "#ededed"
-                anchors {
-                    left: parent.left
-                    leftMargin: 25
-                    right: parent.right
-                    rightMargin: 25
-                }
+                anchors.left: parent.left
+                anchors.leftMargin: 25
+                anchors.right: parent.right
+                anchors.rightMargin: 25
+                
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -96,12 +93,11 @@ Rectangle {
                 text: "Version: " + root.version
                 color: "#ededed"
                 font.pixelSize: 10
-                anchors {
-                    left: parent.left
-                    leftMargin: 25
-                    right: parent.right
-                    rightMargin: 25
-                }
+                anchors.left: parent.left
+                anchors.leftMargin: 25
+                anchors.right: parent.right
+                anchors.rightMargin: 25
+                
                 elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -109,10 +105,9 @@ Rectangle {
                 id: txtSummary
                 color: "#ededed"
                 font.pixelSize: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
+                anchors.left: parent.left
+                anchors.right: parent.right
+                
                 maximumLineCount: 5
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
@@ -124,12 +119,11 @@ Rectangle {
         height: 20
         text: "Install"
         toggledEnagled: false
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            margins: 10
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        
 
         onClicked: {
             root.state = "INSTALLING";
@@ -142,12 +136,12 @@ Rectangle {
         id: progress
         height: 20
         color: "#ededed"
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            margins: 10
-        }
+       
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        
 
         function start() {
             bar.x = bar.end;
@@ -159,14 +153,14 @@ Rectangle {
             property int end: (progress.width - bar.width)
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "lightsteelblue" }
-                GradientStop { position: 0.5; color: "lightsteelblue" }
-                GradientStop { position: 0.5; color: "steelblue" }
+                //GradientStop { position: 0.5; color: "lightsteelblue" }
+                //GradientStop { position: 0.5; color: "steelblue" }
                 GradientStop { position: 1.0; color: "steelblue" }
             }
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-            }
+
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+           
             width: 50
             x: parent.x
 

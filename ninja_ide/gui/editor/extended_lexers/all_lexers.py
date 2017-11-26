@@ -20,12 +20,12 @@ from __future__ import absolute_import
 
 import re
 
-from PyQt4.QtGui import QColor
+from PyQt5.QtGui import QColor
 
 from ninja_ide import resources
 from ninja_ide.core import settings
 
-from PyQt4.Qsci import (QsciLexerBash, QsciLexerBatch,
+from PyQt5.Qsci import (QsciLexerBash, QsciLexerBatch,
                         QsciLexerCMake, QsciLexerCPP, QsciLexerCSS,
                         QsciLexerCSharp,
                         QsciLexerD, QsciLexerDiff, QsciLexerFortran,
@@ -118,7 +118,7 @@ class PythonLexer(BaseNinjaLexer, QsciLexerPython):
 
 
 try:
-    from PyQt4.Qsci import QsciLexerAVS
+    from PyQt5.Qsci import QsciLexerAVS
     class AVSLexer(BaseNinjaLexer, QsciLexerAVS):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
@@ -162,7 +162,7 @@ class CSharpLexer (BaseNinjaLexer, QsciLexerCSharp):
         super(CSharpLexer, self).__init__(*args, **kwargs)
 
 try:
-    from PyQt4.Qsci import QsciLexerCoffeeScript
+    from PyQt5.Qsci import QsciLexerCoffeeScript
     class CoffeeScriptLexer (BaseNinjaLexer, QsciLexerCoffeeScript):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
@@ -243,7 +243,7 @@ class OctaveLexer (BaseNinjaLexer, QsciLexerOctave):
 
 
 try:
-    from PyQt4.Qsci import QsciLexerPO
+    from PyQt5.Qsci import QsciLexerPO
     class POLexer (BaseNinjaLexer, QsciLexerPO):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None

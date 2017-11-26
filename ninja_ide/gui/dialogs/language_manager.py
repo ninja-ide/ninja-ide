@@ -25,16 +25,16 @@ except ImportError:
     from urllib2 import URLError
 #lint:enable
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QDialog
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
@@ -45,7 +45,7 @@ from ninja_ide.tools import json_manager
 class LanguagesManagerWidget(QDialog):
 
     def __init__(self, parent):
-        QDialog.__init__(self, parent, Qt.Dialog)
+        super(LanguagesManagerWidget, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Language Manager"))
         self.resize(700, 500)
 
@@ -68,11 +68,10 @@ class LanguagesManagerWidget(QDialog):
         self.downloadItems = []
 
         #Load Themes with Thread
-        self.connect(btnReload, SIGNAL("clicked()"), self._reload_languages)
+        btnReload.clicked['bool'].connect(self._reload_languages)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
-        self.connect(self._thread, SIGNAL("finished()"),
-            self.load_languages_data)
-        self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        self._thread.finished.connect(self.load_languages_data)
+        btn_close.clicked['bool'].connect(self.close)
         self._reload_languages()
 
     def _reload_languages(self):
@@ -138,7 +137,7 @@ class LanguagesManagerWidget(QDialog):
 class LanguageWidget(QWidget):
 
     def __init__(self, parent, languages):
-        QWidget.__init__(self, parent)
+        super(LanguageWidget, self).__init__(parent)
         self._parent = parent
         self._languages = languages
         vbox = QVBoxLayout(self)
@@ -153,8 +152,7 @@ class LanguageWidget(QWidget):
         self._table.setColumnWidth(0, 200)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
-        self.connect(btnUninstall, SIGNAL("clicked()"),
-            self._download_language)
+        btnUninstall.clicked['bool'].connect(self._download_language)
 
     def _download_language(self):
         languages = ui_tools.remove_get_selected_items(self._table,

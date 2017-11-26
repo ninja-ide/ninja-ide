@@ -28,16 +28,17 @@ except:
     from io import StringIO
 #lint:enable
 
-from PyQt4.QtGui import QToolTip
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QMimeData
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QTimer
+from PyQt5.QtGui import QFontMetricsF
+from PyQt5.QtWidgets import QToolTip
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QMimeData
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -50,7 +51,7 @@ from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import document_map
 from ninja_ide.extensions import handlers
 
-from PyQt4.Qsci import QsciScintilla  # , QsciCommand
+from PyQt5.Qsci import QsciScintilla  # , QsciCommand
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.editor.editor')
@@ -74,6 +75,22 @@ class Editor(QsciScintilla):
     migrationAnalyzed()
     currentLineChanged(int)
     """
+    #modificationChanged = pyqtSignal(bool)
+    openDropFile = pyqtSignal(str)
+    addBackItemNavigation = pyqtSignal()
+    locateFunction = pyqtSignal(str, str, bool)# [functionName, filePath, isVariable]
+    findOcurrences = pyqtSignal(str)
+    blockCountChanged = pyqtSignal(int)
+    #cursorPositionChange = pyqtSignal(int, int)#row, col
+    migrationAnalyzed = pyqtSignal()
+    currentLineChanged = pyqtSignal(int)
+    keyPressSignal = pyqtSignal('QEvent*')
+    warningsFound = pyqtSignal('QPlainTextEdit*')
+    errorsFound = pyqtSignal('QPlainTextEdit*')
+    cleanDocument = pyqtSignal('QPlainTextEdit*')
+    # linesChanged = pyqtSignal(int)
+    fileSaved = pyqtSignal('QPlainTextEdit*')
+    editorFocusObtained = pyqtSignal()
 ###############################################################################
 
     __indicator_word = 0
@@ -152,10 +169,7 @@ class Editor(QsciScintilla):
         self._bookmark_marker = 3
         self._breakpoint_marker = 4
         self.setMarginSensitivity(1, True)
-        self.connect(
-            self,
-            SIGNAL('marginClicked(int, int, Qt::KeyboardModifiers)'),
-            self.on_margin_clicked)
+        self.marginClicked[int, int, 'Qt::KeyboardModifiers'].connect(self.on_margin_clicked)
         color_fore = resources.get_color("FoldArea")
         # Marker Fold Expanded
         self.markerDefine(QsciScintilla.DownTriangle,
@@ -190,6 +204,8 @@ class Editor(QsciScintilla):
         self._configure_keybindings()
 
         self.lexer = highlighter.get_lexer(self._neditable.extension())
+
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
 
         if self.lexer is not None:
             self.setLexer(self.lexer)
@@ -254,52 +270,27 @@ class Editor(QsciScintilla):
         self.cursorPositionChanged.connect(
             lambda: self._highlight_word_timer.start(500))
 
-        self.connect(self, SIGNAL("linesChanged()"), self._update_sidebar)
-        self.connect(self, SIGNAL("blockCountChanged(int)"),
-                     self._update_file_metadata)
+        self.linesChanged.connect(self._update_sidebar)
+        self.blockCountChanged[int].connect(self._update_file_metadata)
 
         self.load_project_config()
         #Context Menu Options
         self.__actionFindOccurrences = QAction(self.tr("Find Usages"), self)
-        self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
-                     self._find_occurrences)
+        self.__actionFindOccurrences.triggered['bool'].connect(lambda s: self._find_occurrences())
 
-        ninjaide = IDE.get_service('ide')
-        self.connect(
-            ninjaide,
-            SIGNAL("ns_preferences_editor_font(PyQt_PyObject)"),
-            self.set_font)
-        self.connect(
-            ninjaide,
-            SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
-            self.set_flags)
-        self.connect(
-            ninjaide,
-            SIGNAL("ns_preferences_editor_showIndentationGuide(PyQt_PyObject)"),
-            self.set_flags)
+        ninjaide = IDE.getInstance()
+        ninjaide.ns_preferences_editor_font.connect(self.set_font)
+        ninjaide.ns_preferences_editor_showTabsAndSpaces.connect(self.set_flags)
+        ninjaide.ns_preferences_editor_showIndentationGuide.connect(self.set_flags)
         #TODO: figure it out it doesn´t work if gets shown after init
-        self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
-            self._load_minimap)
-        self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_docmapShow(PyQt_PyObject)"),
-            self._load_docmap)
-        self.connect(
-            ninjaide,
-            SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
-            self.load_project_config)
-        self.connect(
-            ninjaide,
-            SIGNAL("ns_preferences_editor_marginLine(PyQt_PyObject)"),
-            self._set_margin_line)
-        self.connect(
-            ninjaide,
-            SIGNAL("ns_preferences_editor_showLineNumbers(PyQt_PyObject)"),
-            self._show_line_numbers)
-        self.connect(ninjaide,
-                     SIGNAL(
-            "ns_preferences_editor_errorsUnderlineBackground(PyQt_PyObject)"),
-                self._change_indicator_style)
+        ##self.connect(ninjaide,
+            ##SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
+            ##self._load_minimap)
+        ninjaide.ns_preferences_editor_docmapShow.connect(self._load_docmap)
+        ninjaide.ns_preferences_editor_errorsUnderlineBackground.connect(self._change_indicator_style)
+        ninjaide.ns_preferences_editor_indent.connect(self.load_project_config)
+        ninjaide.ns_preferences_editor_marginLine.connect(self._set_margin_line)
+        ninjaide.ns_preferences_editor_showLineNumbers.connect(self._show_line_numbers)
         #self.connect(
             #ninjaide,
             #SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
@@ -313,8 +304,10 @@ class Editor(QsciScintilla):
         # Set the editor after initialization
         if self._neditable.editor:
             self.setDocument(self._neditable.document)
+            # print("EDITOR:: editable con editor++++", self, self._neditable)
         else:
             self._neditable.set_editor(self)
+            # print("EDITOR:: editable sin editor----", self, self._neditable)
 
         if self._neditable.file_path in settings.BREAKPOINTS:
             self.breakpoints = settings.BREAKPOINTS[self._neditable.file_path]
@@ -327,10 +320,15 @@ class Editor(QsciScintilla):
         for line in self.bookmarks:
             self.markerAdd(line, self._bookmark_marker)
 
-        self.connect(
-            self._neditable,
-            SIGNAL("checkersUpdated(PyQt_PyObject)"),
-            self._highlight_checkers)
+        self._neditable.checkersUpdated.connect(self._highlight_checkers)
+
+        self.setReadOnly(False)
+
+        #QTimer.singleShot(5000, lambda: print("\n\neditable.isReadOnly()::", self.isReadOnly()))
+
+    @property
+    def ParentalComboEditor(self):
+        return self.parent()
 
     @property
     def display_name(self):
@@ -466,13 +464,12 @@ class Editor(QsciScintilla):
         return self._cursor_line, self._cursor_index
 
     def load_project_config(self):
-        ninjaide = IDE.get_service('ide')
+        ninjaide = IDE.getInstance()
         project = ninjaide.get_project_for_file(self._neditable.file_path)
         if project is not None:
             self._indent = project.indentation
             self.useTabs = project.use_tabs
-            self.connect(project, SIGNAL("projectPropertiesUpdated()"),
-                         self.load_project_config)
+            project.projectPropertiesUpdated.connect(self.load_project_config)
             self.additional_builtins = project.additional_builtins
         else:
             self._indent = settings.INDENT
@@ -487,6 +484,9 @@ class Editor(QsciScintilla):
 
     def _update_sidebar(self):
         # Margin 0 is used for line numbers
+        fontmetrics = QFontMetricsF(self.__font)
+        maxLine = math.ceil(math.log10(self.lines()))
+        # print("\n\n_update_sidebar", settings.SHOW_LINE_NUMBERS)
         if settings.SHOW_LINE_NUMBERS:
             self.setMarginWidth(0, '0' * (len(str(self.lines())) + 1))
         else:
@@ -509,6 +509,27 @@ class Editor(QsciScintilla):
                     self.markerAdd(line, self._fold_expanded_marker)
 
     def _load_minimap(self, show):
+        pass
+        if show:
+            self._mini = minimap.MiniMap(self)
+            #self._mini.set_code(self.toPlainText())
+            self._mini.setDocument(self.document())
+            self._mini.setLexer(self.lexer)# debería ignorar el coloreado de fondo en los 
+            # subrayados, pues quedan como si la linea de texto fuera blanca.
+            self._mini.setReadOnly(True)
+            for i in range(100):
+                self._mini.zoomOut()
+            #FIXME: register syntax
+            self._mini.show()
+        #else:
+            #self._mini.shutdown()
+            #self._mini.deleteLater()
+            #self._mini = None
+
+    def move_Document(self, y):
+        print("\nEditor:move_Document", y)
+        super(Editor, self).scrollContentsBy(0, y)
+        #old code PyQt4
         if show:
             if self._mini is None:
                 self._mini = minimap.MiniMap(self)
@@ -534,6 +555,8 @@ class Editor(QsciScintilla):
         elif self._docmap is not None:
             self._docmap.deleteLater()
             self._docmap = None
+
+
     #def __retreat_to_keywords(self, event):
         #"""Unindent some kind of blocks if needed."""
         #previous_text = unicode(self.textCursor().block().previous().text())
@@ -677,17 +700,18 @@ class Editor(QsciScintilla):
         """
         Jump to a specific line number or ask to the user for the line
         """
+        print("\nen tercer lugar paso por aqui!!")
         if lineno is not None:
-            self.emit(SIGNAL("addBackItemNavigation()"))
+            self.addBackItemNavigation.emit()
             self._cursor_line = self._cursor_index = -1
-            self.go_to_line(lineno)
+            self.go_to_line(lineno, True)
             return
 
         maximum = self.lines()
         line = QInputDialog.getInt(self, self.tr("Jump to Line"),
                                    self.tr("Line:"), 1, 1, maximum, 1)
         if line[1]:
-            self.emit(SIGNAL("addBackItemNavigation()"))
+            self.addBackItemNavigation.emit()
             self.go_to_line(line[0] - 1)
 
     def _find_occurrences(self):
@@ -695,14 +719,44 @@ class Editor(QsciScintilla):
             word = self.selectedText()
         else:
             word = self._text_under_cursor()
-        self.emit(SIGNAL("findOcurrences(QString)"), word)
+        self.findOcurrences.emit(word)
 
-    def go_to_line(self, lineno):
+    def go_to_line(self, lineno, select=False):
         """
         Go to an specific line
         """
+        print("\n->go_to_line continuando en cuarto lugar", lineno, select)
         if self.lines() >= lineno:
-            self.setCursorPosition(lineno, 0)
+            #self.ensureLineVisible(lineno)
+            self.setCursorPosition(lineno, 0)#ensureLineVisible 
+            if select:
+                txt = self.text(lineno)
+                self.setSelection(lineno, len(txt.rstrip()), lineno, 0)
+            QTimer.singleShot(50, self.ensureCursorVisible)
+            print("\nLineno", lineno)
+
+    def go_to_symbol(self, lineno, sym, select=False):
+        """
+        Go to an specific line
+        """
+        print("\ncontinuando ->go_to_line", lineno, sym, select)
+        if self.lines() >= lineno:
+            txt = self.text(lineno)
+            if sym:
+                sym = re.search("([^\s\(]+)", sym).group(0)
+                # el caso de que quisiera seleccionar un espacio ó
+                # texto que contenga estrictamente espacios al lado NO se contempla.
+
+            iniPos = txt.index(sym)
+            self.setCursorPosition(lineno, iniPos)#ensureLineVisible 
+            if sym:
+                self.setSelection(lineno, iniPos, lineno, iniPos+len(sym))
+            QTimer.singleShot(50, self.ensureCursorVisible)
+            
+#personas = {juan, pablo, matias, pedro}            
+#casa["personas"].puede_hablar_con(personas)
+#pedro.hablar("mi nombre es pedro")
+
 
     def zoom_in(self):
         self.zoomIn()
@@ -853,7 +907,7 @@ class Editor(QsciScintilla):
 
     def focusInEvent(self, event):
         super(Editor, self).focusInEvent(event)
-        self.emit(SIGNAL("editorFocusObtained()"))
+        self.editorFocusObtained.emit()
         selected = False
         if self.hasSelectedText():
             selected = True
@@ -1086,7 +1140,7 @@ class Editor(QsciScintilla):
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
             #emit a signal so that plugins can do their thing
-            self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+            self.keyPressSignal.emit(event)
             return
         self.selected_text = self.selectedText()
 
@@ -1115,14 +1169,14 @@ class Editor(QsciScintilla):
         #self.completer.process_post_key_event(event)
 
         #emit a signal so that plugins can do their thing
-        self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+        self.keyPressSignal.emit(event)
 
     def keyReleaseEvent(self, event):
         super(Editor, self).keyReleaseEvent(event)
         line, _ = self.getCursorPosition()
         if line != self._last_block_position:
             self._last_block_position = line
-            self.emit(SIGNAL("currentLineChanged(int)"), line)
+            self.currentLineChanged.emit(line)
 
     def _check_auto_copy_cut(self, event):
         """Convenience method, when the user hits Ctrl+C or
@@ -1159,10 +1213,10 @@ class Editor(QsciScintilla):
             self.tr("Ignore This Line"))
         ignoreSelectedAction = menu_lint.addAction(
             self.tr("Ignore Selected Area"))
-        self.connect(ignoreLineAction, SIGNAL("triggered()"),
-                     lambda: helpers.lint_ignore_line(self))
-        self.connect(ignoreSelectedAction, SIGNAL("triggered()"),
-                     lambda: helpers.lint_ignore_selection(self))
+        ignoreLineAction.triggered['bool'].connect(
+                     lambda s: helpers.lint_ignore_line(self))
+        ignoreSelectedAction.triggered['bool'].connect(
+                     lambda s: helpers.lint_ignore_selection(self))
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertMenu(popup_menu.actions()[0], menu_lint)
         popup_menu.insertAction(popup_menu.actions()[0],
@@ -1176,6 +1230,10 @@ class Editor(QsciScintilla):
                 #popup_menu.addMenu(menu)
         #show menu
         popup_menu.exec_(event.globalPos())
+
+    def inputMethodEvent(self, event):
+        print("inputMethodEvent::", event.attributes())#Selection
+        super(Editor, self).inputMethodEvent(event)
 
     def mouseMoveEvent(self, event):
         position = event.pos()
@@ -1223,7 +1281,7 @@ class Editor(QsciScintilla):
         line, _ = self.getCursorPosition()
         if line != self._last_block_position:
             self._last_block_position = line
-            self.emit(SIGNAL("currentLineChanged(int)"), line)
+            self.currentLineChanged.emit(line)
 
     # def mouseReleaseEvent(self, event):
         # super(Editor, self).mouseReleaseEvent(event)
@@ -1233,7 +1291,7 @@ class Editor(QsciScintilla):
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:
             path = event.mimeData().urls()[0].path()
-            self.emit(SIGNAL("openDropFile(QString)"), path)
+            self.openDropFile.emit(path)
             event.ignore()
             event.mimeData = QMimeData()
         super(Editor, self).dropEvent(event)
@@ -1254,11 +1312,9 @@ class Editor(QsciScintilla):
         is_property = (prop_pos != -1 and
                        text[prop_pos:index] in ("@%s" % word))
         if is_function or is_property:
-            self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                      word, self.file_path, False)
+            self.locateFunction.emit(word, self.file_path, False)
         elif is_attribute:
-            self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                      word, self.file_path, True)
+            self.locateFunction.emit(word, self.file_path, True)
 
     def __tokenize_text(self, text):
         invalid_syntax = False

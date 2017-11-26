@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QMenu
-from PyQt4.QtCore import QObject
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtCore import QObject
 from collections import defaultdict
 
 from ninja_ide.core import settings

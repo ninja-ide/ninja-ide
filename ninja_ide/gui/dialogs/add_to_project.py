@@ -16,17 +16,17 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QTreeView
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QFileSystemModel
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QTreeView
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QFileSystemModel
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 
@@ -63,11 +63,9 @@ class AddToProject(QDialog):
         hbox2.addWidget(btnAdd)
         vbox.addLayout(hbox2)
 
-        self.connect(btnCancel, SIGNAL("clicked()"), self.close)
-        self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)
-        self.connect(self._list,
-             SIGNAL("currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)"),
-             self._project_changed)
+        btnCancel.connect(self.close)
+        btnAdd.connect(self._select_path)
+        self._list.currentItemChanged['QTreeWidgetItem*', 'QTreeWidgetItem*'].connect(self._project_changed)
 
     def _project_changed(self, item, previous):
         #FIXME, this is not being called, at least in osx
@@ -90,7 +88,7 @@ class AddToProject(QDialog):
 
         t_header = self._tree.header()
         t_header.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        t_header.setResizeMode(0, QHeaderView.Stretch)
+        t_header.setSectionResizeMode(0, QHeaderView.Stretch)
         t_header.setStretchLastSection(False)
         t_header.setClickable(True)
 

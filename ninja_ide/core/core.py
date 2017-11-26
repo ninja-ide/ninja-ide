@@ -20,7 +20,16 @@ from __future__ import absolute_import
 import sys
 import signal
 
-from PyQt4.QtGui import QApplication
+
+from PyQt5.QtCore import QT_VERSION
+
+if QT_VERSION < 0x50700:
+    from PyQt5.QtWebKitWidgets import QWebView
+else:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView
+
+
+from PyQt5.QtWidgets import QApplication
 
 from ninja_ide import resources
 from ninja_ide.core import settings

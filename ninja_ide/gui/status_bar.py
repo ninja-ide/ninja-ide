@@ -17,23 +17,24 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QFileSystemModel
-from PyQt4.QtGui import QTextDocument
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QIcon
-from PyQt4.QtCore import QSize
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QFileSystemModel
+from PyQt5.QtGui import QTextDocument
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -83,26 +84,22 @@ class _StatusBar(QWidget):
         # Not Configurable Shortcuts
         shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
-        self.connect(shortEscStatus, SIGNAL("activated()"), self.hide_status)
-        self.connect(self._searchWidget._btnClose, SIGNAL("clicked()"),
-                     self.hide_status)
-        self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
-                     lambda: self._replaceWidget.setVisible(False))
-        self.connect(self._fileSystemOpener.btnClose, SIGNAL("clicked()"),
-                     self.hide_status)
-        self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
-                     self.hide_status)
+        shortEscStatus.activated.connect(self.hide_status)
+        self._searchWidget._btnClose.clicked['bool'].connect(lambda s: self.hide_status())
+        self._replaceWidget._btnCloseReplace.clicked['bool'].connect(lambda s: self._replaceWidget.setVisible(False))
+        self._fileSystemOpener.btnClose.clicked['bool'].connect(lambda s: self.hide_status())
+        self._fileSystemOpener.requestHide.connect(self.hide_status)
 
         #Register signals connections
         connections = (
             {'target': 'main_container',
-             'signal_name': 'updateLocator(QString)',
+             'signal_name': 'updateLocator',#(QString)
              'slot': self._explore_file_code},
             {'target': 'filesystem',
-             'signal_name': 'projectOpened(QString)',
+             'signal_name': 'projectOpened',#(QString)
              'slot': self._explore_code},
             {'target': 'filesystem',
-             'signal_name': 'projectClosed(QString)',
+             'signal_name': 'projectClosed',#(QString)
              'slot': self._explore_code},
             )
 
@@ -112,7 +109,7 @@ class _StatusBar(QWidget):
     def install(self):
         """Install StatusBar as a service."""
         self.hide()
-        ide = IDE.get_service('ide')
+        ide = IDE.getInstance()
         self._codeLocator = locator_widget.LocatorWidget(ide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS, ide)
@@ -183,7 +180,7 @@ class _StatusBar(QWidget):
         main_container = IDE.get_service("main_container")
         widget = None
         if main_container:
-            widget = main_container.get_current_widget()
+            widget = main_container.get_current_editor()
         if widget:
             widget.setFocus()
             if widget == main_container.get_current_editor():
@@ -211,14 +208,14 @@ class SearchWidget(QWidget):
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
         self.btnPrevious.setIconSize(QSize(16, 16))
         self.btnPrevious.setToolTip(
-            self.trUtf8("Press %s") %
+            self.tr("Press %s") %
             resources.get_shortcut("Find-previous").toString(
                 QKeySequence.NativeText))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
         self.btnNext.setIconSize(QSize(16, 16))
         self.btnNext.setToolTip(
-            self.trUtf8("Press %s") %
+            self.tr("Press %s") %
             resources.get_shortcut("Find-next").toString(
                 QKeySequence.NativeText))
         hSearch.addWidget(self._btnClose)
@@ -233,23 +230,18 @@ class SearchWidget(QWidget):
         self.index = 0
         self._line.counter.update_count(self.index, self.totalMatches)
 
-        self.connect(self._btnFind, SIGNAL("clicked()"),
-                     self.find)
-        self.connect(self.btnNext, SIGNAL("clicked()"),
-                     self.find_next)
-        self.connect(self.btnPrevious, SIGNAL("clicked()"),
-                     self.find_previous)
-        self.connect(self._checkSensitive, SIGNAL("stateChanged(int)"),
-                     self._states_changed)
-        self.connect(self._checkWholeWord, SIGNAL("stateChanged(int)"),
-                     self._states_changed)
+        self._btnFind.clicked['bool'].connect(self.find)
+        self.btnNext.clicked['bool'].connect(self.find_next)
+        self.btnPrevious.clicked['bool'].connect(self.find_previous)
+        self._checkSensitive.stateChanged[int].connect(self._states_changed)
+        self._checkWholeWord.stateChanged[int].connect(self._states_changed)
 
         IDE.register_service('status_search', self)
 
     def install(self):
         """Install SearchWidget as a service and its shortcuts."""
         self.hide()
-        ide = IDE.get_service('ide')
+        ide = IDE.getInstance()
 
         ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS_SEARCH, ide)
 
@@ -331,22 +323,19 @@ class ReplaceWidget(QWidget):
         self._btnCloseReplace = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self._btnCloseReplace.setIconSize(QSize(16, 16))
-        self._btnReplace = QPushButton(self.trUtf8("Replace"))
-        self._btnReplaceAll = QPushButton(self.trUtf8("Replace All"))
+        self._btnReplace = QPushButton(self.tr("Replace"))
+        self._btnReplaceAll = QPushButton(self.tr("Replace All"))
         self._btnReplaceSelection = QPushButton(
-            self.trUtf8("Replace Selection"))
+            self.tr("Replace Selection"))
         hReplace.addWidget(self._btnCloseReplace)
         hReplace.addWidget(self._lineReplace)
         hReplace.addWidget(self._btnReplace)
         hReplace.addWidget(self._btnReplaceAll)
         hReplace.addWidget(self._btnReplaceSelection)
 
-        self.connect(self._btnReplace, SIGNAL("clicked()"),
-                     self.replace)
-        self.connect(self._btnReplaceAll, SIGNAL("clicked()"),
-                     self.replace_all)
-        self.connect(self._btnReplaceSelection, SIGNAL("clicked()"),
-                     self.replace_selected)
+        self._btnReplace.clicked['bool'].connect(self.replace)
+        self._btnReplaceAll.clicked['bool'].connect(self.replace_all)
+        self._btnReplaceSelection.clicked['bool'].connect(self.replace_selected)
 
     def replace(self):
         """Replace one occurrence of the word."""
@@ -414,7 +403,7 @@ class TextLine(QLineEdit):
 class FileSystemOpener(QWidget):
 
     """Widget to handle opening files through path write with completion."""
-
+    requestHide = pyqtSignal()
     def __init__(self):
         super(FileSystemOpener, self).__init__()
         hbox = QHBoxLayout(self)
@@ -431,14 +420,12 @@ class FileSystemOpener(QWidget):
         self.btnOpen = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), 'Open!')
         hbox.addWidget(self.btnClose)
-        hbox.addWidget(QLabel(self.trUtf8("Path:")))
+        hbox.addWidget(QLabel(self.tr("Path:")))
         hbox.addWidget(self.pathLine)
         hbox.addWidget(self.btnOpen)
 
-        self.connect(self.pathLine, SIGNAL("returnPressed()"),
-                     self._open_file)
-        self.connect(self.btnOpen, SIGNAL("clicked()"),
-                     self._open_file)
+        self.pathLine.returnPressed.connect(self._open_file)
+        self.btnOpen.clicked['bool'].connect(self._open_file)
 
     def _open_file(self):
         """Open the file selected."""
@@ -446,7 +433,7 @@ class FileSystemOpener(QWidget):
         main_container = IDE.get_service("main_container")
         if main_container:
             main_container.open_file(path)
-            self.emit(SIGNAL("requestHide()"))
+            self.requestHide.emit()
 
     def showEvent(self, event):
         """Show the FileSystemOpener widget and select all the text."""

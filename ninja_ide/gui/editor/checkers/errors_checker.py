@@ -20,8 +20,8 @@ from __future__ import unicode_literals
 import _ast
 import re
 
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -42,6 +42,7 @@ class ErrorsChecker(QThread):
     pat_enable_lint = re.compile('(\s)*#lint:enable$')
     pat_ignore_lint = re.compile('(.)+#lint:ok$|(.)+# lint:ok$')
 
+    checkerCompleted = pyqtSignal()
     def __init__(self, editor):
         super(ErrorsChecker, self).__init__()
         self._editor = editor
@@ -52,11 +53,9 @@ class ErrorsChecker(QThread):
 
         self.checker_icon = ":img/bug"
 
-        ninjaide = IDE.get_service('ide')
-        self.connect(ninjaide,
-                     SIGNAL("ns_preferences_editor_errors(PyQt_PyObject)"),
-                     lambda: remove_error_checker())
-        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
+        ninjaide = IDE.getInstance()
+        ninjaide.ns_preferences_editor_errors.connect(lambda: remove_error_checker())
+        self.checkerCompleted.connect(self.refresh_display)
 
     @property
     def dirty(self):
@@ -118,7 +117,7 @@ class ErrorsChecker(QThread):
                     self.checks.pop(line, None)
         else:
             self.reset()
-        self.emit(SIGNAL("checkerCompleted()"))
+        self.checkerCompleted.emit()
 
     def refresh_display(self):
         error_list = IDE.get_service('tab_errors')

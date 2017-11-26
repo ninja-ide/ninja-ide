@@ -18,7 +18,7 @@ from __future__ import absolute_import
 
 import re
 
-from PyQt4.QtGui import QInputDialog
+from PyQt5.QtWidgets import QInputDialog
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
@@ -35,6 +35,13 @@ closeBraces = {'{': '}', '(': ')', '[': ']'}
 CODING_LINE = {
     'python': '# -*- coding: utf-8 -*-'
 }
+
+try:
+    xrange()
+except NameError:
+    # python 3
+    xrange = range
+
 
 
 def get_leading_spaces(line):

@@ -25,22 +25,22 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
-from PyQt4.QtGui import QTreeView
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QStackedLayout
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QCursor
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QDateTime
+from PyQt5.QtWidgets import QTreeView
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtGui import QCursor
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QDateTime
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -57,7 +57,9 @@ from ninja_ide.gui.explorer.nproject import NProject
 
 
 class ProjectTreeColumn(QDialog):
-
+    dockedWidget = pyqtSignal("QObject*")
+    undockedWidget = pyqtSignal()
+    changeTitle = pyqtSignal("QObject*", str)
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent,
                                                 Qt.WindowStaysOnTopHint)
@@ -78,17 +80,14 @@ class ProjectTreeColumn(QDialog):
 
         self.projects = []
 
-        self.connect(self._combo_project, SIGNAL("currentIndexChanged(int)"),
-                     self._change_current_project)
-        self.connect(self._combo_project, SIGNAL(
-            "customContextMenuRequested(const QPoint &)"),
-            self.context_menu_for_root)
+        self._combo_project.currentIndexChanged[int].connect(self._change_current_project)
+        self._combo_project.customContextMenuRequested['const QPoint &'].connect(self.context_menu_for_root)
         connections = (
             {'target': 'main_container',
-             'signal_name': 'addToProject(QString)',
+             'signal_name': 'addToProject',#(QString)
              'slot': self._add_file_to_project},
             {'target': 'main_container',
-             'signal_name': 'showFileInExplorer(QString)',
+             'signal_name': 'showFileInExplorer',#(QString)
              'slot': self._show_file_in_explorer},
         )
         IDE.register_service('projects_explorer', self)
@@ -104,11 +103,13 @@ class ProjectTreeColumn(QDialog):
         #def close_project_signal():
             #self.emit(SIGNAL("updateLocator()"))
 
+
+
     def install_tab(self):
-        ide = IDE.get_service('ide')
+        ide = IDE.getInstance()
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
 
-        self.connect(ide, SIGNAL("goingDown()"), self.close)
+        ide.goingDown.connect(self.close)
 
     def load_session_projects(self, projects):
         for project in projects:
@@ -116,6 +117,7 @@ class ProjectTreeColumn(QDialog):
                 self._open_project_folder(project)
 
     def open_project_folder(self, folderName=None):
+        print("open_project_folder", folderName)
         if settings.WORKSPACE:
             directory = settings.WORKSPACE
         else:
@@ -144,8 +146,7 @@ class ProjectTreeColumn(QDialog):
                     translations.TR_TAB_PROJECTS, len(self.projects))
             else:
                 title = translations.TR_TAB_PROJECTS
-            self.emit(
-                SIGNAL("changeTitle(PyQt_PyObject, QString)"), self, title)
+            self.changeTitle.emit(self, title)
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -204,8 +205,8 @@ class ProjectTreeColumn(QDialog):
             self._combo_project.addItem(project.name)
             ptree = TreeProjectsWidget(project)
             self._projects_area.addWidget(ptree)
-            self.connect(ptree, SIGNAL("closeProject(PyQt_PyObject)"),
-                         self._close_project)
+            ptree.closeProject.connect(self._close_project)
+            print("project", project)#setRootPath
             pmodel = project.model
             ptree.setModel(pmodel)
             pindex = pmodel.index(pmodel.rootPath())
@@ -223,7 +224,7 @@ class ProjectTreeColumn(QDialog):
         self._combo_project.removeItem(index)
         index = self._combo_project.currentIndex()
         self._projects_area.setCurrentIndex(index)
-        ninjaide = IDE.get_service('ide')
+        ninjaide = IDE.getInstance()
         ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
         if len(self.projects) > 1:
@@ -231,8 +232,7 @@ class ProjectTreeColumn(QDialog):
                 translations.TR_TAB_PROJECTS, len(self.projects))
         else:
             title = translations.TR_TAB_PROJECTS
-        self.emit(
-            SIGNAL("changeTitle(PyQt_PyObject, QString)"), self, title)
+        self.changeTitle.emit(self, title)
 
     def _change_current_project(self, index):
         self._projects_area.setCurrentIndex(index)
@@ -260,7 +260,8 @@ class ProjectTreeColumn(QDialog):
 
     @property
     def current_tree(self):
-        return self._projects_area.currentWidget()
+        obj = self._projects_area.currentWidget()
+        return obj
 
     def save_recent_projects(self, folder):
         settings = IDE.data_settings()
@@ -306,13 +307,19 @@ class ProjectTreeColumn(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+            self.dockedWidget.emit(self)
 
     def closeEvent(self, event):
-        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        self.dockedWidget.emit(self)
         event.ignore()
 
     def context_menu_for_root(self):
+        if not self.current_tree:
+            # en vez de un mensaje, colorear el area de projecto...
+            # el area de projecto debería decir 'Sin Projectos'/'without Projects'
+            # QMessageBox.information(self, translations.TR_INFO_TITLE_PROJECT_PROPERTIES,
+            #     translations.TR_INFO_MESSAGE_PROJECT_PROPERTIES)
+            return
         menu = QMenu(self)
         path = self.current_tree.project.path
         action_add_file = menu.addAction(QIcon(":img/new"),
@@ -320,41 +327,32 @@ class ProjectTreeColumn(QDialog):
         action_add_folder = menu.addAction(QIcon(
             ":img/openProj"), translations.TR_ADD_NEW_FOLDER)
         action_create_init = menu.addAction(translations.TR_CREATE_INIT)
-        self.connect(action_add_file, SIGNAL("triggered()"),
-                     lambda: self.current_tree._add_new_file(path))
-        self.connect(action_add_folder, SIGNAL("triggered()"),
-                     lambda: self.current_tree._add_new_folder(path))
-        self.connect(action_create_init, SIGNAL("triggered()"),
-                     lambda: self.current_tree._create_init(path))
+        action_add_file.triggered['bool'].connect(lambda s,_path=path: self.current_tree._add_new_file(_path))
+        action_add_folder.triggered['bool'].connect(lambda s,_path=path: self.current_tree._add_new_folder(_path))
+        action_create_init.triggered['bool'].connect(lambda s,_path=path: self.current_tree._create_init(_path))
         menu.addSeparator()
         actionRunProject = menu.addAction(QIcon(
             ":img/play"), translations.TR_RUN_PROJECT)
-        self.connect(actionRunProject, SIGNAL("triggered()"),
-                     self.current_tree._execute_project)
+        actionRunProject.triggered['bool'].connect(lambda s: self.current_tree._execute_project())
         if self.current_tree._added_to_console:
             actionRemoveFromConsole = menu.addAction(
                 translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
-            self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
-                         self.current_tree._remove_project_from_console)
+            actionRemoveFromConsole.triggered['bool'].connect(lambda s: self.current_tree._remove_project_from_console())
         else:
             actionAdd2Console = menu.addAction(
                 translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
-            self.connect(actionAdd2Console, SIGNAL("triggered()"),
-                         self.current_tree._add_project_to_console)
+            actionAdd2Console.triggered['bool'].connect(lambda s: self.current_tree._add_project_to_console())
         actionShowFileSizeInfo = menu.addAction(translations.TR_SHOW_FILESIZE)
-        self.connect(actionShowFileSizeInfo, SIGNAL("triggered()"),
-                     self.current_tree.show_filesize_info)
+        actionShowFileSizeInfo.triggered['bool'].connect(lambda s: self.current_tree.show_filesize_info())
         actionProperties = menu.addAction(QIcon(":img/pref"),
                                           translations.TR_PROJECT_PROPERTIES)
-        self.connect(actionProperties, SIGNAL("triggered()"),
-                     self.current_tree.open_project_properties)
+        actionProperties.triggered['bool'].connect(lambda s: self.current_tree.open_project_properties())
 
         menu.addSeparator()
         action_close = menu.addAction(
             self.style().standardIcon(QStyle.SP_DialogCloseButton),
             translations.TR_CLOSE_PROJECT)
-        self.connect(action_close, SIGNAL("triggered()"),
-                     self.current_tree._close_project)
+        action_close.triggered['bool'].connect(lambda s: self.current_tree._close_project())
         #menu for the project
         for m in self.current_tree.extra_menus_by_scope['project']:
             if isinstance(m, QMenu):
@@ -363,6 +361,19 @@ class ProjectTreeColumn(QDialog):
 
         #show the menu!
         menu.exec_(QCursor.pos())
+
+    def open_project_properties(self):
+        print("open_project_properties-.-.-.-.-")
+        _prj = self.current_project
+        if _prj:
+            proj = project_properties_widget.ProjectProperties(_prj, self)
+            proj.show()
+            return
+        
+        QMessageBox.information(self, translations.TR_INFO_TITLE_PROJECT_PROPERTIES,
+                translations.TR_INFO_MESSAGE_PROJECT_PROPERTIES)
+        
+
 
 
 class TreeProjectsWidget(QTreeView):
@@ -380,6 +391,13 @@ class TreeProjectsWidget(QTreeView):
     removeProjectFromConsole(QString)
     projectPropertiesUpdated(QTreeWidgetItem)
     """
+    runProject = pyqtSignal()
+    setActiveProject = pyqtSignal('QObject*')
+    closeProject = pyqtSignal('QWidget*')
+    closeFilesFromProjectClosed = pyqtSignal(str)
+    addProjectToConsole = pyqtSignal(str)
+    removeProjectFromConsole = pyqtSignal(str)
+    projectPropertiesUpdated = pyqtSignal('QTreeWidgetItem*')
 
 ###############################################################################
 
@@ -405,8 +423,7 @@ class TreeProjectsWidget(QTreeView):
         super(TreeProjectsWidget, self).setModel(model)
         self.__format_tree()
         #Activated is said to do the right thing on every system
-        self.connect(self, SIGNAL("clicked(const QModelIndex &)"),
-                     self._open_node)
+        self.clicked['const QModelIndex &'].connect(self._open_node)
 
     def __init__(self, project, state_index=list()):
         super(TreeProjectsWidget, self).__init__()
@@ -415,9 +432,7 @@ class TreeProjectsWidget(QTreeView):
         self.__format_tree()
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self, SIGNAL(
-            "customContextMenuRequested(const QPoint &)"),
-            self._menu_context_tree)
+        self.customContextMenuRequested['const QPoint &'].connect(self._menu_context_tree)
 
         self.expanded.connect(self._item_expanded)
         self.collapsed.connect(self._item_collapsed)
@@ -479,14 +494,10 @@ class TreeProjectsWidget(QTreeView):
         action_create_init = menu.addAction(translations.TR_CREATE_INIT)
         action_remove_folder = menu.addAction(translations.TR_REMOVE_FOLDER)
 
-        self.connect(action_add_file, SIGNAL("triggered()"),
-                     self._add_new_file)
-        self.connect(action_add_folder, SIGNAL("triggered()"),
-                     self._add_new_folder)
-        self.connect(action_create_init, SIGNAL("triggered()"),
-                     self._create_init)
-        self.connect(action_remove_folder, SIGNAL("triggered()"),
-                     self._delete_folder)
+        action_add_file.triggered['bool'].connect(lambda s: self._add_new_file())
+        action_add_folder.triggered['bool'].connect(lambda s: self._add_new_folder())
+        action_create_init.triggered['bool'].connect(lambda s: self._create_init())
+        action_remove_folder.triggered['bool'].connect(lambda s: self._delete_folder())
 
     def _add_context_menu_for_files(self, menu, lang):
         #Create actions
@@ -498,20 +509,15 @@ class TreeProjectsWidget(QTreeView):
             translations.TR_DELETE_FILE)
 
         #Connect actions
-        self.connect(action_remove_file, SIGNAL("triggered()"),
-                     self._delete_file)
-        self.connect(action_rename_file, SIGNAL("triggered()"),
-                     self._rename_file)
-        self.connect(action_copy_file, SIGNAL("triggered()"),
-                     self._copy_file)
-        self.connect(action_move_file, SIGNAL("triggered()"),
-                     self._move_file)
+        action_remove_file.triggered['bool'].connect(lambda s: self._delete_file())
+        action_rename_file.triggered['bool'].connect(lambda s: self._rename_file())
+        action_copy_file.triggered['bool'].connect(lambda s: self._copy_file())
+        action_move_file.triggered['bool'].connect(lambda s: self._move_file())
 
         #Allow to edit Qt UI files with the appropiate program
         if lang == 'ui':
             action_edit_ui_file = menu.addAction(translations.TR_EDIT_UI_FILE)
-            self.connect(action_edit_ui_file, SIGNAL("triggered()"),
-                         self._edit_ui_file)
+            action_edit_ui_file.triggered['bool'].connect(lambda s: self._edit_ui_file())
 
         #menu for files
         for m in self.extra_menus_by_scope['file']:
@@ -547,10 +553,15 @@ class TreeProjectsWidget(QTreeView):
 
     def open_project_properties(self):
         proj = project_properties_widget.ProjectProperties(self.project, self)
+        print("open_project_properties", proj)
+        if not proj:
+            QMessageBox.information(self, translations.TR_INFO_TITLE_PROJECT_PROPERTIES,
+                translations.TR_INFO_MESSAGE_PROJECT_PROPERTIES)
+            return
         proj.show()
 
     def _close_project(self):
-        self.emit(SIGNAL("closeProject(PyQt_PyObject)"), self)
+        self.closeProject.emit(self)
 
     def _create_init(self):
         path = self.model().filePath(self.currentIndex())
@@ -588,7 +599,7 @@ class TreeProjectsWidget(QTreeView):
                 main_container.close_deleted_file(path)
             #FIXME: Manage the deletion signal instead of main container
             #fiddling here
-            ide_srv = IDE.get_service('ide')
+            ide_srv = IDE.getInstance()
             current_nfile = ide_srv.get_or_create_nfile(path)
             current_nfile.delete()
 
@@ -694,10 +705,8 @@ class FoldingContextMenu(QMenu):
         fold_project = self.addAction(translations.TR_FOLD_PROJECT)
         unfold_project = self.addAction(translations.TR_UNFOLD_PROJECT)
 
-        self.connect(fold_project, SIGNAL("triggered()"),
-                     lambda: self._fold_unfold_project(False))
-        self.connect(unfold_project, SIGNAL("triggered()"),
-                     lambda: self._fold_unfold_project(True))
+        fold_project.triggered['bool'].connect(lambda s: self._fold_unfold_project(False))
+        unfold_project.triggered['bool'].connect(lambda s: self._fold_unfold_project(True))
 
     def _fold_unfold_project(self, expand):
         """
@@ -725,3 +734,4 @@ if settings.SHOW_PROJECT_EXPLORER:
     projectsColumn = ProjectTreeColumn()
 else:
     projectsColumn = None
+    print("sadfsadfdsafsafdsafadfsadf")

@@ -17,9 +17,9 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QVBoxLayout
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QVBoxLayout
 
 from ninja_ide.core import plugin_manager
 
@@ -33,7 +33,7 @@ class PluginPreferences(QWidget):
     Plugins section widget in NINJA-IDE Preferences
     """
     def __init__(self):
-        QWidget.__init__(self)
+        super(PluginPreferences, self).__init__()
         self.plugin_manager = plugin_manager.PluginManager()
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()

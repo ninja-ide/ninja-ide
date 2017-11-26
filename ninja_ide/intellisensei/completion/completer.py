@@ -129,7 +129,7 @@ def get_all_completions(s, imports=None):
             continue
         try:
             try:
-                if s.startswith('PyQt4.') and s.endswith(')'):
+                if s.startswith('PyQt5.') and s.endswith(')'):
                     s = s[:s.rindex('(')]
                 sym = eval(s, globals(), dlocals)
             except NameError:

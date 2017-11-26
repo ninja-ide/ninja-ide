@@ -19,22 +19,22 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QColorDialog
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QColorDialog
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -148,12 +148,10 @@ class GeneralConfiguration(QWidget):
         vbox.addWidget(groupBoxReset)
 
         #Signals
-        self.connect(self._btnWorkspace, SIGNAL("clicked()"),
-                     self._load_workspace)
-        self.connect(self._notify_color, SIGNAL("clicked()"), self._pick_color)
-        self.connect(self._btnReset, SIGNAL('clicked()'),
-                     self._reset_preferences)
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._btnWorkspace.clicked['bool'].connect(self._load_workspace)
+        self._notify_color.clicked['bool'].connect(self._pick_color)
+        self._btnReset.clicked['bool'].connect(self._reset_preferences)
+        self._preferences.savePreferences.connect(self.save)
 
     def _pick_color(self):
         """Ask the user for a Color"""

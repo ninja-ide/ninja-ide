@@ -18,12 +18,14 @@
 import collections
 import random
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QColor
-from PyQt4.QtDeclarative import QDeclarativeView
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QColor
+from PyQt5.QtQuickWidgets import QQuickWidget
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 from ninja_ide.tools import ui_tools
@@ -31,17 +33,18 @@ from ninja_ide.core.encapsulated_env import nenvironment
 
 
 class PluginsStore(QDialog):
-
+    processCompleted = pyqtSignal('QObject*')
     def __init__(self, parent=None):
-        super(PluginsStore, self).__init__(parent, Qt.Dialog)
+        super(PluginsStore, self).__init__(parent, Qt.Popup)#Qt.Tool
         self.setWindowTitle(translations.TR_MANAGE_PLUGINS)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        self.view = QDeclarativeView()
+        #self.setWindowState(Qt.WindowActive)
+        self.view = QQuickWidget()
         self.view.setMinimumWidth(800)
         self.view.setMinimumHeight(600)
-        self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("PluginsStore.qml"))
         self.root = self.view.rootObject()
         vbox.addWidget(self.view)
@@ -57,27 +60,20 @@ class PluginsStore(QDialog):
         self._search = []
         self.status = None
 
-        self.connect(self.root, SIGNAL("loadPluginsGrid()"),
-                     self._load_by_name)
-        self.connect(self.root, SIGNAL("close()"),
-                     self.close)
-        self.connect(self.root, SIGNAL("showPluginDetails(int)"),
-                     self.show_plugin_details)
-        self.connect(self.root, SIGNAL("loadTagsGrid()"),
-                     self._load_tags_grid)
-        self.connect(self.root, SIGNAL("loadAuthorGrid()"),
-                     self._load_author_grid)
-        self.connect(self.root, SIGNAL("search(QString)"),
-                     self._load_search_results)
-        self.connect(self.root, SIGNAL("loadPluginsForCategory(QString)"),
-                     self._load_plugins_for_category)
-        self.connect(self, SIGNAL("processCompleted(PyQt_PyObject)"),
-                     self._process_complete)
+        # QApplication.instance().focusChanged["QWidget*", "QWidget*"].connect(\
+        #     lambda w1, w2, this=self: this.hide() if w1 == this.view else None)
+
+        self.root.loadPluginsGrid.connect(self._load_by_name)
+        self.root.close.connect(lambda: print("self.close", self.close()))
+        self.root.showPluginDetails[int].connect(self.show_plugin_details)
+        self.root.loadTagsGrid.connect(self._load_tags_grid)
+        self.root.loadAuthorGrid.connect(self._load_author_grid)
+        self.root.search[str].connect(self._load_search_results)
+        self.root.loadPluginsForCategory[str].connect(self._load_plugins_for_category)
+        self.processCompleted.connect(self._process_complete)
 
         self.nenv = nenvironment.NenvEggSearcher()
-        self.connect(self.nenv,
-                     SIGNAL("searchCompleted(PyQt_PyObject)"),
-                     self.callback)
+        self.nenv.searchCompleted.connect(self.callback)
         self.status = self.nenv.do_search()
 
     def _load_by_name(self):
@@ -112,9 +108,7 @@ class PluginsStore(QDialog):
         self._counter_callback = self._show_details
 
         if plugin.shallow:
-            self.connect(plugin,
-                         SIGNAL("pluginMetadataInflated(PyQt_PyObject)"),
-                         self._update_content)
+            plugin.pluginMetadataInflated.connect(self._update_content)
             self._plugins_inflate.append(plugin.inflate())
         else:
             self._update_content(plugin)
@@ -146,9 +140,7 @@ class PluginsStore(QDialog):
     def _loading_function(self):
         plugin = self._inflating_plugins.pop()
         if plugin.shallow:
-            self.connect(plugin,
-                         SIGNAL("pluginMetadataInflated(PyQt_PyObject)"),
-                         self._update_content)
+            plugin.pluginMetadataInflated.connect(self._update_content)
             self._plugins_inflate.append(plugin.inflate())
         else:
             self._process_complete(plugin)
@@ -202,7 +194,7 @@ class PluginsStore(QDialog):
         if plugin not in plugins:
             plugins.append(plugin)
             self._plugins_by_author[plugin.author] = plugins
-        self.emit(SIGNAL("processCompleted(PyQt_PyObject)"), plugin)
+        self.processCompleted.emit(plugin)
 
     def _get_random_color(self, mix=None):
         red = random.randint(0, 256)

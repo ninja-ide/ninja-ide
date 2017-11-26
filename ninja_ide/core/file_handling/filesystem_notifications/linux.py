@@ -19,7 +19,7 @@ from __future__ import absolute_import
 
 import os
 
-from PyQt4.QtCore import QThread
+from PyQt5.QtCore import QThread
 from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
                         IN_MODIFY, WatchManager, Notifier, ExcludeFilter
 
@@ -76,7 +76,7 @@ class QNotifier(QThread):
                             NinjaProcessEvent(self.event_queue.append))
         self.notifier.coalesce_events(True)
         self.keep_running = True
-        QThread.__init__(self)
+        super(QNotifier, self)
 
     def run(self):
         while self.keep_running:

@@ -17,22 +17,22 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QMessageBox
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QMessageBox
 
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QSettings
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -42,7 +42,7 @@ from ninja_ide.gui import actions
 class TreeResult(QTreeWidget):
 
     def __init__(self):
-        QTreeWidget.__init__(self)
+        super(TreeResult, self).__init__()
         self.setHeaderLabels((translations.TR_PROJECT_DESCRIPTION,
             translations.TR_SHORTCUT))
         #columns width
@@ -58,9 +58,10 @@ class ShortcutDialog(QDialog):
     this class emit the follow signals:
         shortcutChanged(QKeySequence)
     """
+    shortcutChanged = pyqtSignal(QKeySequence)
 
     def __init__(self, parent):
-        QDialog.__init__(self, parent)
+        super(ShortcutDialog, self).__init__(parent)
         self.keys = 0
         #Keyword modifiers!
         self.keyword_modifiers = (Qt.Key_Control, Qt.Key_Meta, Qt.Key_Shift,
@@ -80,13 +81,13 @@ class ShortcutDialog(QDialog):
         main_vbox.addLayout(buttons_layout)
         self.line_edit.installEventFilter(self)
         #buttons signals
-        self.connect(ok_button, SIGNAL("clicked()"), self.save_shortcut)
-        self.connect(cancel_button, SIGNAL("clicked()"), self.close)
+        ok_button.clicked['bool'].connect(self.save_shortcut)
+        cancel_button.clicked['bool'].connect(self.close)
 
     def save_shortcut(self):
         self.hide()
         shortcut = QKeySequence(self.line_edit.text())
-        self.emit(SIGNAL('shortcutChanged'), shortcut)
+        self.shortcutChanged.emit(shortcut)
 
     def set_shortcut(self, txt):
         self.line_edit.setText(txt)
@@ -127,7 +128,7 @@ class ShortcutConfiguration(QWidget):
     """
 
     def __init__(self):
-        QWidget.__init__(self)
+        super(ShortcutConfiguration, self).__init__()
 
         self.shortcuts_text = {
             "Duplicate": translations.TR_DUPLICATE,
@@ -215,15 +216,11 @@ class ShortcutConfiguration(QWidget):
         self._load_shortcuts()
         #signals
         #open the set shortcut dialog
-        self.connect(self.result_widget,
-            SIGNAL("itemDoubleClicked(QTreeWidgetItem*, int)"),
-                self._open_shortcut_dialog)
+        self.result_widget.itemDoubleClicked['QTreeWidgetItem*', int].connect(self._open_shortcut_dialog)
         #load defaults shortcuts
-        self.connect(load_defaults_button, SIGNAL("clicked()"),
-            self._load_defaults_shortcuts)
+        load_defaults_button.clicked['bool'].connect(self._load_defaults_shortcuts)
         #one shortcut has changed
-        self.connect(self.shortcut_dialog, SIGNAL('shortcutChanged'),
-                     self._shortcut_changed)
+        self.shortcut_dialog.shortcutChanged.connect(self._shortcut_changed)
 
     def _shortcut_changed(self, keysequence):
         """

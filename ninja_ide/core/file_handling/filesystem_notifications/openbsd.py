@@ -1,6 +1,6 @@
 # -*- coding: utf-8 *-*
 from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import pyqtSignal
 
 
 class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
@@ -20,4 +20,4 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
         base_watcher.BaseWatcher.shutdown_notification(self)
 
     def _emit_signal_on_change(self, event, path):
-        self.emit(SIGNAL("fileChanged(int, QString)"), event, path)
+        self.fileChanged.emit(event, path)

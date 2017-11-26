@@ -16,17 +16,22 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from PyQt4.QtCore import QObject, QDir, SIGNAL
-from PyQt4.QtGui import QFileSystemModel
+from PyQt5.QtCore import QObject, QDir, pyqtSignal
+from PyQt5.QtWidgets import QFileSystemModel
 from ninja_ide.core.file_handling.nfile import NFile
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfilesystem')
 
 
 class NVirtualFileSystem(QObject):
+    projectOpened = pyqtSignal(str)
+    projectClosed = pyqtSignal(str)
+    # fileClosing = pyqtSignal(str, bool)
+    savedAsNewFile = pyqtSignal(object, str, str)
     def __init__(self, *args, **kwargs):
         self.__tree = {}
-        self.__watchables = {}
+        self.__watchables = {}# unUsed Dictionary
+        self.__tempTree = {}
         self.__projects = {}
         # bc maps are cheap but my patience is not
         self.__reverse_project_map = {}
@@ -50,7 +55,7 @@ class NVirtualFileSystem(QObject):
             qfsm.setNameFilters(pext)
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
-            self.emit(SIGNAL("projectOpened(QString)"), project_path)
+            self.projectOpened.emit(project_path)
         else:
             qfsm = self.__projects[project_path]
         return qfsm
@@ -73,7 +78,7 @@ class NVirtualFileSystem(QObject):
             #This might not be needed just being extra cautious
             del self.__projects[project_path].model
             del self.__projects[project_path]
-            self.emit(SIGNAL("projectClosed(QString)"), project_path)
+            self.projectClosed.emit(project_path)
 
     def __check_files_for(self, project_path):
         project = self.__projects[project_path]
@@ -90,9 +95,13 @@ class NVirtualFileSystem(QObject):
         if nfile_path in self.__watchables:
             del self.__watchables[nfile_path]
 
+    def reparent_path(self, path):
+        self.__tempTree[path] = self.__tree.pop(path)
+
     def __add_file(self, nfile):
-        self.connect(nfile, SIGNAL("fileClosing(QString, bool)"),
-                     self.__closed_file)
+        # print("\n\nnfile", nfile)
+        nfile.fileClosing.connect(self.__closed_file)
+        nfile.unDockedAndReparentFile.connect(self.reparent_path)
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         self.__tree[nfile.file_path] = nfile
         for each_path in existing_paths:
@@ -102,8 +111,9 @@ class NVirtualFileSystem(QObject):
                 return project
 
     def get_file(self, nfile_path=None):
+        print("\n\nnfile_path", nfile_path)
         if nfile_path is None:
-            return NFile(nfile_path)
+            return NFile()
         if os.path.isdir(nfile_path):
             return None
         if nfile_path not in self.__tree:
@@ -113,10 +123,7 @@ class NVirtualFileSystem(QObject):
             nfile = self.__tree[nfile_path]
         else:
             nfile = NFile()
-            self.connect(
-                nfile,
-                SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
-                self.__file_copied)
+            nfile.savedAsNewFile.connect(self.__file_copied)
         return nfile
 
     def __file_copied(self, nfile, old_path, new_path):
