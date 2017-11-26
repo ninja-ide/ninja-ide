@@ -15,12 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-<<<<<<< 21ec68a546415da639101fdda67a65736ae37c69
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
-=======
 import datetime
 
 from PyQt5.QtWidgets import QWidget
@@ -28,7 +22,6 @@ from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QFileInfo
 from PyQt5.QtQuickWidgets import QQuickWidget
->>>>>>> toMerge
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
@@ -54,18 +47,6 @@ class StartPage(QWidget):
 
         self.load_items()
 
-<<<<<<< 21ec68a546415da639101fdda67a65736ae37c69
-        self.connect(self.root, SIGNAL("openProject(QString)"),
-                     self._open_project)
-        self.connect(self.root, SIGNAL("removeProject(QString)"),
-                     self._on_click_on_delete)
-        self.connect(self.root, SIGNAL("markAsFavorite(QString, bool)"),
-                     self._on_click_on_favorite)
-        self.connect(self.root, SIGNAL("openPreferences()"),
-                     lambda: self.emit(SIGNAL("openPreferences()")))
-        self.connect(self.root, SIGNAL("newFile()"),
-                     lambda: self.emit(SIGNAL("newFile()")))
-=======
         self.root.openProject.connect(self._open_project)
         self.root.removeProject.connect(self._on_click_on_delete)
         self.root.markAsFavorite.connect(self._on_click_on_favorite)
@@ -74,7 +55,6 @@ class StartPage(QWidget):
         self.root.openFiles.connect(self.checkFiles)
 
         self.root.set_year(str(datetime.datetime.now().year))
->>>>>>> toMerge
 
     def test(self, c= "-.-"):
         print(c)
@@ -120,23 +100,23 @@ class StartPage(QWidget):
         listByFavorites = []
         listNoneFavorites = []
         recent_projects_dict = dict(settings.value('recentProjects', {}))
-        # Filter for favorites
+        #Filter for favorites
         for recent_project_path, content in list(recent_projects_dict.items()):
             if bool(dict(content)["isFavorite"]):
                 listByFavorites.append((recent_project_path,
-                                        content["lastopen"]))
+                    content["lastopen"]))
             else:
                 listNoneFavorites.append((recent_project_path,
-                                          content["lastopen"]))
+                    content["lastopen"]))
         if len(listByFavorites) > 1:
             # sort by date favorites
             listByFavorites = sorted(listByFavorites,
-                                     key=lambda date: listByFavorites[1])
+                key=lambda date: listByFavorites[1])
 
         if len(listNoneFavorites) > 1:
-            # sort by date last used
+            #sort by date last used
             listNoneFavorites = sorted(listNoneFavorites,
-                                       key=lambda date: listNoneFavorites[1])
+                key=lambda date: listNoneFavorites[1])
 
         for recent_project_path in listByFavorites:
             path = recent_project_path[0]

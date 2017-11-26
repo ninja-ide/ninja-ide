@@ -59,13 +59,8 @@ class TreeSymbolsWidget(QDialog):
         self.docstrings = {}
         self.collapsedItems = {}
 
-<<<<<<< 21ec68a546415da639101fdda67a65736ae37c69
-        self.tree.itemClicked.connect(self._go_to_definition)
-        self.tree.itemActivated.connect(self._go_to_definition)
-=======
         self.tree.itemClicked['QTreeWidgetItem*', int].connect(self._go_to_definition)
         # self.tree.itemActivated['QTreeWidgetItem*', int].connect(self._go_to_definition)
->>>>>>> toMerge
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested['const QPoint &'].connect(self._menu_context_tree)
         self.tree.itemCollapsed['QTreeWidgetItem*'].connect(self._item_collapsed)
