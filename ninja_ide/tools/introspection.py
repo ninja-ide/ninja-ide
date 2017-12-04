@@ -160,6 +160,7 @@ def _parse_function(symbol, with_docstrings):
 def obtain_symbols(source, with_docstrings=False, filename='',
                    simple=False, only_simple=False):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
+
     try:
         module = ast.parse(source)
     except:
@@ -272,10 +273,10 @@ def _parse_function_simplified(symbol, member_of=""):
         func_name = member_of + " : " + symbol.name + '('
     else:
         func_name = symbol.name + '('
-    #We store the arguments to compare with default backwards
+    # We store the arguments to compare with default backwards
     defaults = []
     for value in symbol.args.defaults:
-        #TODO: In some cases we can have something like: a=os.path
+        # TODO: In some cases we can have something like: a=os.path
         defaults.append(value)
     arguments = []
     for arg in reversed(symbol.args.args):

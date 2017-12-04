@@ -14,6 +14,101 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+from PyQt5.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QLabel,
+    QHBoxLayout,
+    QListWidget,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QListWidgetItem
+)
+from PyQt5.QtCore import (
+    pyqtSignal,
+    pyqtSlot,
+    Qt
+)
+from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
+from ninja_ide import translations
+from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
+
+
+class ErrorsWidget(QDialog):
+
+    dockWidget = pyqtSignal('PyQt_PyObject')
+    undockWidget = pyqtSignal('PyQt_PyObject')
+
+    def __init__(self, parent=None):
+        super().__init__(parent, Qt.WindowStaysOnTopHint)
+        box = QVBoxLayout(self)
+        box.setContentsMargins(0, 0, 0, 0)
+        box.setSpacing(0)
+        # PEP8
+        self._list_pep8 = QListWidget()
+        self._list_pep8.setWordWrap(True)
+        self._list_pep8.setSortingEnabled(True)
+        hbox = QHBoxLayout()
+        hbox.setContentsMargins(5, 3, 5, 3)
+        if settings.CHECK_STYLE:
+            self._btn_pep8 = QPushButton("PEP8: ON")
+        else:
+            self._btn_pep8 = QPushButton("PEP8: OFF")
+        self._pep8_label = QLabel("PEP8 Errors: %s" % 0)
+        hbox.addWidget(self._pep8_label)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(self._btn_pep8)
+        box.addLayout(hbox)
+        box.addWidget(self._list_pep8)
+
+        # Connections
+        self._list_pep8.clicked.connect(self.__on_pep8_item_selected)
+        self._btn_pep8.clicked.connect(self._turn_on_off_pep8)
+        # Register service
+        IDE.register_service("tab_errors", self)
+        # ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
+
+    @pyqtSlot()
+    def __on_pep8_item_selected(self):
+        main_container = IDE.get_service("main_container")
+        neditor = main_container.get_current_editor()
+        if neditor is not None:
+            lineno = self._list_pep8.currentItem().data(Qt.UserRole)
+            neditor.go_to_line(lineno)
+            neditor.setFocus()
+
+    @pyqtSlot()
+    def _turn_on_off_pep8(self):
+        """Change the status of the lint checker state"""
+        settings.CHECK_STYLE = not settings.CHECK_STYLE
+        if settings.CHECK_STYLE:
+            self._btn_pep8.setText("PEP8: ON")
+            self._list_pep8.show()
+        else:
+            self._btn_pep8.setText("PEP8: OFF")
+            self._list_pep8.hide()
+        # TODO: emit a singal to main container
+
+    def refresh_pep8_list(self, errors):
+        self._list_pep8.clear()
+        for lineno, message in errors.items():
+            lineno_str = 'L%s\t' % str(lineno + 1)
+            item = QListWidgetItem(lineno_str + message.split('\n')[0])
+            item.setData(Qt.UserRole, lineno)
+            self._list_pep8.addItem(item)
+        self._pep8_label.setText("PEP8 Errors: %s" % len(errors))
+
+    def reject(self):
+        if self.parent() is None:
+            self.dockWidget.emit(self)
+
+    def closeEvent(self, event):
+        self.dockWidget.emit(self)
+        event.ignore()
+
+"""
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QDialog
@@ -39,10 +134,8 @@ class ErrorsWidget(QDialog):
 ###############################################################################
 # ERRORS WIDGET SIGNALS
 ###############################################################################
-    """
     pep8Activated(bool)
     lintActivated(bool)
-    """
 ###############################################################################
 
     def __init__(self, parent=None):
@@ -95,7 +188,7 @@ class ErrorsWidget(QDialog):
         self.connect(ide, SIGNAL("goingDown()"), self.close)
 
     def _turn_on_off_lint(self):
-        """Change the status of the lint checker state."""
+        # Change the status of the lint checker state
         settings.FIND_ERRORS = not settings.FIND_ERRORS
         if settings.FIND_ERRORS:
             self.btn_lint_activate.setText(self.tr("Lint: ON"))
@@ -106,7 +199,7 @@ class ErrorsWidget(QDialog):
         self.emit(SIGNAL("lintActivated(bool)"), settings.FIND_ERRORS)
 
     def _turn_on_off_pep8(self):
-        """Change the status of the lint checker state."""
+        # Change the status of the lint checker state
         settings.CHECK_STYLE = not settings.CHECK_STYLE
         if settings.CHECK_STYLE:
             self.btn_pep8_activate.setText(self.tr("PEP8: ON"))
@@ -163,9 +256,7 @@ class ErrorsWidget(QDialog):
         self._outRefresh = True
 
     def clear(self):
-        """
-        Clear the widget
-        """
+        # Clear the widget
         self.listErrors.clear()
         self.listPep8.clear()
 
@@ -177,6 +268,7 @@ class ErrorsWidget(QDialog):
         self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()
 
+"""
 
 if settings.SHOW_ERRORS_LIST:
     errorsWidget = ErrorsWidget()

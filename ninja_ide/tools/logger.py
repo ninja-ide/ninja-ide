@@ -24,7 +24,7 @@ class Logger(object):
     def __call__(self, modname):
         if not self._handler:
             self.add_handler(resources.LOG_FILE_PATH, 'w', LOG_FORMAT,
-                                TIME_FORMAT)
+                             TIME_FORMAT)
         if modname not in self._loggers:
             logger = logging.getLogger(modname)
             self._loggers[modname] = logger

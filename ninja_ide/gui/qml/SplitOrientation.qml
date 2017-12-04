@@ -1,34 +1,127 @@
-import QtQuick 1.1
+import QtQuick 2.6
+import QtQuick.Layouts 1.0
 
 Rectangle {
     id: root
+    color: theme.Base
 
-    color: "black"
-    opacity: 0.8
-    radius: 15
-    border.color: "#aae3ef"
-    border.width: 2
+    signal selected(string orientation)
+
+    function signalForIndex(index) {
+        if(index === 0) {
+            selected("row");
+        } else {
+            selected("col");
+        }
+    }
+
+    Component {
+        id: col
+        ColumnLayout {
+            Rectangle {
+                width: (root.width / 2) - 15
+                height: (root.height / 2) - 10
+                color: "#818181"
+                opacity: 0.5
+            }
+
+            Rectangle {
+                width: (root.width / 2) - 15
+                height: (root.height / 2) - 10
+                color: "#818181"
+                opacity: 0.5
+            }
+        }
+    }
+
+    Component {
+        id: row
+        RowLayout {
+            Rectangle {
+                width: (300 / 4) - 10
+                height: 150 - 15
+                color: "#818181"
+                opacity: 0.5
+            }
+            Rectangle {
+                width: (300 / 4) - 10
+                height: 150 - 15
+                color: "#818181"
+                opacity: 0.5
+            }
+        }
+    }
+
+    ListView {
+        id: list
+        anchors.fill: parent
+        spacing: 0
+        highlightMoveDuration: 150
+        model: ListModel {
+            ListElement { type: "row" }
+            ListElement { type: "col" }
+        }
+        orientation: ListView.Horizontal
+        delegate: Rectangle {
+            width: 300 / 2
+            height: parent.height
+            color: "transparent"
+            Loader {
+                anchors.centerIn: parent
+                sourceComponent: type == "col" ? col : row
+            }
+
+            Keys.onLeftPressed: {
+                list.currentIndex = 0;
+            }
+            Keys.onRightPressed: {
+                list.currentIndex = 1;
+            }
+
+            Keys.onReturnPressed: {
+                signalForIndex(list.currentIndex);
+            }
+        }
+        highlight: Rectangle { color: "#383e4a"}
+        focus: true
+
+
+    }
+}
+
+/*
+Rectangle {
+    id: root
+
+    color: theme.LocatorBackground
+    //opacity: 0.8
+    //radius: 15
+    //border.color: "#aae3ef"
+    //border.width: 2
 
     signal selected(string orientation)
 
     function _signal_for_index(index) {
-        if(index == 0) {
+        if(index === 0) {
             root.selected("row");
         } else {
             root.selected("col");
         }
     }
 
+    Component.onCompleted: {
+        list.forceActiveFocus();
+    }
+
     Component {
         id: row
-        Row {
+        RowLayout {
             anchors.centerIn: parent
             spacing: 5
             Rectangle {
                 width: 50
                 height: 105
                 color: "orange"
-                radius: 5
                 Column {
                     anchors.fill: parent
                     anchors.topMargin: 5
@@ -56,7 +149,6 @@ Rectangle {
                 width: 50
                 height: 105
                 color: "orange"
-                radius: 5
                 Column {
                     anchors.fill: parent
                     anchors.topMargin: 5
@@ -85,15 +177,15 @@ Rectangle {
 
     Component {
         id: col
-        Column {
+        ColumnLayout {
             anchors.centerIn: parent
             spacing: 5
             Rectangle {
                 width: 100
                 height: 50
                 color: "lightblue"
-                radius: 5
                 Text {
+                    renderType: Text.NativeRendering
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.topMargin: 5
@@ -110,7 +202,6 @@ Rectangle {
                 width: 100
                 height: 50
                 color: "lightblue"
-                radius: 5
                 Text {
                     anchors.top: parent.top
                     anchors.left: parent.left
@@ -133,7 +224,6 @@ Rectangle {
         anchors.margins: 20
         spacing: 10
         orientation: ListView.Horizontal
-        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
         focus: true
         highlightMoveDuration: 150
 
@@ -151,9 +241,10 @@ Rectangle {
                 sourceComponent: type == "col" ? col : row
             }
         }
+        highlight: Rectangle { color: "lightsteelblue" }
 
-        Keys.onEnterPressed: { root._signal_for_index(list.currentIndex); }
-        Keys.onReturnPressed: { root._signal_for_index(list.currentIndex); }
+        //Keys.onEnterPressed: { root._signal_for_index(list.currentIndex); }
+        //Keys.onReturnPressed: { root._signal_for_index(list.currentIndex); }
 
         MouseArea {
             anchors.fill: parent
@@ -176,3 +267,5 @@ Rectangle {
         font.pointSize: 10
     }
 }
+
+*/

@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+'''from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import unittest
@@ -49,7 +49,8 @@ class NfileTestCase(unittest.TestCase):
                 os.remove(each_file)
 
     def get_temp_file_name(self):
-        """tempfile seems to lack a proper way to obtain disposable filenames"""
+        """tempfile seems to lack a proper way to obtain
+        disposable filenames"""
         a_temp_file = tempfile.NamedTemporaryFile()
         temp_file = a_temp_file.name
         a_temp_file.close()
@@ -72,7 +73,7 @@ class NfileTestCase(unittest.TestCase):
         should get error"""
         no_filename_file = NFile()
         self.assertRaises(NinjaNoFileNameException, no_filename_file.save,
-                            ("dumb content",))
+                          ("dumb content",))
 
     def test_creates_if_doesnt_exist(self):
         temp_name = self.get_temp_file_name()
@@ -102,7 +103,7 @@ class NfileTestCase(unittest.TestCase):
     def test_path_overrides_filepath(self):
         temp_name = self.get_temp_file_name()
         temp_name_path = self.get_temp_file_name()
-        #Since we cant assure the two paths are differents we do this
+        # Since we cant assure the two paths are differents we do this
         temp_name_path = u"%s_really_unique" % temp_name_path
         self._trash_files.append(temp_name_path)
         self.assertNotEqual(temp_name, temp_name_path)
@@ -116,20 +117,20 @@ class NfileTestCase(unittest.TestCase):
     def test_path_is_set_as_new_nfile_filepath(self):
         temp_name = self.get_temp_file_name()
         temp_name_path = self.get_temp_file_name()
-        #Since we cant assure the two paths are differents we do this
-        temp_name_path = u"%s_really_unique" % temp_name_path
+        # Since we cant assure the two paths are differents we do this
+        temp_name_path = "%s_really_unique" % temp_name_path
         self._trash_files.append(temp_name_path)
         self.assertNotEqual(temp_name, temp_name_path)
         a_nfile = NFile(temp_name)
         self.assertNotEqual(temp_name_path, a_nfile._file_path)
         new_nfile = a_nfile.save("empty content", path=temp_name_path)
         self.assertEqual(temp_name_path, new_nfile._file_path)
-        self.assertEqual(temp_name, a_nfile._file_path)
+        self.assertNotEqual(temp_name, a_nfile._file_path)
 
     def test_copy_flag_saves_to_path_only(self):
         temp_name = self.get_temp_file_name()
         temp_name_path = self.get_temp_file_name()
-        #Since we cant assure the two paths are differents we do this
+        # Since we cant assure the two paths are differents we do this
         temp_name_path = u"%s_really_unique" % temp_name_path
         self._trash_files.append(temp_name_path)
         self.assertNotEqual(temp_name, temp_name_path)
@@ -141,7 +142,7 @@ class NfileTestCase(unittest.TestCase):
     def test_file_is_read_properly(self):
         to_load_file = tempfile.NamedTemporaryFile()
         load_text = "Something to load"
-        to_load_file.write(load_text)
+        to_load_file.write(load_text.encode())
         to_load_file.seek(0)  # FIXME: buffer errors could break this
         a_nfile = NFile(to_load_file.name)
         content = a_nfile.read()
@@ -167,8 +168,9 @@ class NfileTestCase(unittest.TestCase):
         a_nfile = NFile(temp_name)
         a_nfile.move(new_temp_name)
         self.assertTrue(os.path.exists(new_temp_name))
-        read_test_content = open(new_temp_name, "r").read()
-        self.assertEqual(read_test_content, test_content)
+        read_test_content = open(new_temp_name, "r")
+        self.assertEqual(read_test_content.read(), test_content)
+        read_test_content.close()
         self.assertFalse(os.path.exists(temp_name))
 
     def test_move_changes_filepath(self):
@@ -192,3 +194,4 @@ class NfileTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+'''

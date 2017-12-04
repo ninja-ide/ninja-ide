@@ -30,7 +30,6 @@ def load_syntax():
     """Load all the syntax files."""
     empty = dict()
     files = os.listdir(resources.SYNTAX_FILES)
-
     for f in files:
         if not f.endswith('.json'):
             continue
@@ -50,7 +49,7 @@ def load_syntax():
 def parse(descriptor):
     """Read the content of a json file and return a dict."""
     try:
-        return json.load(descriptor)
+        return json.loads(descriptor)
     except:
         logger.error("The file couldn't be parsed'")
         logger.error(descriptor)
@@ -158,20 +157,37 @@ def read_ninja_plugin(path):
     return read_json(os.path.join(path, plugin_file))
 
 
-def load_editor_skins():
-    skins = dict()
-    files = get_ninja_editor_skins_files(resources.EDITOR_SKINS)
-
+def load_editor_schemes():
+    skins = {}
+    files = get_ninja_editor_skins_files(resources.EDITOR_SCHEMES)
     for fname in files:
-        file_name = os.path.join(resources.EDITOR_SKINS, fname)
+        file_name = os.path.join(resources.EDITOR_SCHEMES, fname)
         structure = read_json(file_name)
-        if structure is None:
-            continue
-        name = fname[:-6]
-        skins[name] = structure
+        name = structure['name']
+        colors = structure['colors']
+        skins[name] = colors
 
     return skins
 
+
+def load_editor_schemess():
+    pass
+
+    """
+    for fname in files:
+        file_name = os.path.join(resources.EDITOR_SCHEMES, fname)
+        structure = read_json(file_name)
+        name = structure['name']
+        colors = structure['colors']
+        skins[name] = colors
+        # structure = read_json(file_name)
+        # if structure is None:
+        #    continue
+        # name = fname[:-6]
+        # skins[name] = structure
+
+    return skins
+    """
 
 def save_editor_skins(filename, scheme):
     with open(filename, 'w') as fp:

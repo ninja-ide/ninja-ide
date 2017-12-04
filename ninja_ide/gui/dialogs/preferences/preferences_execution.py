@@ -15,6 +15,123 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QSizePolicy,
+    QSpacerItem,
+    QFileDialog,
+    QGroupBox,
+    QLabel,
+    QLineEdit,
+    QCompleter,
+    QRadioButton,
+    QButtonGroup,
+    QPushButton,
+    QDirModel
+)
+from PyQt5.QtCore import (
+    QDir,
+    pyqtSlot
+)
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.dialogs.preferences import preferences
+from ninja_ide import translations
+from ninja_ide.core import settings
+from ninja_ide.tools import ui_tools
+
+
+class GeneralExecution(QWidget):
+    """General Execution widget class"""
+
+    def __init__(self, parent):
+        super().__init__()
+        self._preferences = parent
+        box = QVBoxLayout(self)
+
+        group_python_path = QGroupBox(translations.TR_WORKSPACE_PROJECTS)
+        grid = QVBoxLayout(group_python_path)
+        # Python Path
+        python_path_bgroup = QButtonGroup(group_python_path)
+        box_path = QVBoxLayout()
+        # Line python path
+        self._txt_python_path = QLineEdit()
+        act = self._txt_python_path.addAction(
+            ui_tools.get_icon('open-project'), QLineEdit.TrailingPosition)
+        act.triggered.connect(self._load_python_path)
+        import sys
+        self._txt_python_path.setText(sys.executable)
+        self._txt_python_path.textChanged.connect(self._python_exec_changed)
+        box_path.addWidget(QLabel("Select the Python interpreter"))
+        # Default
+        default_interpreter_radio = QRadioButton("Default")
+        default_interpreter_radio.toggled.connect(
+            self._txt_python_path.setDisabled)
+        python_path_bgroup.addButton(default_interpreter_radio)
+        # Custom
+        self._custom_interpreter_radio = QRadioButton(
+            "Use this Python interpreter:")
+        self._custom_interpreter_radio.toggled.connect(
+            self._txt_python_path.setEnabled)
+        python_path_bgroup.addButton(self._custom_interpreter_radio)
+        box_path.addWidget(default_interpreter_radio)
+        box_path.addWidget(self._custom_interpreter_radio)
+        box_path.addWidget(self._txt_python_path)
+        """
+        completer = QCompleter(self)
+        dirs = QDirModel(self)
+        dirs.setFilter(QDir.AllEntries | QDir.NoDotAndDotDot)
+        completer.setModel(dirs)
+        self._txt_python_path.setCompleter(completer)
+        box_path.addWidget(default_interpreter_radio)
+        box_path.addWidget(custom_interpreter_radio)
+        """
+        # self._btn_python_path = QPushButton('o')
+        # box_path.addWidget(self._btn_python_path)
+
+        grid.addLayout(box_path)
+        box.addWidget(group_python_path)
+        box.addItem(QSpacerItem(0, 0,
+                    QSizePolicy.Expanding, QSizePolicy.Expanding))
+        # Connections
+        # self._txt_python_path.buttonClicked.connect(self._load_python_path)
+        self._preferences.savePreferences.connect(self.save)
+
+    @pyqtSlot('QString')
+    def _python_exec_changed(self, python_exec):
+        print(python_exec)
+
+    @pyqtSlot()
+    def _load_python_path(self):
+        """Ask the user for a Python Path"""
+        path = QFileDialog.getOpenFileName(
+            self, translations.TR_SELECT_SELECT_PYTHON_EXEC)
+        if path:
+            self._txt_python_path.setText(path)
+
+    def save(self):
+        """Save all Execution Preferences"""
+
+        qsettings = IDE.ninja_settings()
+        qsettings.beginGroup("preferences")
+        qsettings.beginGroup("execution")
+        qsettings.setValue("python_path", self._txt_python_path.text())
+        settings.PYTHON_EXEC = self._txt_python_path.text()
+
+        qsettings.endGroup()
+        qsettings.endGroup()
+        print(settings.PYTHON_EXEC)
+
+
+preferences.Preferences.register_configuration(
+    'GENERAL',
+    GeneralExecution,
+    translations.TR_PREFERENCES_EXECUTION,
+    weight=1,
+    subsection='EXECUTION'
+)
+"""
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -41,7 +158,7 @@ from ninja_ide.gui.dialogs.preferences import preferences
 
 
 class GeneralExecution(QWidget):
-    """General Execution widget class"""
+    # General Execution widget class
 
     def __init__(self, parent):
         super(GeneralExecution, self).__init__()
@@ -152,14 +269,14 @@ class GeneralExecution(QWidget):
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
     def _load_python_path(self):
-        """Ask the user for a Python Path"""
+        # Ask the user for a Python Path
         path = QFileDialog.getOpenFileName(self,
             translations.TR_SELECT_SELECT_PYTHON_EXEC)
         if path:
             self._txtPythonPath.setText(path)
 
     def save(self):
-        """Save all the Execution Preferences"""
+        # Save all the Execution Preferences
         qsettings = IDE.ninja_settings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('execution')
@@ -203,3 +320,4 @@ class GeneralExecution(QWidget):
 preferences.Preferences.register_configuration('GENERAL', GeneralExecution,
     translations.TR_PREFERENCES_EXECUTION,
     weight=1, subsection='EXECUTION')
+"""

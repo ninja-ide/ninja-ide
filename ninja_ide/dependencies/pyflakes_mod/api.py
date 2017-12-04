@@ -5,16 +5,19 @@ from __future__ import with_statement
 
 import sys
 import os
+import re
 import _ast
-from optparse import OptionParser
 
-from ninja_ide.dependencies.pyflakes_mod import checker, __version__
-from ninja_ide.dependencies.pyflakes_mod import reporter as modReporter
+from pyflakes import checker, __version__
+from pyflakes import reporter as modReporter
 
 __all__ = ['check', 'checkPath', 'checkRecursive', 'iterSourceCode', 'main']
 
 
-def check(codeString, filename, reporter=None, builtins=None):
+PYTHON_SHEBANG_REGEX = re.compile(br'^#!.*\bpython[23w]?\b\s*$')
+
+
+def check(codeString, filename, reporter=None):
     """
     Check the Python source given by C{codeString} for flakes.
 
@@ -42,6 +45,18 @@ def check(codeString, filename, reporter=None, builtins=None):
 
         (lineno, offset, text) = value.lineno, value.offset, value.text
 
+        if checker.PYPY:
+            if text is None:
+                lines = codeString.splitlines()
+                if len(lines) >= lineno:
+                    text = lines[lineno - 1]
+                    if sys.version_info >= (3, ) and isinstance(text, bytes):
+                        try:
+                            text = text.decode('ascii')
+                        except UnicodeDecodeError:
+                            text = None
+            offset -= 1
+
         # If there's an encoding problem with the file, the text is None.
         if text is None:
             # Avoid using msg, since for the only known case, it contains a
@@ -55,7 +70,7 @@ def check(codeString, filename, reporter=None, builtins=None):
         reporter.unexpectedError(filename, 'problem decoding source')
         return 1
     # Okay, it's syntactically valid.  Now check it.
-    w = checker.Checker(tree, filename, builtins=builtins)
+    w = checker.Checker(tree, filename)
     w.messages.sort(key=lambda m: m.lineno)
     for warning in w.messages:
         reporter.flake(warning)
@@ -74,7 +89,16 @@ def checkPath(filename, reporter=None):
     if reporter is None:
         reporter = modReporter._makeDefaultReporter()
     try:
-        with open(filename, 'rb') as f:
+        # in Python 2.6, compile() will choke on \r\n line endings. In later
+        # versions of python it's smarter, and we want binary mode to give
+        # compile() the best opportunity to do the right thing WRT text
+        # encodings.
+        if sys.version_info < (2, 7):
+            mode = 'rU'
+        else:
+            mode = 'rb'
+
+        with open(filename, mode) as f:
             codestr = f.read()
         if sys.version_info < (2, 7):
             codestr += '\n'     # Work around for Python <= 2.6
@@ -86,6 +110,25 @@ def checkPath(filename, reporter=None):
         reporter.unexpectedError(filename, msg.args[1])
         return 1
     return check(codestr, filename, reporter)
+
+
+def isPythonFile(filename):
+    """Return True if filename points to a Python file."""
+    if filename.endswith('.py'):
+        return True
+
+    max_bytes = 128
+
+    try:
+        with open(filename, 'rb') as f:
+            text = f.read(max_bytes)
+            if not text:
+                return False
+    except IOError:
+        return False
+
+    first_line = text.splitlines()[0]
+    return PYTHON_SHEBANG_REGEX.match(first_line)
 
 
 def iterSourceCode(paths):
@@ -100,8 +143,9 @@ def iterSourceCode(paths):
         if os.path.isdir(path):
             for dirpath, dirnames, filenames in os.walk(path):
                 for filename in filenames:
-                    if filename.endswith('.py'):
-                        yield os.path.join(dirpath, filename)
+                    full_path = os.path.join(dirpath, filename)
+                    if isPythonFile(full_path):
+                        yield full_path
         else:
             yield path
 
@@ -122,9 +166,43 @@ def checkRecursive(paths, reporter):
     return warnings
 
 
-def main(prog=None):
-    parser = OptionParser(prog=prog, version=__version__)
-    (__, args) = parser.parse_args()
+def _exitOnSignal(sigName, message):
+    """Handles a signal with sys.exit.
+
+    Some of these signals (SIGPIPE, for example) don't exist or are invalid on
+    Windows. So, ignore errors that might arise.
+    """
+    import signal
+
+    try:
+        sigNumber = getattr(signal, sigName)
+    except AttributeError:
+        # the signal constants defined in the signal module are defined by
+        # whether the C library supports them or not. So, SIGPIPE might not
+        # even be defined.
+        return
+
+    def handler(sig, f):
+        sys.exit(message)
+
+    try:
+        signal.signal(sigNumber, handler)
+    except ValueError:
+        # It's also possible the signal is defined, but then it's invalid. In
+        # this case, signal.signal raises ValueError.
+        pass
+
+
+def main(prog=None, args=None):
+    """Entry point for the script "pyflakes"."""
+    import optparse
+
+    # Handle "Keyboard Interrupt" and "Broken pipe" gracefully
+    _exitOnSignal('SIGINT', '... stopped')
+    _exitOnSignal('SIGPIPE', 1)
+
+    parser = optparse.OptionParser(prog=prog, version=__version__)
+    (__, args) = parser.parse_args(args=args)
     reporter = modReporter._makeDefaultReporter()
     if args:
         warnings = checkRecursive(args, reporter)

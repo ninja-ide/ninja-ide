@@ -30,4 +30,5 @@ class _SyntaxRegistry(object):
     def get_syntax_for(self, name):
         return self.__syntaxes.get(name, None)
 
+
 syntax_registry = _SyntaxRegistry()

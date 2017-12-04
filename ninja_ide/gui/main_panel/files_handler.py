@@ -21,31 +21,30 @@ import os
 import re
 import uuid
 
-from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger(__name__)
-
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout
+)
+from PyQt5.QtCore import Qt
+from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools.locator import locator
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger(__name__)
 
 
-class FilesHandler(QFrame):
+class FilesHandler(QWidget):
 
     def __init__(self, parent=None):
         super(FilesHandler, self).__init__(
             None, Qt.FramelessWindowHint | Qt.Popup)
         self._main_container = parent
-        self.setAttribute(Qt.WA_TranslucentBackground)
         self.setStyleSheet("background:transparent;")
         # Create the QML user interface.
-        self.view = QDeclarativeView()
-        self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.view = QQuickWidget()
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
@@ -57,12 +56,14 @@ class FilesHandler(QFrame):
         self._temp_files = {}
         self._max_index = 0
 
-        self.connect(self._root, SIGNAL("open(QString, QString, QString)"),
-                     self._open)
-        self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
-        self.connect(self._root, SIGNAL("hide()"), self.hide)
-        self.connect(self._root, SIGNAL("fuzzySearch(QString)"),
-                     self._fuzzy_search)
+        self._root.open['QString', 'QString', 'QString'].connect(self._open)
+        self._root.hide.connect(self.hide)
+        # self.connect(self._root, SIGNAL("open(QString, QString, QString)"),
+        #             self._open)
+        # self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
+        # self.connect(self._root, SIGNAL("hide()"), self.hide)
+        # self.connect(self._root, SIGNAL("fuzzySearch(QString)"),
+        #             self._fuzzy_search)
 
     def _open(self, path, temp, project):
         if project:

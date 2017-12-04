@@ -19,23 +19,24 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QGroupBox,
+    QCheckBox,
+    QTreeWidget,
+    QTreeWidgetItem,
+    QPushButton,
+    QGridLayout,
+    QSpacerItem,
+    QLabel,
+    QSpinBox,
+    QComboBox,
+    QSizePolicy
+)
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -119,13 +120,12 @@ class EditorConfiguration(QWidget):
         self._checkErrors = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS)
         self._checkErrors.setChecked(settings.FIND_ERRORS)
-        self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
-                     self._disable_show_errors)
+        self._checkErrors.stateChanged[int].connect(self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS)
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
-        self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
-                     self._enable_errors_inline)
+        self._showErrorsOnLine.stateChanged[int].connect(
+            self._enable_errors_inline)
         vboxg3.addWidget(self._checkErrors)
         vboxg3.addWidget(self._showErrorsOnLine)
         vboxg3.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding))
@@ -138,14 +138,13 @@ class EditorConfiguration(QWidget):
         self._checkStyle = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8)
         self._checkStyle.setChecked(settings.CHECK_STYLE)
-        self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
-                     self._disable_check_style)
+        self._checkStyle.stateChanged[int].connect(self._disable_check_style)
         vvbox.addWidget(self._checkStyle)
         self._checkStyleOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8)
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
-        self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
-                     self._enable_check_inline)
+        self._checkStyleOnLine.stateChanged[int].connect(
+            self._enable_check_inline)
         vvbox.addWidget(self._checkStyleOnLine)
         vvbox.addItem(QSpacerItem(0, 0,
                       QSizePolicy.Expanding, QSizePolicy.Expanding))
@@ -228,7 +227,7 @@ class EditorConfiguration(QWidget):
         vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
                      QSizePolicy.Expanding))
 
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._preferences.savePreferences.connect(self.save)
 
     def _add_code_pep8(self):
         item = QTreeWidgetItem()

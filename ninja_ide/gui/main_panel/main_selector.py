@@ -17,21 +17,32 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
-
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout
+)
+from PyQt5.QtQuickWidgets import QQuickWidget
+from PyQt5.QtCore import (
+    pyqtSignal,
+    Qt
+)
 from ninja_ide.tools import ui_tools
 
 
 class MainSelector(QWidget):
+    changeCurrent = pyqtSignal(int)
+    ready = pyqtSignal()
+    animationCompleted = pyqtSignal()
+    removeWidget = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(MainSelector, self).__init__(parent)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setAttribute(Qt.WA_ShowWithoutActivating)
         # Create the QML user interface.
-        view = QDeclarativeView()
-        view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        view = QQuickWidget()
+        view.setClearColor(Qt.transparent)
+        view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("MainSelector.qml"))
         self._root = view.rootObject()
         vbox = QVBoxLayout(self)
@@ -39,17 +50,16 @@ class MainSelector(QWidget):
         vbox.setSpacing(0)
         vbox.addWidget(view)
 
-        self.connect(self._root, SIGNAL("open(int)"),
-                     lambda i: self.emit(SIGNAL("changeCurrent(int)"), i))
-        self.connect(self._root, SIGNAL("open(int)"), self._clean_removed)
-        self.connect(self._root, SIGNAL("ready()"),
-                     lambda: self.emit(SIGNAL("ready()")))
-        self.connect(self._root, SIGNAL("animationCompleted()"),
-                     lambda: self.emit(SIGNAL("animationCompleted()")))
+        # self._root.open[int].connect(lambda i: self.changeCurrent.emit(i))
+        # self._root.open[int].connect(self._clean_removed)
+        # self._root.ready.connect(lambda: self.ready.emit())
+        # self._root.animationCompleted.connect(
+        #    lambda: self.animationCompleted.emit())
 
     def set_model(self, model):
-        for index, path, closable in model:
-            self._root.add_widget(index, path, closable)
+        self._root.start()
+        for index, path in model:
+            self._root.add_widget(path)
 
     def set_preview(self, index, preview_path):
         self._root.add_preview(index, preview_path)
@@ -58,7 +68,7 @@ class MainSelector(QWidget):
         self._root.close_selector()
 
     def start_animation(self):
-        self._root.start_animation()
+        # self._root.start_animation()
         self._root.forceActiveFocus()
 
     def open_item(self, index):
@@ -66,7 +76,8 @@ class MainSelector(QWidget):
         self._root.select_item(index)
 
     def _clean_removed(self):
-        removed = sorted(self._root.get_removed(), reverse=True)
+        # FIXME:
+        removed = sorted(self._root.get_removed().toVariant(), reverse=True)
         for r in removed:
-            self.emit(SIGNAL("removeWidget(int)"), r)
+            self.removeWidget.emit(r)
         self._root.clean_removed()

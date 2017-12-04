@@ -14,27 +14,31 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
-from PyQt4.QtGui import QStyle
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
-
+from PyQt5.QtCore import (
+    QThread,
+    QTimer,
+    # Qt,
+    pyqtSignal
+)
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
-from ninja_ide.dependencies import pycodestylemod
+from ninja_ide.dependencies import pycodestyle
 from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
+from ninja_ide.tools import ui_tools
 from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
+
+# TODO: limit results for performance
 
 
 class Pep8Checker(QThread):
+    checkerCompleted = pyqtSignal()
 
     def __init__(self, editor):
         super(Pep8Checker, self).__init__()
@@ -43,13 +47,14 @@ class Pep8Checker(QThread):
         self._encoding = ''
         self.checks = {}
 
-        self.checker_icon = QStyle.SP_MessageBoxWarning
+        self.checker_icon = ui_tools.colored_icon(
+            ":img/warning", resources.get_color('Pep8Underline'))
 
-        ninjaide = IDE.get_service('ide')
-        self.connect(ninjaide,
-                     SIGNAL("ns_preferences_editor_checkStyle(PyQt_PyObject)"),
-                     lambda: remove_pep8_checker())
-        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
+        # ninjaide = IDE.get_service('ide')
+        # self.connect(ninjaide,
+        #             SIGNAL("ns_preferences_editor_checkStyle(PyQt_PyObject)"),
+        #             lambda: remove_pep8_checker())
+        self.checkerCompleted.connect(self.refresh_display)
 
     @property
     def dirty(self):
@@ -63,56 +68,68 @@ class Pep8Checker(QThread):
         if not self.isRunning():
             self._path = self._editor.file_path
             self._encoding = self._editor.encoding
-            self.start()
+            QTimer.singleShot(500, self.start)
 
     def reset(self):
-        self.checks = {}
+        self.checks.clear()
 
     def run(self):
-        self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
             self.reset()
-            source = self._editor.text()
-            tempData = pycodestylemod.run_check(self._path, source)
-            for result in tempData:
-                message = "\n".join(("%s %s" % (
-                    result["code"],
-                    result["text"]),
-                    result["line"],
-                    result["pointer"]))
-                if result["line_number"] not in self.checks:
-                    self.checks[result["line_number"]] = [message]
-                else:
-                    original = self.checks[result["line_number"]]
-                    original += [message]
-                    self.checks[result["line_number"]] = original
-        else:
-            self.reset()
-        self.emit(SIGNAL("checkerCompleted()"))
+            source = self._editor.text
+            path = self._editor.file_path
+            pep8_style = pycodestyle.StyleGuide(
+                parse_argv=False,
+                config_file='',
+                checker_class=CustomChecker
+            )
+            temp_data = pep8_style.input_file(
+                path,
+                lines=source.splitlines(True)
+            )
+            for lineno, offset, code, text, doc in temp_data:
+                message = '[PEP8] %s: %s' % (code, text)
+                self.checks[lineno - 1] = message
+        self.checkerCompleted.emit()
 
     def message(self, index):
         if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
-            return self.checks[index][0]
+            return self.checks[index]
         return None
 
     def refresh_display(self):
-        error_list = IDE.get_service('tab_errors')
+        # error_list = IDE.get_service('tab_errors')
+        error_tree = IDE.get_service('errors_tree')
+        error_tree.refresh(self.checks, self._path)
+        """
         if error_list:
             error_list.refresh_pep8_list(self.checks)
+        """
+
+
+class CustomReport(pycodestyle.StandardReport):
+
+    def get_file_results(self):
+        return sorted(self._deferred_print)
+
+
+class CustomChecker(pycodestyle.Checker):
+
+    def __init__(self, *args, **kw):
+        super().__init__(*args, report=CustomReport(kw.pop("options")), **kw)
 
 
 def remove_pep8_checker():
-    _default_color = resources.COLOR_SCHEME['Pep8Underline']
     checker = (Pep8Checker,
-               resources.CUSTOM_SCHEME.get('Pep8Underline', _default_color), 2)
+               resources.get_color('Pep8Underline'), 2)
     remove_checker(checker)
 
 
 if settings.CHECK_STYLE:
     register_checker(
         checker=Pep8Checker,
-        color=resources.CUSTOM_SCHEME.get(
-            'Pep8Underline',
-            resources.COLOR_SCHEME['Pep8Underline']), priority=2)
+        color=resources.get_color('Pep8Underline'),
+        priority=2
+    )

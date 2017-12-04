@@ -1,0 +1,67 @@
+name: Darker
+editor-theme: dark
+palette:
+    Window: 21252b
+    WindowText: e7e7e7
+    Base: 21252b
+    AlternateBase: ff515151
+    ToolTipBase: 66000000
+    ToolTipText: e7e7e7
+    Text: e7e7e7
+    TextDisabled: 60a4a6a8
+    Button: 282c34
+    ButtonText: e7e7e7
+    ButtonTextDisabled: 777
+    BrightText: blue
+    Light: blue
+    Midlight: green
+    Dark: ff1c1f25
+    Mid: ffa0a0a0
+    Shadow: FF5644
+    Highlight: FF5644
+    HighlightedText: d0d0d0
+    Link: ff007af4
+    LinkVisited: green
+colors:
+    Base: 262b33
+    PanelTextColorDark: d0d0d0
+    PanelTextColorLight: d0d0d0
+    ToolButtonColor: 21252b
+    ToolButtonSelected: 66000000
+    ToolButtonHover: 2c313a
+    ToolButtonTextColor: f1f1f1
+    IconDisabledColor: 707070
+    ComboBoxTextColor: e7e7e7
+    MenuBarItemEnabled: e7e7e7
+    MenuBarBorderColor: 4d4d4d
+    MenuBarTextHover: e7e7e7
+    MenuBarHover: 404244
+    MenuItemEnabled: e7e7e7
+    MenuItemDisabled: 7fffffff
+    IconBaseColor: d2d2d2
+    LineEditBackground: 303540
+    SeparatorColor: 4d4d4d
+    WelcomeBackground: 2e323c
+    WelcomeAlternativeTextColor: f9f9f9
+    WelcomeTextColor: FF5644
+    WelcomeLinkColor: FF5644
+    WelcomeButton: 21252b
+    WelcomeButtonSelected: 151515
+    MenuBar: 21252b
+    Splitter: 4d4d4d
+    LocatorBackground: 3a3f4b
+    LocatorText: e7e7e7
+    LocatorAlternativeText: 999
+    LocatorLineEditBackground: 1c1f25
+    LocatorCurrentItem: 6a6ea9
+    LocatorListBackground: 1c1f25
+    QMLBackground: 333
+    GoToLineTextColor: e7e7e7
+    GoToLineEditBackground: 23262e
+    GoToLineBorder: 6a6ea9
+    CompleterBackground: 333
+    CompleterCurrentItem: 6a6ea9
+    CompleterText: f1f1f1
+    Border: transparent
+flags:
+    PaletteFromTheme: true

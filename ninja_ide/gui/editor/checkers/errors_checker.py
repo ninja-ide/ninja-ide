@@ -14,9 +14,102 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
+import _ast
+from PyQt5.QtCore import (
+    QThread,
+    pyqtSignal,
+    QTimer
+)
+from ninja_ide.gui.editor.checkers import (
+    register_checker,
+    remove_checker
+)
+from ninja_ide import resources
+from ninja_ide.core import settings
+from ninja_ide.dependencies.pyflakes_mod import checker
+from ninja_ide.tools import ui_tools
+from ninja_ide.tools.logger import NinjaLogger
+from ninja_ide.core.file_handling import file_manager
+
+logger = NinjaLogger(__file__)
+
+
+class ErrorsChecker(QThread):
+
+    checkerCompleted = pyqtSignal()
+
+    def __init__(self, neditor):
+        super().__init__()
+        self._neditor = neditor
+        self._path = ''
+        self.checks = {}
+
+        self.checker_icon = ui_tools.colored_icon(
+            ":img/bicho",
+            resources.get_color('ErrorUnderline')
+        )
+
+    def run_checks(self):
+        if not self.isRunning():
+            self._path = self._neditor.file_path
+            QTimer.singleShot(50, self.start)
+
+    def reset(self):
+        self.checks.clear()
+
+    def run(self):
+        exts = settings.SYNTAX.get('python')['extension']
+        file_ext = file_manager.get_file_extension(self._path)
+        if file_ext in exts:
+            self.reset()
+            source = self._neditor.text
+            text = "[PyFlakes] %s"
+            # Compile into an AST and handle syntax errors
+            try:
+                tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
+            except SyntaxError as reason:
+                if reason.text is None:
+                    logger.error("Syntax error")
+                else:
+                    self.checks[reason.lineno - 1] = [text % reason.args[0]]
+            else:
+                # Okay, now check it
+                lint_checker = checker.Checker(tree, self._path)
+                lint_checker.messages.sort(key=lambda msg: msg.lineno)
+                for message in lint_checker.messages:
+                    lineno = message.lineno - 1
+                    if lineno not in self.checks:
+                        text = [message.message % message.message_args]
+                    else:
+                        text = self.checks[lineno]
+                        text += [message.message % message.message_args]
+                    self.checks[lineno] = text
+        self.checkerCompleted.emit()
+
+    def message(self, lineno):
+        if lineno in self.checks:
+            return self.checks[lineno][0]
+        return None
+
+
+def remove_error_checker():
+    checker = (
+        ErrorsChecker,
+        resources.COLOR_SCHEME['ErrorUnderline'],
+        10
+    )
+    remove_checker(checker)
+
+
+if settings.FIND_ERRORS:
+    register_checker(
+        checker=ErrorsChecker,
+        color=resources.COLOR_SCHEME['ErrorUnderline'],
+        priority=10
+    )
+
+"""
 import _ast
 import re
 
@@ -165,3 +258,4 @@ if settings.FIND_ERRORS:
                          'ErrorUnderline',
                          resources.COLOR_SCHEME['ErrorUnderline']),
                      priority=10)
+"""

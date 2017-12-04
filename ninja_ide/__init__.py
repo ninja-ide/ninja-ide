@@ -27,7 +27,7 @@ __author__ = "The NINJA-IDE Team"
 __mail__ = "ninja-ide at googlegroups dot com"
 __url__ = "http://www.ninja-ide.org"
 __source__ = "https://github.com/ninja-ide/ninja-ide"
-__version__ = "3.0-beta"
+__version__ = "3.0-alpha"
 __license__ = "GPL3"
 
 ###############################################################################
@@ -45,12 +45,12 @@ and more enjoyable.
 # SET PYQT API 2
 ###############################################################################
 
-import sip
-API_NAMES = ["QDate", "QDateTime", "QString", "QTime", "QUrl", "QTextStream",
-             "QVariant"]
-API_VERSION = 2
-for name in API_NAMES:
-    sip.setapi(name, API_VERSION)
+# import sip
+# API_NAMES = ["QDate", "QDateTime", "QString", "QTime", "QUrl", "QTextStream",
+#             "QVariant"]
+# API_VERSION = 2
+# for name in API_NAMES:
+#    sip.setapi(name, API_VERSION)
 
 ###############################################################################
 # START
@@ -62,7 +62,7 @@ def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core
-    from ninja_ide import ninja_resources  # lint:ok
+    from ninja_ide import nresources  # lint:ok
     from multiprocessing import freeze_support
 
     # Used to support multiprocessing on windows packages

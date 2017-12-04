@@ -21,7 +21,7 @@ from threading import Thread, Lock
 from multiprocessing import Process, Queue
 
 from ninja_ide.intellisensei.analyzer import model
-from ninja_ide.intellisense.analyzer import analyzer
+from ninja_ide.intellisensei.analyzer import analyzer
 
 
 try:

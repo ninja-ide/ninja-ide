@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 import os
 
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 from ninja_ide.gui.ide import IDE
 
@@ -47,14 +47,17 @@ class NTemplateRegistry(QObject):
         super(NTemplateRegistry, self).__init__()
         IDE.register_service("template_registry", self)
 
-    def register_project_type(self, ptype):
-        if ptype.compound_name() in self.__project_types.keys():
-            raise ConflictingTypeForCategory(ptype.type_name, ptype.category)
+    def register_project_type(self, project_type):
+        if project_type.compound_name() in self.__project_types.keys():
+            raise ConflictingTypeForCategory(
+                project_type.type_name,
+                project_type.category
+            )
         else:
-            self.__project_types[ptype.compound_name()] = ptype
-            #This is here mostly for convenience
-            self.__types_by_category.setdefault(ptype.category,
-                                                []).append(ptype)
+            self.__project_types[project_type.compound_name()] = project_type
+            # This is here mostly for convenience
+            self.__types_by_category.setdefault(
+                project_type.category, []).append(project_type)
 
     def list_project_types(self):
         return self.__project_types.keys()
@@ -65,8 +68,8 @@ class NTemplateRegistry(QObject):
     def list_templates_for_cateogory(self, category):
         return self.__types_by_category.get(category, [])
 
-    def get_project_type(self, ptype):
-        return self.__project_types.get(ptype, None)
+    def get_project_type(self, project_type):
+        return self.__project_types.get(project_type, None)
 
     @classmethod
     def create_compound_name(cls, type_name, category):
@@ -129,6 +132,7 @@ class BaseProjectType(QObject):
     @classmethod
     def wizard_pages(cls):
         """Return the pages to be displayed in the wizard."""
+
         raise NotImplementedError("%s lacks wizard_pages" %
                                   cls.__name__)
 
@@ -148,10 +152,16 @@ class BaseProjectType(QObject):
         """
         ext = self.get_file_extension(filepath)
         if self.base_encoding and (ext in self.encoding_string):
-            fd.write(self.encoding_string[ext] % self.base_encoding)
+            fd.write(self.encoding_string[ext] % self.base_encoding + '\n')
         if self.licence_text and (ext in self.single_line_comment):
             for each_line in self.licence_text.splitlines():
-                fd.write(self.single_line_comment + each_line)
+                fd.write(self.single_line_comment[ext] + each_line + '\n')
+        # ext = self.get_file_extension(filepath)
+        # if self.base_encoding and (ext in self.encoding_string):
+        #    fd.write(self.encoding_string[ext] % self.base_encoding)
+        # if self.licence_text and (ext in self.single_line_comment):
+        #    for each_line in self.licence_text.splitlines():
+        #        fd.write(self.single_line_comment[ext] + each_line + '\n')
 
     def _create_file(self, path, content):
         with open(path, "w") as writable:
@@ -196,5 +206,6 @@ class BaseProjectType(QObject):
 
     def wizard_callback(self):
         pass
+
 
 template_registry = NTemplateRegistry()

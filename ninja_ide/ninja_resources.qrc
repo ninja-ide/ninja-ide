@@ -31,16 +31,13 @@
         <file alias="locate-nonpython">img/locate-nonpython.png</file>
         <file alias="bug">img/bug.png</file>
         <file alias="locate-line">img/locate-line.png</file>
-        <file alias="file-run">img/file-run.png</file>
         <file alias="splash">img/splash.jpg</file>
         <file alias="deactivate-profile">img/deactivate_profile.png</file>
         <file alias="print">img/document-print.png</file>
-        <file alias="new">img/document-new.png</file>
         <file alias="save">img/document-save.png</file>
         <file alias="reload-file">img/reload-file.png</file>
         <file alias="function">img/function.png</file>
         <file alias="saveAs">img/document-save-as.png</file>
-        <file alias="play">img/play.png</file>
         <file alias="designer">img/qtdesigner.png</file>
         <file alias="splitCRotate">img/panels-change-orientation.png</file>
         <file alias="fullscreen">img/fullscreen.png</file>
@@ -86,6 +83,10 @@
         <file alias="up_arrow_disabled">img/up_arrow_disabled.png</file>
         <file alias="add_small">img/add_small.png</file>
         <file alias="delete_small">img/delete_small.png</file>
+        <file alias="prompt">img/prompt.png</file>
+        <file alias="warning">img/warning.png</file>
+        <file alias="new">img/file-text.png</file>
+        <file alias="play">img/run.png</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">img/help/help_locator.png</file>

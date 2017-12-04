@@ -16,14 +16,23 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from PyQt4.QtCore import QObject, QDir, SIGNAL
-from PyQt4.QtGui import QFileSystemModel
+from PyQt5.QtWidgets import QFileSystemModel
+from PyQt5.QtCore import (
+    QObject,
+    QDir,
+    pyqtSignal
+)
 from ninja_ide.core.file_handling.nfile import NFile
+from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfilesystem')
 
 
 class NVirtualFileSystem(QObject):
+    # Signals
+    projectOpened = pyqtSignal('QString')
+    projectClosed = pyqtSignal('QString')
+
     def __init__(self, *args, **kwargs):
         self.__tree = {}
         self.__watchables = {}
@@ -39,7 +48,8 @@ class NVirtualFileSystem(QObject):
         project_path = project.path
         qfsm = None  # Should end up having a QFileSystemModel
         if project_path not in self.__projects:
-            qfsm = QFileSystemModel()
+            # qfsm = QFileSystemModel()
+            qfsm = ui_tools.FileSystemModel()
             project.model = qfsm
             qfsm.setRootPath(project_path)
             qfsm.setFilter(QDir.AllDirs | QDir.Files | QDir.NoDotAndDotDot)
@@ -50,7 +60,7 @@ class NVirtualFileSystem(QObject):
             qfsm.setNameFilters(pext)
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
-            self.emit(SIGNAL("projectOpened(QString)"), project_path)
+            self.projectOpened.emit(project_path)
         else:
             qfsm = self.__projects[project_path]
         return qfsm
@@ -70,10 +80,10 @@ class NVirtualFileSystem(QObject):
                 if self.__reverse_project_map[nfile] == project_root:
                     del self.__tree[nfile.file_path]
                     nfile.close()
-            #This might not be needed just being extra cautious
+            # This might not be needed just being extra cautious
             del self.__projects[project_path].model
             del self.__projects[project_path]
-            self.emit(SIGNAL("projectClosed(QString)"), project_path)
+            self.projectClosed.emit(project_path)
 
     def __check_files_for(self, project_path):
         project = self.__projects[project_path]
@@ -91,8 +101,7 @@ class NVirtualFileSystem(QObject):
             del self.__watchables[nfile_path]
 
     def __add_file(self, nfile):
-        self.connect(nfile, SIGNAL("fileClosing(QString, bool)"),
-                     self.__closed_file)
+        nfile.fileClosing['QString', bool].connect(self.__closed_file)
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         self.__tree[nfile.file_path] = nfile
         for each_path in existing_paths:
@@ -113,10 +122,9 @@ class NVirtualFileSystem(QObject):
             nfile = self.__tree[nfile_path]
         else:
             nfile = NFile()
-            self.connect(
-                nfile,
-                SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
-                self.__file_copied)
+            nfile.saveAsNewFile['PyQt_PyObject',
+                                'QString',
+                                'QString'].connect(self.__file_copied)
         return nfile
 
     def __file_copied(self, nfile, old_path, new_path):
