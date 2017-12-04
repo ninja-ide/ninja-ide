@@ -18,7 +18,8 @@ from __future__ import absolute_import
 
 import re
 
-from PyQt4.QtGui import QInputDialog
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtGui import QTextCursor
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
@@ -31,7 +32,7 @@ patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
-#Coding line by language
+# Coding line by language
 CODING_LINE = {
     'python': '# -*- coding: utf-8 -*-'
 }
@@ -116,19 +117,27 @@ def add_line_increment_for_dict(data, lineModified, diference,
         #editorWidget.textCursor().deletePreviousChar()
 
 
-def remove_trailing_spaces(editorWidget):
-    editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
-    lines = editorWidget.lines()
-    linenumber, index = editorWidget.getCursorPosition()
-    for line in range(lines):
-        text = editorWidget.text(line)
-        if text.endswith((' \n', '\t\n')):
-            text = "%s\n" % text.rstrip()
-            editorWidget.setSelection(line, 0, line,
-                                      editorWidget.lineLength(line))
-            editorWidget.replaceSelectedText(text)
-    editorWidget.setCursorPosition(linenumber, index)
-    editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
+def remove_trailing_spaces(editor):
+    cursor = editor.textCursor()
+    block = editor.document().findBlockByLineNumber(0)
+    cursor.beginEditBlock()
+    while block.isValid():
+        text = block.text()
+        if text.endswith(' '):
+            cursor.setPosition(block.position())
+            cursor.select(QTextCursor.LineUnderCursor)
+            cursor.insertText(text.rstrip())
+        block = block.next()
+    cursor.endEditBlock()
+
+
+def insert_block_at_end(editor):
+    last_line = editor.line_count() - 1
+    text = editor.line_text(last_line)
+    if text:
+        cursor = editor.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertBlock()
 
 
 def insert_horizontal_line(editorWidget):
@@ -254,6 +263,10 @@ def duplicate(editorWidget):
         editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
     else:
         editorWidget.SendScintilla(editorWidget.SCI_LINEDUPLICATE, 1)
+
+
+def comment_or_uncomment(editor):
+    pass
 
 
 def uncomment(editorWidget):

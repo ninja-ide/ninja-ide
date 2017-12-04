@@ -16,42 +16,52 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QCursor
-from PyQt4.QtGui import QMenu
-
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import (
+    QDialog,
+    QTreeWidget,
+    QVBoxLayout,
+    QTreeWidgetItem,
+    QAbstractItemView,
+    QHeaderView,
+    QMenu
+)
+from PyQt5.QtGui import (
+    QIcon,
+    QCursor
+)
+from PyQt5.QtCore import (
+    Qt,
+    pyqtSignal
+)
 
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
+from ninja_ide.tools import ui_tools
 
 
 class TreeSymbolsWidget(QDialog):
-    """Class of Dialog for Tree Symbols"""
+    """ Class of Dialog for Tree Symbols """
+
+    dockWidget = pyqtSignal('PyQt_PyObject')
+    undockWidget = pyqtSignal('PyQt_PyObject')
 
     def __init__(self, parent=None):
-        super(TreeSymbolsWidget, self).__init__(parent,
-                                                Qt.WindowStaysOnTopHint)
+        super(TreeSymbolsWidget, self).__init__(parent)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.tree = QTreeWidget()
+        self.tree.setFrameShape(0)
         vbox.addWidget(self.tree)
         self.tree.header().setHidden(True)
         self.tree.setSelectionMode(self.tree.SingleSelection)
         self.tree.setAnimated(True)
         self.tree.header().setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
-        self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        self.tree.header().setSectionResizeMode(
+            0, QHeaderView.ResizeToContents)
         self.tree.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
         self.docstrings = {}
@@ -60,22 +70,26 @@ class TreeSymbolsWidget(QDialog):
         self.tree.itemClicked.connect(self._go_to_definition)
         self.tree.itemActivated.connect(self._go_to_definition)
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(
-            self,
-            SIGNAL("customContextMenuRequested(const QPoint &)"),
+
+        self.customContextMenuRequested['const QPoint &'].connect(
             self._menu_context_tree)
-        self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
-                     self._item_collapsed)
-        self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
-                     self._item_expanded)
+        # self.connect(
+        #    self,
+        #    SIGNAL("customContextMenuRequested(const QPoint &)"),
+        #    self._menu_context_tree)
+        # self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
+        #             self._item_collapsed)
+        # self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
+        #             self._item_expanded)
 
         IDE.register_service('symbols_explorer', self)
-        ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
+        # ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
 
     def install_tab(self):
-        """Connect signals for goingdown"""
+        """ Connect signals for goingdown """
+
         ide = IDE.get_service('ide')
-        self.connect(ide, SIGNAL("goingDown()"), self.close)
+        ide.goingDown.connect(self.close)
 
     def _menu_context_tree(self, point):
         """Context menu"""
@@ -93,19 +107,19 @@ class TreeSymbolsWidget(QDialog):
         u_class_attr = menu.addAction(
             translations.TR_UNFOLD_CLASSES_AND_ATTRIBUTES)
         menu.addSeparator()
-        #save_state = menu.addAction(self.tr("Save State"))
+        # save_state = menu.addAction(self.tr("Save State"))
 
-        self.connect(f_all, SIGNAL("triggered()"),
-                     lambda: self.tree.collapseAll())
-        self.connect(u_all, SIGNAL("triggered()"),
-                     lambda: self.tree.expandAll())
-        self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
-        self.connect(u_class_method, SIGNAL("triggered()"),
-                     self._unfold_class_method)
-        self.connect(u_class_attr, SIGNAL("triggered()"),
-                     self._unfold_class_attribute)
-        #self.connect(save_state, SIGNAL("triggered()"),
-            #self._save_symbols_state)
+        # self.connect(f_all, SIGNAL("triggered()"),
+        #             lambda: self.tree.collapseAll())
+        # self.connect(u_all, SIGNAL("triggered()"),
+        #             lambda: self.tree.expandAll())
+        # self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
+        # self.connect(u_class_method, SIGNAL("triggered()"),
+        #             self._unfold_class_method)
+        # self.connect(u_class_attr, SIGNAL("triggered()"),
+        #              self._unfold_class_attribute)
+        # self.connect(save_state, SIGNAL("triggered()"),
+        #    self._save_symbols_state)
 
         menu.exec_(QCursor.pos())
 
@@ -134,13 +148,13 @@ class TreeSymbolsWidget(QDialog):
         classes_root = self._get_classes_root()
         if not classes_root:
             return
-        #for each class!
+        # for each class!
         for i in range(classes_root.childCount()):
             class_item = classes_root.child(i)
-            #for each attribute or functions
+            # for each attribute or functions
             for j in range(class_item.childCount()):
                 item = class_item.child(j)
-                #METHODS ROOT!!
+                # METHODS ROOT!!
                 if not item.isMethod and not item.isClickable:
                     item.setExpanded(False)
                     break
@@ -151,21 +165,21 @@ class TreeSymbolsWidget(QDialog):
         classes_root = self._get_classes_root()
         if not classes_root:
             return
-        #for each class!
+        # for each class!
         for i in range(classes_root.childCount()):
             class_item = classes_root.child(i)
-            #for each attribute or functions
+            # for each attribute or functions
             for j in range(class_item.childCount()):
                 item = class_item.child(j)
-                #ATTRIBUTES ROOT!!
+                # ATTRIBUTES ROOT!!
                 if not item.isAttribute and not item.isClickable:
                     item.setExpanded(False)
                     break
 
     def _save_symbols_state(self):
         """Method to Save a persistent Symbols state"""
-        #filename = self.actualSymbols[0]
-        #TODO: persist self.collapsedItems[filename] in QSettings
+        # filename = self.actualSymbols[0]
+        # TODO: persist self.collapsedItems[filename] in QSettings
         pass
 
     def _get_expand(self, item):
@@ -221,7 +235,9 @@ class TreeSymbolsWidget(QDialog):
                 globItem = ItemTree(globalAttribute, [glob],
                                     lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
-                globItem.setIcon(0, QIcon(":img/attribute"))
+                # globItem.setIcon(
+                #    0, ui_tools.colored_icon(":img/attr", "#5dade2"))
+                globItem.setIcon(0, QIcon(":img/attr"))
                 globItem.setExpanded(self._get_expand(globItem))
 
         if 'functions' in symbols and symbols['functions']:
@@ -238,6 +254,8 @@ class TreeSymbolsWidget(QDialog):
                     func, symbols['functions'][func]['lineno'])
                 item.isMethod = True
                 item.setIcon(0, QIcon(":img/function"))
+                # item.setIcon(
+                #    0, ui_tools.colored_icon(":img/function", "#9FA8DA"))
                 item.setToolTip(0, tooltip)
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(
@@ -255,13 +273,16 @@ class TreeSymbolsWidget(QDialog):
                 item.isClass = True
                 tooltip = self.create_tooltip(claz, line_number)
                 item.setToolTip(0, tooltip)
-                item.setIcon(0, QIcon(":img/class"))
+                # item.setIcon(0, ui_tools.colored_icon(":img/class", "#FFCC80"))
+                # item.setIcon(0, ui_tools.get_icon('class', '#FFCC80'))
+                item.setIcon(0, ui_tools.get_icon('class'))
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz]['members'],
                                          parent=item)
 
     def _go_to_definition(self, item):
-        """Takes and item object and goes to definition on the editor"""
+        """ Takes and item object and goes to definition on the editor """
+
         main_container = IDE.get_service('main_container')
         if item.isClickable and main_container:
             main_container.editor_go_to_line(item.lineno - 1)
@@ -285,7 +306,7 @@ class TreeSymbolsWidget(QDialog):
             n = self._get_unique_name(item)
             filename = self.actualSymbols[0]
             self.collapsedItems.setdefault(filename, [])
-            if not n in self.collapsedItems[filename]:
+            if n not in self.collapsedItems[filename]:
                 self.collapsedItems[filename].append(n)
 
     def _item_expanded(self, item):
@@ -309,11 +330,13 @@ class TreeSymbolsWidget(QDialog):
 
     def reject(self):
         if self.parent() is None:
-            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+            self.dockWidget.emit(self)
 
     def closeEvent(self, event):
         """On Close event handling"""
-        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+
+        self.dockWidget.emit(self)
+        # self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()
 
 

@@ -15,20 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
-
-class BaseTest(unittest.TestCase):
-
-    def setUp(self):
-        super(BaseTest, self).setUp()
-        self._original_values = []
-
-    def patch(self, obj, attr, new_value):
-        self._original_values.append((obj, attr, getattr(obj, attr)))
-        setattr(obj, attr, new_value)
-
-    def tearDown(self):
-        for values in self._original_values:
-            obj, attr, old_value = values
-            setattr(obj, attr, old_value)
+from PyQt5.QtWidgets import QApplication
+import pytest
+app = QApplication([])

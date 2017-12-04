@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 
 
 tr = QtCore.QCoreApplication.translate
@@ -232,6 +232,11 @@ TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 
 
 # Status Bar
+TR_LINE_FIND = tr("NINJA-IDE", "Find")
+TR_LINE_REPLACE = tr("NINJA-IDE", "Replace")
+TR_REPLACE_ALL = tr("NINJA-IDE", "Replace All")
+TR_REPLACE_SELECTION = tr("NINJA-IDE", "Replace Selection")
+TR_SEARCH_TITLE = tr("NINJA-IDE", "Close this panel with the 'Esc' key")
 TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Case Sensitive")
 TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
 
@@ -272,8 +277,8 @@ TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
 TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "File has been modified")
 TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
-    "\nThe file has been modified outside the application\n"
-    "Do you want to reload it?")
+    "The file has been modified outside the application.")
+    # "Do you want to reload it?")
 
 
 # tools_dock
@@ -562,7 +567,9 @@ TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter New File Name")
 TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open Project Directory")
 TR_COPY_FILE_TO = tr("NINJA-IDE", "Copy File To")
 TR_SHOW_FILESIZE = tr("NINJA-IDE", "Show/Hide Filesize Info")
-
+TR_PROJECT_NONEXIST_TITLE = tr("NINJA-IDE", "Folder does not exist")
+TR_PROJECT_NONEXIST = tr("NINJA-IDE", ("The path <b>%s</b> does not seem to "
+                                       "exist anymore on disk."))
 
 # traceback_widget
 TR_TRACEBACK = tr("NINJA-IDE", "Traceback")

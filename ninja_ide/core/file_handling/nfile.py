@@ -17,11 +17,17 @@
 
 import os
 import shutil
-from PyQt4.QtCore import (QObject, QFile, QFileSystemWatcher,
-                          QIODevice, QTextStream, SIGNAL)
+from PyQt5.QtCore import (
+    QObject,
+    QFile,
+    QFileSystemWatcher,
+    QIODevice,
+    QTextStream,
+    pyqtSignal
+)
 
 from ninja_ide import translations
-#FIXME: Obtain these form a getter
+# FIXME: Obtain these form a getter
 from ninja_ide.core import settings
 from ninja_ide.tools.utils import SignalFlowControl
 from .file_manager import NinjaIOException, NinjaNoFileNameException, \
@@ -58,6 +64,15 @@ class NFile(QObject):
     @gotAPath(PyQt_PyObject)
     @willAttachToExistingFile(PyQt_PyObject, QString)
     """
+    fileChanged = pyqtSignal()
+    willAttachToExistingFile = pyqtSignal('PyQt_PyObject', 'QString')
+    gotAPath = pyqtSignal('PyQt_PyObject')
+    willSave = pyqtSignal('QString', 'QString')
+    willMove = pyqtSignal('PyQt_PyObject', 'QString', 'QString')
+    willOverWrite = pyqtSignal('PyQt_PyObject', 'QString', 'QString')
+    willCopyTo = pyqtSignal('PyQt_PyObject', 'QString', 'QString')
+    willDelete = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
+    fileClosing = pyqtSignal('QString', bool)
 
     def __init__(self, path=None):
         """
@@ -84,7 +99,7 @@ class NFile(QObject):
     def display_name(self):
         """Returns a pretty name to be displayed by tabs"""
         display_name = self.file_name
-        if not self._file_path is None and not self.has_write_permission():
+        if self._file_path is not None and not self.has_write_permission():
             display_name += translations.TR_READ_ONLY
         return display_name
 
@@ -106,11 +121,10 @@ class NFile(QObject):
     def start_watching(self):
         """Create a file system watcher and connect its fileChanged
         SIGNAL to our _file_changed SLOT"""
-        if not self.__watcher:
+        if self.__watcher is None:
             self.__watcher = QFileSystemWatcher(self)
-            self.connect(self.__watcher,
-                         SIGNAL("fileChanged(const QString&)"),
-                         self._file_changed)
+            self.__watcher.fileChanged['const QString&'].connect(
+                self._file_changed)
         if self._file_path is not None:
             self.__mtime = os.path.getmtime(self._file_path)
             self.__watcher.addPath(self._file_path)
@@ -119,7 +133,7 @@ class NFile(QObject):
         current_mtime = os.path.getmtime(self._file_path)
         if current_mtime != self.__mtime:
             self.__mtime = current_mtime
-            self.emit(SIGNAL("fileChanged()"))
+            self.fileChanged.emit()
 
     def has_write_permission(self):
         if not self._exists():
@@ -139,14 +153,11 @@ class NFile(QObject):
     def attach_to_path(self, new_path):
         if os.path.exists(new_path):
             signal_handler = SignalFlowControl()
-            self.emit(
-                SIGNAL("willAttachToExistingFile(PyQt_PyObject, QString)"),
-                signal_handler,
-                new_path)
+            self.willAttachToExistingFile.emit(signal_handler, new_path)
             if signal_handler.stopped():
                     return
         self._file_path = new_path
-        self.emit(SIGNAL("gotAPath(PyQt_PyObject)"), self)
+        self.gotAPath.emit(self)
         return self._file_path
 
     def create(self):
@@ -156,10 +167,10 @@ class NFile(QObject):
 
     def save(self, content, path=None):
         """
-        Write a temprorary file with .tnj extension and copy it over the
+        Write a temporary file with .tnj extension and copy it over the
         original one.
         .nsf = Ninja Swap File
-        #FIXME: Where to locate addExtension, does not fit here
+        # FIXME: Where to locate addExtension, does not fit here
         """
         new_path = False
         if path:
@@ -175,7 +186,7 @@ class NFile(QObject):
 
         # If we have a file system watcher, remove the file path
         # from its watch list until we are done making changes.
-        if self.__watcher:
+        if self.__watcher is not None:
             self.__watcher.removePath(save_path)
 
         flags = QIODevice.WriteOnly | QIODevice.Truncate
@@ -195,9 +206,8 @@ class NFile(QObject):
         f.write(encoded_stream)
         f.flush()
         f.close()
-        #SIGNAL: Will save (temp, definitive) to warn folder to do something
-        self.emit(SIGNAL("willSave(QString, QString)"),
-                  swap_save_path, save_path)
+        # SIGNAL: Will save (temp, definitive) to warn folder to do something
+        self.willSave.emit(swap_save_path, save_path)
         self.__mtime = os.path.getmtime(swap_save_path)
         shutil.move(swap_save_path, save_path)
         self.reset_state()
@@ -205,7 +215,7 @@ class NFile(QObject):
         # If we have a file system watcher, add the saved path back
         # to its watch list, otherwise create a watcher and start
         # watching
-        if self.__watcher:
+        if self.__watcher is not None:
             if new_path:
                 self.__watcher.removePath(self.__watcher.files()[0])
                 self.__watcher.addPath(self._file_path)
@@ -228,10 +238,10 @@ class NFile(QObject):
         open_path = path and path or self._file_path
         self._file_path = open_path
         if not self._file_path:
-            raise NinjaNoFileNameException("I am asked to read a "
-                                           "file but no one told me from where")
+            raise NinjaNoFileNameException("I am asked to read a file "
+                                           "but no one told me from where")
         try:
-            with open(open_path, 'rU') as f:
+            with open(open_path, 'r') as f:
                 content = f.read()
         except IOError as reason:
             raise NinjaIOException(reason)
@@ -243,21 +253,20 @@ class NFile(QObject):
         """
         if self._exists():
             signal_handler = SignalFlowControl()
-            #SIGNALL: WILL MOVE TO, to warn folder to exist
-            self.emit(SIGNAL("willMove(Qt_PyQtObject, QString, QString)"),
-                      signal_handler,
-                      self._file_path,
-                      new_path)
+            # SIGNALL: WILL MOVE TO, to warn folder to exist
+            self.willMove.emit(signal_handler,
+                               self._file_path,
+                               new_path)
             if signal_handler.stopped():
                 return
             if os.path.exists(new_path):
                 signal_handler = SignalFlowControl()
-                self.emit(
-                    SIGNAL("willOverWrite(PyQt_PyObject, QString, QString)"),
-                    signal_handler, self._file_path, new_path)
+                self.willOverWrite.emit(signal_handler,
+                                        self._file_path,
+                                        new_path)
                 if signal_handler.stopped():
                     return
-            if self.__watcher:
+            if self.__watcher is not None:
                 self.__watcher.removePath(self._file_path)
             shutil.move(self._file_path, new_path)
             if self.__watcher:
@@ -271,16 +280,17 @@ class NFile(QObject):
         """
         if self._exists():
             signal_handler = SignalFlowControl()
-            #SIGNALL: WILL COPY TO, to warn folder to exist
-            self.emit(SIGNAL("willCopyTo(Qt_PyQtObject, QString, QString)"),
-                      signal_handler, self._file_path, new_path)
+            # SIGNALL: WILL COPY TO, to warn folder to exist
+            self.willCopyTo.emit(signal_handler,
+                                 self._file_path,
+                                 new_path)
             if signal_handler.stopped():
                 return
             if os.path.exists(new_path):
                 signal_handler = SignalFlowControl()
-                self.emit(
-                    SIGNAL("willOverWrite(PyQt_PyObject, QString, QString)"),
-                    signal_handler, self._file_path, new_path)
+                self.willOverWrite.emit(signal_handler,
+                                        self._file_path,
+                                        new_path)
                 if signal_handler.stopped():
                     return
 
@@ -290,15 +300,14 @@ class NFile(QObject):
         """
         This deletes the object and closes the file.
         """
-        #if created but exists this file migth to someone else
+        # if created but exists this file migth to someone else
         self.close()
         if ((not self.__created) or force) and self._exists():
             DEBUG("Deleting our own NFile %s" % self._file_path)
             signal_handler = SignalFlowControl()
-            self.emit(SIGNAL("willDelete(PyQt_PyObject, PyQt_PyObject)"),
-                      signal_handler, self)
+            self.willDelete.emit(signal_handler, self)
             if not signal_handler.stopped():
-                if self.__watcher:
+                if self.__watcher is not None:
                     self.__watcher.removePath(self._file_path)
                 os.remove(self._file_path)
 
@@ -309,9 +318,8 @@ class NFile(QObject):
         not saved yet
         """
         DEBUG("About to close NFile")
-        self.emit(SIGNAL("fileClosing(QString, bool)"),
-                  self._file_path, force_close)
+        self.fileClosing.emit(self._file_path, force_close)
 
     def remove_watcher(self):
-        if self.__watcher:
+        if self.__watcher is not None:
             self.__watcher.removePath(self._file_path)

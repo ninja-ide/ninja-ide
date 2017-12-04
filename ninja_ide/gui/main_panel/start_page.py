@@ -15,41 +15,76 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout
+)
+from PyQt5.QtQuickWidgets import QQuickWidget
+from PyQt5.QtCore import (
+    pyqtSignal,
+    pyqtSlot,
+    QUrl
+)
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
+from ninja_ide.gui.theme import NTheme
+from ninja_ide import resources
 
 
 class StartPage(QWidget):
+    # Signals
+    openPreferences = pyqtSignal()
+    newFile = pyqtSignal()
 
     def __init__(self, parent=None):
         super(StartPage, self).__init__(parent)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        self.view = QDeclarativeView()
+        self.view = QQuickWidget()
+        self.view.rootContext().setContextProperty(
+            "theme", NTheme.get_colors())
+        self.view.rootContext().setContextProperty(
+            "shortcuts", self.get_shortcuts())
         self.view.setMinimumWidth(400)
-        self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("StartPage.qml"))
         self.root = self.view.rootObject()
         vbox.addWidget(self.view)
 
+        # Connections
+        self.root.onDrop.connect(self.__open_drop_files)
+        self.root.openProject.connect(self._open_project)
+        self.root.newFile.connect(lambda: self.newFile.emit())
         self.load_items()
 
-        self.connect(self.root, SIGNAL("openProject(QString)"),
-                     self._open_project)
-        self.connect(self.root, SIGNAL("removeProject(QString)"),
-                     self._on_click_on_delete)
-        self.connect(self.root, SIGNAL("markAsFavorite(QString, bool)"),
-                     self._on_click_on_favorite)
-        self.connect(self.root, SIGNAL("openPreferences()"),
-                     lambda: self.emit(SIGNAL("openPreferences()")))
-        self.connect(self.root, SIGNAL("newFile()"),
-                     lambda: self.emit(SIGNAL("newFile()")))
+    @pyqtSlot('QString')
+    def _open_project(self, path):
+        projects_explorer = IDE.get_service("projects_explorer")
+        projects_explorer.open_project_folder(path)
+
+    def get_shortcuts(self):
+        shortcuts = {k: v.toString() for k, v in resources.SHORTCUTS.items()}
+        return shortcuts
+
+    def load_items(self):
+        # dsettings = IDE.data_settings()
+        # recent_projects_dict = dict(dsettings.value('recentProjects', {}))
+        # for prj, values in recent_projects_dict.items():
+        #    prj_name = values["name"]
+        #    last_open = values["lastopen"]
+        #    self.root.addProject(prj_name, prj, last_open)
+        self.root.forceActiveFocus()
+        """
+        # Connections
+        self.root.openProject['QString'].connect(self._open_project)
+        self.root.removeProject['QString'].connect(self._on_click_on_delete)
+        self.root.markAsFavorite['QString',
+                                 bool].connect(self._on_click_on_favorite)
+        self.root.openPreferences.connect(
+            lambda: self.openPreferences.emit())
+        self.root.newFile.connect(lambda: self.newFile.emit())
 
     def _open_project(self, path):
         projects_explorer = IDE.get_service('projects_explorer')
@@ -104,3 +139,12 @@ class StartPage(QWidget):
             name = recent_projects_dict[path]['name']
             self.root.add_project(name, path, False)
         self.root.forceActiveFocus()
+    """
+
+    def __open_drop_files(self, files: str):
+
+        """Open dragged files to Start Page"""
+        files = files.split(',')  # FIXME: it's ok?
+        main_container = IDE.get_service("main_container")
+        for f in files:
+            main_container.open_file(QUrl(f).toLocalFile())

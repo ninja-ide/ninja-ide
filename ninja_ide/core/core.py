@@ -20,11 +20,14 @@ from __future__ import absolute_import
 import sys
 import signal
 
-from PyQt4.QtGui import QApplication
+from PyQt5.QtWidgets import QApplication
 
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import cliparser
+
+PR_SET_NAME = 15
+PROCNAME = b"ninja-ide"
 
 
 def run_ninja():
@@ -34,10 +37,9 @@ def run_ninja():
     if not settings.IS_WINDOWS and not settings.IS_MAC_OS:
         try:
             import ctypes
-            libc = ctypes.CDLL('libc.so.6')
-            #Set the application name
-            procname = 'ninja-ide'
-            libc.prctl(15, '%s\0' % procname, 0, 0, 0)
+            libc = ctypes.cdll.LoadLibrary('libc.so.6')
+            # Set the application name
+            libc.prctl(PR_SET_NAME, b"%s\0" % PROCNAME, 0, 0, 0)
         except:
             print("The process couldn't be renamed'")
     filenames, projects_path, extra_plugins, linenos, log_level, log_file = \

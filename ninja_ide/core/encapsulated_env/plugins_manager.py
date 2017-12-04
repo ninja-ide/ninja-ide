@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 from ninja_ide.gui.ide import IDE
 
@@ -66,7 +66,6 @@ class PluginsManager(QObject):
         for each_plugin in to_activate:
             self.__activate_plugin(__import__(each_plugin), each_plugin)
 
-
     def __activate_plugin(self, plugin, plugin_name):
         """
         Receives the actual plugin module and tries activate or marks
@@ -78,7 +77,7 @@ class PluginsManager(QObject):
         try:
             plugin.activate()
         except Exception:
-            #This plugin can no longer be activated
+            # This plugin can no longer be activated
             if plugin_name in activated:
                 activated.remove(plugin_name)
             if plugin_name not in failure:
@@ -90,4 +89,3 @@ class PluginsManager(QObject):
         finally:
             self.set_activated_plugins(activated)
             self.set_failstate_plugins(failure)
-

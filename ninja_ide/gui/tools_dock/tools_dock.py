@@ -15,23 +15,338 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from PyQt5.QtWidgets import (
+    QWidget,
+    QHBoxLayout,
+    QVBoxLayout,
+    QToolBar,
+    QLabel,
+    QStackedWidget,
+    QPlainTextEdit,
+    QSpacerItem,
+    QAction,
+    QSizePolicy,
+    QToolButton,
+    QStyleOptionToolBar,
+    QStyleOption,
+    QStyle,
+    QShortcut,
+    QApplication
+)
+from PyQt5.QtGui import (
+    QPainter,
+    QColor,
+    QIcon,
+    QKeySequence
+)
+from PyQt5.QtCore import (
+    pyqtSlot,
+    QRectF,
+    QPoint,
+    QRect,
+    QSize,
+    Qt
+)
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.tools_dock import console_widget, run_widget
+from ninja_ide.tools import ui_tools
+from ninja_ide.tools.logger import NinjaLogger
+from ninja_ide.gui.tools_dock import actions
+from ninja_ide.core.file_handling import file_manager
+from ninja_ide.gui.theme import NTheme
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QStackedWidget
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtWebKit import QWebPage
+
+logger = NinjaLogger(__name__)
+DEBUG = logger.debug
+
+
+class Separator(QWidget):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFixedWidth(10)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        option = QStyleOption()
+        option.rect = self.rect()
+        option.state = QStyle.State_Horizontal
+        option.palette = self.palette()
+        self.style().drawPrimitive(
+            QStyle.PE_IndicatorToolBarSeparator, option, painter, self)
+
+
+class ToolButton(QToolButton):
+
+    def __init__(self, number, text, parent=None):
+        super().__init__(parent)
+        self._number = str(number)
+        self._text = text
+
+    def paintEvent(self, event):
+        fm = self.fontMetrics()
+        base_line = (self.height() - fm.height()) / 2 + fm.ascent()
+        number_width = fm.width(self._number)
+
+        painter = QPainter(self)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        hovered = opt.state & QStyle.State_MouseOver
+        c = QColor(NTheme.get_color('ToolButtonColor'))  # FIXME: from theme
+        if hovered:
+            c = QColor(NTheme.get_color('ToolButtonHover'))
+        elif self.isDown() or self.isChecked():
+            c = QColor('#66000000')
+        painter.fillRect(self.rect(), c)
+        painter.setPen(NTheme.get_color('ToolButtonTextColor'))
+        # Draw shortcut number
+        painter.drawText(
+            (15 - number_width) / 2,
+            base_line,
+            self._number
+        )
+        # Draw display name of tool button
+        painter.drawText(
+            18,
+            base_line,
+            fm.elidedText(self._text, Qt.ElideRight, self.width()))
+
+    def sizeHint(self):
+        self.ensurePolished()
+        s = self.fontMetrics().size(Qt.TextSingleLine, self._text)
+
+        s.setWidth(s.width() + 25)
+
+        return s.expandedTo(QApplication.globalStrut())
+
+
+class _ToolsDock(ui_tools.StyledBar):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        # Register signals connections
+        # connections = (
+        #    {
+        #        "target": "main_container",
+        #        "signal_name": "runFile",
+        #        "slot": self.execute_file
+        #    },
+        # )
+        # Buttons Widget
+        self._buttons_widget = ui_tools.StyledBar()
+        self._buttons_widget.setProperty("border", True)
+        self._buttons_widget.setFixedHeight(26)
+        self._buttons_widget.setLayout(QHBoxLayout())
+        self._buttons_widget.layout().setContentsMargins(2, 2, 0, 2)
+        self._buttons_widget.layout().setSpacing(10)
+
+        IDE.register_service('tools_dock', self)
+
+    def install(self):
+        self.setup_ui()
+        ide = IDE.get_service('ide')
+        ide.place_me_on('tools_dock', self, 'central')
+        ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
+        ide.goingDown.connect(self._save_settings)
+        settings = IDE.ninja_settings()
+        index = int(settings.value("tools_dock/tool_visible", -1))
+        if index == -1:
+            self.hide()
+        else:
+            self.set_current_index(index)
+
+    def setup_ui(self):
+        self._stack = QStackedWidget()
+        self.__current_widget = None
+        self.__last_index = -1
+        self.__buttons = []
+
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+
+        # toolbar = StyledBar()
+        tool_layout = QVBoxLayout()
+        tool_layout.setContentsMargins(0, 0, 0, 0)
+        tool_layout.setSpacing(0)
+
+        self._run_widget = run_widget.RunWidget()
+
+        main_layout.addLayout(tool_layout)
+        self._tool_stack = QStackedWidget()
+        self._tool_stack.setMaximumHeight(22)
+        # self._tool_stack.setMaximumWidth(22)
+
+        tool_layout.addWidget(self._tool_stack)
+        # FIXME: poner en stack
+        # clear_btn = QToolButton()
+        # clear_btn.setIcon(QIcon(self.style().standardIcon(QStyle.SP_LineEditClearButton)))
+        # clear_btn.clicked.connect(self._run_widget.output.clear)
+        # tool_layout.addWidget(clear_btn)
+        # tool_layout.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding))
+        # tool_layout.addWidget(close_button)
+        # main_layout.addWidget(toolbar)
+        main_layout.addWidget(self._stack)
+
+        # Widgets
+        # errors_tree = IDE.get_service('errors_tree')
+        from ninja_ide.gui.tools_dock import find_in_files
+        self.widgets = [
+            self._run_widget,
+            console_widget.ConsoleWidget(),
+            find_in_files.FindInFilesWidget(),
+            # errors_tree
+        ]
+        # Intall widgets
+        number = 1
+        for wi in self.widgets:
+            if wi is None:
+                continue
+            btn = ToolButton(number, wi.display_name())
+            btn.setCheckable(True)
+            # Action
+            # action = QAction(wi.display_name(), self)
+            # action.triggered.connect(self._triggered)
+            number += 1
+            self.__buttons.append(btn)
+            self._buttons_widget.layout().addWidget(btn)
+            self._stack.addWidget(wi)
+            btn.clicked.connect(self._button_triggered)
+            # Toolbar buttons
+            container = QWidget(self._tool_stack)
+            tool_buttons_layout = QHBoxLayout()
+            tool_buttons_layout.setContentsMargins(0, 0, 0, 0)
+            tool_buttons_layout.setSpacing(0)
+            for b in wi.button_widgets():
+                tool_buttons_layout.addWidget(b)
+            tool_buttons_layout.addStretch(5)
+            container.setLayout(tool_buttons_layout)
+            self._tool_stack.addWidget(container)
+
+        self._buttons_widget.layout().addItem(
+            QSpacerItem(0, 0, QSizePolicy.Expanding))
+        self.__current_widget = self._stack.currentWidget()
+
+        self.set_current_index(0)
+
+    def execute_file(self):
+        """Execute the current file"""
+
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        if editor_widget is not None and editor_widget.is_modified or \
+                editor_widget.file_path:
+            main_container.save_file(editor_widget)
+            # FIXME: Emit a signal for plugin!
+            # self.fileExecuted.emit(editor_widget.file_path)
+            file_path = editor_widget.file_path
+            extension = file_manager.get_file_extension(file_path)
+            # TODO: Remove the IF statment and use Handlers
+            if extension == "py":
+                self._run_application(file_path)
+
+    def _run_application(self, filename):
+        """Execute the process to run the application"""
+
+        self._show(0)  # Show widget in index = 0
+        self._run_widget.start_process(filename)
+        self._run_widget.input.setFocus()
+
+    @pyqtSlot()
+    def _button_triggered(self):
+        # Get ToolButton index
+        button = self.sender()
+        index = self.__buttons.index(button)
+
+        if index == self.current_index() and self._is_current_visible():
+            self._hide()
+        else:
+            self._show(index)
+
+    def _show(self, index):
+        self.show()
+        self.widgets[index].setVisible(True)
+        self.__current_widget = self.widgets[index]
+        self.set_current_index(index)
+
+    def _hide(self):
+        self.__current_widget.setVisible(False)
+        index = self.current_index()
+        self.__buttons[index].setChecked(False)
+        self.widgets[index].setVisible(False)
+        self.hide()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._stack.currentWidget().setFocus()
+
+    def set_current_index(self, index):
+
+        if self.__last_index != -1:
+            self.__buttons[self.__last_index].setChecked(False)
+            self.__buttons[index].setChecked(True)
+
+        if index != -1:
+            self._stack.setCurrentIndex(index)
+            self._tool_stack.setCurrentIndex(index)
+
+            tool = self.widgets[index]
+            tool.setVisible(True)
+        self.__last_index = index
+
+    def current_index(self):
+        return self._stack.currentIndex()
+
+    def _is_current_visible(self):
+        return self.__current_widget and self.__current_widget.isVisible()
+
+    def _save_settings(self):
+        settings = IDE.ninja_settings()
+        visible_index = self.current_index()
+        if not self.isVisible():
+            visible_index = -1
+        settings.setValue("tools_dock/tool_visible", visible_index)
+
+
+class StackedWidget(QStackedWidget):
+
+    """Handle the different widgets in the stack of tools dock."""
+
+    def setCurrentIndex(self, index):
+        """Change the current widget being displayed with an animation."""
+        old_widget = self.currentWidget()
+        new_widget = self.widget(index)
+        if old_widget != new_widget:
+            self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
+                                                     self.widget(index))
+        QStackedWidget.setCurrentIndex(self, index)
+
+
+_ToolsDock()
+
+'''from PyQt5.QtWidgets import (
+    QWidget,
+    QToolBar,
+    QPushButton,
+    QToolButton,
+    QStyle,
+    QStackedWidget,
+    QHBoxLayout,
+    QVBoxLayout,
+    QSpacerItem,
+    QShortcut,
+    QSizePolicy
+)
+from PyQt5.QtGui import (
+    QIcon,
+    QKeySequence
+)
+from PyQt5.QtCore import (
+    QSize,
+    pyqtSignal,
+    Qt
+)
+# from PyQt4.QtWebKit import QWebPage
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
@@ -39,19 +354,25 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.tools_dock import actions
 from ninja_ide.gui.tools_dock import console_widget
 from ninja_ide.gui.tools_dock import run_widget
-from ninja_ide.gui.tools_dock import web_render
-from ninja_ide.gui.tools_dock import find_in_files
-from ninja_ide.gui.tools_dock import results
+# from ninja_ide.gui.tools_dock import web_render
+# from ninja_ide.gui.tools_dock import find_in_files
+# from ninja_ide.gui.tools_dock import results
 from ninja_ide.tools import ui_tools
 from ninja_ide import translations
+# from ninja_ide.gui.theme import COLORS
+from ninja_ide.gui.theme import NTheme
+
+# TODO: add terminal widget
 
 
-class _ToolsDock(QWidget):
+class _ToolsDock(ui_tools.StyledBar):
     """Former Miscellaneous, contains all the widgets in the bottom area."""
+
+    projectExecuted = pyqtSignal('QString')
 
     def __init__(self, parent=None):
         super(_ToolsDock, self).__init__(parent)
-        #Register signals connections
+        # Register signals connections
         connections = (
             {'target': 'main_container',
              'signal_name': "findOcurrences(QString)",
@@ -69,61 +390,74 @@ class _ToolsDock(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
-        self.__toolbar = QToolBar()
-        self.__toolbar.setObjectName('custom')
-        hbox = QHBoxLayout()
-        vbox.addLayout(hbox)
+        # self.__toolbar = QToolBar()
+        # self.__toolbar.setContentsMargins(0, 0, 0, 0)
+        # self.__toolbar.setObjectName('custom')
+        self.hbox = QHBoxLayout()
+        vbox.addLayout(self.hbox)
 
-        self.stack = StackedWidget()
+        self.stack = QStackedWidget()
         vbox.addWidget(self.stack)
 
         self._console = console_widget.ConsoleWidget()
         self._runWidget = run_widget.RunWidget()
-        self._web = web_render.WebRender()
-        self._findInFilesWidget = find_in_files.FindInFilesWidget(
-            self.parent())
+        # self._web = web_render.WebRender()
+        # self._findInFilesWidget = find_in_files.FindInFilesWidget(
+        #    self.parent())
 
         # Not Configurable Shortcuts
         shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        shortEscMisc.activated.connect(self.hide)
 
-        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
+        # Toolbar
+        # hbox.addWidget(self.__toolbar)
 
-        #Toolbar
-        hbox.addWidget(self.__toolbar)
-        self.add_to_stack(self._console, ":img/console",
-                          translations.TR_CONSOLE)
-        self.add_to_stack(self._runWidget, ":img/play",
-                          translations.TR_OUTPUT)
-        self.add_to_stack(self._web, ":img/web",
-                          translations.TR_WEB_PREVIEW)
-        self.add_to_stack(self._findInFilesWidget, ":img/find",
-                          translations.TR_FIND_IN_FILES)
-        #Last Element in the Stacked widget
-        self._results = results.Results(self)
-        self.stack.addWidget(self._results)
+        self.add_to_stack(
+            self._console,
+            ui_tools.colored_icon(
+                ":img/console", NTheme.get_color('IconBaseColor')),
+            translations.TR_CONSOLE)
+        self.add_to_stack(
+            self._runWidget,
+            ui_tools.colored_icon(
+                ":img/run", NTheme.get_color('IconBaseColor')),
+            translations.TR_OUTPUT)
+        # self.add_to_stack(self._web, ":img/web",
+        #                  translations.TR_WEB_PREVIEW)
+        # self.add_to_stack(self._findInFilesWidget, ":img/find",
+        #                  translations.TR_FIND_IN_FILES)
+        # Last Element in the Stacked widget
+        # self._results = results.Results(self)
+        # self.stack.addWidget(self._results)
         # self.__toolbar.addSeparator()
 
-        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
-        btn_close = QPushButton(
-            self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        btn_close.setIconSize(QSize(24, 24))
-        btn_close.setObjectName('navigation_button')
+        self.hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        # btn_close = QPushButton(
+        #    self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        # btn_close.setIconSize(QSize(24, 24))
+        # btn_close.setObjectName('navigation_button')
+        btn_close = QToolButton()
+        btn_close.setIcon(
+            QIcon(
+                ui_tools.colored_icon(
+                    ":img/close",
+                    NTheme.get_color('IconBaseColor'))))
         btn_close.setToolTip('F4: ' + translations.TR_ALL_VISIBILITY)
-        hbox.addWidget(btn_close)
-        self.connect(btn_close, SIGNAL('clicked()'), self.hide)
+        self.hbox.addWidget(btn_close)
+        btn_close.clicked.connect(self.hide)
 
     def install(self):
-        """Install triggered by the ide."""
+        """ Install triggered by the ide """
+
         self.setup_ui()
         ninjaide = IDE.get_service('ide')
         ninjaide.place_me_on("tools_dock", self, "central")
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
-
-        self.connect(ninjaide, SIGNAL("goingDown()"), self.save_configuration)
-
+        ninjaide.goingDown.connect(self.save_configuration)
         qsettings = IDE.ninja_settings()
-        value = qsettings.value("tools_dock/visible", True, type=bool)
-        self.setVisible(value)
+        visible = qsettings.value("tools_dock/visible", True, type=bool)
+
+        self.setVisible(visible)
 
     def save_configuration(self):
         qsettings = IDE.ninja_settings()
@@ -131,6 +465,8 @@ class _ToolsDock(QWidget):
 
     def change_visibility(self):
         """Change tools dock visibility."""
+
+        # FIXME: set focus on console when is visible but not focus
         if self.isVisible():
             self.hide()
         else:
@@ -148,7 +484,8 @@ class _ToolsDock(QWidget):
         """Change the current item."""
         if not self.isVisible():
             self.show()
-        self.stack.show_display(val)
+        # self.stack.show_display(val)
+        self.stack.setCurrentIndex(val)
 
     def show_find_in_files_widget(self):
         """Show the Find In Files widget."""
@@ -166,17 +503,19 @@ class _ToolsDock(QWidget):
 
     def execute_file(self):
         """Execute the current file."""
+
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
         editorWidget = main_container.get_current_editor()
-        if editorWidget:
-            #emit a signal for plugin!
-            self.emit(SIGNAL("fileExecuted(QString)"),
-                      editorWidget.file_path)
-            main_container.save_file(editorWidget)
+        if editorWidget is not None:
+            if editorWidget.is_modified:
+                main_container.save_file(editorWidget)
+            # emit a signal for plugin!
+            # self.emit(SIGNAL("fileExecuted(QString)"),
+            #          editorWidget.file_path)
             ext = file_manager.get_file_extension(editorWidget.file_path)
-            #TODO: Remove the IF statment and use Handlers
+            # TODO: Remove the IF statment and use Handlers
             if ext == 'py':
                 self._run_application(editorWidget.file_path)
             elif ext == 'html':
@@ -194,8 +533,8 @@ class _ToolsDock(QWidget):
                 projects_explorer.current_tree.open_project_properties()
             elif main_file:
                 projects_explorer.save_project()
-                #emit a signal for plugin!
-                self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
+                # emit a signal for plugin!
+                self.projectExecuted.emit(nproject.path)
 
                 main_file = file_manager.create_path(nproject.path,
                                                      nproject.main_file)
@@ -205,7 +544,8 @@ class _ToolsDock(QWidget):
                     PYTHONPATH=nproject.python_path,
                     programParams=nproject.program_params,
                     preExec=nproject.pre_exec_script,
-                    postExec=nproject.post_exec_script)
+                    postExec=nproject.post_exec_script
+                )
 
     def _run_application(self, fileName, pythonExec=False, PYTHONPATH=None,
                          programParams='', preExec='', postExec=''):
@@ -249,16 +589,19 @@ class _ToolsDock(QWidget):
         Add a widget to the container and an button(with icon))to the toolbar
         to show the widget
         """
-        #add the widget
+        # add the widget
         self.stack.addWidget(widget)
-        #create a button in the toolbar to show the widget
-        button = QPushButton(QIcon(icon_path), '')
-        button.setIconSize(QSize(16, 16))
+        # create a button in the toolbar to show the widget
+        # button = QPushButton(QIcon(icon_path), '')
+        button = QToolButton(self)
+        # button.setIconSize(QSize(18, 18))
+        # button.setIcon(QIcon(icon_path))
+        button.setText(description)
         button.setToolTip(description)
         index = self.stack.count() - 1
-        func = lambda: self._item_changed(index)
-        self.connect(button, SIGNAL("clicked()"), func)
-        self.__toolbar.addWidget(button)
+        button.clicked.connect(lambda: self._item_changed(index))
+        self.hbox.addWidget(button)
+        # self.__toolbar.addWidget(button)
 
     def showEvent(self, event):
         super(_ToolsDock, self).showEvent(event)
@@ -283,3 +626,4 @@ class StackedWidget(QStackedWidget):
 
 
 ToolsDock = _ToolsDock()
+'''

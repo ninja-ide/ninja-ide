@@ -15,6 +15,164 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from PyQt5.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QHBoxLayout,
+    QPushButton,
+    QSpacerItem,
+    QSizePolicy,
+    QTreeWidget,
+    QScrollArea,
+    QTreeWidgetItem,
+    QLabel,
+    QHeaderView,
+    QStackedLayout,
+    QDialogButtonBox
+)
+from PyQt5.QtCore import (
+    Qt,
+    pyqtSignal,
+    pyqtSlot
+)
+from ninja_ide import translations
+
+
+SECTIONS = {
+    'GENERAL': 0,
+    'EDITOR': 2
+}
+
+
+class Preferences(QDialog):
+
+    configuration = {}
+    weight = 0
+    # Signals
+    savePreferences = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent, Qt.Dialog)
+        self.setWindowTitle(translations.TR_PREFERENCES_TITLE)
+        self.setMinimumSize(900, 600)
+        box = QVBoxLayout(self)
+        box.setContentsMargins(5, 5, 5, 5)
+        # Header
+        self._header_label = QLabel("")
+        header_font = self._header_label.font()
+        header_font.setBold(True)
+        header_font.setPointSize(header_font.pointSize() + 4)
+        self._header_label.setFont(header_font)
+
+        hbox = QHBoxLayout()
+        hbox.setContentsMargins(0, 0, 0, 0)
+
+        self.tree = QTreeWidget()
+        self.tree.header().setHidden(True)
+        self.tree.setSelectionMode(QTreeWidget.SingleSelection)
+        self.tree.setAnimated(True)
+        self.tree.header().setSectionResizeMode(
+            0, QHeaderView.ResizeToContents)
+        self.tree.setFixedWidth(200)
+        hbox.addWidget(self.tree)
+
+        self.stacked = QStackedLayout()
+        header_layout = QVBoxLayout()
+        header_layout.addWidget(self._header_label)
+        header_layout.addLayout(self.stacked)
+        hbox.addLayout(header_layout)
+        box.addLayout(hbox)
+
+        # Footer buttons
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        box.addWidget(button_box)
+
+        # Connections
+        button_box.rejected.connect(self.close)
+        button_box.accepted.connect(self._save_preferences)
+        self.tree.selectionModel().currentRowChanged.connect(
+            self._change_current)
+
+        self.load_ui()
+
+    @pyqtSlot()
+    def _save_preferences(self):
+        self.savePreferences.emit()
+        self.close()
+
+    def load_ui(self):
+        sections = sorted(
+            Preferences.configuration.keys(),
+            key=lambda item: Preferences.configuration[item]['weight'])
+        for section in sections:
+            text = Preferences.configuration[section]['text']
+            Widget = Preferences.configuration[section]['widget']
+            widget = Widget(self)
+            area = QScrollArea()
+            area.setWidgetResizable(True)
+            area.setWidget(widget)
+            self.stacked.addWidget(area)
+            index = self.stacked.indexOf(area)
+            item = QTreeWidgetItem([text])
+            item.setData(0, Qt.UserRole, index)
+            self.tree.addTopLevelItem(item)
+
+            # Sort Item Children
+            subcontent = Preferences.configuration[section].get(
+                'subsections', {})
+            subsections = subcontent.keys()
+            for sub in subsections:
+                text = subcontent[sub]['text']
+                Widget = subcontent[sub]['widget']
+                widget = Widget(self)
+                area = QScrollArea()
+                area.setWidgetResizable(True)
+                area.setWidget(widget)
+                self.stacked.addWidget(area)
+                index = self.stacked.indexOf(area)
+                subitem = QTreeWidgetItem([text])
+                subitem.setData(0, Qt.UserRole, index)
+                item.addChild(subitem)
+
+        self.tree.expandAll()
+        self.tree.setCurrentIndex(self.tree.model().index(0, 0))
+
+    def _change_current(self):
+        item = self.tree.currentItem()
+        index = item.data(0, Qt.UserRole)
+        self.stacked.setCurrentIndex(index)
+        self._header_label.setText(item.text(0))
+
+    @classmethod
+    def register_configuration(cls, section, widget, text,
+                               weight=None, subsection=None):
+        if weight is None:
+            Preferences.weight += 1
+            weight = Preferences.weight
+        if subsection is None:
+            Preferences.configuration[section] = {
+                'widget': widget,
+                'weight': weight,
+                'text': text
+            }
+        else:
+            config = Preferences.configuration.get(section, {})
+            if not config:
+                config[section] = {
+                    'widget': None,
+                    'weight': 100
+                }
+            subconfig = config.get('subsections', {})
+            subconfig[subsection] = {
+                'widget': widget,
+                'weight': weight,
+                'text': text
+            }
+            config['subsections'] = subconfig
+            Preferences.configuration[section] = config
+
+"""
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -156,3 +314,4 @@ class Preferences(QDialog):
                                      'text': text}
             config['subsections'] = subconfig
             Preferences.configuration[section] = config
+"""

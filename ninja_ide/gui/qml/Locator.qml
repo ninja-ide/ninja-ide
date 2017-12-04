@@ -1,10 +1,11 @@
-import QtQuick 1.1
+import QtQuick 2.7
+//import QtQuick.Controls 2.1
 
 Rectangle {
     id: root
     width: 500
     height: 400
-    color: "#202123"
+    color: theme.Base
 
     property string filterVerbose: "<font color='#8f8f8f'>@Filename &lt;Class &gt;Function -Attribute .Current /Opened :Line !NoPython</font>"
     property string filterComposite: ""
@@ -34,6 +35,10 @@ Rectangle {
         input.text = "";
     }
 
+    function setText(text) {
+        input.text = text;
+    }
+
     function currentItem() {
         if (listResults.currentIndex > -1) {
             var item = itemsModel.get(listResults.currentIndex);
@@ -53,7 +58,7 @@ Rectangle {
         ListElement {
             type: ""
             name: ""
-            lineno: ""
+            lineno: 0
             path: ""
             colorType: ""
         }
@@ -76,7 +81,7 @@ Rectangle {
 
         Text {
             text: "@"
-            color: "white"
+            color: "#5dade2"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -93,7 +98,7 @@ Rectangle {
         }
         Text {
             text: "<"
-            color: "#18ff6a"
+            color: "#4becc9"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -110,7 +115,7 @@ Rectangle {
         }
         Text {
             text: ">"
-            color: "red"
+            color: "#ff555a"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -127,7 +132,7 @@ Rectangle {
         }
         Text {
             text: "-"
-            color: "#18e1ff"
+            color: "#66ff99"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -144,7 +149,7 @@ Rectangle {
         }
         Text {
             text: "."
-            color: "#f118ff"
+            color: "#a591c6"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -161,7 +166,7 @@ Rectangle {
         }
         Text {
             text: "/"
-            color: "#fff118"
+            color: "#f9d170"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -195,7 +200,7 @@ Rectangle {
         }
         Text {
             text: "!"
-            color: "#ffa018"
+            color: "#ff884d"
             font.pixelSize: 16
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
@@ -214,28 +219,27 @@ Rectangle {
 
     Rectangle {
         id: inputArea
-        radius: 2
-        color: "#2d2f31"
-        height: 30
         anchors {
             left: parent.left
             right: filtersCol.left
             top: parent.top
             margins: 10
         }
-        border.color: "black"
-        border.width: 1
-        smooth: true
+        color: theme.LocatorLineEditBackground
+        height: 30
+        border.color: theme.LocatorCurrentItem
+        border.width: 2
 
         TextInput {
             id: input
-            anchors {
-                fill: parent
-                margins: 4
-            }
+            color: theme.LocatorText
+            anchors.fill: parent
+            anchors.margins: 4
+            smooth: true
             focus: true
             clip: true
-            color: "white"
+
+
             font.pixelSize: 18
 
             onTextChanged: {
@@ -297,15 +301,16 @@ Rectangle {
             clip: true
             spacing: 2
             model: itemsModel
+            //ScrollBar.vertical: ScrollBar {}
             delegate: Rectangle {
                 id: listItem
                 anchors {
                     left: parent.left
                     right: parent.right
                 }
-                height: 70
+                height: 55
                 property bool current: ListView.isCurrentItem
-                color: listItem.current ? "#6a6ea9" : "#27292b"
+                color: listItem.current ? theme.LocatorCurrentItem : theme.LocatorListBackground
 
                 MouseArea {
                     anchors.fill: parent
@@ -358,8 +363,8 @@ Rectangle {
                                     rightMargin: 5
                                 }
                                 text: name
-                                color: listItem.current ? "white" : "#aaaaaa"
-                                font.pixelSize: 13
+                                color: theme.LocatorText
+                                font.pixelSize: 10
                                 font.bold: true
                                 elide: Text.ElideRight
                             }
@@ -370,7 +375,7 @@ Rectangle {
                                 }
                                 text: "[Line: " + (lineno + 1) + "]"
                                 visible: lineno > -1 ? true : false
-                                color: listItem.current ? "#aaaaaa" : "#555555"
+                                color: listItem.current ? theme.LocatorText : theme.LocatorAlternativeText
                                 font.pixelSize: 10
                                 font.bold: true
                             }
@@ -382,8 +387,9 @@ Rectangle {
                                 right: parent.right
                             }
                             text: path
-                            color: listItem.current ? "#aaaaaa" : "#555555"
-                            font.bold: true
+                            font.pixelSize: 12
+                            color: listItem.current ? theme.LocatorText : theme.LocatorAlternativeText
+                            //font.bold: true
                             elide: Text.ElideLeft
                         }
                     }
@@ -445,7 +451,7 @@ Rectangle {
                 }
                 Text {
                     text: "@ Python Files"
-                    color: "white"
+                    color: "#ff555a"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -456,7 +462,7 @@ Rectangle {
                 }
                 Text {
                     text: "< Classes"
-                    color: "#18ff6a"
+                    color: "#4becc9"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -467,7 +473,7 @@ Rectangle {
                 }
                 Text {
                     text: "> Functions"
-                    color: "red"
+                    color: "#ff555a"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -478,7 +484,7 @@ Rectangle {
                 }
                 Text {
                     text: "- Attributes"
-                    color: "#18e1ff"
+                    color: "#66ff99"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -489,7 +495,7 @@ Rectangle {
                 }
                 Text {
                     text: ". Current File"
-                    color: "#f118ff"
+                    color: "#a591c6"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -500,7 +506,7 @@ Rectangle {
                 }
                 Text {
                     text: "/ Opened Files"
-                    color: "#fff118"
+                    color: "#f9d170"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -522,7 +528,7 @@ Rectangle {
                 }
                 Text {
                     text: "! Non Python Files"
-                    color: "#ffa018"
+                    color: "#ff884d"
                     font.pixelSize: 16
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
@@ -586,6 +592,7 @@ Rectangle {
             margins: 5
         }
     }
+
     Text {
         id: filtersExplainedText
         text: root.filterComposite ? root.filterComposite : root.filterVerbose
@@ -598,6 +605,7 @@ Rectangle {
             bottom: parent.bottom
             margins: 5
         }
+
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -609,6 +617,7 @@ Rectangle {
             margins: 5
             rightMargin: 5
         }
+
         width: 20
         height: 20
         radius: width / 2

@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtCore import QObject, QDir, SIGNAL
+from PyQt5.QtCore import (
+    QObject,
+    QDir,
+    pyqtSignal
+)
 
 import os
 
@@ -16,6 +20,7 @@ class NProject(QObject):
     SIGNALS:
     @projectPropertiesUpdated()
     """
+    projectNameUpdated = pyqtSignal('QString')
 
     def __init__(self, path):
         super(NProject, self).__init__()
@@ -23,7 +28,7 @@ class NProject(QObject):
 
         self.path = path
         self._name = project.get('name', '')
-        if self._name == '':
+        if not self._name:
             self._name = file_manager.get_basename(path)
         self.project_type = project.get('project-type', '')
         self.description = project.get('description', '')
@@ -36,8 +41,10 @@ class NProject(QObject):
         self.post_exec_script = project.get('postExecScript', '')
         self.indentation = project.get('indentation', settings.INDENT)
         self.use_tabs = project.get('use-tabs', settings.USE_TABS)
-        self.extensions = project.get('supported-extensions',
-            settings.SUPPORTED_EXTENSIONS)
+        self.extensions = project.get(
+            'supported-extensions',
+            settings.SUPPORTED_EXTENSIONS
+        )
         self.python_exec = project.get('pythonExec', settings.PYTHON_EXEC)
         self.python_path = project.get('PYTHONPATH', '')
         self.additional_builtins = project.get('additional_builtins', [])
@@ -45,8 +52,9 @@ class NProject(QObject):
         self.venv = project.get('venv', '')
         self.related_projects = project.get('relatedProjects', [])
         self.added_to_console = False
-        self.is_current = False
-        #Model is a QFileSystemModel to be set on runtime
+        # TODO: handle this
+        self.is_current = True
+        # Model is a QFileSystemModel to be set on runtime
         self.__model = None
 
     def _get_name(self):
@@ -57,12 +65,12 @@ class NProject(QObject):
             self._name = file_manager.get_basename(self.path)
         else:
             self._name = name
-        self.emit(SIGNAL("projectNameUpdated(QString)"), self._name)
+        self.projectNameUpdated.emit(self._name)
 
     name = property(_get_name, _set_name)
 
     def save_project_properties(self):
-        #save project properties
+        # save project properties
         project = {}
         project['name'] = self._name
         project['description'] = self.description
@@ -84,7 +92,7 @@ class NProject(QObject):
         if file_manager.file_exists(self.path, self._name + '.nja'):
             file_manager.delete_file(self.path, self._name + '.nja')
         json_manager.create_ninja_project(self.path, self._name, project)
-        #TODO: update project tree on extensions changed
+        # TODO: update project tree on extensions changed
 
     @property
     def full_path(self):
@@ -93,7 +101,7 @@ class NProject(QObject):
         '''
         project_file = json_manager.get_ninja_project_file(self.path)
         if not project_file:  # FIXME: If we dont have a project file
-            project_file = ''     # we should do SOMETHING! like kill zombies!
+            project_file = ''  # we should do SOMETHING! like kill zombies!
         return os.path.join(self.path, project_file)
 
     @property
@@ -110,12 +118,12 @@ class NProject(QObject):
         return self.__model
 
     @model.setter
-    def model(self, model):  # lint:ok
+    def model(self, model):
         self.__model = model
-        self.__model.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot |
-            QDir.AllEntries)
+        self.__model.setFilter(
+            QDir.AllDirs | QDir.NoDotAndDotDot | QDir.AllEntries)
         self.__model.setNameFilters(self.extensions)
 
     @model.deleter
-    def model(self):  # lint:ok
+    def model(self):
         del(self.__model)

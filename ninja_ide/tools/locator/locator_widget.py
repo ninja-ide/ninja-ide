@@ -20,17 +20,25 @@ from __future__ import unicode_literals
 
 import re
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtDeclarative import QDeclarativeView
+from PyQt5.QtWidgets import (
+    QWidget,
+    QDialog,
+    QVBoxLayout,
+    QShortcut,
+)
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import Qt
+from PyQt5.QtQuickWidgets import QQuickWidget
 
+from ninja_ide.gui.theme import NTheme
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.locator import locator
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger(__name__)
+DEBUG = logger.debug
 
 
 class LocatorWidget(QDialog):
@@ -45,9 +53,9 @@ class LocatorWidget(QDialog):
         self.setStyleSheet("background:transparent;")
         self.setFixedHeight(400)
         self.setFixedWidth(500)
-        # Create the QML user interface.
-        view = QDeclarativeView()
-        view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        view = QQuickWidget()
+        view.rootContext().setContextProperty("theme", NTheme.get_colors())
+        view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("Locator.qml"))
         self._root = view.rootObject()
         vbox = QVBoxLayout(self)
@@ -56,22 +64,25 @@ class LocatorWidget(QDialog):
         vbox.addWidget(view)
 
         self.locate_symbols = locator.LocateSymbolsThread()
-        self.connect(self.locate_symbols, SIGNAL("finished()"), self._cleanup)
-        self.connect(self.locate_symbols, SIGNAL("terminated()"),
-                     self._cleanup)
+        self.locate_symbols.finished.connect(self._cleanup)
+        # FIXME: invalid signal
+        # self.locate_symbols.terminated.connect(self._cleanup)
+        # Hide locator with Escape key
+        shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        shortEscMisc.activated.connect(self.hide)
 
         # Locator things
         self.filterPrefix = re.compile(r'(@|<|>|-|!|\.|/|:)')
         self.page_items_step = 10
         self._colors = {
-            "@": "white",
-            "<": "#18ff6a",
-            ">": "red",
-            "-": "#18e1ff",
-            ".": "#f118ff",
-            "/": "#fff118",
+            "@": "#5dade2",
+            "<": "#4becc9",
+            ">": "#ff555a",
+            "-": "#66ff99",
+            ".": "#a591c6",
+            "/": "#f9d170",
             ":": "#18ffd6",
-            "!": "#ffa018"}
+            "!": "#ff884d"}
         self._filters_list = [
             ("@", "Filename"),
             ("<", "Class"),
@@ -90,13 +101,9 @@ class LocatorWidget(QDialog):
             '/': self._filter_tabs,
             ':': self._filter_lines
         }
-
-        self.connect(self._root, SIGNAL("textChanged(QString)"),
-                     self.set_prefix)
-        self.connect(self._root, SIGNAL("open(QString, int)"),
-                     self._open_item)
-        self.connect(self._root, SIGNAL("fetchMore()"),
-                     self._fetch_more)
+        self._root.textChanged['QString'].connect(self.set_prefix)
+        self._root.open['QString', int].connect(self._open_item)
+        self._root.fetchMore.connect(self._fetch_more)
 
     def reset_values(self):
         self._avoid_refresh = False
@@ -113,7 +120,7 @@ class LocatorWidget(QDialog):
         pgeo = self._parent.geometry()
         x = pgeo.left() + (self._parent.width() / 2) - (self.width() / 2)
         y = pgeo.top()
-        #y = self._parent.y() + self._main_container.combo_header_size
+        # y = self._parent.y() + self._main_container.combo_header_size
         self.setGeometry(x, y, self.width(), self.height())
         self._root.activateInput()
         self._refresh_filter()
@@ -132,6 +139,9 @@ class LocatorWidget(QDialog):
         self.__prefix = prefix.lower()
         if not self._avoid_refresh:
             self._refresh_filter()
+
+    def set_text(self, text):
+        self._root.setText(text)
 
     def _refresh_filter(self):
         items = self.filter()
@@ -162,9 +172,9 @@ class LocatorWidget(QDialog):
 
     def _create_list_items(self, locations):
         """Create a list of items (using pages for results to speed up)."""
-        #The list is regenerated when the locate metadata is updated
-        #for example: open project, etc.
-        #Create the list items
+        # The list is regenerated when the locate metadata is updated
+        # for example: open project, etc.
+        # Create the list items
         begin = self.items_in_page
         self.items_in_page += self.page_items_step
         locations_view = [x for x in locations[begin:self.items_in_page]]
@@ -175,7 +185,7 @@ class LocatorWidget(QDialog):
         self.items_in_page = 0
 
         filterOptions = self.filterPrefix.split(self.__prefix.lstrip())
-        if filterOptions[0] == '':
+        if not filterOptions[0]:
             del filterOptions[0]
 
         if len(filterOptions) == 0:
@@ -209,19 +219,21 @@ class LocatorWidget(QDialog):
                 x.comparison.lower().find(filterOptions[1].lower()) > -1]
         else:
             currentItem = self._root.currentItem()
-            if (filterOptions[index - 2] == locator.FILTERS['classes'] and
-                    currentItem):
-                symbols = self.locate_symbols.get_symbols_for_class(
-                    currentItem[2], currentItem[1])
-                self.tempLocations = symbols
-            elif currentItem:
-                global mapping_symbols
-                self.tempLocations = locator.mapping_symbols.get(
-                    currentItem[2], [])
-            self.tempLocations = [x for x in self.tempLocations
-                                  if x.type == filterOptions[index] and
-                                  x.comparison.lower().find(
-                                      filterOptions[index + 1].lower()) > -1]
+            if currentItem is not None:
+                currentItem = currentItem.toVariant()
+                if (filterOptions[index - 2] == locator.FILTERS['classes'] and
+                        currentItem):
+                    symbols = self.locate_symbols.get_symbols_for_class(
+                        currentItem[2], currentItem[1])
+                    self.tempLocations = symbols
+                elif currentItem:
+                    global mapping_symbols
+                    self.tempLocations = locator.mapping_symbols.get(
+                        currentItem[2], [])
+                self.tempLocations = [x for x in self.tempLocations
+                                      if x.type == filterOptions[index] and
+                                      x.comparison.lower().find(
+                                        filterOptions[index + 1].lower()) > -1]
         return index + 2
 
     def _filter_this_file(self, filterOptions, index):
@@ -294,7 +306,8 @@ class LocatorWidget(QDialog):
                 x.path == filterOptions[1]]
         else:
             currentItem = self._root.currentItem()
-            if currentItem:
+            if currentItem is not None:
+                currentItem = currentItem.toVariant()
                 self.tempLocations = [
                     x for x in self.locate_symbols.get_locations()
                     if x.type == currentItem[0] and

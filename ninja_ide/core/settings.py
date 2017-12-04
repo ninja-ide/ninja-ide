@@ -20,13 +20,15 @@ import os
 import sys
 import datetime
 
-from PyQt4.QtGui import QFont
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFileInfo
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import (
+    QSettings,
+    QDir,
+    QFileInfo
+)
 
 from ninja_ide import resources
-from ninja_ide.dependencies import pycodestylemod
+# from ninja_ide.dependencies import pycodestyle
 
 
 ###############################################################################
@@ -39,10 +41,10 @@ IS_WINDOWS = IS_MAC_OS = False
 
 OS_KEY = "Ctrl"
 
-FONT = QFont('Monospace', 12)
+FONT = QFont('monospace', 11)
 if sys.platform == "darwin":
-    from PyQt4.QtGui import QKeySequence
-    from PyQt4.QtCore import Qt
+    from PyQt5.QtGui import QKeySequence
+    from PyQt5.QtCore import Qt
 
     FONT = QFont('Monaco', 12)
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
@@ -80,13 +82,14 @@ def detect_python_path():
 # IDE
 ###############################################################################
 
+
 MAX_OPACITY = TOOLBAR_AREA = 1
 MIN_OPACITY = 0.3
 
-#UI LAYOUT
-#001 : Central Rotate
-#010 : Panels Rotate
-#100 : Central Orientation
+# UI LAYOUT
+# 001 : Central Rotate
+# 010 : Panels Rotate
+# 100 : Central Orientation
 UI_LAYOUT = NOTIFICATION_POSITION = 0
 
 LANGUAGE = EXECUTION_OPTIONS = ""
@@ -104,26 +107,26 @@ SESSIONS = {}
 TOOLBAR_ITEMS = [
     "_MainContainer.show_selector",
     "_MainContainer.add_editor",
-    #"ProjectTreeColumn.create_new_project",
-    "_MainContainer.open_file",
+    # "ProjectTreeColumn.create_new_project",
+    # "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
-    "_MainContainer.save_file",
-    "_MainContainer.split_vertically",
-    "_MainContainer.split_horizontally",
-    "IDE.activate_profile",
-    "IDE.deactivate_profile",
-    "_MainContainer.editor_cut",
-    "_MainContainer.editor_copy",
-    "_MainContainer.editor_paste",
-    "_ToolsDock.execute_file",
-    "_ToolsDock.execute_project",
-    "_ToolsDock.kill_application",
+    # "_MainContainer.save_file",
+    # "_MainContainer.split_vertically",
+    # "_MainContainer.split_horizontally",
+    # "IDE.activate_profile",
+    # "IDE.deactivate_profile",
+    # "_MainContainer.editor_cut",
+    # "_MainContainer.editor_copy",
+    # "_MainContainer.editor_paste",
+    # "_ToolsDock.execute_file",
+    # "_ToolsDock.execute_project",
+    # "_ToolsDock.kill_application",
 ]
 
 TOOLBAR_ITEMS_DEFAULT = [
     "_MainContainer.show_selector",
     "_MainContainer.add_editor",
-    #"ProjectTreeColumn.create_new_project",
+    # "ProjectTreeColumn.create_new_project",
     "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
     "_MainContainer.save_file",
@@ -139,7 +142,7 @@ TOOLBAR_ITEMS_DEFAULT = [
     "_ToolsDock.kill_application",
 ]
 
-#hold the toolbar actions added by plugins
+# hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = LAST_OPENED_FILES = []
 
 NINJA_SKIN = 'Default'
@@ -173,10 +176,15 @@ MAX_REMEMBER_TABS = 50
 COPY_HISTORY_BUFFER = 20
 
 IGNORE_PEP8_LIST = []
-FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = True
+CHECK_STYLE = True
+FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = False
 CODE_COMPLETION = COMPLETE_DECLARATIONS = SHOW_MIGRATION_TIPS = True
 UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = AND_AT_LAST_LINE = True
+# Widgets on side area of editor
 SHOW_LINE_NUMBERS = True
+SHOW_MARK_AREA = True
+SHOW_TEXT_CHANGE_AREA = True
+SHOW_LINT_AREA = True
 
 SYNTAX = {}
 EXTENSIONS = {}
@@ -229,12 +237,16 @@ SUPPORTED_EXTENSIONS = [
     '.js',
     '.ini']
 
+LANGUAGE_MAP = {
+    'py': 'python',
+    'pyw': 'python',
+}
 
 ###############################################################################
 # PROJECTS DATA
 ###############################################################################
 
-#PROJECT_TYPES = {'Python': None}
+# PROJECT_TYPES = {'Python': None}
 PROJECT_TYPES = {}
 
 LANGS = []
@@ -314,7 +326,7 @@ def pycodestylemod_refresh_checks():
     """
     Force to reload all checks in pep8mod.py
     """
-    #pep8mod.refresh_checks()
+    # pep8mod.refresh_checks()
 
 
 def pycodestylemod_add_ignore(ignore_code):
@@ -365,7 +377,7 @@ def should_clean_locator_knowledge():
     return value
 
 
-#Clean Locator Knowledge
+# Clean Locator Knowledge
 def clean_locator_db(qsettings):
     last_clean = should_clean_locator_knowledge()
     if last_clean is not None:
@@ -379,7 +391,7 @@ def load_settings():
     qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     data_qsettings = QSettings(resources.DATA_SETTINGS_PATH,
                                QSettings.IniFormat)
-    #Globals
+    # Globals
     global TOOLBAR_AREA
     global LANGUAGE
     global SHOW_START_PAGE
@@ -437,7 +449,7 @@ def load_settings():
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
     global SHOW_LINE_NUMBERS
-    #General
+    # sGeneral
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
                                    type=int)
@@ -475,12 +487,12 @@ def load_settings():
             SESSIONS[key] = [files, projects]
     except:
         pass
-    #TODO
-    #toolbar_items = [item for item in list(qsettings.value(
-        #'preferences/interface/toolbar', []))]
-    #if toolbar_items:
-        #TOOLBAR_ITEMS = toolbar_items
-    #EXECUTION OPTIONS
+    # TODO
+    # toolbar_items = [item for item in list(qsettings.value(
+        # 'preferences/interface/toolbar', []))]
+    # if toolbar_items:
+        # TOOLBAR_ITEMS = toolbar_items
+    # EXECUTION OPTIONS
     EXECUTION_OPTIONS = qsettings.value(
         'preferences/execution/executionOptions',
         defaultValue='', type='QString')
@@ -490,7 +502,7 @@ def load_settings():
         SUPPORTED_EXTENSIONS = extensions
     WORKSPACE = qsettings.value(
         'preferences/general/workspace', "", type='QString')
-    #Editor
+    # Editor
     SHOW_MINIMAP = qsettings.value(
         'preferences/editor/minimapShow', False, type=bool)
     MINIMAP_MAX_OPACITY = float(qsettings.value(
@@ -517,17 +529,19 @@ def load_settings():
         'preferences/editor/platformEndOfLine', False, type=bool)
     MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 79,
                                   type=int)
-    pycodestylemod_update_margin_line_length(MARGIN_LINE)
+    # FIXME:
+    # pycodestylemod_update_margin_line_length(MARGIN_LINE)
     SHOW_LINE_NUMBERS = qsettings.value(
         'preferences/editor/showLineNumbers', True, type=bool)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)
     SHOW_TABS_AND_SPACES = qsettings.value(
-        'preferences/editor/showTabsAndSpaces', False, type=bool)
+        'preferences/editor/show_tabs_and_spaces', False, type=bool)
     USE_TABS = qsettings.value('preferences/editor/useTabs', False, type=bool)
-    if USE_TABS:
-        pycodestylemod_add_ignore("W191")
-        pycodestylemod_refresh_checks()
+    # FIXME:
+    # if USE_TABS:
+    #    pycodestylemod_add_ignore("W191")
+    #    pycodestylemod_refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', False, type=bool)
     COMPLETE_DECLARATIONS = qsettings.value(
@@ -543,8 +557,9 @@ def load_settings():
         'preferences/editor/showIndentationGuide', True, type=bool)
     IGNORE_PEP8_LIST = list(qsettings.value(
         'preferences/editor/defaultIgnorePep8', [], type='QStringList'))
-    for ignore_code in IGNORE_PEP8_LIST:
-        pycodestylemod_add_ignore(ignore_code)
+    # FIXME:
+    # for ignore_code in IGNORE_PEP8_LIST:
+    #    pycodestylemod_add_ignore(ignore_code)
     FIND_ERRORS = qsettings.value('preferences/editor/errors', True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
         'preferences/editor/showMigrationTips', True, type=bool)
@@ -576,7 +591,7 @@ def load_settings():
                                    True, type=bool)
     if not doubleQuotes:
         del QUOTES['"']
-    #Projects
+    # Projects
     SHOW_PROJECT_EXPLORER = qsettings.value(
         'preferences/interface/showProjectExplorer', True, type=bool)
     SHOW_SYMBOLS_LIST = qsettings.value(
@@ -587,7 +602,7 @@ def load_settings():
         'preferences/interface/showErrorsList', True, type=bool)
     SHOW_MIGRATION_LIST = qsettings.value(
         'preferences/interface/showMigrationList', True, type=bool)
-    #Bookmarks and Breakpoints
+    # Bookmarks and Breakpoints
     bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
     for key in bookmarks:
         if key:
@@ -602,7 +617,7 @@ def load_settings():
     NOTIFICATION_POSITION = qsettings.value(
         'preferences/general/notification_position', 0, type=int)
     NOTIFICATION_COLOR = qsettings.value(
-        'preferences/general/notification_color', "#000", type='QString')
+        'preferences/general/notification_color', "#222", type='QString')
     LAST_CLEAN_LOCATOR = qsettings.value(
         'preferences/general/cleanLocator', None)
     from ninja_ide.extensions import handlers

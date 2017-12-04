@@ -14,7 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
 
 import os
 import math
@@ -25,53 +24,107 @@ if sys.version_info[0] >= 3:
 else:
     from urlparse import urlparse, urlunparse
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QKeyEvent
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLinearGradient
-from PyQt4.QtGui import QItemDelegate
-from PyQt4.QtGui import QTableWidgetItem
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QPrinter
-from PyQt4.QtGui import QPrintPreviewDialog
-from PyQt4.QtGui import QPalette
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPen
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QTableWidget
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QTimeLine
+from PyQt5.QtWidgets import (
+    QApplication,
+    QWidget,
+    QMenu,
+    QAction,
+    QCompleter,
+    QLineEdit,
+    QItemDelegate,
+    QTableWidgetItem,
+    QAbstractItemView,
+    QShortcut,
+    QStyleOptionToolBar,
+    QTreeWidgetItem,
+    QHBoxLayout,
+    QPushButton,
+    QCheckBox,
+    QTableWidget,
+    QFileSystemModel,
+    QGraphicsOpacityEffect,
+    QLayout,
+    QLabel,
+    QStyle
+)
+from PyQt5.QtGui import (
+    QKeyEvent,
+    QLinearGradient,
+    QPalette,
+    QPainter,
+    QBrush,
+    QPixmap,
+    QPixmapCache,
+    QIcon,
+    QPen,
+    QColor,
+    QImage,
+    QKeySequence,
+    qGray,
+    qRgba,
+    qAlpha
+)
+from PyQt5.QtPrintSupport import (
+    QPrinter,
+    QPrintPreviewDialog
+)
+from PyQt5.QtCore import (
+    Qt,
+    QSize,
+    QDir,
+    QUrl,
+    QObject,
+    QThread,
+    pyqtSignal,
+    QEvent,
+    QTimeLine,
+    QTimer,
+    QRect,
+    QPoint,
+    QPropertyAnimation,
+    QAbstractAnimation
+)
 
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
+from ninja_ide.gui.theme import NTheme
+
 
 from ninja_ide.tools.logger import NinjaLogger
 
-logger_tools = NinjaLogger('ninja_ide.tools.ui_tools')
+logger = NinjaLogger('ninja_ide.tools.ui_tools')
+
+
+class StyledBar(QWidget):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setProperty("panelwidget", True)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        option = QStyleOptionToolBar()
+        option.rect = self.rect()
+        option.state = QStyle.State_Horizontal
+        self.style().drawControl(QStyle.CE_ToolBar, option, painter, self)
+
+
+class FileSystemModel(QFileSystemModel):
+    """QFileSystemModel with custom icons"""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    # def data(self, index, role):
+    #    if role == Qt.DecorationRole:
+    #        info = self.fileInfo(index)
+    #        if info.isDir():
+    #            return colored_icon(
+    #                ":img/folder", NTheme.get_color('IconBaseColor'))
+    #    return super().data(index, role)
 
 
 ###############################################################################
@@ -322,7 +375,6 @@ class FaderWidget(QWidget):
 
     def __init__(self, old_widget, new_widget):
         QWidget.__init__(self, new_widget)
-
         self.old_pixmap = QPixmap(new_widget.size())
         old_widget.render(self.old_pixmap)
         self.pixmap_opacity = 1.0
@@ -330,18 +382,16 @@ class FaderWidget(QWidget):
         self.timeline = QTimeLine()
         self.timeline.valueChanged.connect(self.animate)
         self.timeline.finished.connect(self.close)
-        self.timeline.setDuration(500)
+        self.timeline.setDuration(300)
         self.timeline.start()
 
         self.resize(new_widget.size())
         self.show()
 
     def paintEvent(self, event):
-        painter = QPainter()
-        painter.begin(self)
+        painter = QPainter(self)
         painter.setOpacity(self.pixmap_opacity)
         painter.drawPixmap(0, 0, self.old_pixmap)
-        painter.end()
 
     def animate(self, value):
         self.pixmap_opacity = 1.0 - value
@@ -352,20 +402,32 @@ class FaderWidget(QWidget):
 # Enhanced UI Widgets
 ###############################################################################
 
-class LineEditButton(object):
+class LineEditButton(QLineEdit):
 
-    def __init__(self, lineEdit, operation, icon=None):
-        hbox = QHBoxLayout(lineEdit)
-        hbox.setMargin(0)
-        lineEdit.setLayout(hbox)
-        hbox.addStretch()
-        btnOperation = QPushButton(lineEdit)
-        btnOperation.setObjectName('line_button')
-        if icon:
-            btnOperation.setIcon(QIcon(icon))
-            btnOperation.setIconSize(QSize(16, 16))
-        hbox.addWidget(btnOperation)
-        btnOperation.clicked.connect(operation)
+    buttonClicked = pyqtSignal()
+
+    def __init__(self, icon, parent=None):
+        super().__init__(parent)
+        if isinstance(icon, str):
+            icon = QIcon(icon)
+        self._button = QPushButton(icon, '', self)
+        self._button.setCursor(Qt.ArrowCursor)
+        self._button.clicked.connect(self.buttonClicked.emit)
+        frame_width = self.style().pixelMetric(QStyle.PM_DefaultFrameWidth)
+        btn_size = self._button.sizeHint()
+        self.setMinimumSize(
+            max(self.minimumSizeHint().width(),
+                btn_size.width() + frame_width * 2 + 2),
+            max(self.minimumSizeHint().height(),
+                btn_size.height() + frame_width * 2 + 2)
+        )
+
+    def resizeEvent(self, event):
+        btn_size = self._button.sizeHint()
+        frame_width = self.style().pixelMetric(QStyle.PM_DefaultFrameWidth)
+        self._button.move(self.rect().right() - frame_width - btn_size.width(),
+                          (self.rect().bottom() - btn_size.height() + 1) / 2)
+        super().resizeEvent(event)
 
 
 class ComboBoxButton(object):
@@ -373,7 +435,7 @@ class ComboBoxButton(object):
     def __init__(self, combo, operation, icon=None):
         hbox = QHBoxLayout(combo)
         hbox.setDirection(hbox.RightToLeft)
-        hbox.setMargin(0)
+        # hbox.setMargin(0)
         combo.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(combo)
@@ -392,22 +454,21 @@ class LineEditCount(QObject):
     def __init__(self, lineEdit):
         QObject.__init__(self)
         hbox = QHBoxLayout(lineEdit)
-        hbox.setMargin(0)
+        hbox.setContentsMargins(0, 0, 0, 0)
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         self.counter = QLabel(lineEdit)
         hbox.addWidget(self.counter)
         lineEdit.setStyleSheet("padding-right: 2px;")
-        lineEdit.setTextMargins(0, 0, 60, 0)
 
     def update_count(self, index, total, hasSearch=False):
         """Update the values displayed in the line edit counter."""
+
         message = "%s / %s" % (index, total)
         self.counter.setText(message)
-        self.counter.setStyleSheet("background: none;color: gray;")
+        self.counter.setStyleSheet("background: none")
         if index == 0 and total == 0 and hasSearch:
-            self.counter.setStyleSheet(
-                "background: #e73e3e;color: white;border-radius: 5px;")
+            self.counter.setStyleSheet("background: #e73e3e;color: white;")
 
 
 class LineEditTabCompleter(QLineEdit):
@@ -476,27 +537,37 @@ class CustomDelegate(QItemDelegate):
         model.setData(index, text)
 
 
+class ClickeableLabel(QLabel):
+
+    clicked = pyqtSignal()
+
+    def mousePressEvent(self, event):
+        self.clicked.emit()
+
+
 def install_shortcuts(obj, actions, ide):
     short = resources.get_shortcut
     for action in actions:
         short_key = action.get("shortcut", None)
         action_data = action.get("action", None)
         connect = action.get("connect", None)
-
         shortcut = None
         item_ui = None
         func = None
-        if connect:
+        if connect is not None:
             func = getattr(obj, connect, None)
 
         if short_key and not action_data:
             if isinstance(short_key, QKeySequence):
                 shortcut = QShortcut(short_key, ide)
             else:
+                if short(short_key) is None:
+                    logger.warning("Not shorcut for %s" % short_key)
+                    continue
                 shortcut = QShortcut(short(short_key), ide)
             shortcut.setContext(Qt.ApplicationShortcut)
             if isinstance(func, collections.Callable):
-                ide.connect(shortcut, SIGNAL("activated()"), func)
+                shortcut.activated.connect(func)
         if action_data:
             is_menu = action_data.get('is_menu', False)
             if is_menu:
@@ -505,6 +576,8 @@ def install_shortcuts(obj, actions, ide):
                 item_ui = QAction(action_data['text'], ide)
                 object_name = "%s.%s" % (obj.__class__.__name__, connect)
                 item_ui.setObjectName(object_name)
+                # FIXME: Configurable
+                item_ui.setIconVisibleInMenu(False)
             image_name = action_data.get('image', None)
             section = action_data.get('section', None)
             weight = action_data.get('weight', None)
@@ -514,16 +587,25 @@ def install_shortcuts(obj, actions, ide):
                     icon = ide.style().standardIcon(image_name)
                     item_ui.setIcon(icon)
                 elif isinstance(image_name, str):
-                    icon = QIcon(":img/" + image_name)
+                    if image_name.startswith("/home"):
+                        icon = QIcon(image_name)
+                    else:
+                        icon = QIcon(":img/" + image_name)
                     item_ui.setIcon(icon)
             if short_key and not is_menu:
+                if short(short_key) is None:
+                    logger.warning("Not shortcut for %s" % short_key)
+                    continue
                 item_ui.setShortcut(short(short_key))
+                # Add tooltip with append shortcut
+                item_ui.setToolTip(
+                    tooltip_with_shortcut(item_ui.text(), short(short_key)))
                 item_ui.setShortcutContext(Qt.ApplicationShortcut)
             elif keysequence and not is_menu:
                 item_ui.setShortcut(short(keysequence))
                 item_ui.setShortcutContext(Qt.ApplicationShortcut)
             if isinstance(func, collections.Callable) and not is_menu:
-                ide.connect(item_ui, SIGNAL("triggered()"), func)
+                item_ui.triggered.connect(lambda _, func=func: func())
             if section and section[0] is not None and weight:
                 ide.register_menuitem(item_ui, section, weight)
                 if image_name and not is_menu:
@@ -533,11 +615,111 @@ def install_shortcuts(obj, actions, ide):
             ide.register_shortcut(short_key, shortcut, item_ui)
 
 
+def tooltip_with_shortcut(tip: str, shortcut) -> str:
+    tooltip = "{} <span style='color: gray; font-size: small'>{}</span>"
+    return tooltip.format(tip, shortcut.toString())
+
+
 def get_qml_resource(qmlpath):
     path_qml = QDir.fromNativeSeparators(
         os.path.join(resources.QML_FILES, qmlpath))
     path_qml = urlunparse(urlparse(path_qml)._replace(scheme='file'))
     return QUrl(path_qml)
+
+
+def draw_icon(icon, rect, painter, icon_mode, shadow=False):
+    cache = icon.pixmap(rect.size())
+    dip_offset = QPoint(1, -2)
+
+    cache = QPixmap()
+    pixname = "icon {0} {1} {2}".format(
+        icon.cacheKey(), icon_mode, rect.height()
+    )
+    if QPixmapCache.find(pixname) is None:
+        pix = icon.pixmap(rect.size())
+        device_pixel_ratio = pix.devicePixelRatio()
+        radius = 3 * device_pixel_ratio
+        offset = dip_offset * device_pixel_ratio
+        cache = QPixmap(pix.size() + QSize(radius * 2, radius * 2))
+        cache.fill(Qt.transparent)
+
+        cache_painter = QPainter(cache)
+
+        if icon_mode == QIcon.Disabled:
+            im = pix.toImage().convertToFormat(QImage.Format_ARGB32)
+            for y in range(0, im.height()):
+                scanline = im.scanLine(y)
+                for x in range(0, im.width()):
+                    pixel = scanline
+                    intensity = qGray(pixel)
+                    scanline = qRgba(
+                        intensity, intensity, intensity, qAlpha(pixel))
+                    scanline += 1
+            pix = QPixmap.fromImage(im)
+
+        # Draw shadow
+        tmp = QImage(pix.size() + QSize(radius * 2, radius * 2),
+                     QImage.Format_ARGB32_Premultiplied)
+        tmp.fill(Qt.transparent)
+
+        tmp_painter = QPainter(tmp)
+        tmp_painter.setCompositionMode(QPainter.CompositionMode_Source)
+        tmp_painter.drawPixmap(
+            QRect(radius, radius, pix.width(), pix.height()), pix)
+        tmp_painter.end()
+
+        # Blur the alpha channel
+        blurred = QImage(tmp.size(), QImage.Format_ARGB32_Premultiplied)
+        blur_painter = QPainter(blurred)
+        blur_painter.end()
+
+        # tmp = blurred
+
+        tmp_painter.begin(tmp)
+        tmp_painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        tmp_painter.fillRect(tmp.rect(), QColor(0, 0, 0, 150))
+        tmp_painter.end()
+
+        tmp_painter.begin(tmp)
+        tmp_painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        tmp_painter.fillRect(tmp.rect(), QColor(0, 0, 0, 150))
+        tmp_painter.end()
+
+        # Draw the blurred drop shadow
+        cache_painter.drawImage(
+            QRect(0, 0, cache.rect().width(), cache.rect().height()), tmp)
+        # Draw the actual pixmap
+        cache_painter.drawPixmap(
+            QRect(QPoint(radius, radius) + offset,
+                  QSize(pix.width(), pix.height())), pix)
+        cache_painter.end()
+        cache.setDevicePixelRatio(device_pixel_ratio)
+        QPixmapCache.insert(pixname, cache)
+
+    target_rect = cache.rect()
+    target_rect.setSize(target_rect.size() / cache.devicePixelRatio())
+    target_rect.moveCenter(rect.center() - dip_offset)
+    painter.drawPixmap(target_rect, cache)
+
+
+def colored_icon(name, color):
+    pix = QPixmap(name)
+    mask = pix.createMaskFromColor(QColor(Qt.black), Qt.MaskOutColor)
+    if isinstance(color, str):
+        color = QColor(color)
+    pix.fill(color)
+    pix.setMask(mask)
+    return QIcon(pix)
+
+
+def get_icon(name, color=None):
+    if color is None:
+        # Normal icon
+        print(':img/%s' % name)
+        return QIcon(':img/%s' % name)
+    if not name.startswith(':img'):
+        name = ':img/%s' % name
+    return colored_icon(name, color)
 
 
 class TabShortcuts(QShortcut):

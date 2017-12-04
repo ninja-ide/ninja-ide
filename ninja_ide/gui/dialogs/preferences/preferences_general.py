@@ -15,7 +15,78 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from PyQt5.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QSizePolicy,
+    QSpacerItem,
+    QGroupBox,
+    QCheckBox,
+    QLineEdit,
+    QGridLayout,
+    QStyle
+)
+from PyQt5.QtGui import (
+    QIcon
+)
+from PyQt5.QtCore import (
+    Qt,
+    pyqtSignal
+)
+from ninja_ide.gui.dialogs.preferences import preferences
+from ninja_ide import translations
+from ninja_ide.tools import ui_tools
 
+
+class GeneralConfiguration(QWidget):
+    """General configuration class"""
+
+    def __init__(self, parent):
+        super().__init__()
+        self._preferences = parent
+        vbox = QVBoxLayout(self)
+
+        # Groups
+        group_box_start = QGroupBox(translations.TR_PREFERENCES_GENERAL_START)
+        group_box_workspace = QGroupBox(
+            translations.TR_PREFERENCES_GENERAL_WORKSPACE)
+
+        # Group start
+        box_start = QVBoxLayout(group_box_start)
+        self._check_last_session = QCheckBox(
+            translations.TR_PREFERENCES_GENERAL_LOAD_LAST_SESSION)
+        self._check_notify_updates = QCheckBox(
+            translations.TR_PREFERENCES_GENERAL_NOTIFY_UPDATES)
+        box_start.addWidget(self._check_last_session)
+        box_start.addWidget(self._check_notify_updates)
+        # Workspace and Project
+        grid_workspace = QGridLayout(group_box_workspace)
+        self._text_workspace = ui_tools.LineEditButton(
+            QIcon(self.style().standardPixmap(self.style().SP_TrashIcon)))
+        self._text_workspace.buttonClicked.connect(self._text_workspace.clear)
+        self._text_workspace.setReadOnly(True)
+        grid_workspace.addWidget(
+            QLabel(translations.TR_PREFERENCES_GENERAL_WORKSPACE), 0, 0)
+        grid_workspace.addWidget(self._text_workspace, 0, 1)
+
+        # Add groups to main layout
+        vbox.addWidget(group_box_start)
+        vbox.addWidget(group_box_workspace)
+        vbox.addSpacerItem(
+            QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Expanding))
+
+
+preferences.Preferences.register_configuration(
+    'GENERAL',
+    GeneralConfiguration,
+    translations.TR_PREFERENCES_GENERAL,
+    preferences.SECTIONS['GENERAL']
+)
+
+"""
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -44,7 +115,7 @@ from ninja_ide.tools import ui_tools
 
 
 class GeneralConfiguration(QWidget):
-    """General Configuration class"""
+    # General Configuration class
 
     def __init__(self, parent):
         super(GeneralConfiguration, self).__init__()
@@ -156,26 +227,26 @@ class GeneralConfiguration(QWidget):
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
     def _pick_color(self):
-        """Ask the user for a Color"""
+        # sk the user for a Color
         choosed_color = QColorDialog.getColor()
         if choosed_color.isValid():
             self._notification_choosed_color = choosed_color.name()
 
     def _load_workspace(self):
-        """Ask the user for a Workspace path"""
+        # Ask the user for a Workspace path
         path = QFileDialog.getExistingDirectory(
             self, translations.TR_PREFERENCES_GENERAL_SELECT_WORKSPACE)
         self._txtWorkspace.setText(path)
 
     def _load_python_path(self):
-        """Ask the user for a Python path"""
+        # Ask the user for a Python path
         path = QFileDialog.getOpenFileName(
             self, translations.TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH)
         if path:
             self._txtPythonPath.setText(path)
 
     def save(self):
-        """Method to Save all preferences values"""
+        # Method to Save all preferences values
         qsettings = IDE.ninja_settings()
         qsettings.setValue('preferences/general/loadFiles',
                            self._checkLastSession.isChecked())
@@ -204,7 +275,7 @@ class GeneralConfiguration(QWidget):
                            settings.NOTIFICATION_COLOR)
 
     def _reset_preferences(self):
-        """Method to Reset all Preferences to default values"""
+        # Method to Reset all Preferences to default values
         result = QMessageBox.question(
             self,
             translations.TR_PREFERENCES_GENERAL_RESET_TITLE,
@@ -219,3 +290,4 @@ class GeneralConfiguration(QWidget):
 preferences.Preferences.register_configuration(
     'GENERAL', GeneralConfiguration,
     translations.TR_PREFERENCES_GENERAL, preferences.SECTIONS['GENERAL'])
+"""

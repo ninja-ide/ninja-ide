@@ -22,7 +22,7 @@ import re
 import threading
 import shutil
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 
 from ninja_ide.core import settings
 
@@ -32,7 +32,7 @@ else:
     python3 = False
 
 
-#Lock to protect the file's writing operation
+# Lock to protect the file's writing operation
 file_store_content_lock = threading.Lock()
 
 
@@ -151,9 +151,9 @@ def get_file_encoding(content):
                     encoding = line_encoding
                     break
     except UnicodeDecodeError as error:
-        #add logger
+        # add logger
         print(error)
-    #if not encoding is set then use UTF-8 as default
+    # if not encoding is set then use UTF-8 as default
     if encoding is None:
         encoding = "UTF-8"
     return encoding
@@ -318,7 +318,7 @@ def has_write_permission(fileName):
 def check_for_external_modification(fileName, old_mtime):
     """Check if the file was modified outside ninja."""
     new_modification_time = get_last_modification(fileName)
-    #check the file mtime attribute calling os.stat()
+    # check the file mtime attribute calling os.stat()
     if new_modification_time > old_mtime:
         return True
     return False

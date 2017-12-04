@@ -1,16 +1,15 @@
-import QtQuick 1.1
+import QtQuick 2.7
 
 Rectangle {
     id: frame
-    width: 400
-    height: 40
-    color: "black"
+    //width: 400
+    //height: 40
+    // color: "black"
     opacity: 0
-    radius: 15
-    border.color: "#aae3ef"
-    border.width: 2
-
-    property int interval: 3000
+    // radius: 15
+    border.color: "gray"
+    //border.width: 2
+    property int interval: 2500
     signal close
 
     function setText(message){
@@ -44,11 +43,15 @@ Rectangle {
         id: textArea
         text: ""
         wrapMode: Text.WordWrap
+        //renderType: Text.NativeRendering
         font.pixelSize: 16
         font.bold: true
-        anchors.fill: parent
-        anchors.margins: 10
-        color: "white"
+        // anchors.fill: parent
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        // anchors.margins: 10
+        //color: "white"
         width: frame.width
         elide: Text.ElideRight
     }

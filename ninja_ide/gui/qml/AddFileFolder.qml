@@ -1,4 +1,58 @@
-import QtQuick 1.1
+import QtQuick 2.7
+//import QtQuick.Controls 2.1
+//import QtQuick.Layouts 1.1
+
+Rectangle {
+    id: root
+    color: theme.QMLBackground
+    height: 80
+
+    property bool fileDialog: true
+    signal create(string path)
+
+    Column {
+        id: col
+        anchors.fill: parent
+        anchors.margins: 10
+        Text {
+            text: root.fileDialog ? qsTr("+ Enter the path for the new file") :
+                                    qsTr("+ Enter the path for the new folder")
+            color: theme.GoToLineTextColor
+            font.bold: true
+        }
+
+        TextInput {
+            color: theme.GoToLineTextColor
+            //background: Rectangle {
+            //    color: theme.GoToLineEditBackground
+            //    border.color: theme.GoToLineBorder
+            //    border.width: 2
+            //}
+
+            id: input
+            focus: true
+            //Layout.fillWidth: true
+
+            Keys.onEnterPressed: {
+                root.create(input.text);
+            }
+
+            Keys.onReturnPressed: {
+                root.create(input.text);
+            }
+        }
+    }
+
+    function setBasePath(path) {
+        input.text = path;
+    }
+
+    function setDialogType(isFile) {
+        fileDialog = isFile;
+    }
+}
+
+/*import QtQuick 2.7
 
 Rectangle {
     id: root
@@ -73,3 +127,4 @@ Rectangle {
         }
     }
 }
+*/

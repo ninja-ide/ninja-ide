@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtGui import QStyle
+from PyQt5.QtWidgets import QStyle
 
 from ninja_ide import translations
 
@@ -19,7 +19,8 @@ from ninja_ide import translations
 #FIXME: add remove unused imports
 #FIXME: add extract method
 
-'''Actions included here are those that are associated with the main
+"""
+Actions included here are those that are associated with the main
 IDE window, in other words, these are all actions the signals of which
 must ultimately connect to slots in main_container.py
 
@@ -28,7 +29,153 @@ are added to the menus.  The first digit determines the menu section it
 must be placed in and the subsequent digits its position in that section,
 i.e. everything 1** will be in the same section (a section being an area in
 the menu between separators) everything 2** in another section LOWER than
-the section determined by 1** and so forth.'''
+the section determined by 1** and so forth.
+"""
+
+
+ACTIONS = (
+    # {
+    #    "shortcut": "show-selector",
+    #    "action": {
+    #        "text": translations.TR_SHOW_SELECTOR,
+    #        "image": "selector",
+    #        "section": (translations.TR_MENU_FILE, None),
+    #        "weight": 500
+    #    },
+    #    "connect": "show_selector"
+
+    # },
+    {
+        "shortcut": "new-file",
+        "action": {
+            "text": translations.TR_NEW_FILE,
+            "image": "new-file",
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 100
+        },
+        "connect": "add_editor"
+    },
+    {
+        "shortcut": "close-file",
+        "action": {
+            "text": translations.TR_CLOSE_FILE,
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 910
+        },
+        "connect": "close_file"
+    },
+    {
+        "shortcut": "open-file",
+        "action": {
+            "text": translations.TR_OPEN,
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 400
+        },
+        "connect": "open_file"
+    },
+    {
+        "shortcut": "save-file",
+        "action": {
+            "text": translations.TR_SAVE,
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 150
+        },
+        "connect": "save_file"
+    },
+    {
+        "shortcut": "locator",
+        "action": {
+            "text": translations.TR_CODE_LOCATOR,
+            "section": (translations.TR_MENU_EDIT, None),
+            "weight": 230
+        },
+        "connect": "show_locator"
+    },
+    {
+        "action": {
+            "text": translations.TR_SAVE_AS,
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 160
+        },
+        "connect": "save_file_as"
+    },
+    {
+        "shortcut": "split-assistance",
+        "action": {
+            "text": translations.TR_SHOW_SPLIT_ASSISTANCE,
+            "section": (translations.TR_MENU_VIEW, None),
+            "weight": 430
+        },
+        "connect": "split_assistance"
+    },
+    {
+        "shortcut": "zoom-in",
+        "action": {
+            "text": translations.TR_ZOOM_IN,
+            "section": (translations.TR_MENU_VIEW, None),
+            "weight": 400
+        },
+        "connect": "zoom_in_editor"
+    },
+    {
+        "shortcut": "zoom-out",
+        "action": {
+            "text": translations.TR_ZOOM_OUT,
+            "section": (translations.TR_MENU_VIEW, None),
+            "weight": 410
+        },
+        "connect": "zoom_out_editor"
+    },
+    {
+        "shortcut": "zoom-reset",
+        "connect": "reset_zoom_editor"
+    },
+    {
+        "action": {
+            "text": translations.TR_TABS_SPACES_VISIBILITY,
+            "section": (translations.TR_MENU_VIEW, None),
+            "weight": 110
+        },
+        "connect": "toggle_tabs_and_spaces"
+    },
+    {
+        "shortcut": "move-up",
+        "action": {
+            "text": translations.TR_MOVE_UP,
+            "section": (translations.TR_MENU_SOURCE, None),
+            "weight": 440
+        },
+        "connect": "editor_move_up"
+    },
+    {
+        "shortcut": "move-down",
+        "action": {
+            "text": translations.TR_MOVE_DOWN,
+            "section": (translations.TR_MENU_SOURCE, None),
+            "weight": 450
+        },
+        "connect": "editor_move_down"
+    },
+    {
+        "shortcut": "duplicate-line",
+        "action": {
+            "text": translations.TR_DUPLICATE,
+            "section": (translations.TR_MENU_SOURCE, None),
+            "weight": 470
+        },
+        "connect": "editor_duplicate_line"
+    },
+    {
+        "shortcut": "comment",
+        "action": {
+            "text": translations.TR_COMMENT,
+            "section": (translations.TR_MENU_SOURCE, None),
+            "weight": 130
+        },
+        "connect": "editor_comment"
+    }
+)
+"""
 ACTIONS = (
     {
     "shortcut": "Show-Selector",
@@ -297,7 +444,7 @@ ACTIONS = (
     "connect": "show_python_doc"
     },
     {
-    "shortcut": "Highlight-Word",
+    # "shortcut": "Highlight-Word",
     "connect": "editor_highlight_word"
     },
     {
@@ -397,16 +544,22 @@ ACTIONS = (
     "connect": "toggle_tabs_and_spaces"
     },
     {
+    "shortcut": "Zoom-In",
     "action": {'text': translations.TR_ZOOM_IN,
                'section': (translations.TR_MENU_VIEW, None),
                'weight': 400},
     "connect": "zoom_in_editor"
     },
     {
+    "shortcut": "Zoom-Out",
     "action": {'text': translations.TR_ZOOM_OUT,
                'section': (translations.TR_MENU_VIEW, None),
                'weight': 410},
     "connect": "zoom_out_editor"
+    },
+    {
+        "shortcut": "zoom-reset",
+        "connect": "reset_zoom"
     },
     {
     "action": {'text': translations.TR_DEBUGGING_TRICKS,
@@ -440,4 +593,14 @@ ACTIONS = (
                'weight': 410},
     "connect": "editor_replace_tabs_with_spaces"
     },
+    {
+    "shortcut": "Code-locator",
+    "action": {'text': translations.TR_CODE_LOCATOR,
+               'image': 'locator',
+               'section': (translations.TR_MENU_EDIT, None),
+               'weight': 230},
+    "connect": "show_locator"
+    }
 )
+
+"""
