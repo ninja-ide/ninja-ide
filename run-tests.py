@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 import sys
 import pytest
+# Create dirs structure before run tests
+from ninja_ide import resources
+resources.create_home_dir_structure()
 
 
 def main(path):

@@ -1,63 +1,18 @@
-# 2013-11-13T16:39:56 by gatox .travis.yml Continuous Integration by Ninja-IDE
 language: python
 
 python:
-  - 2.7
-  - 3.3
+  - 3.5
+  - 3.6
 
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - sudo apt-get update -qqm
-  - sudo apt-get install -qqm wget build-essential python3-dev python-dev
-  - sudo apt-get install -qqm python-qt4 python-qt4-dev libqt4-dev python-sip-dev
-  - sudo apt-get install -qqm python3-pyqt4 python3-sip-dev
-  # install SIP
-  - cd /tmp
-  - wget --quiet --output-document=sip.tar.gz http://downloads.sourceforge.net/project/pyqt/sip/sip-4.15.3/sip-4.15.3.tar.gz
-  - tar -xf sip.tar.gz
-  - cd sip-4.15.3
-  - python -B configure.py
-  - make --quiet
-  - sudo make --quiet install
-  # install PyQt
-  - cd /tmp
-  - wget --quiet --output-document=pyqt.tar.gz http://downloads.sourceforge.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-x11-gpl-4.10.3.tar.gz
-  - tar -xf pyqt.tar.gz
-  - cd PyQt-x11-gpl-4.10.3
-  - python -B configure.py --confirm-license
-  - make --quiet
-  - sudo make --quiet install
-  # - python -c 'import PyQt4, PyQt4.QtGui, PyQt4.QtCore, sip'  # to test if compile its ok
-  - cd $TRAVIS_BUILD_DIR
 
-install: true
+install:
+  - pip install pip --upgrade
+  - pip install pytest
+  - pip install PyQt5
 
 before_script: rm --recursive --force --verbose *.py[cod]
 
-script: ./run-tests ninja_tests/tools/jsonmanager
-
-after_script: true
-
-after_success: true
-
-after_failure: true
-
-notifications:
-  irc:
-      channels: "irc.freenode.org#ninja-ide"
-      template:
-          - "%{repository}@%{branch}: %{message}(%{build_url})"
-          - "Build: %{build_number}, SHA: %{commit}, Committer: %{author}, Diff: %{compare_url}"
-      on_success: always
-      on_failure: always
-      use_notice: true  # false to disable
-  email:
-      recipients: dojo@ninja-ide.org
-      template:
-          - "%{repository}@%{branch}: %{message}(%{build_url})"
-          - "Build: %{build_number}, SHA: %{commit}, Committer: %{author}, Diff: %{compare_url}"
-      on_success: change
-      on_failure: always
-
-cache: apt
+script: python run-tests.py
