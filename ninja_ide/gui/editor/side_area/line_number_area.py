@@ -39,7 +39,7 @@ class LineNumberArea(side_area.SideArea):
         self.neditor = neditor
         self._color_unselected = QColor(
             resources.get_color('SidebarForeground'))
-        self._color_selected = QColor("#6a6ea9")  # FIXME: based on palette
+        self._color_selected = QColor(resources.get_color('CurrentLineNumber'))
         self.__width = self.__calculate_width()
         self.neditor.blockCountChanged.connect(self.__update_width)
 

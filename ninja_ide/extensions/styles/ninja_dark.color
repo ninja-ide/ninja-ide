@@ -20,7 +20,7 @@
             "color": "#ee8859"
         },
         "Comment": {
-            "color": "#a8abb0"
+            "color": "#65676a"
         },
         "Decorator": {
             "color": "#4EC9B0"
@@ -35,7 +35,7 @@
             "color": "#6EC7D7"
         },
         "Function": {
-            "color": "#d6cf9a"
+            "color": "#ff8080"
         },
         "ProperObject": {
             "color": "#6EC7D7",
@@ -54,10 +54,10 @@
             "color": "#2e2f30"
         },
         "EditorSelectionColor": {
-            "color": "#d6cf9a"
+            "color": "#bec0c2"
         },
         "EditorSelectionBackground": {
-            "color": "#3e4451"
+            "color": "#1d545c"
         },
         "SidebarBackground": {
             "color": "#2e2f30"
@@ -66,7 +66,7 @@
             "color": "#595959"
         },
         "CurrentLine": {
-            "color": "#383e4a"
+            "color": "#373737"
         },
         "ModifiedColor": {
             "color": "#BE4F44"
@@ -75,10 +75,16 @@
             "color": "#00f569"
         },
         "BraceMatched": {
-            "color": "#808080"
+            "color": "#d6c540"
         },
         "BraceUnmatched": {
-            "color": "red"
+            "color": "#d65645"
+        },
+        "SearchResult": {
+            "color": "#8a402c"
+        },
+        "CurrentLineNumber": {
+            "color": "#d6c540"
         }
     }
 }

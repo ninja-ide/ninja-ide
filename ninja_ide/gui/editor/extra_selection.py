@@ -49,7 +49,8 @@ class ExtraSelection(QTextEdit.ExtraSelection):
 
     def set_background(self, color):
         if isinstance(color, str):
-            color = QColor(color).lighter(120)
+            color = QColor(color)
+        color.setAlpha(150)
         self.format.setBackground(color)
 
     def set_outline(self, color):

@@ -36,6 +36,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import (
     QIcon,
+    QColor,
     QCursor
 )
 from PyQt5.QtCore import (
@@ -72,7 +73,6 @@ class ProjectTreeColumn(QDialog):
 
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent)
-
         vbox = QVBoxLayout(self)
         # vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -419,6 +419,9 @@ class TreeProjectsWidget(QTreeView):
         self.setSelectionMode(QTreeView.SingleSelection)
         self.setAnimated(True)
         self.setHeaderHidden(True)
+        pal = self.palette()
+        pal.setColor(pal.Base, pal.base().color())
+        self.setPalette(pal)
 
         self.hideColumn(1)  # Size
         self.hideColumn(2)  # Type

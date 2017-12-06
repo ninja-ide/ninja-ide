@@ -170,9 +170,10 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
     all_schemes = json_manager.load_editor_schemes()
     scheme = qsettings.value("preferences/editor/scheme", "")
-    if scheme:
-        color_scheme = all_schemes[scheme]
-        resources.CUSTOM_SCHEME = color_scheme
+    resources.COLOR_SCHEME = all_schemes['Ninja Dark']
+    # if scheme:
+    #    color_scheme = all_schemes[scheme]
+    #    resources.CUSTOM_SCHEME = color_scheme
 
     # print(all_schemes)
     # scheme = qsettings.value('preferences/editor/scheme', "default",

@@ -1022,7 +1022,7 @@ class NEditor(QPlainTextEdit):
             )
             selection.set_full_width()
             # FIXME: from theme
-            selection.set_background('#333842')
+            selection.set_background(resources.get_color('SearchResult'))
             selections.append(selection)
             line = selection.cursor.blockNumber()
             # self._scrollbar.remove_marker('result')
