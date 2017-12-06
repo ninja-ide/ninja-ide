@@ -242,7 +242,7 @@ def load_theme():
     from ninja_ide.gui import theme
     tm = theme.ThemeManager()
     tm.discover_themes()
-    tm.load('Darker')
+    tm.load('Dark')
 
 
 def get_color(key):
