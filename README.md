@@ -1,5 +1,8 @@
-# Ninja-ide Is Not Just Another IDE.
-**Ninja-IDE** is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
+# Ninja-IDE Is Not Just Another IDE
+![Travis report](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master "Travis-C.I. Testing report")
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/ninja-ide/ninja-ide.svg?columns=all)](https://waffle.io/ninja-ide/ninja-ide)
+
+ [Ninja-IDE](http://ninja-ide.org) is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
 
 <p align="center">
   <img alt="Ninja-IDE logo" src="http://ninjaide.webfactional.com/static/common/img/ninja-big.png">
@@ -47,30 +50,19 @@ This is the development branch. Therefore, ninja is very unstable. The following
 - [ ] Better Virtualenv Support
 - [ ] New Preferences Widget
 
-
-## Build Status
-
-![Travis report](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master "Travis-C.I. Testing report")
-
 ## Platforms
 - Linux/X11
 - Mac OS X
 - Windows
 - BSD
 
-
-## Ninja contact
--   [Ninja website](http://ninja-ide.org "http://ninja-ide.org") at ninja-ide.org
--   [Mailing List](http://groups.google.com/group/ninja-ide/topics "Ninja Google Groups") at Google Groups
--   [@ninja\_ide](https://twitter.com/ninja_ide "@ninja_ide") at Twitter
--   [Ninja-IDE](https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja%7C?&theme=cli#ninja-ide "ninja-ide at Freenode.net") at Freenode.net
-
-
 ## Requirements
 On any system you want **Ninja-IDE**, you'll need to have this dependencies installed:
 
-- [Python](https://python.org "Python Homepage") 3.x
-- [PyQt5](https://riverbankcomputing.com/software/pyqt/intro) 5.7+
+- [Python](https://python.org "Python Homepage") 3.4+
+- [PyQt5](https://riverbankcomputing.com/software/pyqt/intro) 5.5+
+- python3-pyqt5.qtquick
+- qml-module-qtquick2
 
 ## Cloning and Running
 You can clone this repo and simply execute:
@@ -83,6 +75,15 @@ python ninja-ide.py
 
 Piece of cake, huh?
 
+## Ninja contact
+-   [Ninja website](http://ninja-ide.org "http://ninja-ide.org") at ninja-ide.org
+-   [Mailing List](http://groups.google.com/group/ninja-ide/topics "Ninja Google Groups") at Google Groups
+-   [@ninja\_ide](https://twitter.com/ninja_ide "@ninja_ide") at Twitter
+-   [Ninja-IDE](https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja%7C?&theme=cli#ninja-ide "ninja-ide at Freenode.net") at Freenode.net
+
+## Feedback
+- File a bug in [GitHub issues](https://github.com/ninja-ide/ninja-ide/issues).
+- [Tweet](https://twitter/ninja_ide) us.
 
 ## Videos
 [![Ninja-IDE Videos and Screencasts](http://img.youtube.com/vi/xShpNY5w-64/0.jpg)](https://www.youtube.com/channel/UCPopm5397ozfsS8FOSSOWGQ "Ninja-IDE Videos and Screencasts")
