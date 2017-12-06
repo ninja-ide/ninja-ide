@@ -214,6 +214,7 @@ class NEditor(QPlainTextEdit):
         self.setFrameStyle(0)  # Remove border
         self._neditable = neditable
         self.setMouseTracking(True)
+
         # Style
         self._background_color = QColor(
             resources.get_color('EditorBackground'))
@@ -295,6 +296,13 @@ class NEditor(QPlainTextEdit):
 
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.cursorPositionChanged.connect(self.viewport().update)
+
+    def dropEvent(self, event):
+        if event.type() == Qt.ControlModifier and self.has_selection:
+            insertion_cursor = self.cursorForPosition(event.pos())
+            insertion_cursor.insertText(self.selected_text())
+        else:
+            super().dropEvent(event)
 
     def set_language(self, language):
         self.register_syntax_for(language=language)
