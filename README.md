@@ -37,6 +37,7 @@ This is the development branch. Therefore, ninja is very unstable. The following
 ### UI
 - [x] New Style based on QProxyStyle
 - [x] Theme based on QPalette
+- [ ] Icons
 
 ### General
 - [ ] New template wizard with templates
