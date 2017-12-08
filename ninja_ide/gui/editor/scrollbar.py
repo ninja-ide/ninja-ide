@@ -31,27 +31,6 @@ from PyQt5.QtGui import (
 from PyQt5.QtCore import Qt, QSize, QRect, QTimer
 from ninja_ide import resources
 
-STYLESHEET = """QScrollBar {
-      background-color: transparent;
-  }
-
-  QScrollBar::handle {
-      background-color: rgba(60, 60, 60, 70%);
-  }
-
-  QScrollBar::handle:hover {
-      background-color: rgba(80, 80, 80, 70%);
-  }
-  QScrollBar::add-line,
-  QScrollBar::sub-line,
-  QScrollBar::up-arrow,
-  QScrollBar::down-arrow,
-  QScrollBar::add-page,
-  QScrollBar::sub-page {
-      background: none;
-      border: none;
-  }
-"""
 
 marker = namedtuple('Marker', 'position color priority')
 
@@ -70,10 +49,10 @@ class ScrollBarOverlay(QWidget):
     def paintEvent(self, event):
         QWidget.paintEvent(self, event)
         self.update_cache()
-        rect = self._nscrollbar.overlay_rect()
         if not self.cache:
             return
 
+        rect = self._nscrollbar.overlay_rect()
         sb_range = self._nscrollbar.get_scrollbar_range()
         sb_range = max(self.visible_range, sb_range)
         horizontal_margin = 3
@@ -106,6 +85,11 @@ class ScrollBarOverlay(QWidget):
         for category in categories:
             markers = self.markers[category]
             for marker in markers:
+                old = self.cache.get(marker.position)
+                if old is not None and old.position == marker.position:
+                    if old.priority > marker.priority:
+                        self.cache[old.position] = old
+                        continue
                 self.cache[marker.position] = marker
         self.__schedule_updated = False
 
@@ -123,7 +107,6 @@ class NScrollBar(QScrollBar):
         super().__init__(neditor)
         self._neditor = neditor
         self._overlay = ScrollBarOverlay(self)
-        # self.valueChanged.emit(0)
 
     def line_number_to_position(self, lineno):
         """ Converts line number to y position """
@@ -165,80 +148,3 @@ class NScrollBar(QScrollBar):
     def add_marker(self, category, marker):
         self._overlay.markers[category].append(marker)
         self._overlay.schedule_update()
-
-
-'''class NScrollBar(QScrollBar):
-    """ Custom QScrollBar with markers
-
-    The scroll bar is divided into three areas: left, center and right.
-
-    """
-
-    LEFT_AREA = 1
-    CENTER_AREA = 6
-    RIGHT_AREA = 11
-
-    def __init__(self, neditor):
-        QScrollBar.__init__(self)
-        self._neditor = neditor
-        self._neditor.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.setStyleSheet(STYLESHEET)
-        self.__background = QColor(resources.COLOR_SCHEME['EditorBackground'])
-        # Install scrollbar
-        self._neditor.setVerticalScrollBar(self)
-        # Update scrollbar markers
-        self._neditor.cursorPositionChanged.connect(self.update)
-
-    def sizeHint(self):
-        return QSize(15, self.height())
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.fillRect(event.rect(), self.__background)
-        # Draw border
-        color = QColor("gray")
-        color.setAlpha(70)
-        painter.setPen(color)
-        painter.drawLine(0, 0, 0, self.height())
-        # Occurrences
-        lcolor = QColor("lightGray")
-        painter.setBrush(lcolor)
-        painter.setPen(lcolor)
-        if self._neditor.occurrences:
-            for pos in self._neditor.occurrences:
-                painter.drawRect(
-                    self.CENTER_AREA,
-                    self.__line_number_to_position(pos) - 2,
-                    (self.width() // 3) - 2, 3
-                )
-        # Draw pep8
-        checkers = self._neditor.neditable.sorted_checkers
-        for items in checkers:
-            checker, color, _ = items
-            lines = checker.checks.keys()
-            painter.setPen(QColor(color))
-            painter.setBrush(QColor(color))
-            for line in lines:
-                painter.drawRect(
-                    self.LEFT_AREA,
-                    self.__line_number_to_position(line),
-                    (self.width() // 3) - 2, 3
-                )
-        # Draw current line
-        lineno, _ = self._neditor.cursor_position
-        line_color = QColor("lightGray")
-        painter.setPen(line_color)
-        painter.drawRect(2, self.__line_number_to_position(lineno),
-                         self.width() - 5, 1)
-        # Paint slider after markers
-        super().paintEvent(event)
-
-    def __line_number_to_position(self, lineno):
-        """ Converts line number to y position """
-
-        return (lineno - self.minimum()) * self.__scale_factor()
-
-    def __scale_factor(self):
-        val = self.maximum() + self.pageStep()
-        return self.height() / val
-'''

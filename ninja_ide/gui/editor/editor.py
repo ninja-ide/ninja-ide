@@ -429,18 +429,19 @@ class NEditor(QPlainTextEdit):
             lines = checker.checks.keys()
             # FIXME:
             for line in lines:
+                pass
                 # Make extra selections
-                selection = extra_selection.ExtraSelection(
-                    self.textCursor(),
-                    start_line=line
-                )
-                selection.set_underline(color)
-                selection.set_full_width()
+                # selection = extra_selection.ExtraSelection(
+                #    self.textCursor(),
+                #    start_line=line
+                # )
+                # selection.set_underline(color)
+                # selection.set_full_width()
+
                 # self.__checker_extra_selections.append(selection)
                 # Marker
-
                 # Marker = scrollbar.marker
-                # marker = Marker(line, color)
+                # marker = Marker(line, 'cyan', 0, 2)
                 # self._scrollbar.add_marker('checker', marker)
                 # markers.append(marker)
         # self._scrollbar.add_marker(markers)
@@ -541,13 +542,19 @@ class NEditor(QPlainTextEdit):
             self._last_line_position = line
             self.current_line_changed.emit(line)
         # Create marker for scrollbar
-        self._scrollbar.remove_marker('current_line')
-        Marker = scrollbar.marker
-        marker = Marker(line, 'white', 2)
-        self._scrollbar.add_marker('current_line', marker)
+        self.update_current_line_in_scrollbar(line)
         # Mark occurrences
         self._highlight_word_timer.stop()
         self._highlight_word_timer.start()
+
+    def update_current_line_in_scrollbar(self, current_line):
+        """Update current line highlight in scrollbar"""
+
+        self._scrollbar.remove_marker('current_line')
+        if self._scrollbar.maximum() > 0:
+            Marker = scrollbar.marker
+            marker = Marker(current_line, 'white', priority=2)
+            self._scrollbar.add_marker('current_line', marker)
 
     def add_side_widget(self, Widget, order=0):
         obj = Widget(self)
@@ -1006,7 +1013,10 @@ class NEditor(QPlainTextEdit):
         return index, results
 
     def __clear_occurrences(self):
+        """Clear extra selection occurrences from editor and scrollbar"""
+
         self.__occurrences.clear()
+        self._scrollbar.remove_marker('occurrence')
         self.clear_extra_selections('occurrences')
 
     def highlight_selected_word(self):
@@ -1020,7 +1030,6 @@ class NEditor(QPlainTextEdit):
         if text in keyword.kwlist or text == 'self':
             return
         result = self._get_find_index_results(text, False, True)[1]
-        # self._scrollbar.remove_marker('result')
         selections = []
         for start, end in result:
             selection = extra_selection.ExtraSelection(
@@ -1033,18 +1042,10 @@ class NEditor(QPlainTextEdit):
             selection.set_background(resources.get_color('SearchResult'))
             selections.append(selection)
             line = selection.cursor.blockNumber()
-            # self._scrollbar.remove_marker('result')
-            # Marker = scrollbar.marker
-            # marker = Marker(line, 'red', 0)
-            # self._scrollbar.add_marker('result', marker)
-            # if line not in self.__occurrences:
-            #    self.__occurrences.append(line)
+            Marker = scrollbar.marker
+            marker = Marker(line, resources.get_color('SearchResult'), 0)
+            self._scrollbar.add_marker('occurrence', marker)
         self.add_extra_selections('occurrences', selections)
-        # self._scrollbar.update()
-        # self._scrollbar.remove_marker('result')
-        # Marker = scrollbar.marker
-        # marker = Marker(43, 'red')
-        # self._scrollbar.add_marker('result', marker)
 
     def line_from_position(self, position):
         height = self.fontMetrics().height()

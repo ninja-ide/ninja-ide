@@ -68,7 +68,6 @@ class NEditable(QObject):
         return self._nfile.file_ext()
 
     def language(self):
-        print(self._language)
         if self._language is None:
             return settings.LANGUAGE_MAP.get(self.extension())
         return self._language
