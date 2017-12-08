@@ -1912,7 +1912,6 @@ class StandardReport(BaseReport):
         """Print the result and return the overall count for this file."""
         self._deferred_print.sort()
         for line_number, offset, code, text, doc in self._deferred_print:
-            print(line_number, offset, self.line_offset, self.line_offset + line_number)
             print(self._fmt % {
                 'path': self.filename,
                 'row': self.line_offset + line_number, 'col': offset + 1,

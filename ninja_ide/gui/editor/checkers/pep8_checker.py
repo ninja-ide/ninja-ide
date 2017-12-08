@@ -89,9 +89,10 @@ class Pep8Checker(QThread):
                 path,
                 lines=source.splitlines(True)
             )
-            for lineno, offset, code, text, doc in temp_data:
+            for lineno, col, code, text in temp_data:
+            # for lineno, offset, code, text, doc in temp_data:
                 message = '[PEP8] %s: %s' % (code, text)
-                self.checks[lineno - 1] = message
+                self.checks[lineno - 1] = (message, col)
         self.checkerCompleted.emit()
 
     def message(self, index):
@@ -102,7 +103,7 @@ class Pep8Checker(QThread):
     def refresh_display(self):
         # error_list = IDE.get_service('tab_errors')
         error_tree = IDE.get_service('errors_tree')
-        error_tree.refresh(self.checks, self._path)
+        # error_tree.refresh(self.checks, self._path)
         """
         if error_list:
             error_list.refresh_pep8_list(self.checks)
@@ -112,7 +113,13 @@ class Pep8Checker(QThread):
 class CustomReport(pycodestyle.StandardReport):
 
     def get_file_results(self):
-        return sorted(self._deferred_print)
+        data = []
+        for line_number, offset, code, text, doc in self._deferred_print:
+            # row = self.line_offset + line_number
+            col = offset + 1
+            data.append((line_number, col, code, text))
+        return data
+        # return sorted(self._deferred_print)
 
 
 class CustomChecker(pycodestyle.Checker):

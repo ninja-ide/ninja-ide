@@ -23,7 +23,7 @@ from typing import Tuple
 from PyQt5.QtWidgets import (
     QPlainTextEdit,
     QAbstractSlider,
-    # QTextEdit,
+    QTextEdit,
     # QToolTip
 )
 from PyQt5.QtGui import (
@@ -36,7 +36,7 @@ from PyQt5.QtGui import (
     # QBrush,
     QFontMetrics,
     QTextOption,
-    # QTextFormat,
+    QTextCharFormat,
     # QPen
 )
 from PyQt5.QtCore import (
@@ -55,10 +55,10 @@ from ninja_ide.gui.editor import (
 from ninja_ide.gui.editor.side_area import (
     line_number_area,
     text_change_area,
-    marker_area,
-    lint_area
+    # marker_area,
+    # lint_area
 )
-from ninja_ide.intellisensei.completion import completer_widget
+# from ninja_ide.intellisensei.completion import completer_widget
 # from ninja_ide.gui.editor.extensions import (
     # extension,
     # margin_line,
@@ -66,7 +66,7 @@ from ninja_ide.intellisensei.completion import completer_widget
     # indentation_guides
 # )
 
-from ninja_ide.gui.editor import symbol_completer
+# from ninja_ide.gui.editor import symbol_completer
 from ninja_ide.gui.editor import extra_selection
 from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
@@ -194,7 +194,6 @@ class NEditor(QPlainTextEdit):
         self._foreground_color = color
         self.__apply_style()
 
-    # FIXME: docstring
     @property
     def show_whitespaces(self):
         return self.__show_whitespaces
@@ -417,35 +416,33 @@ class NEditor(QPlainTextEdit):
     def _highlight_checkers(self, neditable):
         """Add checker selections to the Editor"""
         # Remove selections if they exists
-        # self.__checker_extra_selections.clear()
-        # self.clear_extra_selections('checker')
+        self.clear_extra_selections('checker')
         # Get checkers from neditable
         checkers = neditable.sorted_checkers
         self.highlight_checker_updated.emit(checkers)
-        # markers = []
-        # self._scrollbar.remove_marker('checker')
+        selections = []
+        # FIXME: generalize it with extra_selection.ExtraSelection
         for items in checkers:
             checker, color, _ = items
             lines = checker.checks.keys()
-            # FIXME:
             for line in lines:
-                # Make extra selections
-                selection = extra_selection.ExtraSelection(
-                    self.textCursor(),
-                    start_line=line
-                )
-                selection.set_underline(color)
-                selection.set_full_width()
-                # self.__checker_extra_selections.append(selection)
-                # Marker
+                msg, col = checker.checks[line]
+                selection = QTextEdit.ExtraSelection()
+                selection.cursor = self.textCursor()
+                selection.cursor.movePosition(
+                    QTextCursor.Start, QTextCursor.MoveAnchor)
+                selection.cursor.movePosition(
+                    QTextCursor.Down, QTextCursor.MoveAnchor, line)
+                selection.cursor.movePosition(
+                    QTextCursor.Right, QTextCursor.MoveAnchor, col - 1)
+                selection.cursor.movePosition(
+                    QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+                selection.format.setUnderlineStyle(
+                    QTextCharFormat.SingleUnderline)
+                selection.format.setUnderlineColor(QColor(color))
+                selections.append(selection)
 
-                # Marker = scrollbar.marker
-                # marker = Marker(line, color)
-                # self._scrollbar.add_marker('checker', marker)
-                # markers.append(marker)
-        # self._scrollbar.add_marker(markers)
-        # Add to the editor
-        # self.add_extra_selections('checker', self.__checker_extra_selections)
+        self.add_extra_selections('checker', selections)
 
     def extra_selections(self, selection_key):
         return self._extra_selections.get(selection_key, [])
