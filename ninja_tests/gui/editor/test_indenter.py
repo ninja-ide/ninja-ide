@@ -132,3 +132,14 @@ def test_16():
     expected = "def foo():\n    def inner():\n        return foo()\n    "
     assert text == expected
 
+
+def test_17():
+    a_text = """if __name__ == "__main__":
+    nombre = input('Nombre: ')
+    print(nombre)"""
+    text = make_indent(a_text, 'python')
+    expected = """if __name__ == "__main__":
+    nombre = input('Nombre: ')
+    print(nombre)
+    """
+    assert text == expected

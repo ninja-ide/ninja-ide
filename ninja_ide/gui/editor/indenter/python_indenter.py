@@ -17,6 +17,9 @@
 # Based on https://github.com/DSpeckhals/python-indent
 
 from ninja_ide.gui.editor.indenter import base
+from ninja_ide.tools.logger import NinjaLogger
+# Logger
+logger = NinjaLogger(__name__)
 
 
 class PythonIndenter(base.BaseIndenter):
@@ -36,7 +39,8 @@ class PythonIndenter(base.BaseIndenter):
         results = self.__parse_text(text)
         # Get result of parsed text
         bracket_stack, last_closed_line, should_hang, last_colon_line = results
-        print(results)
+        logger.debug(results)
+
         if should_hang:
             cursor = self._neditor.textCursor()
             cursor.insertBlock()
@@ -46,10 +50,8 @@ class PythonIndenter(base.BaseIndenter):
             cursor.insertText(current_indent + self.text())
             return None
         if (not bracket_stack):
-            print('1')
             if last_closed_line:
                 if last_closed_line[1] == line - 1:
-                    print('2')
                     # We just closed a bracket on the row, get indentation
                     # from the row where it was opened
                     indent_level_at_this_line = self.line_indent(
@@ -85,6 +87,8 @@ class PythonIndenter(base.BaseIndenter):
                         text_stripped.startswith("raise ") or \
                         text_stripped.startswith("return "):
                     indent = " " * (len(current_indent) - self.width)
+                else:
+                    indent = current_indent
                 return indent
 
         last_open_bracket_locations = bracket_stack.pop()
