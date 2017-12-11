@@ -149,6 +149,14 @@ class ProjectTreeColumn(QDialog):
                     translations.TR_PROJECT_NONEXIST % folderName)
                 return
             logger.debug("Opening %s" % folderName)
+            for p in self.projects:
+                if p.project.path == folderName:
+                    QMessageBox.information(
+                        self,
+                        translations.TR_PROJECT_PATH_ALREADY_EXIST_TITLE,
+                        translations.TR_PROJECT_PATH_ALREADY_EXIST
+                        % folderName)
+                    return
             self._open_project_folder(folderName)
 
     def _open_project_folder(self, folderName):
@@ -182,9 +190,10 @@ class ProjectTreeColumn(QDialog):
                 return
             editorWidget = main_container.get_current_editor()
             if not editorWidget.file_path:
-                name = QInputDialog.getText(None,
-                                            translations.TR_ADD_FILE_TO_PROJECT,
-                                            translations.TR_FILENAME + ": ")[0]
+                name = QInputDialog.getText(
+                    None,
+                    translations.TR_ADD_FILE_TO_PROJECT,
+                    translations.TR_FILENAME + ": ")[0]
                 if not name:
                     QMessageBox.information(
                         self,
@@ -193,11 +202,12 @@ class ProjectTreeColumn(QDialog):
                     return
             else:
                 name = file_manager.get_basename(editorWidget.file_path)
-            new_path = file_manager.create_path(addToProject.pathSelected, name)
+            new_path = file_manager.create_path(
+                addToProject.pathSelected, name)
             ide_srv = IDE.get_service("ide")
             old_file = ide_srv.get_or_create_nfile(path)
             new_file = old_file.save(editorWidget.text(), new_path)
-            #FIXME: Make this file replace the original in the open tab
+            # FIXME: Make this file replace the original in the open tab
         else:
             pass
             # Message about no project
@@ -290,7 +300,7 @@ class ProjectTreeColumn(QDialog):
     def save_recent_projects(self, folder):
         settings = IDE.data_settings()
         recent_project_list = settings.value('recentProjects', {})
-        #if already exist on the list update the date time
+        # if already exist on the list update the date time
         projectProperties = json_manager.read_ninja_project(folder)
         name = projectProperties.get('name', '')
         description = projectProperties.get('description', '')
@@ -312,9 +322,9 @@ class ProjectTreeColumn(QDialog):
                 "name": name,
                 "description": description,
                 "isFavorite": False, "lastopen": QDateTime.currentDateTime()}
-            #if the length of the project list it's high that 10 then delete
-            #the most old
-            #TODO: add the length of available projects to setting
+            # if the length of the project list it's high that 10 then delete
+            # the most old
+            # TODO: add the length of available projects to setting
             if len(recent_project_list) > 10:
                 del recent_project_list[self.find_most_old_open(
                     recent_project_list)]
@@ -367,7 +377,8 @@ class ProjectTreeColumn(QDialog):
         #        translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
         #    self.connect(actionAdd2Console, SIGNAL("triggered()"),
         #                 self.current_tree._add_project_to_console)
-        # actionShowFileSizeInfo = menu.addAction(translations.TR_SHOW_FILESIZE)
+        # actionShowFileSizeInfo = menu.addAction(
+        #                          translations.TR_SHOW_FILESIZE)
         # self.connect(actionShowFileSizeInfo, SIGNAL("triggered()"),
         #             self.current_tree.show_filesize_info)
         # actionProperties = menu.addAction(QIcon(":img/pref"),
@@ -464,8 +475,8 @@ class TreeProjectsWidget(QTreeView):
         ninjaide = IDE.get_service("ide")
         ninjaide.filesystem.refresh_name_filters(self.project)
 
-    #FIXME: Check using the amount of items under this tree
-    #add it to the items of pindex item children
+    # FIXME: Check using the amount of items under this tree
+    # add it to the items of pindex item children
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
         path = self.model().filePath(tree_item)
@@ -495,13 +506,13 @@ class TreeProjectsWidget(QTreeView):
 
         menu.addMenu(self._folding_menu)
 
-        #menu for the Project Type(if present)
+        # menu for the Project Type(if present)
         if handler:
             for m in handler.get_context_menus():
                 if isinstance(m, QMenu):
                     menu.addSeparator()
                     menu.addMenu(m)
-        #show the menu!
+        # show the menu!
         menu.exec_(QCursor.pos())
 
     def _add_context_menu_for_folders(self, menu):
@@ -621,9 +632,10 @@ class TreeProjectsWidget(QTreeView):
     def _delete_file(self, path=''):
         if not path:
             path = self.model().filePath(self.currentIndex())
-        val = QMessageBox.question(self, translations.TR_DELETE_FILE,
-                                   translations.TR_DELETE_FOLLOWING_FILE + path,
-                                   QMessageBox.Yes, QMessageBox.No)
+        val = QMessageBox.question(
+            self, translations.TR_DELETE_FILE,
+            translations.TR_DELETE_FOLLOWING_FILE + path,
+            QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
             ninjaide = IDE.get_service("ide")
             current_nfile = ninjaide.get_or_create_nfile(path)
@@ -633,8 +645,8 @@ class TreeProjectsWidget(QTreeView):
             # main_container = ide_srv = IDE.get_service('main_container')
             # if main_container and main_container.is_open(path):
             #    main_container.close_deleted_file(path)
-            #FIXME: Manage the deletion signal instead of main container
-            #fiddling here
+            # FIXME: Manage the deletion signal instead of main container
+            # fiddling here
             # ide_srv = IDE.get_service('ide')
             # current_nfile = ide_srv.get_or_create_nfile(path)
             # current_nfile.delete()
@@ -663,7 +675,7 @@ class TreeProjectsWidget(QTreeView):
                 return
             ide_srv = IDE.get_service("ide")
             current_nfile = ide_srv.get_or_create_nfile(path)
-            #FIXME: Catch willOverWrite and willMove signals
+            # FIXME: Catch willOverWrite and willMove signals
             current_nfile.move(fileName)
 
     def _copy_file(self):
@@ -686,7 +698,7 @@ class TreeProjectsWidget(QTreeView):
         new_path = file_manager.create_path(addToProject.pathSelected, name)
         ide_srv = IDE.get_service("ide")
         current_nfile = ide_srv.get_or_create_nfile(path)
-        #FIXME: Catch willOverWrite and willCopyTo signals
+        # FIXME: Catch willOverWrite and willCopyTo signals
         current_nfile.copy(new_path)
 
     def _move_file(self):
@@ -709,11 +721,11 @@ class TreeProjectsWidget(QTreeView):
         """Show or Hide the filesize information on TreeProjectWidget"""
         self.showColumn(1) if self.isColumnHidden(1) else self.hideColumn(1)
 
-    #def _edit_ui_file(self):
-        #path = self.model().filePath(self.currentIndex())
-        #pathForFile = "file://%s" % path
-        ##open the correct program to edit Qt UI files!
-        #QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
+    # def _edit_ui_file(self):
+        # path = self.model().filePath(self.currentIndex())
+        # pathForFile = "file://%s" % path
+        # #open the correct program to edit Qt UI files!
+        # QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
 
     def _execute_project(self):
         tools_dock = IDE.get_service('tools_dock')

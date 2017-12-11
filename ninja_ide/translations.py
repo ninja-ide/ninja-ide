@@ -199,7 +199,7 @@ TR_PROJECT_EXTENSIONS_INSTRUCTIONS = tr(
     "Mouse over supported extensions for instructions")
 
 
-#Locator Strings
+# Locator Strings
 TR_ONLY_FILES = tr("NINJA-IDE", "@\t(Filter only by Files)")
 TR_ONLY_CLASSES = tr("NINJA-IDE", "<\t(Filter only by Classes)")
 TR_ONLY_METHODS = tr("NINJA-IDE", ">\t(Filter only by Methods)")
@@ -278,7 +278,7 @@ TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "File has been modified")
 TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
     "The file has been modified outside the application.")
-    # "Do you want to reload it?")
+# "Do you want to reload it?")
 
 
 # tools_dock
@@ -570,6 +570,11 @@ TR_SHOW_FILESIZE = tr("NINJA-IDE", "Show/Hide Filesize Info")
 TR_PROJECT_NONEXIST_TITLE = tr("NINJA-IDE", "Folder does not exist")
 TR_PROJECT_NONEXIST = tr("NINJA-IDE", ("The path <b>%s</b> does not seem to "
                                        "exist anymore on disk."))
+TR_PROJECT_PATH_ALREADY_EXIST_TITLE = tr("NINJA-IDE",
+                                         "Project path already exist")
+TR_PROJECT_PATH_ALREADY_EXIST = tr("NINJA-IDE",
+                                   ("The project path <b>%s</b> already "
+                                    "exist."))
 
 # traceback_widget
 TR_TRACEBACK = tr("NINJA-IDE", "Traceback")
