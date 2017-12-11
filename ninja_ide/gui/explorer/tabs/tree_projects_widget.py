@@ -148,6 +148,13 @@ class ProjectTreeColumn(QDialog):
                     translations.TR_PROJECT_NONEXIST % folderName)
                 return
             logger.debug("Opening %s" % folderName)
+            for p in self.projects:
+                if p.project.name == folderName.split('/')[-1]:
+                    QMessageBox.information(
+                        self,
+                        translations.TR_PROJECT_ALREADY_EXIST_TITLE,
+                        translations.TR_PROJECT_ALREADY_EXIST % folderName.split('/')[-1])
+                    return
             self._open_project_folder(folderName)
 
     def _open_project_folder(self, folderName):

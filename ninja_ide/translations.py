@@ -570,6 +570,9 @@ TR_SHOW_FILESIZE = tr("NINJA-IDE", "Show/Hide Filesize Info")
 TR_PROJECT_NONEXIST_TITLE = tr("NINJA-IDE", "Folder does not exist")
 TR_PROJECT_NONEXIST = tr("NINJA-IDE", ("The path <b>%s</b> does not seem to "
                                        "exist anymore on disk."))
+TR_PROJECT_ALREADY_EXIST_TITLE = tr("NINJA-IDE", "Project already exist")
+TR_PROJECT_ALREADY_EXIST = tr("NINJA-IDE", ("The project <b>%s</b> already "
+                                           "exist."))
 
 # traceback_widget
 TR_TRACEBACK = tr("NINJA-IDE", "Traceback")
