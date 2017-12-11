@@ -100,7 +100,7 @@ HIDE_TOOLBAR = PYTHON_EXEC_CONFIGURED_BY_USER = False
 
 NOTIFICATION_COLOR = "#000"
 
-PYTHON_EXEC = "python"
+PYTHON_EXEC = sys.executable
 
 SESSIONS = {}
 
@@ -461,7 +461,7 @@ def load_settings():
                                    True, type=bool)
     UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     PYTHON_EXEC = qsettings.value('preferences/execution/pythonExec',
-                                  'python', type='QString')
+                                  sys.executable, type='QString')
     PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
         'preferences/execution/pythonExecConfigured', False, type=bool)
     NINJA_SKIN = qsettings.value('preferences/theme/skin',

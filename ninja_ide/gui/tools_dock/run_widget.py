@@ -32,14 +32,19 @@ from PyQt5.QtGui import (
     QTextCursor,
     QTextCharFormat,
     QColor,
-    QBrush
+    QBrush,
+    QFont
 )
 from PyQt5.QtCore import (
     Qt,
     QProcess,
     QTime,
+    QObject,
     QProcessEnvironment,
-    QFile
+    QFile,
+    pyqtSlot,
+    pyqtSignal,
+    QTimer,
 )
 
 from ninja_ide import resources
@@ -48,6 +53,99 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.theme import NTheme
+from ninja_ide.tools.logger import NinjaLogger
+
+# Logger
+logger = NinjaLogger(__name__)
+
+
+class RunProcess(QObject):
+
+    stdoutAvailable = pyqtSignal('QString')
+    errorAvailable = pyqtSignal('QString')
+    processStarted = pyqtSignal('QString')
+    processFinished = pyqtSignal('QString', 'QString')
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self._process = QProcess(self)
+        self._process.started.connect(self._on_process_started)
+        self._process.readyReadStandardOutput.connect(self._result_available)
+        self._process.readyReadStandardError.connect(self._error_available)
+        self._process.finished.connect(self._on_process_finished)
+        self._process.errorOccurred.connect(self._on_error_occurred)
+
+    @pyqtSlot(QProcess.ProcessError)
+    def _on_error_occurred(self, error):
+        logger.error('Error ocurred {}'.format(error))
+
+    @pyqtSlot(int, QProcess.ExitStatus)
+    def _on_process_finished(self, code, status):
+        frmt = 'normal'
+        if status == QProcess.NormalExit and code == 0:
+            message = "The process exited normally"
+        elif status == QProcess.NormalExit:
+            message = "The process exited with code {}".format(code)
+        else:
+            message = "The process crashed!"
+            frmt = 'error'
+        self.processFinished.emit(message, frmt)
+        logger.debug('Process finished with {}, {}'.format(code, status))
+
+    @pyqtSlot()
+    def _on_process_started(self):
+        current_time_str = QTime.currentTime().toString('hh:mm:ss')
+        message = current_time_str + ': Running: ' + self._filename
+        self.processStarted.emit(message)
+
+    @pyqtSlot()
+    def _error_available(self):
+        output = self._process.readAllStandardError().data().decode()
+        for line_text in output.splitlines():
+            self.errorAvailable.emit(line_text)
+
+    @pyqtSlot()
+    def _result_available(self):
+        output = self._process.readAllStandardOutput().data().decode().strip()
+        self.stdoutAvailable.emit(output)
+
+    def start_process(self, filename):
+        self._filename = filename
+        self.__main_execution()
+
+    def __main_execution(self):
+        python_exec = self.python_exec
+        file_directory = file_manager.get_folder(self._filename)
+        self._process.setWorkingDirectory(file_directory)
+        # Force python to unbuffer stding ad stdout
+        options = ['-u'] + settings.EXECUTION_OPTIONS.split()
+        self._process.setProgram(python_exec)
+        self._process.setArguments(options + [self._filename])
+        environment = QProcessEnvironment()
+        system_environemnt = self._process.systemEnvironment()
+        for env in system_environemnt:
+            key, value = env.split('=', 1)
+            environment.insert(key, value)
+        self._process.setProcessEnvironment(environment)
+        self._process.start()
+
+    def write(self, data):
+        self._process.writeData(data)
+        self._process.writeData(b'\n')
+
+    def __pre_execution(self):
+        pass
+
+    def __post_execution(self):
+        pass
+
+    @property
+    def python_exec(self):
+        return settings.PYTHON_EXEC
+
+    def kill_process(self):
+        self._process.kill()
 
 
 class RunWidget(QWidget):
@@ -66,45 +164,55 @@ class RunWidget(QWidget):
         self._btn_zoom_in.setIcon(
             ui_tools.colored_icon(
                 ':img/plus', NTheme.get_color('IconBaseColor')))
+        self._btn_zoom_in.setToolTip('Zoom In')
         self._btn_zoom_in.clicked.connect(self.output.zoomIn)
         self._btn_zoom_out = QToolButton()
         self._btn_zoom_out.setIcon(
             ui_tools.colored_icon(
                 ':img/minus', NTheme.get_color('IconBaseColor')))
+        self._btn_zoom_out.setToolTip('Zoom Out')
         self._btn_zoom_out.clicked.connect(self.output.zoomOut)
         self._btn_clean = QToolButton()
         self._btn_clean.setIcon(
             ui_tools.colored_icon(
                 ':img/clean', NTheme.get_color('IconBaseColor')))
+        self._btn_clean.setToolTip('Clear Output')
         self._btn_stop = QToolButton()
         self._btn_stop.setIcon(ui_tools.colored_icon(':img/stop', '#d74044'))
+        self._btn_stop.setToolTip('Stop Running Program')
         self._btn_stop.clicked.connect(self.kill_process)
 
         hbox = QHBoxLayout()
         hbox.setContentsMargins(5, 0, 0, 0)
         self.input = QLineEdit()
-        self.lblInput = QLabel(self.tr("Input:  "))
+        self.label_input = QLabel(self.tr("Input:  "))
         self.input.hide()
-        self.lblInput.hide()
+        self.label_input.hide()
         vbox.addWidget(self.output)
-        hbox.addWidget(self.lblInput)
+        hbox.addWidget(self.label_input)
         hbox.addWidget(self.input)
         vbox.addLayout(hbox)
 
         self.set_font(settings.FONT)
 
         # Process
-        self.currentProcess = None
-        self.__preScriptExecuted = False
-        self._proc = QProcess(self)
-        self._preExecScriptProc = QProcess(self)
-        self._postExecScriptProc = QProcess(self)
-        # Connections
-        self._proc.readyReadStandardOutput.connect(self.output.refresh_output)
-        self._proc.readyReadStandardError.connect(self.output.refresh_error)
-        self._proc.finished.connect(self.finish_execution)
-        self._proc.error.connect(self.process_error)
+        self._process = RunProcess()
+        self._process.processStarted.connect(self._on_process_started)
+        self._process.processFinished.connect(self._on_process_finished)
+        self._process.stdoutAvailable.connect(self._on_stdout_available)
+        self._process.errorAvailable.connect(self._on_error_available)
         self.input.returnPressed.connect(self.insert_input)
+        # self.currentProcess = None
+        # self.__preScriptExecuted = False
+        # self._proc = QProcess(self)
+        # self._preExecScriptProc = QProcess(self)
+        # self._postExecScriptProc = QProcess(self)
+        # Connections
+        # self._proc.readyReadStandardOutput.connect(self.output.refresh_output)
+        # self._proc.readyReadStandardError.connect(self.output.refresh_error)
+        # self._proc.finished.connect(self.finish_execution)
+        # self._proc.error.connect(self.process_error)
+        # self.input.returnPressed.connect(self.insert_input)
 
         # self.connect(self._preExecScriptProc,
         #             SIGNAL("finished(int, QProcess::ExitStatus)"),
@@ -125,8 +233,49 @@ class RunWidget(QWidget):
         #             SIGNAL("readyReadStandardError()"),
         #             self.output.refresh_error)
 
+    def kill_process(self):
+        self._process.kill_process()
+
+    @pyqtSlot('QString')
+    def _on_error_available(self, error_msg):
+        if self.output.patLink.match(error_msg):
+            frmt = 'error2'
+        else:
+            frmt = 'error'
+        self.output.append_text(error_msg, text_format=frmt)
+
+    @pyqtSlot('QString', 'QString')
+    def _on_process_finished(self, msg, status):
+        self.output.append_text(msg, text_format=status)
+        self.label_input.hide()
+        self.input.hide()
+
+    @pyqtSlot('QString')
+    def _on_process_started(self, message):
+        self.output.append_text(message, text_format='normal')
+
+    @pyqtSlot('QString')
+    def _on_stdout_available(self, data):
+        self.output.append_text(data, text_format='plain')
+
+    def display_name(self):
+        return 'Output'
+
     def button_widgets(self):
-        return [self._btn_clean, self._btn_zoom_in, self._btn_zoom_out, self._btn_stop]
+        return (
+            self._btn_clean,
+            self._btn_zoom_in,
+            self._btn_zoom_out,
+            self._btn_stop
+        )
+
+    def insert_input(self):
+        """Take the user inut and send it to the process"""
+
+        data = self.input.text()
+        self._process.write(data.encode())
+        self.output.append_message(data)
+        self.input.clear()
 
     def set_font(self, font):
         """Set the font for the output widget"""
@@ -137,10 +286,15 @@ class RunWidget(QWidget):
         # self.output.error_format.setFont(f)
         pass
 
-    def process_error(self, error):
+    def start_process(self, filename):
+        self.label_input.show()
+        self.input.show()
+        self._process.start_process(filename)
+
+    '''def process_error(self, error):
         """Listen to the error signals from the running process"""
 
-        self.lblInput.hide()
+        self.label_input.hide()
         self.input.hide()
         self._proc.kill()
         format_ = QTextCharFormat()
@@ -164,7 +318,7 @@ class RunWidget(QWidget):
     def finish_execution(self, exitCode, exitStatus):
         """Print a message and hide the input line when the execution ends"""
 
-        self.lblInput.hide()
+        self.label_input.hide()
         self.input.hide()
         format_ = QTextCharFormat()
         format_.setAnchor(True)
@@ -204,7 +358,7 @@ class RunWidget(QWidget):
                       programParams='', preExec='', postExec=''):
         """Prepare the output widget and start the process"""
         print('start process')
-        self.lblInput.show()
+        self.label_input.show()
         self.input.show()
         self.fileName = fileName
         self.pythonExec = pythonExec  # FIXME, this is python interpreter
@@ -311,7 +465,7 @@ class RunWidget(QWidget):
     def kill_process(self):
         """Kill the running process"""
 
-        self._proc.kill()
+        self._proc.kill()'''
 
 
 class OutputWidget(QPlainTextEdit):
@@ -323,52 +477,43 @@ class OutputWidget(QPlainTextEdit):
         self._parent = parent
 
         self.setReadOnly(True)
+        self.setMouseTracking(True)
         self.setFrameShape(0)
         self.setUndoRedoEnabled(False)
         # Traceback pattern
         self.patLink = re.compile(r'(\s)*File "(.*?)", line \d.+')
-        # Formats
-        font = settings.FONT
+
+        font = QFont(settings.FONT)
+        font.setWeight(QFont.Light)
+        font.setPixelSize(12)
         self.setFont(font)
-        self.plain_format = QTextCharFormat()
-        # self.plain_format.setFont(font)
-        # self.plain_format.setForeground(
-        #    QBrush(QColor(resources.CUSTOM_SCHEME.get(
-        #        "Default", resources.COLOR_SCHEME["Default"]))))
-        self.error_format = QTextCharFormat()
-        # self.error_format.setFont(font)
-        self.error_format.setAnchor(True)
-        # self.error_format.setForeground(QColor(resources.CUSTOM_SCHEME.get(
-        #    "Pep8Underline", resources.COLOR_SCHEME["Pep8Underline"])))
-        # self.error_format.setBackground(QColor(resources.CUSTOM_SCHEME.get(
-        #    "ErrorUnderline", resources.COLOR_SCHEME["ErrorUnderline"])))
-        self.error_format.setToolTip(self.tr("Click to show the source"))
-        self.error_format2 = QTextCharFormat()
-        self.error_format2.setAnchor(True)
-        # self.error_format2.setFont(font)
-        # self.error_format2.setForeground(
-        #    QBrush(
-        #        QColor(resources.get_color('ErrorUnderline'))))
+        # Formats
+        plain_format = QTextCharFormat()
+        normal_format = QTextCharFormat()
+        normal_format.setForeground(QColor('#83c1fb'))
+        error_format = QTextCharFormat()
+        error_format.setForeground(QColor('#ff6c6c'))
+        error_format2 = QTextCharFormat()
+        error_format2.setToolTip('Click to show the source')
+        error_format2.setUnderlineStyle(QTextCharFormat.DashUnderline)
+        error_format2.setForeground(QColor('#ff6c6c'))
+        error_format2.setUnderlineColor(QColor('#ff6c6c'))
+
+        self._text_formats = {
+            'normal': normal_format,
+            'plain': plain_format,
+            'error': error_format,
+            'error2': error_format2
+        }
 
         self.blockCountChanged[int].connect(
             lambda: self.moveCursor(QTextCursor.End))
 
         # Style
         palette = self.palette()
-        palette.setColor(palette.Base, QColor(resources.get_color('EditorBackground')))
-        palette.setColor(palette.Text, QColor(resources.get_color('Default')))
+        palette.setColor(
+            palette.Base, QColor(resources.get_color('EditorBackground')))
         self.setPalette(palette)
-        # css = 'QPlainTextEdit {color: %s; background-color: %s;' \
-        #    'selection-color: %s; selection-background-color: %s;}' \
-        #    % (resources.CUSTOM_SCHEME.get('editor-text',
-        #       resources.COLOR_SCHEME['Default']),
-        #       resources.CUSTOM_SCHEME.get('EditorBackground',
-        #       resources.COLOR_SCHEME['EditorBackground']),
-        #       resources.CUSTOM_SCHEME.get('EditorSelectionColor',
-        #       resources.COLOR_SCHEME['EditorSelectionColor']),
-        #       resources.CUSTOM_SCHEME.get('EditorSelectionBackground',
-        #       resources.COLOR_SCHEME['EditorSelectionBackground']))
-        # self.setStyleSheet(css)
 
     def mousePressEvent(self, event):
         """
@@ -378,24 +523,15 @@ class OutputWidget(QPlainTextEdit):
         QPlainTextEdit.mousePressEvent(self, event)
         self.go_to_error(event)
 
-    def refresh_output(self):
-        """Read the output buffer from the process and append the text."""
-        # We should decode the bytes!
-        currentProcess = self._parent.currentProcess
-        text = currentProcess.readAllStandardOutput().data().decode('utf8')
-        self.textCursor().insertText(text)
-        # self.append_message(text)
-
-    def refresh_error(self):
-        """Read the error buffer from the process and append the text."""
-        # We should decode the bytes!
-        currentProcess = self._parent.currentProcess
-        text = currentProcess.readAllStandardError().data().decode('utf8')
-        for txt in text.splitlines():
-            if self.patLink.match(txt):
-                self.append_message(txt, self.error_format)
+    def mouseMoveEvent(self, event):
+        cursor = self.cursorForPosition(event.pos())
+        text = cursor.block().text()
+        if text:
+            if self.patLink.match(text):
+                self.viewport().setCursor(Qt.PointingHandCursor)
             else:
-                self.append_message(txt, self.error_format2)
+                self.viewport().setCursor(Qt.IBeamCursor)
+        QPlainTextEdit.mouseMoveEvent(self, event)
 
     def go_to_error(self, event):
         """Resolve the link and take the user to the error line."""
@@ -419,24 +555,23 @@ class OutputWidget(QPlainTextEdit):
         lineno = text[comma_min_index + 7:comma_max_index]
         return (file_name, lineno)
 
-    def contextMenuEvent(self, event):
-        """Show a context menu for the Plain Text widget."""
-        popup_menu = self.createStandardContextMenu()
+    # def contextMenuEvent(self, event):
+    #    """Show a context menu for the Plain Text widget."""
+    #    popup_menu = self.createStandardContextMenu()
 
-        menuOutput = QMenu(self.tr("Output"))
-        cleanAction = menuOutput.addAction(self.tr("Clean"))
-        popup_menu.insertSeparator(popup_menu.actions()[0])
-        popup_menu.insertMenu(popup_menu.actions()[0], menuOutput)
+    #    menuOutput = QMenu(self.tr("Output"))
+    #    cleanAction = menuOutput.addAction(self.tr("Clean"))
+    #    popup_menu.insertSeparator(popup_menu.actions()[0])
+    #    popup_menu.insertMenu(popup_menu.actions()[0], menuOutput)
 
         # This is a hack because if we leave the widget text empty
         # it throw a violent segmentation fault in start_process
         # self.connect(cleanAction, SIGNAL("triggered()"),
         #             lambda: self.setPlainText('\n\n'))
 
-        popup_menu.exec_(event.globalPos())
+    #    popup_menu.exec_(event.globalPos())
 
-    def append_message(self, text, frmt=None):
+    def append_text(self, text, text_format):
         cursor = self.textCursor()
-        if frmt is None:
-            frmt = self.plain_format
-        cursor.insertText(text + '\n')
+        cursor.insertText(text, self._text_formats[text_format])
+        cursor.insertBlock()

@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -29,7 +30,9 @@ from PyQt5.QtWidgets import (
     QRadioButton,
     QButtonGroup,
     QPushButton,
-    QDirModel
+    QDirModel,
+    QCompleter,
+    QComboBox
 )
 from PyQt5.QtCore import (
     QDir,
@@ -56,28 +59,27 @@ class GeneralExecution(QWidget):
         python_path_bgroup = QButtonGroup(group_python_path)
         box_path = QVBoxLayout()
         # Line python path
-        self._txt_python_path = QLineEdit()
-        act = self._txt_python_path.addAction(
-            ui_tools.get_icon('open-project'), QLineEdit.TrailingPosition)
-        act.triggered.connect(self._load_python_path)
         import sys
-        self._txt_python_path.setText(sys.executable)
-        self._txt_python_path.textChanged.connect(self._python_exec_changed)
+        self._combo_python_path = QComboBox()
+        self._combo_python_path.setEditable(True)
+        self._combo_python_path.addItems(self._get_python())
+        self._combo_python_path.setCurrentText(settings.PYTHON_EXEC)
         box_path.addWidget(QLabel("Select the Python interpreter"))
         # Default
         default_interpreter_radio = QRadioButton("Default")
         default_interpreter_radio.toggled.connect(
-            self._txt_python_path.setDisabled)
+            self._combo_python_path.setDisabled)
         python_path_bgroup.addButton(default_interpreter_radio)
         # Custom
         self._custom_interpreter_radio = QRadioButton(
             "Use this Python interpreter:")
         self._custom_interpreter_radio.toggled.connect(
-            self._txt_python_path.setEnabled)
+            self._combo_python_path.setEnabled)
         python_path_bgroup.addButton(self._custom_interpreter_radio)
         box_path.addWidget(default_interpreter_radio)
         box_path.addWidget(self._custom_interpreter_radio)
-        box_path.addWidget(self._txt_python_path)
+        # box_path.addWidget(self._txt_python_path)
+        box_path.addWidget(self._combo_python_path)
         """
         completer = QCompleter(self)
         dirs = QDirModel(self)
@@ -98,6 +100,15 @@ class GeneralExecution(QWidget):
         # self._txt_python_path.buttonClicked.connect(self._load_python_path)
         self._preferences.savePreferences.connect(self.save)
 
+    def _get_python(self):
+        found = []
+        for search_path in ('/usr/bin', '/usr/local/bin'):
+            files = os.listdir(search_path)
+            for fname in files:
+                if fname.startswith('python') and not fname.count('config'):
+                    found.append(os.path.join(search_path, fname))
+        return found
+
     @pyqtSlot('QString')
     def _python_exec_changed(self, python_exec):
         print(python_exec)
@@ -116,12 +127,11 @@ class GeneralExecution(QWidget):
         qsettings = IDE.ninja_settings()
         qsettings.beginGroup("preferences")
         qsettings.beginGroup("execution")
-        qsettings.setValue("python_path", self._txt_python_path.text())
-        settings.PYTHON_EXEC = self._txt_python_path.text()
+        qsettings.setValue("python_path", self._combo_python_path.currentText())
+        settings.PYTHON_EXEC = self._combo_python_path.currentText()
 
         qsettings.endGroup()
         qsettings.endGroup()
-        print(settings.PYTHON_EXEC)
 
 
 preferences.Preferences.register_configuration(
