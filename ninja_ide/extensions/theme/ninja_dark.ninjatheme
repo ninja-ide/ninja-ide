@@ -50,7 +50,7 @@
         "WelcomeButton": "#232729",
         "WelcomeButtonSelected": "#151515",
         "MenuBar": "#232729",
-        "Splitter": "#2c3033",
+        "Splitter": "#222",
         "LocatorBackground": "#33393b",
         "LocatorText": "#ffffff",
         "LocatorAlternativeText": "#9c9e9e",
@@ -64,7 +64,7 @@
         "CompleterBackground": "#333",
         "CompleterCurrentItem": "#787ba9",
         "CompleterText": "#f1f1f1",
-        "Border": "transparent"
+        "Border": "#2c3033"
     },
     "flags": {
         "FlatComboBox": false,

@@ -161,7 +161,7 @@ class _ToolsDock(ui_tools.StyledBar):
         self.__last_index = -1
         self.__buttons = []
 
-        main_layout = QVBoxLayout(self)
+        main_layout = QHBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
@@ -174,8 +174,8 @@ class _ToolsDock(ui_tools.StyledBar):
 
         main_layout.addLayout(tool_layout)
         self._tool_stack = QStackedWidget()
-        self._tool_stack.setMaximumHeight(22)
-        # self._tool_stack.setMaximumWidth(22)
+        # self._tool_stack.setMaximumHeight(22)
+        self._tool_stack.setMaximumWidth(22)
 
         tool_layout.addWidget(self._tool_stack)
         # FIXME: poner en stack
@@ -213,8 +213,9 @@ class _ToolsDock(ui_tools.StyledBar):
             self._stack.addWidget(wi)
             btn.clicked.connect(self._button_triggered)
             # Toolbar buttons
-            container = QWidget(self._tool_stack)
-            tool_buttons_layout = QHBoxLayout()
+            container = ui_tools.StyledBar(self._tool_stack)
+            container.setProperty('border', True)
+            tool_buttons_layout = QVBoxLayout()
             tool_buttons_layout.setContentsMargins(0, 0, 0, 0)
             tool_buttons_layout.setSpacing(0)
             for b in wi.button_widgets():

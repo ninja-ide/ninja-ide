@@ -142,8 +142,8 @@ class NinjaStyle(QProxyStyle):
             painter.fillRect(rect, color)
             if widget.property("border"):
                 # painter.setPen(opt.palette.light().color().lighter(150))
-                painter.setPen(_COLORS["Border"])
-                painter.drawLine(rect.topLeft(), rect.topRight())
+                painter.setPen(_COLORS['Border'])
+                painter.drawLine(rect.topRight(), rect.bottomRight())
             # painter.setPen(_COLORS['Border'])
             # painter.drawLine(opt.rect.topRight(), opt.rect.bottomRight())
 
