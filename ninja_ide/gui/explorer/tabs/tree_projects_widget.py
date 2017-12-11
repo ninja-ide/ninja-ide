@@ -149,11 +149,12 @@ class ProjectTreeColumn(QDialog):
                 return
             logger.debug("Opening %s" % folderName)
             for p in self.projects:
-                if p.project.name == folderName.split('/')[-1]:
+                if p.project.path == folderName:
                     QMessageBox.information(
                         self,
-                        translations.TR_PROJECT_ALREADY_EXIST_TITLE,
-                        translations.TR_PROJECT_ALREADY_EXIST % folderName.split('/')[-1])
+                        translations.TR_PROJECT_PATH_ALREADY_EXIST_TITLE,
+                        translations.TR_PROJECT_PATH_ALREADY_EXIST
+                        % folderName)
                     return
             self._open_project_folder(folderName)
 
