@@ -44,38 +44,37 @@ resources.load_theme()
 resources.load_shortcuts()
 # Register Components:
 # lint:disable
-import ninja_ide.gui.main_panel.main_container
-import ninja_ide.gui.tools_dock.errors_tree
-import ninja_ide.gui.tools_dock.tools_dock
-import ninja_ide.gui.central_widget
-import ninja_ide.gui.status_bar
-import ninja_ide.gui.menus.menubar
+import ninja_ide.gui.main_panel.main_container  # noqa
+import ninja_ide.gui.tools_dock.errors_tree  # noqa
+import ninja_ide.gui.tools_dock.tools_dock  # noqa
+import ninja_ide.gui.central_widget  # noqa
+import ninja_ide.gui.status_bar  # noqa
+import ninja_ide.gui.menus.menubar  # noqa
 # from ninja_ide.tools.completion import completion_daemon
 # Syntax
-from ninja_ide.gui.syntax_registry import syntax_registry
+from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
 # Explorer Container
-import ninja_ide.gui.explorer.explorer_container
-from ninja_ide.gui.explorer.tabs import tree_projects_widget
-from ninja_ide.gui.explorer.tabs import tree_symbols_widget
+import ninja_ide.gui.explorer.explorer_container  # noqa
+from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
+from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
 # from ninja_ide.gui.explorer.tabs import web_inspector
 # Checkers
 # from ninja_ide.gui.editor.checkers import errors_checker
-from ninja_ide.gui.editor.checkers import pep8_checker
+from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 # from ninja_ide.gui.editor.checkers import migration_2to3
 # Preferences
 from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
 # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
 # from ninja_ide.gui.dialogs.preferences import preferences_interface
-from ninja_ide.gui.dialogs.preferences import preferences_editor_general
-# from ninja_ide.gui.dialogs.preferences import preferences_editor_configuration
-from ninja_ide.gui.dialogs.preferences import preferences_editor_display
+from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
+from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
 # from ninja_ide.gui.dialogs.preferences import preferences_plugins
 # from ninja_ide.gui.dialogs.preferences import preferences_theme
-import ninja_ide.gui.editor.extensions
+import ninja_ide.gui.editor.extensions  # noqa
 # Templates
-from ninja_ide.core.template_registry import ntemplate_registry
+from ninja_ide.core.template_registry import ntemplate_registry  # noqa
 from ninja_ide.core.template_registry import (
     bundled_project_types
 )

@@ -418,7 +418,7 @@ class ComboEditor(ui_tools.StyledBar):
             super(ComboEditor, self).reject()
 
 
-class ActionBar(QFrame):
+class ActionBar(ui_tools.StyledBar):
     """
     SIGNALS:
     @changeCurrent(PyQt_PyObject)
@@ -438,7 +438,8 @@ class ActionBar(QFrame):
 
     def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
-        self.setObjectName("actionbar")
+        # self.setObjectName("actionbar")
+        self.setProperty('gradient', True)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
