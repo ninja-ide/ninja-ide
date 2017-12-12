@@ -136,8 +136,8 @@ class NinjaStyle(QProxyStyle):
                 base = QColor(_PALETTE['Window'])
                 color = QLinearGradient(
                     opt.rect.topRight(), opt.rect.bottomRight())
-                color.setColorAt(0.4, base.lighter(150))
-                color.setColorAt(0.401, base.darker(135))
+                color.setColorAt(0.2, base.lighter(150))
+                color.setColorAt(0.9, base.darker(135))
             # print(widget.property("border"), widget)
             painter.fillRect(rect, color)
             if widget.property("border"):
@@ -329,15 +329,15 @@ class NinjaStyle(QProxyStyle):
                 button_color = QLinearGradient(
                     opt.rect.topRight(), opt.rect.bottomRight())
                 button_color.setColorAt(
-                    0.4, base.lighter(150))
+                    0.2, base.lighter(150))
                 button_color.setColorAt(
-                    0.401, base.darker(135))
+                    0.9, base.darker(135))
             if pressed:
                 button_color = _COLORS['ToolButtonSelected']
             elif hovered:
                 if not flat and widget.property("gradient"):
-                    button_color.setColorAt(0.4, base.lighter(160))
-                    button_color.setColorAt(0.401, base.darker(100))
+                    button_color.setColorAt(0.2, base.lighter(160))
+                    button_color.setColorAt(0.9, base.darker(100))
                 else:
                     button_color = _COLORS['ToolButtonHover']
             if widget.property("border_bottom"):
