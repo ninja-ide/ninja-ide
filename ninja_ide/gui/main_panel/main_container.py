@@ -283,6 +283,7 @@ class _MainContainer(QWidget):
 
             self.fileSaved.emit("File Saved: {}".format(filename))
             self.currentEditorChanged.emit(filename)
+            self.add_editor(filename=filename)
             return True
         except file_manager.NinjaFileExistsException as reason:
             QMessageBox.information(
