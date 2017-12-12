@@ -143,9 +143,9 @@ class ComboEditor(ui_tools.StyledBar):
             if self.__original:
                 editor = neditable.editor
             else:
-                # editor = neditable.editor.clone()
-                editor = self._main_container.create_editor_from_editable(
-                    neditable)
+                editor = neditable.editor.clone()
+                # editor = self._main_container.create_editor_from_editable(
+                #    neditable)
             current_index = self.stacked.currentIndex()
             new_index = self.stacked.addWidget(editor)
             self.stacked.setCurrentIndex(new_index)
@@ -218,19 +218,15 @@ class ComboEditor(ui_tools.StyledBar):
 
     def undock_editor(self):
         new_combo = ComboEditor()
-        new_combo.setWindowTitle("NINJA-IDE")
-        editor = self.currentWidget()
-        new_combo.add_editor(editor.neditable)
-        new_combo.show()
-        """
         for neditable in self.bar.get_editables():
             new_combo.add_editor(neditable)
-        neditor = self.currentWidget().clone()
-        new_combo.set_current(neditor.neditable)
+        self.__undocked.append(new_combo)
+        new_combo.setWindowTitle("NINJA-IDE")
+        editor = self.currentWidget()
+        new_combo.set_current(editor.neditable)
         new_combo.resize(700, 500)
         new_combo.about_to_close_combo_editor.connect(self._remove_undock)
         new_combo.show()
-        """
 
     def _remove_undock(self):
         widget = self.sender()

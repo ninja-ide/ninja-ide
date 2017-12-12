@@ -52,6 +52,7 @@ from ninja_ide.gui.editor import (
     # symbol_highlighter,
     # line_highlighter
 )
+from ninja_ide.gui.editor.extensions import ExtensionRegistry
 from ninja_ide.gui.editor.side_area import (
     line_number_area,
     text_change_area,
@@ -88,7 +89,6 @@ logger = NinjaLogger(__name__)
 class NEditor(QPlainTextEdit):
     """Ninja-IDE Editor"""
 
-    __extensions = {}
     # Editor signals
     fontChanged = pyqtSignal('QString')
     zoomChanged = pyqtSignal(int)
@@ -243,6 +243,7 @@ class NEditor(QPlainTextEdit):
         self.set_font(settings.FONT)
         self.register_syntax_for(neditable.language())
         # Register all editor extension
+        self.__extensions = {}
         self.initialize_extensions()
         # FIXME: based on lang
         self.enable_extension(
@@ -323,7 +324,8 @@ class NEditor(QPlainTextEdit):
         )
 
     def initialize_extensions(self):
-        from ninja_ide.gui.editor.extensions import ExtensionRegistry
+        """Register all extensions in this Editor"""
+
         for Klass in ExtensionRegistry.extensions:
             self.__extensions[Klass.name] = Klass(self)
 
@@ -484,10 +486,13 @@ class NEditor(QPlainTextEdit):
         self.setTabStopWidth(width)
 
     def clone(self):
-        """Returns an instance of the same class"""
+        """Returns an instance of the same class and links this
+        instance with its original"""
+
         line, col = self.cursor_position
         clone = self.__class__(self.neditable)
         clone.cursor_position = line, col
+        clone.setExtraSelections(self.extraSelections())
         return clone
 
     def line_count(self):
@@ -1079,6 +1084,11 @@ class NEditor(QPlainTextEdit):
 
     def comment(self):
         pass
+
+    def save_state(self):
+        state = {}
+        state['vscrollbar'] = self.verticalScrollBar().value()
+        return state
 
 
 def create_editor(neditable=None):
