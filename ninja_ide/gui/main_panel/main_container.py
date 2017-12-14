@@ -102,11 +102,11 @@ class _MainContainer(QWidget):
         ninjaide.place_me_on("main_container", self, "central", top=True)
 
         self.combo_area = combo_editor.ComboEditor(original=True)
+        self.combo_area.closeSplit.connect(self._close_split)
         self.combo_area.allFilesClosed.connect(self._files_closed)
-        self.splitter.add_widget(self.combo_area)
+        self.splitter.addWidget(self.combo_area)
         self.add_widget(self.splitter)
-
-        self.current_widget = self.combo_area
+        # self.current_widget = self.combo_area
         # Code Locator
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
@@ -130,7 +130,26 @@ class _MainContainer(QWidget):
         split_widget.show()
 
     def show_split(self, orientation_vertical=False):
-        self.current_widget.split_editor(orientation_vertical)
+        # self.current_widget.split_editor(orientation_vertical)
+        # TODO: move to dynamic splitter and support multiple split
+        orientation = Qt.Horizontal
+        if orientation_vertical:
+            orientation = Qt.Vertical
+        self.splitter.setOrientation(orientation)
+        if self.splitter.count() == 3:
+            return
+
+        combo = combo_editor.ComboEditor()
+        combo.closeSplit.connect(self._close_split)
+        for neditable in self.combo_area.bar.get_editables():
+            combo.add_editor(neditable)
+        self.splitter.addWidget(combo)
+        combo.setFocus()
+
+    def _close_split(self, widget):
+        # TODO: move to dynamic splitter and support multiple split
+        combo = self.splitter.widget(self.splitter.indexOf(widget))
+        combo.deleteLater()
 
     def show_locator(self):
         """Show the Locator Widget"""
@@ -151,7 +170,7 @@ class _MainContainer(QWidget):
         self.currentEditorChanged.emit(filename)
 
     def get_current_editor(self):
-        current_widget = self.current_widget.currentWidget()
+        current_widget = self.combo_area.current_editor()
         if isinstance(current_widget, editor.NEditor):
             return current_widget
         return None
@@ -291,7 +310,7 @@ class _MainContainer(QWidget):
         return os.path.expanduser("~")
 
     def close_file(self):
-        self.current_widget.close_current_file()
+        self.combo_area.close_current_file()
 
     def add_editor(self, filename=None):
         ninjaide = IDE.get_service("ide")
@@ -299,8 +318,8 @@ class _MainContainer(QWidget):
         if editable.editor:
             # If already open
             logger.debug("%s is already open" % filename)
-            self.current_widget.set_current(editable)
-            return self.current_widget.currentWidget()
+            self.combo_area.set_current(editable)
+            return self.combo_area.current_editor()
         else:
             pass
 
@@ -314,7 +333,7 @@ class _MainContainer(QWidget):
         self.fileOpened.emit(filename)
 
         if not keep_index:
-            self.current_widget.set_current(editable)
+            self.combo_area.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
         editor_widget.setFocus()
