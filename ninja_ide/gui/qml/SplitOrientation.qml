@@ -3,8 +3,7 @@ import QtQuick.Layouts 1.0
 
 Rectangle {
     id: root
-    color: theme.Base
-
+    color: theme.SplitAssistantBackground
     signal selected(string orientation)
 
     function signalForIndex(index) {
@@ -21,15 +20,35 @@ Rectangle {
             Rectangle {
                 width: (root.width / 2) - 15
                 height: (root.height / 2) - 10
-                color: "#818181"
-                opacity: 0.5
+                color: theme.SplitAssistantRect
+                opacity: 0.7
+
+                Column {
+                    spacing: 5
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    SimpleRect { width: implicitWidth - 40 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 20; anchors.right: parent.right }
+                    SimpleRect { width: implicitWidth - 30 }
+                }
             }
 
             Rectangle {
                 width: (root.width / 2) - 15
                 height: (root.height / 2) - 10
-                color: "#818181"
-                opacity: 0.5
+                color: theme.SplitAssistantRect
+                opacity: 0.7
+
+                Column {
+                    spacing: 5
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    SimpleRect { width: implicitWidth - 40 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 20; anchors.right: parent.right }
+                    SimpleRect { width: implicitWidth - 30 }
+                }
             }
         }
     }
@@ -40,14 +59,46 @@ Rectangle {
             Rectangle {
                 width: (300 / 4) - 10
                 height: 150 - 15
-                color: "#818181"
-                opacity: 0.5
+                color: theme.SplitAssistantRect
+                opacity: 0.7
+
+                Column {
+                    spacing: 5
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    SimpleRect { width: implicitWidth - 20 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 20 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 10 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 10 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 10 }
+                    SimpleRect {}
+                }
             }
             Rectangle {
                 width: (300 / 4) - 10
                 height: 150 - 15
-                color: "#818181"
-                opacity: 0.5
+                color: theme.SplitAssistantRect
+                opacity: 0.7
+
+                Column {
+                    spacing: 5
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    SimpleRect { width: implicitWidth - 20 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 20 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 10 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 10 }
+                    SimpleRect {}
+                    SimpleRect { width: implicitWidth - 10 }
+                    SimpleRect {}
+                }
             }
         }
     }
@@ -82,7 +133,7 @@ Rectangle {
                 signalForIndex(list.currentIndex);
             }
         }
-        highlight: Rectangle { color: "#383e4a"}
+        highlight: Rectangle { color: theme.SplitAssistantHighlight; opacity: 0.7 }
         focus: true
 
 
