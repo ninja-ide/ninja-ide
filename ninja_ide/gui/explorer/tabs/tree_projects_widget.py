@@ -84,7 +84,6 @@ class ProjectTreeColumn(QDialog):
         combo_layout.setContentsMargins(0, 0, 0, 0)
         self._combo_project = QComboBox()
         combo_layout.addWidget(self._combo_project)
-        self._combo_project.setProperty("border_bottom", True)
         self._combo_project.setProperty("gradient", True)
         self._combo_project.setContextMenuPolicy(Qt.CustomContextMenu)
         vbox.addWidget(combo_container)
