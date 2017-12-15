@@ -19,6 +19,8 @@
         <file alias="clean">images/clean.png</file>
         <file alias="stop">images/stop.png</file>
         <file alias="zoom">images/zoom.png</file>
+        <file alias="navigate-left">images/left.png</file>
+        <file alias="navigate-right">images/right.png</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">images/help/help_locator.png</file>
