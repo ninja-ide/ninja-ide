@@ -59,6 +59,7 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.theme import NTheme
+from . import set_language
 
 
 class ComboEditor(ui_tools.StyledBar):
@@ -199,6 +200,9 @@ class ComboEditor(ui_tools.StyledBar):
 
     def show_combo_symbol(self):
         self.bar.symbols_combo.showPopup()
+
+    def show_combo_set_language(self):
+        self.bar.set_language_combo.showPopup()
 
     def unlink_editors(self):
         for index in range(self.stacked.count()):
@@ -485,6 +489,19 @@ class ActionBar(ui_tools.StyledBar):
         #             self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
+        # Combobox set language
+        self.set_language_combo = QComboBox()
+        self.set_language_combo.setProperty("border", True)
+        self.set_language_combo.setProperty("gradient", True)
+        self.set_language_combo.setSizeAdjustPolicy(
+            QComboBox.AdjustToMinimumContentsLengthWithIcon)
+        self.set_language_combo.setObjectName("Set language")
+        self.set_language_combo.addItem("Set Language")
+        self.set_language_combo.addItem("Python")
+        self.set_language_combo.currentIndexChanged[int].connect(
+            self.set_language_combo_changed)
+        hbox.addWidget(self.set_language_combo)
+
         self.code_navigator = CodeNavigator()
         hbox.addWidget(self.code_navigator)
         # FIXME: set property for other themes
@@ -534,6 +551,9 @@ class ActionBar(ui_tools.StyledBar):
             #             self.close_split)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.btn_close)
+
+        # Added for set language
+        self._setter_language = set_language.SetLanguageFile()
 
     # def _on_lbl_position_clicked(self):
     #    main_container = IDE.get_service("main_container")
@@ -601,6 +621,10 @@ class ActionBar(ui_tools.StyledBar):
         if index == 0:
             return
         self.goToSymbol.emit(index - 1)
+
+    def set_language_combo_changed(self, index):
+        """Change the current language of editor."""
+        self._setter_language.set_laguage_to_editor(index)
 
     def update_line_col(self, line, col):
         """Update the line and column position."""
