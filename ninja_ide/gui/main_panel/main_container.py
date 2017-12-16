@@ -102,9 +102,8 @@ class _MainContainer(QWidget):
         ninjaide.place_me_on("main_container", self, "central", top=True)
 
         self.combo_area = combo_editor.ComboEditor(original=True)
-        self.combo_area.closeSplit.connect(self._close_split)
         self.combo_area.allFilesClosed.connect(self._files_closed)
-        self.splitter.addWidget(self.combo_area)
+        self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
         # self.current_widget = self.combo_area
         # Code Locator
@@ -130,26 +129,10 @@ class _MainContainer(QWidget):
         split_widget.show()
 
     def show_split(self, orientation_vertical=False):
-        # self.current_widget.split_editor(orientation_vertical)
-        # TODO: move to dynamic splitter and support multiple split
         orientation = Qt.Horizontal
         if orientation_vertical:
             orientation = Qt.Vertical
-        self.splitter.setOrientation(orientation)
-        if self.splitter.count() == 3:
-            return
-
-        combo = combo_editor.ComboEditor()
-        combo.closeSplit.connect(self._close_split)
-        for neditable in self.combo_area.bar.get_editables():
-            combo.add_editor(neditable)
-        self.splitter.addWidget(combo)
-        combo.setFocus()
-
-    def _close_split(self, widget):
-        # TODO: move to dynamic splitter and support multiple split
-        combo = self.splitter.widget(self.splitter.indexOf(widget))
-        combo.deleteLater()
+        self.combo_area.split_editor(orientation)
 
     def show_locator(self):
         """Show the Locator Widget"""

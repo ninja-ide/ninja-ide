@@ -64,7 +64,8 @@ from ninja_ide.gui.theme import NTheme
 class ComboEditor(ui_tools.StyledBar):
     # Signals
     closeSplit = pyqtSignal('PyQt_PyObject')
-    splitEditor = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject', bool)
+    splitEditor = pyqtSignal(
+        'PyQt_PyObject', 'PyQt_PyObject', Qt.Orientation)
     allFilesClosed = pyqtSignal()
     about_to_close_combo_editor = pyqtSignal()
 
@@ -205,8 +206,15 @@ class ComboEditor(ui_tools.StyledBar):
             widget = self.stacked.widget(index)
             # widget.setDocument(QsciDocument())
 
-    def split_editor(self, orientation_vertical):
-        pass
+    def clone(self):
+        combo = ComboEditor()
+        for neditable in self.bar.get_editables():
+            combo.add_editor(neditable)
+        return combo
+
+    def split_editor(self, orientation):
+        new_combo = self.clone()
+        self.splitEditor.emit(self, new_combo, orientation)
         # new_widget = ComboEditor()
         # for neditable in self.bar.get_editables():
         #    new_widget.add_editor(neditable)
@@ -257,7 +265,7 @@ class ComboEditor(ui_tools.StyledBar):
 
     def _editor_with_focus(self):
         # if self._main_container.current_widget is not self:
-        #    self._main_container.current_widget = self
+        self._main_container.combo_area = self
         editor = self.current_editor()
         self._main_container.current_editor_changed(
             editor.neditable.file_path)
