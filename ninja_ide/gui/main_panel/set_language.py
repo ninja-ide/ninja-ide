@@ -26,12 +26,17 @@ class SetLanguageFile(object):
         self.dict_language = {
             0: None,  # This is the default value, maybe need some work
             1: 'python',
-            2: 'c/c++',  # TBD
-            3: 'java',  # TBD
+            # 2: 'HTML',
+            # 3: 'js',
+            # 4: 'qml'
         }
 
-    def set_laguage_to_editor(self, index):
+    def set_laguage_to_editor(self, lang):
         self.mc = IDE.get_service("main_container")
         self._current_editor_widget = self.mc.get_current_editor()
-        self._current_editor_widget.register_syntax_for(
-            self.dict_language[index])
+        self._current_editor_widget.register_syntax_for(lang)
+        #self._current_editor_widget.register_syntax_for(
+        #    self.dict_language[index])
+
+    def get_list_of_language(self):
+        return self.dict_language.values()

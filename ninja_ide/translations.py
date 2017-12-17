@@ -131,6 +131,7 @@ TR_CANCEL = tr("NINJA-IDE", "Cancel")
 TR_CHOOSE = tr("NINJA-IDE", "Choose")
 TR_ADD_HERE = tr("NINJA-IDE", "Add Here!")
 TR_UNDOCK = tr("NINJA-IDE", "Undock Tab")
+TR_SET_LANGUAGE = tr("NINJA-IDE", "Set Laguange")
 
 
 # Project Properties
