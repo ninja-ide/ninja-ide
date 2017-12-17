@@ -514,12 +514,12 @@ class IDE(QMainWindow):
     def show_preferences(self):
         """Open the Preferences Dialog."""
         pref = preferences.Preferences(self)
-        pref.setModal(True)
-        # main_container = IDE.get_service("main_container")
-        # if main_container:
-        #    main_container.show_dialog(pref)
-        # else:
-        pref.show()
+        main_container = IDE.get_service("main_container")
+        if main_container:
+            main_container.show_dialog(pref)
+        else:
+            pref.setModal(True)
+            pref.show()
 
     def load_session_files_projects(self, files, projects, current_file,
                                     recent_files=None):

@@ -128,6 +128,10 @@ class _MainContainer(QWidget):
         split_widget = split_orientation.SplitOrientation(self)
         split_widget.show()
 
+    def show_dialog(self, widget):
+        self.add_widget(widget)
+        self.stack.setCurrentWidget(widget)
+
     def show_split(self, orientation_vertical=False):
         orientation = Qt.Horizontal
         if orientation_vertical:

@@ -17,6 +17,7 @@
 
 from PyQt5.QtWidgets import (
     QDialog,
+    QWidget,
     QVBoxLayout,
     QHBoxLayout,
     QPushButton,
@@ -56,7 +57,8 @@ class Preferences(QDialog):
         self.setWindowTitle(translations.TR_PREFERENCES_TITLE)
         self.setMinimumSize(900, 600)
         box = QVBoxLayout(self)
-        box.setContentsMargins(5, 5, 5, 5)
+        box.setContentsMargins(3, 3, 3, 3)
+        self.setAutoFillBackground(True)
         # Header
         self._header_label = QLabel("")
         header_font = self._header_label.font()
@@ -78,6 +80,7 @@ class Preferences(QDialog):
 
         self.stacked = QStackedLayout()
         header_layout = QVBoxLayout()
+        header_layout.setContentsMargins(0, 0, 0, 0)
         header_layout.addWidget(self._header_label)
         header_layout.addLayout(self.stacked)
         hbox.addLayout(header_layout)
