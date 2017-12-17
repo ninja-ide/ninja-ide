@@ -496,18 +496,6 @@ class ActionBar(ui_tools.StyledBar):
         #             self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
-        # Combobox set language
-        self.set_language_combo = QComboBox()
-        self.set_language_combo.setProperty("border", True)
-        self.set_language_combo.setProperty("gradient", True)
-        self.set_language_combo.setSizeAdjustPolicy(
-            QComboBox.AdjustToMinimumContentsLengthWithIcon)
-        self.set_language_combo.setObjectName("Set language")
-        self.set_language_combo.addItem("Set Language")
-        self.set_language_combo.addItem("Python")
-        self.set_language_combo.currentIndexChanged[int].connect(
-            self.set_language_combo_changed)
-        hbox.addWidget(self.set_language_combo)
 
         self.code_navigator = CodeNavigator()
         hbox.addWidget(self.code_navigator)
@@ -661,6 +649,10 @@ class ActionBar(ui_tools.StyledBar):
         # if len(settings.LAST_OPENED_FILES) == 0:
         #    actionReopen.setEnabled(False)
 
+        # set language action
+        menu_set_language = menu.addMenu(translations.TR_SET_LANGUAGE)
+        self._set_list_languages(menu_set_language)
+
         # Connect actions
         action_undock.triggered.connect(self._undock_editor)
         show_folder.triggered.connect(self._show_containing_folder)
@@ -688,6 +680,17 @@ class ActionBar(ui_tools.StyledBar):
         #             self._undock_editor)
 
         menu.exec_(QCursor.pos())
+
+    def _set_list_languages(self, menu_set_language):
+        for l in self._setter_language.get_list_of_language():
+            if l is None:
+                continue
+            action = menu_set_language.addAction(l)
+            action.triggered.connect(lambda checked, language=l:
+                                     self._set_language_action(language))
+
+    def _set_language_action(self, language):
+        self._setter_language.set_laguage_to_editor(language)
 
     def _show_containing_folder(self):
         # FIXME: mover y cross platform
