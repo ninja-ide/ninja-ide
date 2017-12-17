@@ -371,10 +371,10 @@ class ComboEditor(ui_tools.StyledBar):
             self.bar.update_item_text(neditable, neditable.display_name)
 
     def _go_to_symbol(self, index):
-        # FIXME: index 0 invalid
         line = self._symbols_index[index]
         editor = self.current_editor()
-        editor.go_to_line(line)
+        editor.go_to_line(line, center=True)
+        editor.setFocus()
 
     def _update_symbols(self, neditable):
         editor = self.current_editor()
