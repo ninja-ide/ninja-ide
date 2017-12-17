@@ -110,6 +110,8 @@ class ComboEditor(ui_tools.StyledBar):
         self.bar.reopenTab['QString'].connect(
             lambda path: self._main_container.open_file(path))
 
+        self.bar.code_navigator.previousPressed.connect(self._navigate_code)
+        self.bar.code_navigator.nextPressed.connect(self._navigate_code)
         # self.connect(self.bar, SIGNAL("recentTabsModified()"),
         #             lambda: self._main_container.recent_files_changed())
         # self.connect(self.bar.code_navigator.btnPrevious, SIGNAL("clicked()"),
@@ -117,7 +119,8 @@ class ComboEditor(ui_tools.StyledBar):
         # self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
         #             lambda: self._navigate_code(True))
 
-    # def _navigate_code(self, val):
+    def _navigate_code(self, operation, forward=True):
+        self._main_container.navigate_code_history(operation, forward)
     #    op = self.bar.code_navigator.operation
     #    self._main_container.navigate_code_history(val, op)
 
@@ -781,6 +784,9 @@ class ComboFiles(QComboBox):
 
 class CodeNavigator(QWidget):
 
+    nextPressed = pyqtSignal(int, bool)  # Operation, forward
+    previousPressed = pyqtSignal(int, bool)
+
     def __init__(self):
         super(CodeNavigator, self).__init__()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
@@ -793,10 +799,12 @@ class CodeNavigator(QWidget):
         else:
             hbox.setSpacing(0)
         self.btnPrevious = QToolButton()
+        self.btnPrevious.clicked.connect(self._on_previous_pressed)
         self.btnPrevious.setIcon(ui_tools.get_icon('navigate-left'))
         self.btnPrevious.setProperty("gradient", True)
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         self.btnNext = QToolButton()
+        self.btnNext.clicked.connect(self._on_next_pressed)
         self.btnNext.setIcon(ui_tools.get_icon('navigate-right'))
         self.btnNext.setProperty("gradient", True)
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
@@ -832,6 +840,14 @@ class CodeNavigator(QWidget):
 
     def show_menu_navigation(self):
         self.menuNavigate.exec_(QCursor.pos())
+
+    @pyqtSlot()
+    def _on_previous_pressed(self):
+        self.previousPressed.emit(self.operation, False)
+
+    @pyqtSlot()
+    def _on_next_pressed(self):
+        self.previousPressed.emit(self.operation, True)
 
     def _show_bookmarks(self):
         self.btnPrevious.setIcon(QIcon(':img/book-left'))

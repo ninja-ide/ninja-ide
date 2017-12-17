@@ -56,7 +56,7 @@ from ninja_ide.gui.editor.extensions import ExtensionRegistry
 from ninja_ide.gui.editor.side_area import (
     line_number_area,
     text_change_area,
-    # marker_area,
+    marker_area,
     # lint_area
 )
 # from ninja_ide.intellisensei.completion import completer_widget
@@ -285,8 +285,8 @@ class NEditor(QPlainTextEdit):
         # if settings.SHOW_LINT_AREA:
         #    self._lint_area = self.add_side_widget(lint_area.LintArea, 3)
         self._marker_area = None
-        # if settings.SHOW_MARK_AREA:
-        #    self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
+        if settings.SHOW_MARK_AREA:
+            self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
         self._text_change_area = None
         if settings.SHOW_TEXT_CHANGE_AREA:
             self._text_change_area = self.add_side_widget(
@@ -296,6 +296,12 @@ class NEditor(QPlainTextEdit):
 
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.cursorPositionChanged.connect(self.viewport().update)
+
+    def navigate_bookmarks(self, forward=True):
+        if forward:
+            self._marker_area.next_bookmark()
+        else:
+            self._marker_area.previous_bookmark()
 
     def dropEvent(self, event):
         if event.type() == Qt.ControlModifier and self.has_selection:

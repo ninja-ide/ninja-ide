@@ -66,6 +66,10 @@ class _MainContainer(QWidget):
         self._vbox.addLayout(self.stack)
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
+        # Code Navigation
+        self.__operations = {
+            0: self._navigate_bookmarks
+        }
         # QML UI
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
@@ -110,6 +114,13 @@ class _MainContainer(QWidget):
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
+
+    def navigate_code_history(self, operation, forward):
+        self.__operations[operation](forward)
+
+    def _navigate_bookmarks(self, forward=True):
+        current_editor = self.get_current_editor()
+        current_editor.navigate_bookmarks(forward=forward)
 
     def _set_focus_to_editor(self):
         status_bar = IDE.get_service("status_bar")
