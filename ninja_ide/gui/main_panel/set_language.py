@@ -30,13 +30,25 @@ class SetLanguageFile(object):
             # 3: 'js',
             # 4: 'qml'
         }
+        self.dict_extension_language = {
+            'py': 'python',
+            # 'html': 'HTML'
+            # 'js': 'js',
+            # 'qml': 'qml',
+        }
 
-    def set_laguage_to_editor(self, lang):
+    def set_language_to_editor(self, lang):
         self.mc = IDE.get_service("main_container")
         self._current_editor_widget = self.mc.get_current_editor()
         self._current_editor_widget.register_syntax_for(lang)
-        #self._current_editor_widget.register_syntax_for(
+        # self._current_editor_widget.register_syntax_for(
         #    self.dict_language[index])
 
     def get_list_of_language(self):
         return self.dict_language.values()
+
+    def set_language_from_extension(self, ext):
+        self.mc = IDE.get_service("main_container")
+        self._current_editor_widget = self.mc.get_current_editor()
+        self._current_editor_widget.register_syntax_for(
+            self.dict_extension_language[ext])
