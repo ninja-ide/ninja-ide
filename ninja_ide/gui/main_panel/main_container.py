@@ -46,6 +46,7 @@ from ninja_ide.tools.locator import locator_widget
 from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel.helpers import split_orientation
 from ninja_ide.gui import indicator
+from ninja_ide.gui.main_panel import set_language
 
 logger = NinjaLogger(__name__)
 
@@ -96,6 +97,9 @@ class _MainContainer(QWidget):
 
         esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
         esc_sort.activated.connect(self._set_focus_to_editor)
+
+        # Added for set language
+        self._setter_language = set_language.SetLanguageFile()
 
     def install(self):
         ninjaide = IDE.get_service("ide")
@@ -263,7 +267,7 @@ class _MainContainer(QWidget):
             if not extension:
                 filename = "%s.%s" % (filename, "py")
             editor_widget.neditable.save_content(path=filename, force=force)
-
+            self._setter_language.set_language_from_extension(extension)
             self.fileSaved.emit("File Saved: {}".format(filename))
             self.currentEditorChanged.emit(filename)
             return True

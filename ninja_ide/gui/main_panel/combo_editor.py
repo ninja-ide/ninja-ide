@@ -608,7 +608,7 @@ class ActionBar(ui_tools.StyledBar):
 
     def set_language_combo_changed(self, index):
         """Change the current language of editor."""
-        self._setter_language.set_laguage_to_editor(index)
+        self._setter_language.set_language_to_editor(index)
 
     def update_line_col(self, line, col):
         """Update the line and column position."""
@@ -684,7 +684,7 @@ class ActionBar(ui_tools.StyledBar):
                                      self._set_language_action(language))
 
     def _set_language_action(self, language):
-        self._setter_language.set_laguage_to_editor(language)
+        self._setter_language.set_language_to_editor(language)
 
     def _show_containing_folder(self):
         # FIXME: mover y cross platform
