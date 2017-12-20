@@ -67,6 +67,10 @@ class _MainContainer(QWidget):
         self._vbox.addLayout(self.stack)
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
+        # Code Navigation
+        self.__operations = {
+            0: self._navigate_bookmarks
+        }
         # QML UI
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
@@ -109,12 +113,18 @@ class _MainContainer(QWidget):
         self.combo_area.allFilesClosed.connect(self._files_closed)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
-
-        self.current_widget = self.combo_area
+        # self.current_widget = self.combo_area
         # Code Locator
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
+
+    def navigate_code_history(self, operation, forward):
+        self.__operations[operation](forward)
+
+    def _navigate_bookmarks(self, forward=True):
+        current_editor = self.get_current_editor()
+        current_editor.navigate_bookmarks(forward=forward)
 
     def _set_focus_to_editor(self):
         status_bar = IDE.get_service("status_bar")
@@ -133,8 +143,15 @@ class _MainContainer(QWidget):
         split_widget = split_orientation.SplitOrientation(self)
         split_widget.show()
 
+    def show_dialog(self, widget):
+        self.add_widget(widget)
+        self.stack.setCurrentWidget(widget)
+
     def show_split(self, orientation_vertical=False):
-        self.current_widget.split_editor(orientation_vertical)
+        orientation = Qt.Horizontal
+        if orientation_vertical:
+            orientation = Qt.Vertical
+        self.combo_area.split_editor(orientation)
 
     def show_locator(self):
         """Show the Locator Widget"""
@@ -155,7 +172,7 @@ class _MainContainer(QWidget):
         self.currentEditorChanged.emit(filename)
 
     def get_current_editor(self):
-        current_widget = self.current_widget.currentWidget()
+        current_widget = self.combo_area.current_editor()
         if isinstance(current_widget, editor.NEditor):
             return current_widget
         return None
@@ -295,7 +312,7 @@ class _MainContainer(QWidget):
         return os.path.expanduser("~")
 
     def close_file(self):
-        self.current_widget.close_current_file()
+        self.combo_area.close_current_file()
 
     def add_editor(self, filename=None):
         ninjaide = IDE.get_service("ide")
@@ -303,8 +320,8 @@ class _MainContainer(QWidget):
         if editable.editor:
             # If already open
             logger.debug("%s is already open" % filename)
-            self.current_widget.set_current(editable)
-            return self.current_widget.currentWidget()
+            self.combo_area.set_current(editable)
+            return self.combo_area.current_editor()
         else:
             pass
 
@@ -318,7 +335,7 @@ class _MainContainer(QWidget):
         self.fileOpened.emit(filename)
 
         if not keep_index:
-            self.current_widget.set_current(editable)
+            self.combo_area.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
         editor_widget.setFocus()

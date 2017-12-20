@@ -227,8 +227,8 @@ class NinjaStyle(QProxyStyle):
             # Draw border
             if widget.property("border"):
                 painter.setPen(_COLORS["MenuBarBorderColor"])
-                painter.drawLine(opt.rect.topRight() + QPoint(0, 6),
-                                 opt.rect.bottomRight() - QPoint(0, 6))
+                painter.drawLine(opt.rect.topRight() + QPoint(0, 3),
+                                 opt.rect.bottomRight() - QPoint(0, 3))
 
             if widget.property("border_bottom"):
                 painter.setPen(_COLORS['Border'])

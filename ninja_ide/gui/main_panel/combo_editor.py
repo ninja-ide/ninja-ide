@@ -65,7 +65,8 @@ from . import set_language
 class ComboEditor(ui_tools.StyledBar):
     # Signals
     closeSplit = pyqtSignal('PyQt_PyObject')
-    splitEditor = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject', bool)
+    splitEditor = pyqtSignal(
+        'PyQt_PyObject', 'PyQt_PyObject', Qt.Orientation)
     allFilesClosed = pyqtSignal()
     about_to_close_combo_editor = pyqtSignal()
 
@@ -110,6 +111,8 @@ class ComboEditor(ui_tools.StyledBar):
         self.bar.reopenTab['QString'].connect(
             lambda path: self._main_container.open_file(path))
 
+        self.bar.code_navigator.previousPressed.connect(self._navigate_code)
+        self.bar.code_navigator.nextPressed.connect(self._navigate_code)
         # self.connect(self.bar, SIGNAL("recentTabsModified()"),
         #             lambda: self._main_container.recent_files_changed())
         # self.connect(self.bar.code_navigator.btnPrevious,
@@ -118,16 +121,17 @@ class ComboEditor(ui_tools.StyledBar):
         # self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
         #             lambda: self._navigate_code(True))
 
-    # def _navigate_code(self, val):
+    def _navigate_code(self, operation, forward=True):
+        self._main_container.navigate_code_history(operation, forward)
     #    op = self.bar.code_navigator.operation
     #    self._main_container.navigate_code_history(val, op)
 
-    def currentWidget(self):
+    def current_editor(self):
         return self.stacked.currentWidget()
 
     def setFocus(self):
         super(ComboEditor, self).setFocus()
-        self.stacked.currentWidget().setFocus()
+        self.current_editor().setFocus()
         self._editor_with_focus()
 
     def _file_opened_by_main(self, path):
@@ -210,11 +214,19 @@ class ComboEditor(ui_tools.StyledBar):
             widget = self.stacked.widget(index)
             # widget.setDocument(QsciDocument())
 
-    def split_editor(self, orientation_vertical):
-        new_widget = ComboEditor()
+    def clone(self):
+        combo = ComboEditor()
         for neditable in self.bar.get_editables():
-            new_widget.add_editor(neditable)
-        self.splitEditor.emit(self, new_widget, orientation_vertical)
+            combo.add_editor(neditable)
+        return combo
+
+    def split_editor(self, orientation):
+        new_combo = self.clone()
+        self.splitEditor.emit(self, new_combo, orientation)
+        # new_widget = ComboEditor()
+        # for neditable in self.bar.get_editables():
+        #    new_widget.add_editor(neditable)
+        # self.splitEditor.emit(self, new_widget, orientation_vertical)
         # for neditable in self.bar.get_editables():
         #    new_widget.add_editor(neditable)
         # self.splitEditor.emit(self, new_widget, orientationVertical)
@@ -227,7 +239,7 @@ class ComboEditor(ui_tools.StyledBar):
             new_combo.add_editor(neditable)
         self.__undocked.append(new_combo)
         new_combo.setWindowTitle("NINJA-IDE")
-        editor = self.currentWidget()
+        editor = self.current_editor()
         new_combo.set_current(editor.neditable)
         new_combo.resize(700, 500)
         new_combo.about_to_close_combo_editor.connect(self._remove_undock)
@@ -242,7 +254,6 @@ class ComboEditor(ui_tools.StyledBar):
 
     def _close_file(self, neditable):
         index = self.bar.close_file(neditable)
-        print(index)
         layoutItem = self.stacked.takeAt(index)
         # neditable.editor.completer.cc.unload_module()
         self._add_to_last_opened(neditable.file_path)
@@ -261,13 +272,13 @@ class ComboEditor(ui_tools.StyledBar):
             # self.emit(SIGNAL("recentTabsModified()"))
 
     def _editor_with_focus(self):
-        if self._main_container.current_widget is not self:
-            self._main_container.current_widget = self
-            editor = self.stacked.currentWidget()
-            self._main_container.current_editor_changed(
-                editor.neditable.file_path)
-            self._load_symbols(editor.neditable)
-            editor.neditable.update_checkers_display()
+        # if self._main_container.current_widget is not self:
+        self._main_container.combo_area = self
+        editor = self.current_editor()
+        self._main_container.current_editor_changed(
+            editor.neditable.file_path)
+        self._load_symbols(editor.neditable)
+        editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
         val = QMessageBox.No
@@ -315,7 +326,7 @@ class ComboEditor(ui_tools.StyledBar):
     def _set_current(self, neditable, index):
         if neditable:
             self.stacked.setCurrentIndex(index)
-            editor = self.stacked.currentWidget()
+            editor = self.current_editor()
             self._update_cursor_position(ignore_sender=True)
             editor.setFocus()
             self._main_container.current_editor_changed(
@@ -333,7 +344,7 @@ class ComboEditor(ui_tools.StyledBar):
 
     def _update_cursor_position(self, line=0, col=0, ignore_sender=False):
         obj = self.sender()
-        editor = self.stacked.currentWidget()
+        editor = self.current_editor()
         # Check if it's current to avoid signals from other splits.
         if ignore_sender or editor == obj:
             line += 1
@@ -341,7 +352,7 @@ class ComboEditor(ui_tools.StyledBar):
 
     def _set_current_symbol(self, line, ignore_sender=False):
         obj = self.sender()
-        editor = self.stacked.currentWidget()
+        editor = self.current_editor()
         # Check if it's current to avoid signals from other splits.
         if ignore_sender or editor == obj:
             index = bisect.bisect(self._symbols_index, line)
@@ -362,11 +373,11 @@ class ComboEditor(ui_tools.StyledBar):
     def _go_to_symbol(self, index):
         # FIXME: index 0 invalid
         line = self._symbols_index[index]
-        editor = self.stacked.currentWidget()
+        editor = self.current_editor()
         editor.go_to_line(line)
 
     def _update_symbols(self, neditable):
-        editor = self.stacked.currentWidget()
+        editor = self.current_editor()
         # Check if it's current to avoid signals from other splits.
         if editor == neditable.editor:
             self._load_symbols(neditable)
@@ -517,23 +528,18 @@ class ActionBar(ui_tools.StyledBar):
         # self.btn_close.setFixedHeight(24)
         # self.btn_close.setIcon(QIcon(":img/close"))
 
-        self.btn_close.setIcon(
-            self.style().standardIcon(QStyle.SP_DialogCloseButton))
-            # ui_tools.colored_icon(
-            #    ":img/close",
-            #    NTheme.get_color('IconBaseColor')))
         if main_combo:
-            # self.btn_close.setObjectName('navigation_button')
+            self.btn_close.setIcon(
+                ui_tools.colored_icon(
+                    ':img/close', NTheme.get_color('IconBaseColor')))
             self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
             self.btn_close.clicked.connect(self.about_to_close_file)
-            # self.connect(self.btn_close, SIGNAL("clicked()"),
-            #             self.about_to_close_file)
         else:
-            # self.btn_close.setObjectName('close_split')
+            self.btn_close.setIcon(
+                ui_tools.colored_icon(
+                    ':img/close', "#ff9222"))
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
             self.btn_close.clicked.connect(self.close_split)
-            # self.connect(self.btn_close, SIGNAL("clicked()"),
-            #             self.close_split)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.btn_close)
 
@@ -725,6 +731,9 @@ class ActionBar(ui_tools.StyledBar):
     def about_to_close_file(self, index=None):
         """Close the NFile object."""
 
+        parent = self.parent().parentWidget()  # Splitter
+        if parent.count() > 1:
+            return
         if index is None:
             index = self.combo_files.currentIndex()
         neditable = self.combo_files.itemData(index)
@@ -804,6 +813,9 @@ class ComboFiles(QComboBox):
 
 class CodeNavigator(QWidget):
 
+    nextPressed = pyqtSignal(int, bool)  # Operation, forward
+    previousPressed = pyqtSignal(int, bool)
+
     def __init__(self):
         super(CodeNavigator, self).__init__()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
@@ -815,31 +827,15 @@ class CodeNavigator(QWidget):
             hbox.setSpacing(10)
         else:
             hbox.setSpacing(0)
-        # self.btnPrevious = QPushButton(
-        #    QIcon(":img/nav-code-left"), '')
-        # self.btnPrevious.setIconSize(QSize(16, 16))
-        # self.btnPrevious.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnPrevious = QToolButton()
-        self.btnPrevious.setText("<")
-        # self.btnPrevious.setProperty("border_bottom", True)
+        self.btnPrevious.clicked.connect(self._on_previous_pressed)
+        self.btnPrevious.setIcon(ui_tools.get_icon('navigate-left'))
         self.btnPrevious.setProperty("gradient", True)
-        # self.btnPrevious.setFixedHeight(24)
-        # self.btnPrevious.setAutoRaise(True)
-        # self.btnPrevious.setIcon(QIcon(":img/nav-code-left"))
-        self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
-        # self.btnNext = QPushButton(
-        #    QIcon(":img/nav-code-right"), '')
-        # self.btnNext.setIconSize(QSize(16, 16))
-        # self.btnNext.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnNext = QToolButton()
-        self.btnNext.setText(">")
-        # self.btnNext.setProperty("border_bottom", True)
+        self.btnNext.clicked.connect(self._on_next_pressed)
+        self.btnNext.setIcon(ui_tools.get_icon('navigate-right'))
         self.btnNext.setProperty("gradient", True)
-        # self.btnNext.setFixedHeight(24)
-        # self.btnNext.setAutoRaise(True)
-        # self.btnNext.setIcon(QIcon(":img/nav-code-right"))
-        self.btnNext.setObjectName('navigation_button')
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         hbox.addWidget(self.btnPrevious)
         hbox.addWidget(self.btnNext)
@@ -873,6 +869,14 @@ class CodeNavigator(QWidget):
 
     def show_menu_navigation(self):
         self.menuNavigate.exec_(QCursor.pos())
+
+    @pyqtSlot()
+    def _on_previous_pressed(self):
+        self.previousPressed.emit(self.operation, False)
+
+    @pyqtSlot()
+    def _on_next_pressed(self):
+        self.previousPressed.emit(self.operation, True)
 
     def _show_bookmarks(self):
         self.btnPrevious.setIcon(QIcon(':img/book-left'))

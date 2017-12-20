@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import bisect
+from PyQt5.QtWidgets import QMenu
 from PyQt5.QtGui import (
     QFontMetrics,
     QPainter,
@@ -30,35 +32,70 @@ from ninja_ide.gui.editor import side_area
 class MarkerArea(side_area.SideArea):
 
     @property
-    def breakpoints(self):
-        return self.__breakpoints
+    def bookmarks(self):
+        return sorted(self.__bookmarks)
 
     def __init__(self, editor):
         side_area.SideArea.__init__(self, editor)
         self.setMouseTracking(True)
         self._editor = editor
-        self.__breakpoints = []
+        self.__bookmarks = []
         self.__line_hovered = -1
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self._menu)
+
+    def add_bookmark(self, line):
+        self.__bookmarks.append(line)
+
+    def _menu(self, point):
+        menu = QMenu(self)
+        n = menu.addAction('Next')
+        n.triggered.connect(self.next_bookmark)
+        p = menu.addAction('Previous')
+        p.triggered.connect(self.previous_bookmark)
+        menu.exec_(self.mapToGlobal(point))
 
     def width(self):
         return self.sizeHint().width()
+
+    def next_bookmark(self):
+        if self.__bookmarks:
+            current_line, col = self._editor.cursor_position
+            index = bisect.bisect(self.bookmarks, current_line)
+            try:
+                line = self.bookmarks[index]
+            except IndexError:
+                line = self.bookmarks[0]
+            self._editor.cursor_position = line, col
+
+    def previous_bookmark(self):
+        if self.__bookmarks:
+            current_line, col = self._editor.cursor_position
+            index = bisect.bisect(self.bookmarks, current_line)
+            line = self.bookmarks[index - 1]
+            if line == current_line:
+                line = self.bookmarks[index - 2]
+            self._editor.cursor_position = line, col
 
     def sizeHint(self):
         font_metrics = QFontMetrics(self._editor.font())
         size = QSize(font_metrics.height(), font_metrics.height())
         return size
 
+    def enterEvent(self, event):
+        self.setCursor(Qt.PointingHandCursor)
+
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             # Get line number from position
             y_pos = event.pos().y()
             line = self._editor.line_from_position(y_pos)
-            if line not in self.__breakpoints:
+            if line not in self.__bookmarks:
                 # Add marker
-                self.__breakpoints.append(line)
+                self.__bookmarks.append(line)
             else:
                 # Remove marker
-                self.__breakpoints.remove(line)
+                self.__bookmarks.remove(line)
             self.repaint()
 
     def leaveEvent(self, event):
@@ -87,6 +124,6 @@ class MarkerArea(side_area.SideArea):
         painter.setPen(color)
         painter.setBrush(color)
         for top, block_number, _ in self._editor.visible_blocks:
-            for marker in self.__breakpoints:
+            for marker in self.__bookmarks:
                 if marker == block_number:
                     painter.drawEllipse(5, top + 3, r, r)
