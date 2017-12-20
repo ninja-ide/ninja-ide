@@ -115,7 +115,8 @@ class ComboEditor(ui_tools.StyledBar):
         self.bar.code_navigator.nextPressed.connect(self._navigate_code)
         # self.connect(self.bar, SIGNAL("recentTabsModified()"),
         #             lambda: self._main_container.recent_files_changed())
-        # self.connect(self.bar.code_navigator.btnPrevious, SIGNAL("clicked()"),
+        # self.connect(self.bar.code_navigator.btnPrevious,
+        #                SIGNAL("clicked()"),
         #             lambda: self._navigate_code(False))
         # self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
         #             lambda: self._navigate_code(True))
@@ -604,7 +605,8 @@ class ActionBar(ui_tools.StyledBar):
         """Change the current item in the combo."""
         neditable = self.combo_files.itemData(index)
         self.change_current.emit(neditable, index)
-        # self.emit(SIGNAL("changeCurrent(PyQt_PyObject, int)"), neditable, index)
+        # self.emit(SIGNAL("changeCurrent(PyQt_PyObject, int)"),
+        #            neditable, index)
 
     def current_symbol_changed(self, index):
         """Change the current symbol in the combo."""

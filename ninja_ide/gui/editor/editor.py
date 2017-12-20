@@ -61,10 +61,10 @@ from ninja_ide.gui.editor.side_area import (
 )
 # from ninja_ide.intellisensei.completion import completer_widget
 # from ninja_ide.gui.editor.extensions import (
-    # extension,
-    # margin_line,
-    # symbol_highlighter,
-    # indentation_guides
+# extension,
+# margin_line,
+# symbol_highlighter,
+# indentation_guides
 # )
 
 # from ninja_ide.gui.editor import symbol_completer
