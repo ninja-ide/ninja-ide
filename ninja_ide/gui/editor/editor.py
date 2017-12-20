@@ -61,10 +61,10 @@ from ninja_ide.gui.editor.side_area import (
 )
 # from ninja_ide.intellisensei.completion import completer_widget
 # from ninja_ide.gui.editor.extensions import (
-    # extension,
-    # margin_line,
-    # symbol_highlighter,
-    # indentation_guides
+# extension,
+# margin_line,
+# symbol_highlighter,
+# indentation_guides
 # )
 
 # from ninja_ide.gui.editor import symbol_completer
@@ -286,7 +286,8 @@ class NEditor(QPlainTextEdit):
         #    self._lint_area = self.add_side_widget(lint_area.LintArea, 3)
         self._marker_area = None
         # if settings.SHOW_MARK_AREA:
-        #    self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
+        #    self._marker_area = self.add_side_widget(
+        #        marker_area.MarkerArea, 1)
         self._text_change_area = None
         if settings.SHOW_TEXT_CHANGE_AREA:
             self._text_change_area = self.add_side_widget(

@@ -30,11 +30,50 @@ class SetLanguageFile(object):
             # 3: 'js',
             # 4: 'qml'
         }
-        self.dict_extension_language = {
-            'py': 'python',
-            # 'html': 'HTML'
-            # 'js': 'js',
-            # 'qml': 'qml',
+        self.LEXER_MAP = {
+            "asm": "assembler",
+            "json": "json",
+            "cs": "csharp",
+            "rb": "ruby_on_rails",
+            "cpp": "cpp",
+            "coffee": "coffeescript",
+            "tex": "bibtex",
+            "js": "javascript",
+            "qml": "javascript",
+            "mo": "gettext",
+            "po": "gettext",
+            "pot": "gettext",
+            "v": "verilog",
+            "sh": "shell",
+            "shell": "shell",
+            "bash": "shell",
+            "ksh": "shell",
+            "pas": "pascal",
+            "html": "html",
+            "list": "sourceslist",
+            "lol": "lolcode",
+            "h": "header",
+            "conf": "apache",
+            "php": "php",
+            "php4": "php",
+            "php5": "php",
+            "css": "css",
+            "qss": "css",
+            "scss": "css",
+            "sass": "css",
+            "tex": "latex",
+            "py": "python",
+            "pyw": "python",
+            "rpy": "python",
+            "tac": "python",
+            "pyx": "cython",
+            "pxd": "cython",
+            "pxi": "cython",
+            "go": "go",
+            "asp": "asp",
+            "rst": "rst",
+            "c": "c",
+            "java": "java",
         }
 
     def set_language_to_editor(self, lang):
@@ -47,8 +86,13 @@ class SetLanguageFile(object):
     def get_list_of_language(self):
         return self.dict_language.values()
 
+    def get_lang(self, extension):
+        if not extension:
+            extension = "py"
+        return self.LEXER_MAP.get(extension, "")
+
     def set_language_from_extension(self, ext):
         self.mc = IDE.get_service("main_container")
         self._current_editor_widget = self.mc.get_current_editor()
         self._current_editor_widget.register_syntax_for(
-            self.dict_extension_language[ext])
+            self.get_lang(ext))
