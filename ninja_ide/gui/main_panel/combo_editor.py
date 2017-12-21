@@ -59,6 +59,7 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.theme import NTheme
+from . import set_language
 
 
 class ComboEditor(ui_tools.StyledBar):
@@ -114,7 +115,8 @@ class ComboEditor(ui_tools.StyledBar):
         self.bar.code_navigator.nextPressed.connect(self._navigate_code)
         # self.connect(self.bar, SIGNAL("recentTabsModified()"),
         #             lambda: self._main_container.recent_files_changed())
-        # self.connect(self.bar.code_navigator.btnPrevious, SIGNAL("clicked()"),
+        # self.connect(self.bar.code_navigator.btnPrevious,
+        #                SIGNAL("clicked()"),
         #             lambda: self._navigate_code(False))
         # self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
         #             lambda: self._navigate_code(True))
@@ -203,6 +205,9 @@ class ComboEditor(ui_tools.StyledBar):
 
     def show_combo_symbol(self):
         self.bar.symbols_combo.showPopup()
+
+    def show_combo_set_language(self):
+        self.bar.set_language_combo.showPopup()
 
     def unlink_editors(self):
         for index in range(self.stacked.count()):
@@ -492,6 +497,7 @@ class ActionBar(ui_tools.StyledBar):
         #             self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
+
         self.code_navigator = CodeNavigator()
         hbox.addWidget(self.code_navigator)
         # FIXME: set property for other themes
@@ -536,6 +542,9 @@ class ActionBar(ui_tools.StyledBar):
             self.btn_close.clicked.connect(self.close_split)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.btn_close)
+
+        # Added for set language
+        self._setter_language = set_language.SetLanguageFile()
 
     # def _on_lbl_position_clicked(self):
     #    main_container = IDE.get_service("main_container")
@@ -596,13 +605,18 @@ class ActionBar(ui_tools.StyledBar):
         """Change the current item in the combo."""
         neditable = self.combo_files.itemData(index)
         self.change_current.emit(neditable, index)
-        # self.emit(SIGNAL("changeCurrent(PyQt_PyObject, int)"), neditable, index)
+        # self.emit(SIGNAL("changeCurrent(PyQt_PyObject, int)"),
+        #            neditable, index)
 
     def current_symbol_changed(self, index):
         """Change the current symbol in the combo."""
         if index == 0:
             return
         self.goToSymbol.emit(index - 1)
+
+    def set_language_combo_changed(self, index):
+        """Change the current language of editor."""
+        self._setter_language.set_language_to_editor(index)
 
     def update_line_col(self, line, col):
         """Update the line and column position."""
@@ -637,6 +651,10 @@ class ActionBar(ui_tools.StyledBar):
         # if len(settings.LAST_OPENED_FILES) == 0:
         #    actionReopen.setEnabled(False)
 
+        # set language action
+        menu_set_language = menu.addMenu(translations.TR_SET_LANGUAGE)
+        self._set_list_languages(menu_set_language)
+
         # Connect actions
         action_undock.triggered.connect(self._undock_editor)
         show_folder.triggered.connect(self._show_containing_folder)
@@ -664,6 +682,17 @@ class ActionBar(ui_tools.StyledBar):
         #             self._undock_editor)
 
         menu.exec_(QCursor.pos())
+
+    def _set_list_languages(self, menu_set_language):
+        for l in self._setter_language.get_list_of_language():
+            if l is None:
+                continue
+            action = menu_set_language.addAction(l)
+            action.triggered.connect(lambda checked, language=l:
+                                     self._set_language_action(language))
+
+    def _set_language_action(self, language):
+        self._setter_language.set_language_to_editor(language)
 
     def _show_containing_folder(self):
         # FIXME: mover y cross platform
