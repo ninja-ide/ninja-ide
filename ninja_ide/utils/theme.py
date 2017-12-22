@@ -15,10 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-<<<<<<< HEAD
 # FIXME: Maybe we need to improve this module
-=======
->>>>>>> 1e75c2f2... esto debo squash
 import os
 import json
 from PyQt5.QtWidgets import QApplication
@@ -38,16 +35,11 @@ THEMES_DIRS = (
     resources.NINJA_THEMES,
     resources.NINJA_THEMES_DOWNLOAD
 )
-<<<<<<< HEAD
 # All colors defined in the theme, included the palette
 COLORS = {}
 # Some flags
 FLAGS = {}
 # Editor scheme recomended by the theme
-=======
-COLORS = {}
-FLAGS = {}
->>>>>>> 1e75c2f2... esto debo squash
 DEFAULT_EDITOR_SCHEME = ""
 
 
@@ -55,13 +47,10 @@ def get_color(role):
     return COLORS.get(role)
 
 
-<<<<<<< HEAD
 def get_colors():
     return COLORS
 
 
-=======
->>>>>>> 1e75c2f2... esto debo squash
 def flag(name):
     return FLAGS.get(name)
 
@@ -69,12 +58,8 @@ def flag(name):
 def load_theme(name):
     theme_data = available_themes()[name]
     FLAGS = theme_data.get("flags")
-<<<<<<< HEAD
     global DEFAULT_EDITOR_SCHEME
     DEFAULT_EDITOR_SCHEME = theme_data.get("editor-theme")
-=======
-    DEFUALT_EDITOR_SCHEME = theme_data.get("editor-theme")
->>>>>>> 1e75c2f2... esto debo squash
     colors = theme_data.get("colors")
     palette = theme_data.get("palette")
     # Create colors
@@ -86,11 +71,7 @@ def load_theme(name):
             # If color is invalid, set white
             qcolor = QColor(Qt.white)
         COLORS[role] = qcolor
-<<<<<<< HEAD
     qpalette = QApplication.palette()
-=======
-    palette = QApplication.palette()
->>>>>>> 1e75c2f2... esto debo squash
     if FLAGS["PaletteFromTheme"]:
         for role, color in palette.items():
             qcolor = QColor(color)
@@ -98,16 +79,10 @@ def load_theme(name):
             if role.endswith("Disabled"):
                 role = role.split("Disabled")[0]
                 color_group = QPalette.Disabled
-<<<<<<< HEAD
             color_role = getattr(qpalette, role)
             qpalette.setBrush(color_group, color_role, qcolor)
             COLORS[role] = qcolor
     QApplication.setPalette(qpalette)
-=======
-            color_role = get_color(palette, role)
-            palette.setBrush(color_group, color_role, qcolor)
-    QApplication.setPalette(palette)
->>>>>>> 1e75c2f2... esto debo squash
 
 
 def available_themes():
