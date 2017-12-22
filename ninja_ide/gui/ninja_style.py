@@ -44,10 +44,7 @@ from PyQt5.QtCore import (
     QRectF,
     QPointF
 )
-from ninja_ide.gui import theme
-
-_PALETTE = theme.PALETTE
-_COLORS = theme.NTheme.get_colors()
+from ninja_ide.utils import theme
 
 # States
 STATE_SUNKEN = QStyle.State_Sunken
@@ -122,7 +119,7 @@ class NinjaStyle(QProxyStyle):
             text = opt.fontMetrics.elidedText(cb.currentText,
                                               Qt.ElideRight, elide_width)
             # FIXME: states
-            painter.setPen(_COLORS['ComboBoxTextColor'])
+            painter.setPen(theme.get_color('ComboBoxTextColor'))
             painter.drawText(edit_rect.adjusted(1, 0, -1, 0),
                              Qt.AlignLeft | Qt.AlignVCenter, text)
             painter.restore()
@@ -131,9 +128,9 @@ class NinjaStyle(QProxyStyle):
         #    pass
         elif element == QStyle.CE_ToolBar:
             rect = opt.rect
-            color = _COLORS['ToolButtonColor']
+            color = theme.get_color('ToolButtonColor')
             if widget.property('gradient'):
-                base = QColor(_PALETTE['Window'])
+                base = QColor(theme.get_color('Window'))
                 color = QLinearGradient(
                     opt.rect.topRight(), opt.rect.bottomRight())
                 color.setColorAt(0.2, base.lighter(150))
@@ -142,9 +139,9 @@ class NinjaStyle(QProxyStyle):
             painter.fillRect(rect, color)
             if widget.property("border"):
                 # painter.setPen(opt.palette.light().color().lighter(150))
-                painter.setPen(_COLORS['Border'])
+                painter.setPen(theme.get_color('Border'))
                 painter.drawLine(rect.topRight(), rect.bottomRight())
-            # painter.setPen(_COLORS['Border'])
+            # painter.setPen(theme.get_color(Border'])
             # painter.drawLine(opt.rect.topRight(), opt.rect.bottomRight())
 
         elif element == QStyle.CE_MenuItem:
@@ -154,19 +151,19 @@ class NinjaStyle(QProxyStyle):
             item.rect = opt.rect
             pal = opt.palette
             if enabled:
-                color = _COLORS['MenuItemEnabled']
+                color = theme.get_color('MenuItemEnabled')
             else:
-                color = _COLORS['MenuItemDisabled']
+                color = theme.get_color('MenuItemDisabled')
             item.palette = pal
             pal.setBrush(QPalette.Text, color)
             QProxyStyle.drawControl(self, element, opt, painter, widget)
             painter.restore()
         elif element == QStyle.CE_MenuBarEmptyArea:
-            painter.fillRect(opt.rect, _COLORS['MenuBar'])
+            painter.fillRect(opt.rect, theme.get_color('MenuBar'))
             # Draw border
             painter.save()
             # FIXME: color from theme
-            painter.setPen(_COLORS['MenuBarBorderColor'])
+            painter.setPen(theme.get_color('MenuBarBorderColor'))
             painter.drawLine(opt.rect.bottomLeft() + QPointF(.5, .5),
                              opt.rect.bottomRight() + QPointF(.5, .5))
             painter.restore()
@@ -177,20 +174,20 @@ class NinjaStyle(QProxyStyle):
             painter.save()
             act = opt.state & (STATE_SUNKEN | QStyle.State_Selected)
             dis = not (opt.state & STATE_ENABLED)
-            painter.fillRect(opt.rect, _COLORS['MenuBar'])
+            painter.fillRect(opt.rect, theme.get_color('MenuBar'))
             pal = opt.palette
             item = opt
             item.rect = opt.rect
             if dis:
-                color = _COLORS['MenuBarItemDisabled']
+                color = theme.get_color('MenuBarItemDisabled')
             else:
-                color = _COLORS['MenuBarItemEnabled']
+                color = theme.get_color('MenuBarItemEnabled')
             pal.setBrush(QPalette.ButtonText, color)
             item.palette = pal
             QCommonStyle.drawControl(self, element, item, painter, widget)
             if act:
                 pal = opt.palette
-                color = _COLORS['MenuBarHover']
+                color = theme.get_color('MenuBarHover')
                 painter.fillRect(opt.rect, color)
                 align = (Qt.AlignCenter | Qt.TextShowMnemonic |
                          Qt.TextDontClip | Qt.TextSingleLine)
@@ -199,9 +196,9 @@ class NinjaStyle(QProxyStyle):
                     align |= Qt.TextHideMnemonic
                 # FIXME:
                 if dis:
-                    co = _COLORS['IconDisabledColor']
+                    co = theme.get_color('IconDisabledColor')
                 else:
-                    co = _COLORS['MenuBarTextHover']
+                    co = theme.get_color('MenuBarTextHover')
                 painter.setPen(Qt.NoPen)
                 pal.setBrush(QPalette.Text, co)
                 self.drawItemText(painter, item.rect, align, pal, not dis,
@@ -226,12 +223,12 @@ class NinjaStyle(QProxyStyle):
                                painter, widget)
             # Draw border
             if widget.property("border"):
-                painter.setPen(_COLORS["MenuBarBorderColor"])
+                painter.setPen(theme.get_color("MenuBarBorderColor"))
                 painter.drawLine(opt.rect.topRight() + QPoint(0, 3),
                                  opt.rect.bottomRight() - QPoint(0, 3))
 
             if widget.property("border_bottom"):
-                painter.setPen(_COLORS['Border'])
+                painter.setPen(theme.get_color('Border'))
                 painter.drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight())
             arrow_rect = QRect((opt.rect.left() + opt.rect.right()) / 2 + 6,
                                opt.rect.center().y(), 9, 9)
@@ -246,7 +243,7 @@ class NinjaStyle(QProxyStyle):
             if self.styleHint(QStyle.SH_ComboBox_Popup, opt, widget):
                 arrow_opt.rect.translate(0, -6)
                 arrow_opt.palette.setColor(
-                    QPalette.ButtonText, _COLORS['IconBaseColor'])
+                    QPalette.ButtonText, theme.get_color('IconBaseColor'))
                 QCommonStyle.drawPrimitive(
                     self, QStyle.PE_IndicatorArrowUp, arrow_opt,
                     painter, widget)
@@ -306,9 +303,9 @@ class NinjaStyle(QProxyStyle):
     @staticmethod
     def panel_palette(old_palette, light_colored=False):
         if light_colored:
-            color = _COLORS['PanelTextColorDark']
+            color = theme.get_color('PanelTextColorDark')
         else:
-            color = _COLORS['PanelTextColorLight']
+            color = theme.get_color('PanelTextColorLight')
         pal = old_palette
         pal.setBrush(QPalette.All, QPalette.WindowText, color)
         pal.setBrush(QPalette.All, QPalette.ButtonText, color)
@@ -322,9 +319,9 @@ class NinjaStyle(QProxyStyle):
             flat = False
             pressed = (opt.state & STATE_SUNKEN or opt.state & STATE_ON)
             hovered = opt.state & STATE_ENABLED and opt.state & STATE_MOUSEOVER
-            button_color = _COLORS['ToolButtonColor']
+            button_color = theme.get_color('ToolButtonColor')
             if not flat and widget.property("gradient"):
-                base = QColor(_PALETTE['Window'])
+                base = QColor(theme.get_color('Window'))
 
                 button_color = QLinearGradient(
                     opt.rect.topRight(), opt.rect.bottomRight())
@@ -333,15 +330,15 @@ class NinjaStyle(QProxyStyle):
                 button_color.setColorAt(
                     0.9, base.darker(135))
             if pressed:
-                button_color = _COLORS['ToolButtonSelected']
+                button_color = theme.get_color('ToolButtonSelected')
             elif hovered:
                 if not flat and widget.property("gradient"):
                     button_color.setColorAt(0.2, base.lighter(160))
                     button_color.setColorAt(0.9, base.darker(100))
                 else:
-                    button_color = _COLORS['ToolButtonHover']
+                    button_color = theme.get_color('ToolButtonHover')
             if widget.property("border_bottom"):
-                painter.setPen(_COLORS['Border'])
+                painter.setPen(theme.get_color('Border'))
                 painter.drawLine(opt.rect.bottomLeft(), opt.rect.bottomRight())
             painter.fillRect(opt.rect.adjusted(1, 1, -1, -1), button_color)
             # elif not opt.state & STATE_ENABLED:
@@ -371,7 +368,7 @@ class NinjaStyle(QProxyStyle):
                 enabled = True
             if not enabled:
                 painter.setOpacity(0.55)
-            painter.fillRect(rect, _COLORS['LineEditBackground'])
+            painter.fillRect(rect, theme.get_color('LineEditBackground'))
             has_focus = False
             if opt.state & QStyle.State_HasFocus:
                 has_focus = True
@@ -390,7 +387,7 @@ class NinjaStyle(QProxyStyle):
             painter.restore()
         elif element == QStyle.PE_IndicatorToolBarSeparator:
             rect = opt.rect
-            painter.setPen(_COLORS['SeparatorColor'])
+            painter.setPen(theme.get_color('SeparatorColor'))
             border_rect = QRectF(rect).adjusted(0.5, 0.5, -0.5, -0.5)
             if opt.state & QStyle.State_Horizontal:
                 border_rect.setWidth(1)

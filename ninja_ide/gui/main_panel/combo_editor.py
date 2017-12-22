@@ -58,8 +58,8 @@ from ninja_ide.extensions import handlers
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
-from ninja_ide.gui.theme import NTheme
-from . import set_language
+from ninja_ide.gui.main_panel import set_language
+from ninja_ide.utils import theme
 
 
 class ComboEditor(ui_tools.StyledBar):
@@ -531,7 +531,7 @@ class ActionBar(ui_tools.StyledBar):
         if main_combo:
             self.btn_close.setIcon(
                 ui_tools.colored_icon(
-                    ':img/close', NTheme.get_color('IconBaseColor')))
+                    ':img/close', theme.get_color('IconBaseColor')))
             self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
             self.btn_close.clicked.connect(self.about_to_close_file)
         else:

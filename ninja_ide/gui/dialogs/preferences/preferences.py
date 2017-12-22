@@ -124,7 +124,8 @@ class Preferences(QDialog):
             # Sort Item Children
             subcontent = Preferences.configuration[section].get(
                 'subsections', {})
-            subsections = subcontent.keys()
+            subsections = sorted(
+                subcontent.keys(), key=lambda item: subcontent[item]['weight'])
             for sub in subsections:
                 text = subcontent[sub]['text']
                 Widget = subcontent[sub]['widget']

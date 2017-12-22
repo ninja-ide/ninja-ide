@@ -24,14 +24,47 @@ from PyQt5.QtGui import (
     QPalette,
     QColor
 )
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, Qt
+from ninja_ide.gui.ide import IDE
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.tools.logger import NinjaLogger
+# Logger
+logger = NinjaLogger(__name__)
 
 PALETTE = {}
 
 
-class ThemeManager(QObject):
+class ThemeManager(object):
+
+    __THEMES = {}
+
+    @classmethod
+    def discover_themes(cls):
+        dirs = (
+            resources.NINJA_THEMES,
+            resources.NINJA_THEMES_DOWNLOAD
+        )
+        for dir_ in dirs:
+            themes = file_manager.get_files_from_folder(dir_, '.ninjatheme')
+            if themes:
+                for theme_file in themes:
+
+                    with open(os.path.join(dir_, theme_file)) as json_f:
+                        theme_content = json.load(json_f)
+                        theme_name = theme_content["name"]
+                        ninja_theme = NTheme(theme_content)
+                        cls.__THEMES[theme_name] = ninja_theme
+
+    @classmethod
+    def load(cls, theme_name):
+        ninja_theme = cls.__THEMES.get(theme_name)
+        ninja_theme.initialize_colors()
+        palette = ninja_theme.get_palette()
+        QApplication.setPalette(palette)
+
+
+class _ThemeManager(QObject):
 
     def __init__(self):
         QObject.__init__(self)
@@ -40,12 +73,13 @@ class ThemeManager(QObject):
             resources.NINJA_THEMES_DOWNLOAD
         )
         self.__themes = {}
+        IDE.register_service("theme_manager", self)
 
     def discover_themes(self):
         for dir_ in self._themes_dir:
             themes = file_manager.get_files_from_folder(dir_, '.ninjatheme')
             if themes:
-                for theme in themes:
+                for theme in sorted(themes):
                     theme_filename = os.path.join(dir_, theme)
                     with open(theme_filename) as json_f:
                         theme_content = json.load(json_f)
@@ -63,6 +97,7 @@ class ThemeManager(QObject):
 class NTheme(object):
 
     __COLORS = {}
+    __FLAGS = {}
 
     def __init__(self, theme_content_dict):
         self.name = theme_content_dict['name']
@@ -70,10 +105,25 @@ class NTheme(object):
         self.colors = theme_content_dict['colors']
         self._flags = theme_content_dict['flags']
         self._derive_palette_from_theme = self._flags['PaletteFromTheme']
+        self.editor = theme_content_dict['editor-theme']
+
+    def original_palette(self):
+        """Return the original palette"""
+
+        palette = QApplication.palette()
+        return palette
 
     def initialize_colors(self):
         for role, color in self.colors.items():
-            self.__COLORS[role] = QColor(color)
+            qcolor = QColor(color)
+            if not qcolor.isValid():
+                logger.warning(
+                    "The color '%s' for '%s' is not valid" % (color, role))
+                qcolor = QColor(Qt.white)
+            self.__COLORS[role] = qcolor
+        # initialize flags
+        for flag_name, flag in self._flags.items():
+            self.__FLAGS[flag_name] = flag
 
     @classmethod
     def get_color(cls, role):
@@ -83,10 +133,14 @@ class NTheme(object):
     def get_colors(cls):
         return cls.__COLORS
 
+    @classmethod
+    def flag(cls, name):
+        return cls.__FLAGS[name]
+
     def get_palette(self):
+        palette = self.original_palette()
         if not self._derive_palette_from_theme:
-            return QApplication.palette()
-        palette = QPalette()
+            return palette
         for role, color in self.palette.items():
             qcolor = QColor(color)
             color_group = QPalette.All
@@ -97,3 +151,6 @@ class NTheme(object):
             palette.setBrush(color_group, color_role, qcolor)
             PALETTE[role] = color
         return palette
+
+
+# ThemeManager()

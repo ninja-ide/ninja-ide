@@ -29,7 +29,7 @@ from PyQt5.QtCore import (
 )
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.theme import NTheme
+from ninja_ide.utils import theme
 from ninja_ide.core.file_handling import file_manager
 
 
@@ -43,7 +43,7 @@ class AddFileFolderWidget(QDialog):
         self.setFixedWidth(650)
         # Create the QML UI
         view = QQuickWidget()
-        view.rootContext().setContextProperty("theme", NTheme.get_colors())
+        view.rootContext().setContextProperty("theme", theme.get_colors())
         view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("AddFileFolder.qml"))
         self._root = view.rootObject()

@@ -53,7 +53,7 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.tools_dock import actions
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.gui.theme import NTheme
+from ninja_ide.utils import theme
 
 
 logger = NinjaLogger(__name__)
@@ -92,13 +92,13 @@ class ToolButton(QToolButton):
         opt = QStyleOption()
         opt.initFrom(self)
         hovered = opt.state & QStyle.State_MouseOver
-        c = QColor(NTheme.get_color('ToolButtonColor'))  # FIXME: from theme
+        c = theme.get_color('ToolButtonColor')
         if hovered:
-            c = QColor(NTheme.get_color('ToolButtonHover'))
+            c = theme.get_color('ToolButtonHover')
         elif self.isDown() or self.isChecked():
             c = QColor('#66000000')
         painter.fillRect(self.rect(), c)
-        painter.setPen(NTheme.get_color('ToolButtonTextColor'))
+        painter.setPen(theme.get_color('ToolButtonTextColor'))
         # Draw shortcut number
         painter.drawText(
             (15 - number_width) / 2,
@@ -197,7 +197,7 @@ class _ToolsDock(ui_tools.StyledBar):
             find_in_files.FindInFilesWidget(),
             # errors_tree
         ]
-        # Intall widgets
+        # Install widgets
         number = 1
         for wi in self.widgets:
             if wi is None:

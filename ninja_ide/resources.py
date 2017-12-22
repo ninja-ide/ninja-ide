@@ -237,13 +237,6 @@ COLOR_SCHEME = {
 CUSTOM_SCHEME = {}
 
 
-def load_theme():
-    from ninja_ide.gui import theme
-    tm = theme.ThemeManager()
-    tm.discover_themes()
-    tm.load('Dark')
-
-
 def get_color(key):
     if key in COLOR_SCHEME:
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME[key])['color']

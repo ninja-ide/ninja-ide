@@ -21,25 +21,25 @@ from __future__ import unicode_literals
 
 import os
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSize
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
 
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
+from ninja_ide.utils import theme
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
@@ -55,12 +55,13 @@ class Interface(QWidget):
 
         groupBoxExplorer = QGroupBox(
             translations.TR_PREFERENCES_INTERFACE_EXPLORER_PANEL)
+        group_theme = QGroupBox("Ninja Theme:")
         #groupBoxToolbar = QGroupBox(
             #translations.TR_PREFERENCES_INTERFACE_TOOLBAR_CUSTOMIZATION)
         groupBoxLang = QGroupBox(
             translations.TR_PREFERENCES_INTERFACE_LANGUAGE)
 
-       #Explorer
+       # Explorers
         vboxExplorer = QVBoxLayout(groupBoxExplorer)
         self._checkProjectExplorer = QCheckBox(
             translations.TR_PREFERENCES_SHOW_EXPLORER)
@@ -77,6 +78,17 @@ class Interface(QWidget):
         vboxExplorer.addWidget(self._checkWebInspetor)
         vboxExplorer.addWidget(self._checkFileErrors)
         vboxExplorer.addWidget(self._checkMigrationTips)
+        # Theme
+        vbox_theme = QVBoxLayout(group_theme)
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel("Ninja Theme:"))
+        self._combobox_themes = QComboBox()
+        self._combobox_themes.addItems(theme.available_theme_names())
+        self._combobox_themes.setCurrentText(settings.NINJA_SKIN)
+        hbox.addWidget(self._combobox_themes)
+        vbox_theme.addLayout(hbox)
+        vbox_theme.addWidget(
+            QLabel(translations.TR_PREFERENCES_REQUIRES_RESTART))
         #GUI - Toolbar
         #vbox_toolbar = QVBoxLayout(groupBoxToolbar)
         #hbox_select_items = QHBoxLayout()
@@ -129,8 +141,10 @@ class Interface(QWidget):
         self._checkMigrationTips.setChecked(settings.SHOW_MIGRATION_LIST)
 
         vbox.addWidget(groupBoxExplorer)
+        vbox.addWidget(group_theme)
         #vbox.addWidget(groupBoxToolbar)
         vbox.addWidget(groupBoxLang)
+        vbox.addStretch(1)
 
        #Signals
         #self.connect(self._btnItemAdd, SIGNAL("clicked()"),
@@ -140,7 +154,7 @@ class Interface(QWidget):
         #self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
                      #self.toolbar_items_default)
 
-        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+        self._preferences.savePreferences.connect(self.save)
 
     #def toolbar_item_added(self):
         #data = self._comboToolbarItems.itemData(
@@ -277,36 +291,41 @@ class Interface(QWidget):
 
     def save(self):
         qsettings = IDE.ninja_settings()
-        settings.TOOLBAR_ITEMS = self.toolbar_settings
-        lang = self._comboLang.currentText()
+        ninja_theme = self._combobox_themes.currentText()
+        settings.NINJA_SKIN = ninja_theme
+        qsettings.setValue("preferences/interface/skin", settings.NINJA_SKIN)
+        # settings.TOOLBAR_ITEMS = self.toolbar_settings
+        # lang = self._comboLang.currentText()
         #preferences/interface
-        qsettings.setValue('preferences/interface/showProjectExplorer',
-                           self._checkProjectExplorer.isChecked())
-        settings.SHOW_PROJECT_EXPLORER = self._checkProjectExplorer.isChecked()
-        qsettings.setValue('preferences/interface/showSymbolsList',
-                           self._checkSymbols.isChecked())
-        settings.SHOW_SYMBOLS_LIST = self._checkSymbols.isChecked()
-        qsettings.setValue('preferences/interface/showWebInspector',
-                           self._checkWebInspetor.isChecked())
-        settings.SHOW_WEB_INSPECTOR = self._checkWebInspetor.isChecked()
-        qsettings.setValue('preferences/interface/showErrorsList',
-                           self._checkFileErrors.isChecked())
-        settings.SHOW_ERRORS_LIST = self._checkFileErrors.isChecked()
-        qsettings.setValue('preferences/interface/showMigrationList',
-                           self._checkMigrationTips.isChecked())
-        settings.SHOW_MIGRATION_LIST = self._checkMigrationTips.isChecked()
+        # qsettings.setValue('preferences/interface/showProjectExplorer',
+        #                   self._checkProjectExplorer.isChecked())
+        # settings.SHOW_PROJECT_EXPLORER = self._checkProjectExplorer.isChecked()
+        # qsettings.setValue('preferences/interface/showSymbolsList',
+        #                   self._checkSymbols.isChecked())
+        # settings.SHOW_SYMBOLS_LIST = self._checkSymbols.isChecked()
+        # qsettings.setValue('preferences/interface/showWebInspector',
+        #                   self._checkWebInspetor.isChecked())
+        # settings.SHOW_WEB_INSPECTOR = self._checkWebInspetor.isChecked()
+        # qsettings.setValue('preferences/interface/showErrorsList',
+        #                   self._checkFileErrors.isChecked())
+        # settings.SHOW_ERRORS_LIST = self._checkFileErrors.isChecked()
+        # qsettings.setValue('preferences/interface/showMigrationList',
+        #                   self._checkMigrationTips.isChecked())
+        # settings.SHOW_MIGRATION_LIST = self._checkMigrationTips.isChecked()
         #qsettings.setValue('preferences/interface/toolbar',
                            #settings.TOOLBAR_ITEMS)
-        qsettings.setValue('preferences/interface/language', lang)
-        lang = lang + '.qm'
-        settings.LANGUAGE = os.path.join(resources.LANGS, lang)
+        # qsettings.setValue('preferences/interface/language', lang)
+        # lang = lang + '.qm'
+        # settings.LANGUAGE = os.path.join(resources.LANGS, lang)
         #ide = IDE.get_service('ide')
         #if ide:
             #ide.reload_toolbar()
 
 
 preferences.Preferences.register_configuration(
-    'INTERFACE',
+    'GENERAL',
     Interface,
     translations.TR_PREFERENCES_INTERFACE,
-    preferences.SECTIONS['INTERFACE'])
+    weight=0,
+    subsection="INTERFACE"
+)

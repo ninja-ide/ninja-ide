@@ -145,7 +145,7 @@ TOOLBAR_ITEMS_DEFAULT = [
 # hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = LAST_OPENED_FILES = []
 
-NINJA_SKIN = 'Default'
+NINJA_SKIN = 'Dark'
 
 LAST_OPENED_FILES = []
 
@@ -484,8 +484,8 @@ def load_settings():
                                   sys.executable, type='QString')
     PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
         'preferences/execution/pythonExecConfigured', False, type=bool)
-    NINJA_SKIN = qsettings.value('preferences/theme/skin',
-                                 'Default', type='QString')
+    NINJA_SKIN = qsettings.value('preferences/interface/skin',
+                                 'Dark', type='QString')
     sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     # Fix later
     try:

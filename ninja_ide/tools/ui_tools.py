@@ -90,7 +90,6 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
-from ninja_ide.gui.theme import NTheme
 
 
 from ninja_ide.tools.logger import NinjaLogger

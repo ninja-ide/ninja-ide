@@ -40,7 +40,6 @@ from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui import ninja_style
 logger = NinjaLogger(__name__)
 
-resources.load_theme()
 resources.load_shortcuts()
 # Register Components:
 # lint:disable
@@ -66,7 +65,7 @@ from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
 # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
-# from ninja_ide.gui.dialogs.preferences import preferences_interface
+from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion

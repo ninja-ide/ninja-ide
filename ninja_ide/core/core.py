@@ -53,6 +53,8 @@ def run_ninja():
     settings.load_settings()
     # Start the UI
     app = QApplication(sys.argv)
+    from ninja_ide.utils import theme
+    theme.load_theme(settings.NINJA_SKIN)
 
     from ninja_ide import gui
     gui.start_ide(app, filenames, projects_path, extra_plugins, linenos)
