@@ -469,7 +469,7 @@ def load_settings():
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
     global SHOW_LINE_NUMBERS
-    # sGeneral
+    # General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
                                    type=int)
@@ -488,25 +488,22 @@ def load_settings():
                                  'Dark', type='QString')
     sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     # Fix later
-    try:
-        for key in sessionDict:
-            session_list = list(sessionDict[key])
-            files = []
-            if session_list:
-                files = [item for item in tuple(session_list[0])]
-            tempFiles = []
-            for file_ in files:
-                fileData = tuple(file_)
-                if len(fileData) > 0:
-                    tempFiles.append([fileData[0], int(fileData[1]),
-                                     fileData[2]])
-            files = tempFiles
-            projects = []
-            if len(session_list) > 1:
-                projects = [item for item in tuple(session_list[1])]
-            SESSIONS[key] = [files, projects]
-    except:
-        pass
+    # try:
+    for key in sessionDict:
+        session_list = sessionDict[key]
+        files = []
+        if session_list:
+            files = [item for item in session_list[0]]
+        temp_files = []
+        for file_ in files:
+            file_data = file_
+            if len(file_data) > 0:
+                temp_files.append((file_data[0], file_data[1], file_data[2]))
+        files = temp_files
+        projects = []
+        if len(session_list) > 1:
+            projects = [item for item in session_list[1]]
+        SESSIONS[key] = (files, projects)
     # TODO
     # toolbar_items = [item for item in list(qsettings.value(
         # 'preferences/interface/toolbar', []))]

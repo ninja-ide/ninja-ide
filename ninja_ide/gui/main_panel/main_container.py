@@ -177,7 +177,7 @@ class _MainContainer(QWidget):
             return current_widget
         return None
 
-    def open_file(self, filename='', line=-1, col=0):
+    def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
         logger.debug("Will try to open %s" % filename)
         if not filename:
             logger.debug("Has no filename")
@@ -210,9 +210,10 @@ class _MainContainer(QWidget):
             return
         for filename in filenames:
             logger.debug("Will try to open: %s" % filename)
-            self.__open_file(filename, line, col)
+            self.__open_file(
+                filename, line, col, ignore_checkers=ignore_checkers)
 
-    def __open_file(self, filename, line, col):
+    def __open_file(self, filename, line, col, ignore_checkers=False):
         try:
             editor_widget = self.add_editor(filename)
             if line != -1:

@@ -18,17 +18,16 @@ from __future__ import absolute_import
 
 import os
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -42,6 +41,7 @@ class SessionsManager(QDialog):
     def __init__(self, parent=None):
         super(SessionsManager, self).__init__(parent, Qt.Dialog)
         self._ide = parent
+        self.setModal(True)
         self.setWindowTitle(translations.TR_SESSIONS_TITLE)
         self.setMinimumWidth(400)
         vbox = QVBoxLayout(self)
@@ -69,12 +69,12 @@ class SessionsManager(QDialog):
         vbox.addWidget(self.contentList)
         vbox.addLayout(hbox)
 
-        self.connect(self.sessionList, SIGNAL("itemSelectionChanged()"),
+        self.sessionList.itemSelectionChanged.connect(
             self.load_session_content)
-        self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_session)
-        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_session)
-        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_session)
-        self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_session)
+        self.btnOpen.clicked.connect(self.open_session)
+        self.btnUpdate.clicked.connect(self.save_session)
+        self.btnCreate.clicked.connect(self.create_session)
+        self.btnDelete.clicked.connect(self.delete_session)
         self.load_session_content()
 
     def load_session_content(self):
@@ -91,13 +91,14 @@ class SessionsManager(QDialog):
 
     def create_session(self):
         """Create a new Session."""
-        sessionInfo = QInputDialog.getText(None,
-            translations.TR_SESSIONS_CREATE_TITLE,
+        sessionInfo = QInputDialog.getText(
+            None, translations.TR_SESSIONS_CREATE_TITLE,
             translations.TR_SESSIONS_CREATE_BODY)
         if sessionInfo[1]:
             sessionName = sessionInfo[0]
             if not sessionName or sessionName in settings.SESSIONS:
-                QMessageBox.information(self,
+                QMessageBox.information(
+                    self,
                     translations.TR_SESSIONS_MESSAGE_TITLE,
                     translations.TR_SESSIONS_MESSAGE_BODY)
                 return
@@ -117,7 +118,7 @@ class SessionsManager(QDialog):
             else:
                 stat_value = os.stat(path).st_mtime
             files_info.append([path,
-                               editable.editor.getCursorPosition(), stat_value])
+                               editable.editor.cursor_position, stat_value])
         projects_obj = ide.filesystem.get_projects()
         projects = [projects_obj[proj].path for proj in projects_obj]
         settings.SESSIONS[sessionName] = [files_info, projects]
@@ -158,11 +159,11 @@ class SessionsManager(QDialog):
         if projects_explorer and main_container:
             projects_explorer.close_opened_projects()
             for fileData in settings.SESSIONS[key][0]:
-                path, line, stat_value = fileData
+                path, (line, col), stat_value = fileData
                 if file_manager.file_exists(path):
                     mtime = os.stat(path).st_mtime
                     ignore_checkers = (mtime == stat_value)
-                    main_container.open_file(path, line,
+                    main_container.open_file(path, line, col,
                                              ignore_checkers=ignore_checkers)
             if projects_explorer:
                 projects_explorer.load_session_projects(

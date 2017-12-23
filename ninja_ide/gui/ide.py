@@ -57,7 +57,7 @@ from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
 # from ninja_ide.gui.dialogs import schemes_manager
 # from ninja_ide.gui.dialogs import language_manager
-# from ninja_ide.gui.dialogs import session_manager
+from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs.preferences import preferences
 # from ninja_ide.gui.dialogs import traceback_widget
 # from ninja_ide.gui.dialogs import python_detect_dialog
@@ -687,9 +687,6 @@ class IDE(QMainWindow):
             ninja_settings.setValue("window/size", self.size())
             ninja_settings.setValue("window/pos", self.pos())
         data_settings.setValue('lastSession/openedFiles', files_info)
-        # projects_obj = self.filesystem.get_projects()
-        # projects = [projects_obj[proj].path for proj in projects_obj]
-        # data_settings.setValue('lastSession/projects', projects)
         # qsettings = IDE.ninja_settings()
         # data_qsettings = IDE.data_settings()
         # main_container = self.get_service("main_container")
@@ -725,39 +722,18 @@ class IDE(QMainWindow):
         #                   settings.BREAKPOINTS)
 
         # Session
-        # if self._session is not None:
-        #    val = QMessageBox.question(
-        #        self,
-        #        translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
-        #        (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
-        #            {'session': self.Session}),
-        #        QMessageBox.Yes, QMessageBox.No)
-        #    if val == QMessageBox.Yes:
-        #        session_manager.SessionsManager.save_session_data(
-        #            self.Session, self)
+        if self._session is not None:
+            val = QMessageBox.question(
+                self,
+                translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
+                (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
+                    {'session': self.Session}),
+                QMessageBox.Yes, QMessageBox.No)
+            if val == QMessageBox.Yes:
+                session_manager.SessionsManager.save_session_data(
+                    self.Session, self)
         # qsettings.setValue('preferences/general/toolbarArea',
         # self.toolBarArea(self.toolbar))
-        # Save if the windows state is maximixed
-        # if(self.isMaximized()):
-        #    qsettings.setValue("window/maximized", True)
-        # else:
-        #    qsettings.setValue("window/maximized", False)
-            #Save the size and position of the mainwindow
-        #    qsettings.setValue("window/size", self.size())
-        #    qsettings.setValue("window/pos", self.pos())
-        # self.central.save_configuration()
-
-        # Save the toolbar visibility
-        # qsettings.setValue("window/hide_toolbar", not self.toolbar.isVisible())
-        # else:
-        # qsettings.setValue("window/hide_toolbar", False)
-        # Save Misc state
-        #qsettings.setValue("window/show_region1", self.misc.isVisible())
-        #Save Profiles
-        #if self.profile is not None:
-            #self.actions.save_profile(self.profile)
-        # else:
-        #      qsettings.setValue('ide/profiles', settings.PROFILES)
 
     def activate_profile(self):
         """Show the Session Manager dialog."""
