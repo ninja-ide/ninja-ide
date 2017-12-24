@@ -90,7 +90,7 @@ Piece of cake, huh?
 [![Ninja-IDE Videos and Screencasts](http://img.youtube.com/vi/xShpNY5w-64/0.jpg)](https://www.youtube.com/channel/UCPopm5397ozfsS8FOSSOWGQ "Ninja-IDE Videos and Screencasts")
 
 ## Contributing
-*TODO*
+If you are interested in fixing issues and contributing directly to the code base, please see the document [How to Contribute](https://github.com/ninja-ide/ninja-ide/wiki/How-to-Contribute).
 
 ## License
 -   **GPLv3+** *(GPLv3 or any other later version published by FSF at your option)*
