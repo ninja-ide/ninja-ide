@@ -19,9 +19,10 @@ Rectangle {
         ColumnLayout {
             Rectangle {
                 width: (root.width / 2) - 15
-                height: (root.height / 2) - 10
+                height: (root.height / 2) - 15
                 color: theme.SplitAssistantRect
                 opacity: 0.7
+                radius: 3
 
                 Column {
                     spacing: 5
@@ -36,10 +37,10 @@ Rectangle {
 
             Rectangle {
                 width: (root.width / 2) - 15
-                height: (root.height / 2) - 10
+                height: (root.height / 2) - 15
                 color: theme.SplitAssistantRect
                 opacity: 0.7
-
+                radius: 3
                 Column {
                     spacing: 5
                     anchors.fill: parent
@@ -58,10 +59,10 @@ Rectangle {
         RowLayout {
             Rectangle {
                 width: (300 / 4) - 10
-                height: 150 - 15
+                height: 150 - 25
                 color: theme.SplitAssistantRect
                 opacity: 0.7
-
+                radius: 3
                 Column {
                     spacing: 5
                     anchors.fill: parent
@@ -75,14 +76,14 @@ Rectangle {
                     SimpleRect { width: implicitWidth - 10 }
                     SimpleRect {}
                     SimpleRect { width: implicitWidth - 10 }
-                    SimpleRect {}
                 }
             }
             Rectangle {
                 width: (300 / 4) - 10
-                height: 150 - 15
+                height: 150 - 25
                 color: theme.SplitAssistantRect
                 opacity: 0.7
+                radius: 3
 
                 Column {
                     spacing: 5
@@ -97,7 +98,6 @@ Rectangle {
                     SimpleRect { width: implicitWidth - 10 }
                     SimpleRect {}
                     SimpleRect { width: implicitWidth - 10 }
-                    SimpleRect {}
                 }
             }
         }
