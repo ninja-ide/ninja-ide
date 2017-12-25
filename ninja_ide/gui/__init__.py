@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-# import sys
+import sys
 
 from PyQt5.QtWidgets import QSplashScreen
 from PyQt5.QtGui import (
@@ -33,7 +33,7 @@ from PyQt5.QtCore import (
 
 from ninja_ide import resources
 # from ninja_ide.core import settings
-# from ninja_ide.core import ipc
+from ninja_ide.core import ipc
 # from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
 from ninja_ide.tools.logger import NinjaLogger
@@ -82,8 +82,7 @@ from ninja_ide.core.template_registry import (
 ###########################################################################
 # from ninja_ide.core.encapsulated_env import nenvironment
 
-from ninja_ide.gui import ide
-# lint:enable
+from ninja_ide.gui import ide  # noqa
 
 
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
@@ -95,15 +94,15 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     app.setWindowIcon(QIcon(":img/icon"))
     # Check if there is another session of ninja-ide opened
     # and in that case send the filenames and projects to that session
-    # running = ipc.is_running()
-    # start_server = not running[0]
-    # if running[0] and (filenames or projects_path):
-    #     sended = ipc.send_data(running[1], filenames, projects_path, linenos)
-    #    running[1].close()
-    #    if sended:
-    #        sys.exit()
-    # else:
-    #    running[1].close()
+    running = ipc.is_running()
+    start_server = not running[0]
+    if running[0] and (filenames or projects_path):
+        sended = ipc.send_data(running[1], filenames, projects_path, linenos)
+        running[1].close()
+        if sended:
+            sys.exit()
+    else:
+        running[1].close()
 
     # Create and display the splash screen
     splash_pix = QPixmap(":img/splash")
@@ -115,9 +114,9 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # Set the codec for strings (QString)
     # QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
-    # FIXME: handle this
     qsettings = ide.IDE.ninja_settings()
     data_qsettings = ide.IDE.data_settings()
+    # FIXME: handle this
     # Translator
     # language = QLocale.system().name()
     # lang = qsettings.value('preferences/interface/language',
@@ -143,39 +142,16 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # Read Settings
     splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
                        Qt.black)
-
-    # FIXME: handle this
-    # Set Stylesheet
-    # style_applied = False
-    # if settings.NINJA_SKIN not in ('Default'):
-    #    file_name = ("%s.qss" % settings.NINJA_SKIN)
-    #    qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
-    #                                        file_name)
-    #    if file_manager.file_exists(qss_file):
-    #        with open(qss_file) as fileaccess:
-    #            qss = fileaccess.read()
-    #            app.setStyleSheet(qss)
-    #            style_applied = True
-    # if not style_applied:
-    #    if settings.NINJA_SKIN == 'Default':
-    #        with open(resources.NINJA_THEME) as fileaccess:
-    #            qss = fileaccess.read()
-    #    app.setStyleSheet(qss)
-
-    # FIXME: handle this
     # Loading Schemes
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
     all_schemes = json_manager.load_editor_schemes()
     scheme = qsettings.value("preferences/editor/scheme", "")
+    # FIXME:
     resources.COLOR_SCHEME = all_schemes['Ninja Dark']
     # if scheme:
     #    color_scheme = all_schemes[scheme]
     #    resources.CUSTOM_SCHEME = color_scheme
-
-    # print(all_schemes)
-    # scheme = qsettings.value('preferences/editor/scheme', "default",
-    #                         type='QString')
     # if scheme != 'default':
     #    scheme = file_manager.create_path(resources.EDITOR_SKINS,
     #                                      scheme + '.color')
@@ -186,8 +162,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # resources.load_shortcuts()
     # Loading GUI
     splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
-    # ninjaide = ide.IDE(start_server)
-    ninjaide = ide.IDE()
+    ninjaide = ide.IDE(start_server)
 
     # Style
     app.setStyle(ninja_style.NinjaStyle())
@@ -197,73 +172,33 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # OSX workaround for ninja window not in front
     try:
         ninjaide.raise_()
-    except:
+    except Exception:
         pass  # I really dont mind if this fails in any form
-    # FIXME: handle this
     # Loading Session Files
     splash.showMessage("Loading Files and Projects",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
 
     # First check if we need to load last session files
-    files = data_qsettings.value(
-        'last_session/opened_files', [])
-    projects = data_qsettings.value(
-        'last_session/projects', [])
+    files = data_qsettings.value('last_session/opened_files', [])
+    projects = data_qsettings.value('last_session/projects', [])
     current_file = data_qsettings.value('last_session/current_file', '')
+    # FIXME: recent files
     if files is None:
         files = []
     if projects is None:
         projects = []
+    # Include files received from console args
+    files_with_lineno = [(f[0], (f[1] - 1, 0))
+                         for f in zip(filenames, linenos)]
+    files_without_lineno = [(f, (0, 0))
+                            for f in filenames[len(linenos):]]
+    files += files_with_lineno + files_without_lineno
+    # Include projects received from console args
+    if projects_path:
+        projects += projects_path
     ninjaide.load_session_files_projects(
         files, projects, current_file, []
     )
-    # projects = data_qsettings.value('last_session/projects', [])
-    # files = []
-    # projects = []
-    # if projects is None:
-    #    projects = []
-    # if files is None:
-    #    files = []
-    # current_file = ''
-    # recent_files = []
-    # ninjaide.load_session_files_projects(files, projects,
-    #                                     current_file, recent_files)
-
-    # if qsettings.value('preferences/general/loadFiles', True, type=bool):
-    #    # Files in Main Tab
-    #    files = data_qsettings.value('lastSession/openedFiles', [])
-    #    tempFiles = []
-    #    if files:
-    #        for file_ in files:
-    #            fileData = tuple(file_)
-    #            if fileData:
-    #                tempFiles.append(fileData)
-    #    files = tempFiles
-
-    #    # Recent Files
-    #    recent_files = data_qsettings.value('lastSession/recentFiles', [])
-    #    # Current File
-    #    current_file = data_qsettings.value(
-    #        'lastSession/currentFile', '', type='QString')
-    #    # Projects
-    #    projects = data_qsettings.value('lastSession/projects', [])
-    # else:
-    #    files = []
-    #    recent_files = []
-    #    current_file = ''
-    #    projects = []
-
-    # Include files received from console args
-    # file_with_nro = list([(f[0], (f[1] - 1, 0), 0)
-    #                     for f in zip(filenames, linenos)])
-    # file_without_nro = list([(f, (0, 0), 0) for f in filenames[len(linenos):]])
-    # files += file_with_nro + file_without_nro
-    # Include projects received from console args
-    # if projects_path:
-    #    projects += projects_path
-    # FIXME: IMPROVE THIS WITH THE NEW WAY OF DO IT
-    # ninjaide.load_session_files_projects(files, projects,
-    #                                     current_file, recent_files)
     # Load external plugins
     # if extra_plugins:
     #     ninjaide.load_external_plugins(extra_plugins)

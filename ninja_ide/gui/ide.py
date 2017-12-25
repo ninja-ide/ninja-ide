@@ -38,7 +38,7 @@ from PyQt5.QtCore import (
     QSize,
     pyqtSignal
 )
-# from PyQt5.QtNetwork import QLocalServer
+from PyQt5.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -252,11 +252,11 @@ class IDE(QMainWindow):
             menu_bar.load_toolbar(self)
 
         # Start server if needed
-        # self.s_listener = None
-        # if start_server:
-        #    self.s_listener = QLocalServer()
-        #    self.s_listener.listen("ninja_ide")
-        #    self.s_listener.newConnection.connect(self._process_connection)
+        self.s_listener = None
+        if start_server:
+            self.s_listener = QLocalServer()
+            self.s_listener.listen("ninja-ide")
+            self.s_listener.newConnection.connect(self._process_connection)
 
         IDE.__instance = self
 
