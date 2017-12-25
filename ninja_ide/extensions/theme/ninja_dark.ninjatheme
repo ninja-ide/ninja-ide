@@ -61,7 +61,7 @@
         "LocatorLineEditBackground": "#232729",
         "LocatorCurrentItem": "#787ba9",
         "LocatorListBackground": "#232729",
-        "QMLBackground": "#333",
+        "QMLBackground": "#33393b",
         "GoToLineTextColor": "#ffffff",
         "GoToLineEditBackground": "#23262e",
         "GoToLineBorder": "#787ba9",

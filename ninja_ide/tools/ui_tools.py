@@ -714,7 +714,6 @@ def colored_icon(name, color):
 def get_icon(name, color=None):
     if color is None:
         # Normal icon
-        print(':img/%s' % name)
         return QIcon(':img/%s' % name)
     if not name.startswith(':img'):
         name = ':img/%s' % name
