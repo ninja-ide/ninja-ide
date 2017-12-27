@@ -226,6 +226,14 @@ DOCMAP_WIDTH = 15
 ###############################################################################
 
 SUPPORTED_EXTENSIONS = [
+    ("Python Files", ("py", "pyw")),
+    ("HTML Files", ("html",)),
+    ("QML Files", ("qml",)),
+    ("Javascript Files", ("js",))
+]
+ALL_FILES_FILTER = "All Files (*.*)"
+
+_SUPPORTED_EXTENSIONS = [
     '.color',  # Similar to JSON, Ninja own Themes for example
     '.css',
     '.csv',  # plain text with commas
