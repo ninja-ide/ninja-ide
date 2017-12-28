@@ -35,18 +35,19 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import combo_editor
-from ninja_ide.gui import dynamic_splitter
+from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import start_page
+from ninja_ide.gui.main_panel import set_language
+from ninja_ide.gui.main_panel import image_viewer
+from ninja_ide.gui.main_panel.helpers import split_orientation
+from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.editor import editor
 from ninja_ide import translations
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor import editor
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
-from ninja_ide.gui.main_panel import add_file_folder
-from ninja_ide.gui.main_panel.helpers import split_orientation
 from ninja_ide.gui import indicator
-from ninja_ide.gui.main_panel import set_language
 
 logger = NinjaLogger(__name__)
 
@@ -209,9 +210,14 @@ class _MainContainer(QWidget):
         if not filenames:
             return
         for filename in filenames:
-            logger.debug("Will try to open: %s" % filename)
-            self.__open_file(
-                filename, line, col, ignore_checkers=ignore_checkers)
+            image_extensions = ("png", "jpg", "jpeg", "bmp", "gif")
+            if file_manager.get_file_extension(filename) in image_extensions:
+                logger.debug("Will open as image")
+                self.open_image(filename)
+            else:
+                logger.debug("Will try to open: %s" % filename)
+                self.__open_file(
+                    filename, line, col, ignore_checkers=ignore_checkers)
 
     def __open_file(self, filename, line, col, ignore_checkers=False):
         try:
@@ -225,6 +231,18 @@ class _MainContainer(QWidget):
                 "The file couldn't be open",  # FIXME: translations
                 str(reason))
             logger.error("The file %s couldn't be open" % filename)
+
+    def open_image(self, filename):
+        for index in range(self.combo_area.stacked.count()):
+            widget = self.combo_area.stacked.widget(index)
+            if isinstance(widget, image_viewer.ImageViewer):
+                if widget.image_filename == filename:
+                    logger.debug("Image already open")
+                    self.combo_area._set_current(neditable=None, index=index)
+                    return
+        viewer = image_viewer.ImageViewer(filename)
+        self.combo_area.add_image_viewer(viewer)
+        self.stack.setCurrentWidget(self.splitter)
 
     def save_file(self, editor_widget=None):
         if editor_widget is None:

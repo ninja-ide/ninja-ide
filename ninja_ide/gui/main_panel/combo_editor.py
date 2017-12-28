@@ -110,7 +110,7 @@ class ComboEditor(ui_tools.StyledBar):
         self.bar.undockEditor.connect(self.undock_editor)
         self.bar.reopenTab['QString'].connect(
             lambda path: self._main_container.open_file(path))
-
+        self.bar.closeImageViewer.connect(self._close_image)
         self.bar.code_navigator.previousPressed.connect(self._navigate_code)
         self.bar.code_navigator.nextPressed.connect(self._navigate_code)
         # self.connect(self.bar, SIGNAL("recentTabsModified()"),
@@ -142,6 +142,19 @@ class ComboEditor(ui_tools.StyledBar):
         self.bar.set_current_by_index(index)
         if index == -1:
             self.bar.set_current_by_index(0)
+
+    def add_image_viewer(self, viewer):
+        """Add Image Viewer widget to the UI area"""
+
+        self.stacked.addWidget(viewer)
+        viewer.scaleFactorChanged.connect(
+            self.bar.image_viewer_controls.update_scale_label)
+        viewer.imageSizeChanged.connect(
+            self.bar.image_viewer_controls.update_size_label)
+        self.bar.add_item(viewer.display_name(), None)
+        viewer.create_scene()
+        if not self.bar.isVisible():
+            self.bar.setVisible(True)
 
     def add_editor(self, neditable, keep_index=False):
         """Add Editor Widget to the UI area."""
@@ -252,6 +265,13 @@ class ComboEditor(ui_tools.StyledBar):
     def close_current_file(self):
         self.bar.about_to_close_file()
 
+    def _close_image(self, index):
+        layout_item = self.stacked.takeAt(index)
+        layout_item.widget().deleteLater()
+        if self.stacked.isEmpty():
+            self.bar.hide()
+            self.allFilesClosed.emit()
+
     def _close_file(self, neditable):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
@@ -324,8 +344,13 @@ class ComboEditor(ui_tools.StyledBar):
             self.bar.set_current_file(neditable)
 
     def _set_current(self, neditable, index):
+        self.stacked.setCurrentIndex(index)
         if neditable:
-            self.stacked.setCurrentIndex(index)
+            self.bar.image_viewer_controls.setVisible(False)
+            self.bar.code_navigator.setVisible(True)
+            self.bar.symbols_combo.setVisible(True)
+            self.bar.lbl_position.setVisible(True)
+
             editor = self.current_editor()
             self._update_cursor_position(ignore_sender=True)
             editor.setFocus()
@@ -334,6 +359,12 @@ class ComboEditor(ui_tools.StyledBar):
             self._load_symbols(neditable)
             # self._show_file_in_explorer(neditable.file_path)
             neditable.update_checkers_display()
+        else:
+            self.bar.combo_files.setCurrentIndex(index)
+            self.bar.image_viewer_controls.setVisible(True)
+            self.bar.code_navigator.setVisible(False)
+            self.bar.symbols_combo.setVisible(False)
+            self.bar.lbl_position.setVisible(False)
 
     def widget(self, index):
         return self.stacked.widget(index)
@@ -447,6 +478,7 @@ class ActionBar(ui_tools.StyledBar):
     goToSymbol = pyqtSignal(int)
     undockEditor = pyqtSignal()
     reopenTab = pyqtSignal('QString')
+    closeImageViewer = pyqtSignal(int)
 
     def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
@@ -463,20 +495,14 @@ class ActionBar(ui_tools.StyledBar):
         # hbox.addWidget(self.lbl_checks)
         # self.combo = ComboFiles()
         self.combo_files = QComboBox()
+        self.combo_files.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.combo_files.setProperty("border", True)
-        # self.combo_files.setProperty("border_bottom", True)
         self.combo_files.setProperty("gradient", True)
         self.combo_files.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
-        # self.combo.setIconSize(QSize(16, 16))
-        # model = QStandardItemModel()
-        # self.combo.setModel(model)
-        # self.combo.view().setDragDropMode(QAbstractItemView.InternalMove)
         self.combo_files.setMaximumWidth(300)
         self.combo_files.currentIndexChanged[int].connect(self.current_changed)
-        # self.combo.setObjectName("combotab")
-        # self.connect(self.combo, SIGNAL("currentIndexChanged(int)"),
-        #             self.current_changed)
         self.combo_files.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
         self.combo_files.setContextMenuPolicy(Qt.CustomContextMenu)
         self.combo_files.customContextMenuRequested.connect(
@@ -484,49 +510,36 @@ class ActionBar(ui_tools.StyledBar):
         hbox.addWidget(self.combo_files)
 
         self.symbols_combo = QComboBox()
-        # self.symbols_combo.setStyleSheet("QComboBox { combobox-popup: 0; }")
         self.symbols_combo.setProperty("border", True)
-        # self.symbols_combo.setProperty("border_bottom", True)
         self.symbols_combo.setProperty("gradient", True)
         self.symbols_combo.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
-        # self.symbols_combo.setIconSize(QSize(16, 16))
         self.symbols_combo.setObjectName("combo_symbols")
         self.symbols_combo.activated[int].connect(self.current_symbol_changed)
-        # self.connect(self.symbols_combo, SIGNAL("activated(int)"),
-        #             self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
-
+        # Code Navigator actions
         self.code_navigator = CodeNavigator()
         hbox.addWidget(self.code_navigator)
-        # FIXME: set property for other themes
+        # Image Viewer actions
+        self.image_viewer_controls = ImageViewerControls()
+        self.image_viewer_controls.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.image_viewer_controls.setVisible(False)
+        hbox.addWidget(self.image_viewer_controls)
+
         self._pos_text = "Line: %d, Col: %d"
-        # self.lbl_position = QLabel(self._pos_text % (0, 0))
-        # self._go_to_line_widget = go_to_line.GoToLine(self)
-        # self.lbl_position = ui_tools.ClickeableLabel(self._pos_text % (0, 0))
         self.lbl_position = QLabel()
-        # self.lbl_position.setProperty("border_bottom", True)
         self.lbl_position.setProperty("gradient", True)
         self.lbl_position.setText(self._pos_text % (0, 0))
-        # self.lbl_position.setAutoFillBackground(True)
-        # self.lbl_position.clicked.connect(self._on_lbl_position_clicked)
-        # FIXME: falla con split. ARREGLADO
         margin = self.style().pixelMetric(
             QStyle.PM_LayoutHorizontalSpacing) / 2
         self.lbl_position.setContentsMargins(margin, 0, margin, 0)
         self.lbl_position.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.lbl_position)
 
-        # self.btn_close = QPushButton(
-        #    self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        # self.btn_close.setIconSize(QSize(16, 16))
         self.btn_close = QToolButton()
-        # self.btn_close.setProperty("border_bottom", True)
         self.btn_close.setProperty("gradient", True)
-        # self.btn_close.setAutoRaise(True)
-        # self.btn_close.setFixedHeight(24)
-        # self.btn_close.setIcon(QIcon(":img/close"))
 
         if main_combo:
             self.btn_close.setIcon(
@@ -558,7 +571,7 @@ class ActionBar(ui_tools.StyledBar):
             self.symbols_combo.hide()
             self.code_navigator.hide()
             self.lbl_position.hide()
-        else:
+        elif not self.image_viewer_controls.isVisible():
             self.symbols_combo.show()
             self.code_navigator.show()
             self.lbl_position.show()
@@ -729,7 +742,7 @@ class ActionBar(ui_tools.StyledBar):
 
     @pyqtSlot()
     def about_to_close_file(self, index=None):
-        """Close the NFile object."""
+        """Close the NFile or ImageViewer object."""
 
         parent = self.parent().parentWidget()  # Splitter
         if parent.count() > 1:
@@ -739,6 +752,10 @@ class ActionBar(ui_tools.StyledBar):
         neditable = self.combo_files.itemData(index)
         if neditable:
             neditable.nfile.close()
+        else:
+            # Image viewer
+            self.combo_files.removeItem(index)
+            self.closeImageViewer.emit(index)
 
     def close_split(self):
         self.closeSplit.emit()
@@ -809,6 +826,35 @@ class ComboFiles(QComboBox):
 
     def showPopup(self):
         self.showComboSelector.emit()
+
+
+class ImageViewerControls(QWidget):
+
+    fitToScreen = pyqtSignal()
+    retoreSize = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        hbox = QHBoxLayout(self)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        # Size label
+        self.size_label = QLabel()
+        # Scale label
+        self.scale_label = QLabel()
+
+        # Add widgets
+        hbox.addWidget(self.size_label)
+        hbox.addWidget(self.scale_label)
+        hbox.addStretch(1)
+
+    def update_scale_label(self, factor):
+        text = "{:.2f}%".format(factor * 100)
+        self.scale_label.setText(text)
+
+    def update_size_label(self, size):
+        width, height = size.width(), size.height()
+        text = "{}x{}".format(width, height)
+        self.size_label.setText(text)
 
 
 class CodeNavigator(QWidget):
