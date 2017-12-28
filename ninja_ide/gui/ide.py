@@ -532,8 +532,8 @@ class IDE(QMainWindow):
         for path, cursor_pos in files:
             line, col = cursor_pos
             main_container.open_file(path, line, col)
-        if current_file:
-            main_container.open_file(current_file)
+        # if current_file:
+        #    main_container.open_file(current_file)
         self.filesAndProjectsLoaded.emit()
         # projects_explorer = IDE.get_service('projects_explorer')
         # if main_container and files:

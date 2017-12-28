@@ -627,7 +627,7 @@ class NEditor(QPlainTextEdit):
             logger.error("Extension '%s' not found" % extension_name)
         else:
             ext_obj.enabled = value
-            logger.debug("Loaded '%s' extension" % extension_name)
+            # logger.debug("Loaded '%s' extension" % extension_name)
 
     def mouseMoveEvent(self, event):
         '''if event.modifiers() == Qt.ControlModifier:

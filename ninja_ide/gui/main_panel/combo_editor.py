@@ -361,6 +361,9 @@ class ComboEditor(ui_tools.StyledBar):
             neditable.update_checkers_display()
         else:
             self.bar.combo_files.setCurrentIndex(index)
+            viewer_widget = self.stacked.widget(index)
+            self._main_container.current_editor_changed(
+                viewer_widget.image_filename)
             self.bar.image_viewer_controls.setVisible(True)
             self.bar.code_navigator.setVisible(False)
             self.bar.symbols_combo.setVisible(False)
