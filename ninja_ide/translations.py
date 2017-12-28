@@ -27,6 +27,8 @@ TR_OPEN = tr("NINJA-IDE", "Open")
 TR_SAVE = tr("NINJA-IDE", "Save")
 TR_SAVE_AS = tr("NINJA-IDE", "Save As")
 TR_SAVE_ALL = tr("NINJA-IDE", "Save All")
+TR_DONOT_SAVE = tr("NINJA-IDE", "Do Not Save")
+TR_SAVE_SELECTED = tr("NINJA-IDE", "Save Selected")
 TR_UNDO = tr("NINJA-IDE", "Undo")
 TR_REDO = tr("NINJA-IDE", "Redo")
 TR_COMMENT = tr("NINJA-IDE", "Comment")
@@ -228,7 +230,7 @@ TR_SESSION_ACTIVE_IDE_CLOSING_BODY = tr(
 TR_IDE_CONFIRM_EXIT_TITLE = tr("NINJA-IDE", "Some changes were not saved")
 TR_IDE_CONFIRM_EXIT_BODY = tr(
     "NINJA-IDE",
-    "%(files)s\n\nDo you want to save them?")
+    "The following files have unsaved changes:")
 TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 
 

@@ -19,8 +19,8 @@
 import collections
 
 from PyQt5.QtWidgets import (
-    # QApplication,
     QMainWindow,
+    QDialog,
     QMessageBox,
     QToolBar,
     QToolTip,
@@ -55,6 +55,7 @@ from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
+from ninja_ide.gui.dialogs import unsaved_files
 # from ninja_ide.gui.dialogs import schemes_manager
 # from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
@@ -774,21 +775,12 @@ class IDE(QMainWindow):
         """Saves some global settings before closing."""
         # if self.s_listener:
         #    self.s_listener.close()
-        # main_container = self.get_service("main_container")
-        # unsaved_files = self._get_unsaved_files()
-        # if (settings.CONFIRM_EXIT and unsaved_files):
-        #    txt = '\n'.join([nfile.file_name for nfile in unsaved_files])
-        #    val = QMessageBox.question(
-        #        self,
-        #        translations.TR_IDE_CONFIRM_EXIT_TITLE,
-        #        (translations.TR_IDE_CONFIRM_EXIT_BODY % {'files': txt}),
-        #        QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-        #    if val == QMessageBox.Yes:
-                # Saves all open files
-        #        self._save_unsaved_files(unsaved_files)
-        #    if val == QMessageBox.Cancel:
-        #        event.ignore()
-        #        return
+        _unsaved_files = self._get_unsaved_files()
+        if settings.CONFIRM_EXIT and _unsaved_files:
+            dialog = unsaved_files.UnsavedFilesDialog(_unsaved_files, self)
+            if dialog.exec_() == QDialog.Rejected:
+                event.ignore()
+                return
         self.save_settings()
         self.goingDown.emit()
         # close python documentation server (if running)
