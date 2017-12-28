@@ -59,7 +59,7 @@ STATE_KEYBOARDFOCUS = QStyle.State_KeyboardFocusChange
 
 class NinjaStyle(QProxyStyle):
 
-    def __init__(self, style=QStyleFactory.create("window")):
+    def __init__(self, style=QStyleFactory.create("fusion")):
         super().__init__(style)
 
     def drawControl(self, element, opt, painter, widget):
