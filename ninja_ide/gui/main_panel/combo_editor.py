@@ -619,10 +619,9 @@ class ActionBar(ui_tools.StyledBar):
 
     def current_changed(self, index):
         """Change the current item in the combo."""
-        neditable = self.combo_files.itemData(index)
-        self.change_current.emit(neditable, index)
-        # self.emit(SIGNAL("changeCurrent(PyQt_PyObject, int)"),
-        #            neditable, index)
+        if index != -1:
+            neditable = self.combo_files.itemData(index)
+            self.change_current.emit(neditable, index)
 
     def current_symbol_changed(self, index):
         """Change the current symbol in the combo."""
@@ -752,6 +751,8 @@ class ActionBar(ui_tools.StyledBar):
             return
         if index is None:
             index = self.combo_files.currentIndex()
+            if index == -1:
+                return
         neditable = self.combo_files.itemData(index)
         if neditable:
             neditable.nfile.close()
