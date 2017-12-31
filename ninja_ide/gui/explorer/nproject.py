@@ -25,7 +25,6 @@ class NProject(QObject):
     def __init__(self, path):
         super(NProject, self).__init__()
         project = json_manager.read_ninja_project(path)
-
         self.path = path
         self._name = project.get('name', '')
         if not self._name:

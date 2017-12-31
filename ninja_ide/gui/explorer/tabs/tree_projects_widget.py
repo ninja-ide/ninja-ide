@@ -52,7 +52,7 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 # from ninja_ide.gui.dialogs import add_to_project
-# from ninja_ide.gui.dialogs import project_properties_widget
+from ninja_ide.gui.dialogs import project_properties_widget
 from ninja_ide.gui.dialogs import new_project_manager
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.explorer import actions
@@ -160,6 +160,7 @@ class ProjectTreeColumn(QDialog):
 
     def _open_project_folder(self, folderName):
         ninjaide = IDE.get_service("ide")
+        # TODO: handle exception when .nja file is empty
         project = NProject(folderName)
         qfsm = ninjaide.filesystem.open_project(project)
         if qfsm:
@@ -384,7 +385,9 @@ class ProjectTreeColumn(QDialog):
         #                                  translations.TR_PROJECT_PROPERTIES)
         # self.connect(actionProperties, SIGNAL("triggered()"),
         #             self.current_tree.open_project_properties)
-
+        action_properties = menu.addAction(translations.TR_PROJECT_PROPERTIES)
+        action_properties.triggered.connect(
+            self.current_tree.open_project_properties)
         # menu.addSeparator()
         action_close = menu.addAction(translations.TR_CLOSE_PROJECT)
         action_add_file.triggered.connect(

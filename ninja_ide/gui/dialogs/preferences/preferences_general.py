@@ -29,9 +29,6 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QStyle
 )
-from PyQt5.QtGui import (
-    QIcon
-)
 from PyQt5.QtCore import (
     Qt,
     pyqtSignal
@@ -65,7 +62,7 @@ class GeneralConfiguration(QWidget):
         # Workspace and Project
         grid_workspace = QGridLayout(group_box_workspace)
         self._text_workspace = ui_tools.LineEditButton(
-            QIcon(self.style().standardPixmap(self.style().SP_TrashIcon)))
+            self.style().standardIcon(self.style().SP_TrashIcon))
         self._text_workspace.buttonClicked.connect(self._text_workspace.clear)
         self._text_workspace.setReadOnly(True)
         grid_workspace.addWidget(

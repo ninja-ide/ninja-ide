@@ -61,91 +61,183 @@ logger = NinjaLogger(__name__)
 
 class RunProcess(QObject):
 
-    stdoutAvailable = pyqtSignal('QString')
-    errorAvailable = pyqtSignal('QString')
-    processStarted = pyqtSignal('QString')
-    processFinished = pyqtSignal('QString', 'QString')
+    stdoutAvailable = pyqtSignal("QString")
+    errorAvailable = pyqtSignal("QString")
+    processStarted = pyqtSignal("QString")
+    processFinished = pyqtSignal("QString", "QString")
+
+    @property
+    def program(self):
+        """Returns the current program that is running"""
+
+        prog = self._current_process.program()
+        args = " ".join(self._current_process.arguments())
+        return prog + " " + args
+
+    @property
+    def python_exec(self):
+        pexec = self._python_exec
+        if not pexec:
+            pexec = settings.PYTHON_EXEC
+        return pexec
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
+        self._current_process = None
+        # Process for execute script before project
+        self._pre_exec_process = QProcess(self)
+        self._pre_exec_process.started.connect(
+            self._on_process_started)
+        self._pre_exec_process.finished.connect(self.__main_execution)
+        self._pre_exec_process.finished.connect(self._on_process_finished)
+        self._pre_exec_process.errorOccurred.connect(self._on_error_occurred)
+        self._pre_exec_process.readyReadStandardError.connect(
+            self._error_available)
+        self._pre_exec_process.readyReadStandardOutput.connect(
+            self._result_available)
+        # Process for execute script after project
+        self._post_exec_process = QProcess(self)
+        self._post_exec_process.started.connect(
+            self._on_process_started)
+        self._post_exec_process.finished.connect(self._on_process_finished)
+        self._post_exec_process.errorOccurred.connect(self._on_error_occurred)
+        self._post_exec_process.readyReadStandardError.connect(
+            self._error_available)
+        # Process for execute project
         self._process = QProcess(self)
         self._process.started.connect(self._on_process_started)
-        self._process.readyReadStandardOutput.connect(self._result_available)
-        self._process.readyReadStandardError.connect(self._error_available)
         self._process.finished.connect(self._on_process_finished)
         self._process.errorOccurred.connect(self._on_error_occurred)
+        self._process.readyReadStandardOutput.connect(self._result_available)
+        self._process.readyReadStandardError.connect(self._error_available)
+        self._process.finished.connect(self.__post_execution)
 
     @pyqtSlot(QProcess.ProcessError)
     def _on_error_occurred(self, error):
+        if error == QProcess.FailedToStart:
+            # FIXME: acortar program
+            message = ("Failed to start. Maybe {} is missing or you "
+                       "have insufficient permissions").format(
+                self.program)
+        else:
+            message = "Error during execution, QProcess error: '%d'" % error
+        self.errorAvailable.emit(self.__add_current_time(message))
+        self.kill_process()
         logger.error('Error ocurred {}'.format(error))
 
     @pyqtSlot(int, QProcess.ExitStatus)
     def _on_process_finished(self, code, status):
         frmt = 'normal'
-        if status == QProcess.NormalExit and code == 0:
-            message = "The process exited normally"
-        elif status == QProcess.NormalExit:
-            message = "The process exited with code {}".format(code)
+        if status == QProcess.NormalExit == code:
+            message = "The process exited normally with code {}".format(code)
         else:
-            message = "The process crashed!"
+            message = "Execution Interrupted! '{}'".format(self.program)
             frmt = 'error'
-        self.processFinished.emit(message, frmt)
+        self.processFinished.emit(self.__add_current_time(message), frmt)
         logger.debug('Process finished with {}, {}'.format(code, status))
+
+    def __add_current_time(self, text):
+        """Add current time into text"""
+        current_time_str = QTime.currentTime().toString('hh:mm:ss')
+        message = current_time_str + " :: " + text
+        return message
 
     @pyqtSlot()
     def _on_process_started(self):
-        current_time_str = QTime.currentTime().toString('hh:mm:ss')
-        message = current_time_str + ': Running: ' + self._filename
+        message = self.__add_current_time("Running: " + self.program)
         self.processStarted.emit(message)
 
     @pyqtSlot()
     def _error_available(self):
-        output = self._process.readAllStandardError().data().decode()
+        output = self._current_process.readAllStandardError().data().decode()
         for line_text in output.splitlines():
             self.errorAvailable.emit(line_text)
 
     @pyqtSlot()
     def _result_available(self):
-        output = self._process.readAllStandardOutput().data().decode().strip()
-        self.stdoutAvailable.emit(output)
+        output = self._current_process.readAllStandardOutput().data().decode()
+        self.stdoutAvailable.emit(output.strip())
 
-    def start_process(self, filename):
+    def start_process(self, filename, python_exec, pre_exec_script,
+                      post_exec_script, program_params):
         self._filename = filename
-        self.__main_execution()
+        self._python_exec = python_exec
+        self._pre_exec_script = pre_exec_script
+        self._post_exec_script = post_exec_script
+        self._params = program_params
+        self.__pre_execution()
+
+    def __pre_execution(self):
+        """Execute a script before executing the project"""
+        self._current_process = self._pre_exec_process
+        script = self._pre_exec_script
+        file_pre_exec = QFile(script)
+        # FIXME: el script solo existe cuando ejecuto ninja desde la carpeta
+        if file_pre_exec.exists():
+            ext = file_manager.get_file_extension(script)
+            args = []
+            if ext == "py":
+                program = self.python_exec
+                # -u: Force python to unbuffer stding ad stdout
+                args = ['-u'] + [script]
+            elif ext == "sh":
+                program = "bash"
+                args = [script]
+            else:
+                program = script
+            self._pre_exec_process.setProgram(program)
+            self._pre_exec_process.setArguments(args)
+            self._pre_exec_process.start()
+        else:
+            self.__main_execution()
+
+    def __post_execution(self):
+        """Execute a script after executing the project."""
+        self._current_process = self._post_exec_process
+        script = self._post_exec_script
+        file_post_exec = QFile(script)
+        if file_post_exec.exists():
+            ext = file_manager.get_file_extension(script)
+            args = []
+            if ext == "py":
+                program = self.python_exec
+                # -u: Force python to unbuffer stding ad stdout
+                args = ['-u'] + [script]
+            elif ext == "sh":
+                program = "bash"
+                args = [script]
+            else:
+                program = script
+            self._post_exec_process.setProgram(program)
+            self._post_exec_process.setArguments(args)
+            self._post_exec_process.start()
 
     def __main_execution(self):
-        python_exec = self.python_exec
+        self._current_process = self._process
         file_directory = file_manager.get_folder(self._filename)
         self._process.setWorkingDirectory(file_directory)
         # Force python to unbuffer stding ad stdout
         options = ['-u'] + settings.EXECUTION_OPTIONS.split()
-        self._process.setProgram(python_exec)
-        self._process.setArguments(options + [self._filename])
+        # Set python exec and arguments
+        program_params = [param.strip()
+                          for param in self._params.split(',') if param]
+        self._process.setProgram(self.python_exec)
+        self._process.setArguments(options + [self._filename] + program_params)
         environment = QProcessEnvironment()
         system_environemnt = self._process.systemEnvironment()
         for env in system_environemnt:
             key, value = env.split('=', 1)
             environment.insert(key, value)
         self._process.setProcessEnvironment(environment)
+        # Start!
         self._process.start()
 
     def write(self, data):
         self._process.writeData(data)
         self._process.writeData(b'\n')
 
-    def __pre_execution(self):
-        pass
-
-    def __post_execution(self):
-        pass
-
-    @property
-    def python_exec(self):
-        return settings.PYTHON_EXEC
-
     def kill_process(self):
-        self._process.kill()
+        self._current_process.kill()
 
 
 class RunWidget(QWidget):
@@ -196,7 +288,7 @@ class RunWidget(QWidget):
         self.set_font(settings.FONT)
 
         # Process
-        self._process = RunProcess()
+        self._process = RunProcess(self)
         self._process.processStarted.connect(self._on_process_started)
         self._process.processFinished.connect(self._on_process_finished)
         self._process.stdoutAvailable.connect(self._on_stdout_available)
@@ -243,6 +335,8 @@ class RunWidget(QWidget):
         else:
             frmt = 'error'
         self.output.append_text(error_msg, text_format=frmt)
+        self.input.hide()
+        self.label_input.hide()
 
     @pyqtSlot('QString', 'QString')
     def _on_process_finished(self, msg, status):
@@ -286,10 +380,17 @@ class RunWidget(QWidget):
         # self.output.error_format.setFont(f)
         pass
 
-    def start_process(self, filename):
+    def start_process(self, filename, python_exec, pre_exec_script,
+                      post_exec_script, program_params):
         self.label_input.show()
         self.input.show()
-        self._process.start_process(filename)
+        self._process.start_process(
+            filename,
+            python_exec,
+            pre_exec_script,
+            post_exec_script,
+            program_params
+        )
 
     '''def process_error(self, error):
         """Listen to the error signals from the running process"""
@@ -476,6 +577,7 @@ class OutputWidget(QPlainTextEdit):
         super(OutputWidget, self).__init__(parent)
         self._parent = parent
 
+        self.setWordWrapMode(0)
         self.setReadOnly(True)
         self.setMouseTracking(True)
         self.setFrameShape(0)
@@ -485,12 +587,12 @@ class OutputWidget(QPlainTextEdit):
 
         font = QFont(settings.FONT)
         font.setWeight(QFont.Light)
-        font.setPixelSize(12)
+        font.setPixelSize(13)
         self.setFont(font)
         # Formats
         plain_format = QTextCharFormat()
         normal_format = QTextCharFormat()
-        normal_format.setForeground(QColor('#83c1fb'))
+        normal_format.setForeground(Qt.white)
         error_format = QTextCharFormat()
         error_format.setForeground(QColor('#ff6c6c'))
         error_format2 = QTextCharFormat()
@@ -571,7 +673,7 @@ class OutputWidget(QPlainTextEdit):
 
     #    popup_menu.exec_(event.globalPos())
 
-    def append_text(self, text, text_format):
+    def append_text(self, text, text_format="normal"):
         cursor = self.textCursor()
         cursor.insertText(text, self._text_formats[text_format])
         cursor.insertBlock()

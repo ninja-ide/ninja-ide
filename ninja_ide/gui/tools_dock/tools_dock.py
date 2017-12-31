@@ -41,6 +41,7 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtCore import (
     pyqtSlot,
+    pyqtSignal,
     QRectF,
     QPoint,
     QRect,
@@ -121,6 +122,8 @@ class ToolButton(QToolButton):
 
 
 class _ToolsDock(ui_tools.StyledBar):
+
+    projectExecuted = pyqtSignal("QString")
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -246,11 +249,46 @@ class _ToolsDock(ui_tools.StyledBar):
             if extension == "py":
                 self._run_application(file_path)
 
-    def _run_application(self, filename):
+    def execute_project(self):
+        """Execute the project marked as Main Project."""
+        projects_explorer = IDE.get_service("projects_explorer")
+        if projects_explorer is None:
+            return
+        nproject = projects_explorer.current_project
+        if nproject:
+            main_file = nproject.main_file
+            if not main_file:
+                # Open project properties to specify the main file
+                projects_explorer.current_tree.open_project_properties()
+            else:
+                # Save project files
+                projects_explorer.save_project()
+                # Emit a signal for plugin!
+                self.projectExecuted.emit(nproject.path)
+
+                main_file = file_manager.create_path(
+                    nproject.path, nproject.main_file)
+                self._run_application(
+                    filename=main_file,
+                    python_exec=nproject.python_exec,
+                    pre_exec_script=nproject.pre_exec_script,
+                    post_exec_script=nproject.post_exec_script,
+                    program_params=nproject.program_params
+                )
+
+    def _run_application(self, filename, python_exec=False,
+                         pre_exec_script="", post_exec_script="",
+                         program_params=""):
         """Execute the process to run the application"""
 
         self._show(0)  # Show widget in index = 0
-        self._run_widget.start_process(filename)
+        self._run_widget.start_process(
+            filename,
+            python_exec,
+            pre_exec_script,
+            post_exec_script,
+            program_params
+        )
         self._run_widget.input.setFocus()
 
     @pyqtSlot()

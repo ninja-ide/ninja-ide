@@ -436,6 +436,3 @@ class NinjaStyle(QProxyStyle):
                 return True
             w = w.parentWidget()
         return False
-
-    def standardPixmap(self, standard, opt=None, widget=None):
-        return super().standardPixmap(standard, opt, widget)

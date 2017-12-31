@@ -320,6 +320,13 @@ class _MainContainer(QWidget):
             )
         return False
 
+    def save_project(self, project_path):
+        """Save all files in the project path"""
+        for neditable in self.combo_area.bar.get_editables():
+            file_path = neditable.file_path
+            if file_manager.belongs_to_folder(project_path, file_path):
+                neditable.save_content()
+
     def _get_save_folder(self, filename):
         """Returns the root directory of the 'Main Project'
         or the home folder"""
