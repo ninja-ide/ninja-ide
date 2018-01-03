@@ -42,7 +42,7 @@ class NProject(QObject):
         self.use_tabs = project.get('use-tabs', settings.USE_TABS)
         self.extensions = project.get(
             'supported-extensions',
-            settings.SUPPORTED_EXTENSIONS
+            settings.get_supported_extensions()
         )
         self.python_exec = project.get('pythonExec', settings.PYTHON_EXEC)
         self.python_path = project.get('PYTHONPATH', '')

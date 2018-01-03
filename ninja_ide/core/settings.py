@@ -225,13 +225,13 @@ DOCMAP_WIDTH = 15
 # FILE MANAGER
 ###############################################################################
 
-SUPPORTED_EXTENSIONS = [
-    ("Python Files", ("py", "pyw")),
-    ("HTML Files", ("html",)),
-    ("QML Files", ("qml",)),
-    ("Javascript Files", ("js",))
-]
-ALL_FILES_FILTER = "All Files (*.*)"
+SUPPORTED_EXTENSIONS = {
+    "python": ["py", "pyw"],
+    "html": ["html"],
+    "qml": ["qml"],
+    "javascript": ["js"],
+    "ninja project": ["nja"]
+}
 
 _SUPPORTED_EXTENSIONS = [
     '.color',  # Similar to JSON, Ninja own Themes for example
@@ -299,6 +299,17 @@ WORKSPACE = ""
 ###############################################################################
 # FUNCTIONS
 ###############################################################################
+
+
+def get_supported_extensions():
+    return [ext for ext in SUPPORTED_EXTENSIONS.values() for ext in ext]
+
+
+def get_supported_extensions_filter():
+    _filter = [ftype.title() + " Files (*.{})".format(
+               " *.".join(SUPPORTED_EXTENSIONS[ftype]))
+               for ftype in SUPPORTED_EXTENSIONS.keys()]
+    return ";;".join(_filter) + ";; All Files (*.*)"
 
 
 def set_project_type_handler(project_type, project_type_handler):

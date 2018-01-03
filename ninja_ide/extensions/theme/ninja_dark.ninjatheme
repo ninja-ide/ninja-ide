@@ -19,7 +19,7 @@
         "Dark": "#ff1c1f25",
         "Mid": "#ffa0a0a0",
         "Shadow": "#ff232729",
-        "Highlight": "#ff232729",
+        "Highlight": "#FF5644",
         "HighlightedText": "#ffffff",
         "Link": "#ff007af4",
         "LinkVisited": "green"

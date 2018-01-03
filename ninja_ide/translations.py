@@ -283,6 +283,32 @@ TR_FILE_MODIFIED_OUTSIDE = tr(
     "The file has been modified outside the application.")
 # "Do you want to reload it?")
 
+# Project wizard
+TR_WIZARD_PYTHON_PROJECT_TITLE = tr("NINJA-IDE", "<h2>Basic Project Data</h2>")
+TR_WIZARD_PYTHON_PROJECT_SUBTITLE = tr(
+    "NINJA-IDE",
+    "This wizard will create a basic Python application project. "
+    "The application includes basic files such as main and setup.")
+TR_WIZARD_PROJECT_NAME = tr("NINJA-IDE", "Project name:")
+TR_WIZARD_PROJECT_LOCATION = tr("NINJA-IDE", "Create in:")
+TR_WIZARD_CHOOSE_DIR = tr("NINJA-IDE", "Choose Dir")
+TR_WIZARD_PROJECT_INTERPRETER = tr("NINJA-IDE", "Interpreter:")
+TR_WIZARD_PYQT_PROJECT_TITLE = tr(
+    "NINJA-IDE", "<h2>Project Name and Location</h2>")
+TR_WIZARD_PYQT_PROJECT_SUBTITLE = tr(
+    "NINJA-IDE",
+    "This wizard generates a PyQt Widgets Application project. "
+    "The application includes an empty widget.")
+TR_WIZARD_PYQT_PROJECT_TITLE_SECOND_PAGE = tr(
+    "NINJA-IDE", "<h2>Class Information</h2>")
+TR_WIZARD_PYQT_PROJECT_SUBTITLE_SECOND_PAGE = tr(
+    "NINJA-IDE",
+    "Specify the information about the type of widget "
+    "you want to generate, this will help to create the "
+    "skeleton of your project.")
+TR_WIZARD_PYQT_CLASS_NAME = tr("NINJA-IDE", "Class name:")
+TR_WIZARD_PYQT_BASE_CLASS = tr("NINJA-IDE", "Base class:")
+TR_WIZARD_PYQT_WIDGET_FILE = tr("NINJA-IDE", "Widget file:")
 
 # tools_dock
 TR_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text to Replace")

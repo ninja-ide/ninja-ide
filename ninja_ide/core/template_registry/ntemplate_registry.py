@@ -156,19 +156,13 @@ class BaseProjectType(QObject):
         if self.licence_text and (ext in self.single_line_comment):
             for each_line in self.licence_text.splitlines():
                 fd.write(self.single_line_comment[ext] + each_line + '\n')
-        # ext = self.get_file_extension(filepath)
-        # if self.base_encoding and (ext in self.encoding_string):
-        #    fd.write(self.encoding_string[ext] % self.base_encoding)
-        # if self.licence_text and (ext in self.single_line_comment):
-        #    for each_line in self.licence_text.splitlines():
-        #        fd.write(self.single_line_comment[ext] + each_line + '\n')
 
     def _create_file(self, path, content):
         with open(path, "w") as writable:
             self.init_file(writable, path)
             writable.write(content)
 
-    def create_layout(self):
+    def create_layout(self, wizard):
         """
         Create set of folders and files required for this project bootstrap
         """
@@ -206,6 +200,12 @@ class BaseProjectType(QObject):
 
     def wizard_callback(self):
         pass
+
+    def _open_project(self, path):
+        """Open Project based on path into Explorer"""
+
+        projects_explorer = IDE.get_service("projects_explorer")
+        projects_explorer.open_project_folder(path)
 
 
 template_registry = NTemplateRegistry()

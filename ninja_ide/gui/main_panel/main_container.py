@@ -195,14 +195,11 @@ class _MainContainer(QWidget):
                 elif editor_widget is not None and editor_widget.file_path:
                     directory = file_manager.get_folder(
                         editor_widget.file_path)
-            extensions = ";;".join(
-                ["{}(*{})".format(e.upper()[1:], e)
-                    for e in settings.SUPPORTED_EXTENSIONS + [".*", ""]])
             filenames = QFileDialog.getOpenFileNames(
                 self,
                 "Open File",  # FIXME: translations
                 directory,
-                extensions
+                settings.get_supported_extensions_filter()
             )[0]
         else:
             logger.debug("Has filename")

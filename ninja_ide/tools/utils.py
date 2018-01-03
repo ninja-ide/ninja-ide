@@ -1,8 +1,36 @@
 # -*- coding: utf-8 -*-
+import sys
+import os
 from PyQt5.QtCore import (
     QObject,
     QTimer
 )
+
+
+IS_PY_34 = False
+if sys.version_info.minor <= 4:
+    IS_PY_34 = True
+
+
+def get_home_dir():
+    if IS_PY_34:
+        from os.path import expanduser
+        home = expanduser("~")
+    else:
+        from pathlib import Path
+        home = str(Path.home())
+    return home
+
+
+def get_python():
+        found = []
+        for search_path in ('/usr/bin', '/usr/local/bin'):
+            files = os.listdir(search_path)
+            for fname in files:
+                if fname.startswith('python') and not fname.count('config') \
+                        and not fname.endswith("m"):
+                    found.append(os.path.join(search_path, fname))
+        return found
 
 
 class SignalFlowControl(QObject):

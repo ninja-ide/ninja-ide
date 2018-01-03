@@ -17,15 +17,17 @@
 
 from PyQt5.QtWidgets import (
     QDialog,
+    QWizard,
+    # QLineEdit,
     QVBoxLayout,
     QListWidget,
     QListWidgetItem,
     QHBoxLayout,
     QLabel,
     QTextBrowser,
-    QPushButton,
-    QSpacerItem,
-    QSizePolicy,
+    # QPushButton,
+    # QSpacerItem,
+    # QSizePolicy,
     QDialogButtonBox
 )
 from PyQt5.QtCore import Qt
@@ -117,25 +119,27 @@ class NewProjectManager(QDialog):
         if item is not None:
             project_type = item.data(Qt.UserRole)
 
-        wizard = WizardProject(project_type, self)
+        ninja = IDE.get_service("ide")
+        wizard = WizardProject(project_type, ninja)
         wizard.show()
-
-
-from PyQt5.QtWidgets import QWizard, QWizardPage, QLineEdit
 
 
 class WizardProject(QWizard):
 
     def __init__(self, project_type, parent=None):
         super().__init__(parent)
+        self.resize(700, 400)
         self._project_type = project_type
         self.setWindowTitle(project_type.type_name)
         for page in project_type.wizard_pages():
             self.addPage(page)
+        self.setTitleFormat(Qt.RichText)
 
     def done(self, result):
         if result == 1:
             path = self.field("path")
-            prj_obj = self._project_type('ejemplo', path, '')
-            prj_obj.create_layout()
+            name = self.field("name")
+            license_txt = self.field("license")
+            prj_obj = self._project_type(name, path, license_txt)
+            prj_obj.create_layout(self)
         super().done(result)
