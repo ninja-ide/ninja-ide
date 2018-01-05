@@ -401,16 +401,91 @@ TR_SHORCUTS_ALREADY_ON_USE = tr(
 
 
 # Preferences
+TR_PREFERENCES_THEME = tr("NINJA-IDE", "Theme:")
+TR_PREFERENCES_NINJA_THEME = tr("NINJA-IDE", "Ninja Theme:")
+TR_PREFERENCES_SCREEN_RESOLUTION = tr("NINJA-IDE", "Screen Resolution:")
+TR_PREFERENCES_SCREEN_NORMAL = tr("NINJA-IDE", "Normal")
+TR_PREFERENCES_SCREEN_AUTO_HDPI = tr("NINJA-IDE", "Auto HDPI Scaling")
+TR_PREFERENCES_SCREEN_CUSTOM_HDPI = tr("NINJA-IDE", "Custom HDPI Scaling")
 TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
 TR_PREFERENCES_INTERFACE = tr("NINJA-IDE", "Interface")
 TR_PREFERENCES_PLUGINS = tr("NINJA-IDE", "Plugins")
 TR_PREFERENCES_THEME = tr("NINJA-IDE", "Theme")
 TR_PREFERENCES_EDITOR_GENERAL = tr("NINJA-IDE", "Editor")
+TR_PREFERENCES_EDITOR_BEHAVIOR = tr("NINJA-IDE", "Behavior")
+TR_PREFERENCES_EDITOR_BEHAVIOR_ONSAVING = tr("NINJA-IDE", "On Saving:")
+TR_PREFERENCES_EDITOR_BEHAVIOR_CLEAN_WHITESPACES = tr(
+    "NINJA-IDE",
+    "Clean whitespaces")
+TR_PREFERENCES_EDITOR_BEHAVIOR_ADD_NEW_LINE = tr(
+    "NINJA-IDE",
+    "Add newline at end of file")
+TR_PREFERENCES_EDITOR_BEHAVIOR_INDENTATION = tr(
+    "NINJA-IDE",
+    "Indentation:")
+TR_PREFERENCES_EDITOR_BEHAVIOR_SPACES_ONLY = tr(
+    "NINJA-IDE",
+    "Spaces Only")
+TR_PREFERENCES_EDITOR_BEHAVIOR_TABS_ONLY = tr(
+    "NINJA-IDE",
+    "Tabs Only")
+TR_PREFERENCES_EDITOR_BEHAVIOR_INDENT_SIZE = tr(
+    "NINJA-IDE",
+    "Indent size:")
+TR_PREFERENCES_EDITOR_BEHAVIOR_MOUSE_KEYBOARD = tr(
+    "NINJA-IDE",
+    "Mouse and Keyboard:")
+TR_PREFERENCES_EDITOR_BEHAVIOR_SCROLL_WHEEL = tr(
+    "NINJA-IDE",
+    "Enable scroll wheel zooming")
+TR_PREFERENCES_EDITOR_BEHAVIOR_HIDE_CURSOR = tr(
+    "NINJA-IDE",
+    "Hide mouse cursor while typing")
+TR_PREFERENCES_EDITOR_BEHAVIOR_SHOW_TOOLTIPS = tr(
+    "NINJA-IDE",
+    "Show tooltips:")
+TR_PREFERENCES_EDITOR_BEHAVIOR_TOOLTIPS_MOUSE_OVER = tr(
+    "NINJA-IDE",
+    "On Mouseover"
+)
+TR_PREFERENCES_EDITOR_BEHAVIOR_TOOLTIPS_SHIFT = tr(
+    "NINJA-IDE",
+    "On Shift+Mouseover")
+TR_PREFERENCES_EDITOR_DISPLAY_WRAPPING = tr(
+    "NINJA-IDE",
+    "Text Wrapping:")
+TR_PREFERENCES_EDITOR_DISPLAY_ENABLE_TEXT_WRAPPING = tr(
+    "NINJA-IDE",
+    "Enable text wrapping")
+TR_PREFERENCES_EDITOR_DISPLAY_RIGHT_MARGIN_LABEL = tr(
+    "NINJA-IDE",
+    "Display margin line at column:")
+TR_PREFERENCES_EDITOR_DISPLAY = tr(
+    "NINJA-IDE",
+    "Display features:")
+TR_PREFERENCES_EDITOR_DISPLAY_HIGHLIGHT_BRACKETS = tr(
+    "NINJA-IDE",
+    "Highlight Matching Brackets")
+TR_PREFERENCES_EDITOR_DISPLAY_HIGHLIGHT_CURRENT_LINE = tr(
+    "NINJA-IDE",
+    "Highlight Current Line")
+TR_HIGHLIGHT_RESULT_ON_SCROLLBAR = tr(
+    "NINJA-IDE",
+    "Highlight results on scrollbar")
+TR_CENTER_ON_SCROLL = tr(
+    "NINJA-IDE",
+    "Center on Scroll")
+TR_PREFERENCES_EDITOR_DISPLAY_LINT = tr(
+    "NINJA-IDE",
+    "Linter:")
 TR_PREFERENCES_EDITOR_CONFIGURATION = tr("NINJA-IDE", "Configuration")
 TR_PREFERENCES_EDITOR_COMPLETION = tr("NINJA-IDE", "Completion")
 TR_PREFERENCES_EDITOR_SCHEME_DESIGNER = tr("NINJA-IDE", "Scheme Designer")
 TR_PREFERENCES_SHORTCUTS = tr("NINJA-IDE", "Shortcuts")
 TR_PREFERENCES_EXECUTION = tr("NINJA-IDE", "Execution")
+TR_PREFERENCES_EXECUTION_PYTHON_INTERPRETER_LBL = tr(
+    "NINJA-IDE",
+    "Select the Python interpreter:")
 TR_PREFERENCES_PLUGINS_MAIN = tr(
     "NINJA-IDE",
     "This section shows the configurations exposed by the Plugins.")
@@ -418,6 +493,7 @@ TR_PREFERENCES_GENERAL_START = tr("NINJA-IDE", "On Start:")
 TR_PREFERENCES_GENERAL_CLOSE = tr("NINJA-IDE", "On Close:")
 TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace and Project:")
 TR_PREFERENCES_GENERAL_RESET = tr("NINJA-IDE", "Reset NINJA-IDE Preferences:")
+TR_PREFERENCES_GENERAL_AUTOSAVE = tr("NINJA-IDE", "Autosave:")
 TR_PREFERENCES_GENERAL_LOAD_LAST_SESSION = tr(
     "NINJA-IDE",
     "Load Files from Last Session")
@@ -446,6 +522,13 @@ TR_PREFERENCES_GENERAL_CONFIRM_EXIT = tr("NINJA-IDE", "Confirm Exit.")
 TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace")
 TR_PREFERENCES_GENERAL_SUPPORTED_EXT = tr("NINJA-IDE", "Supported Extensions:")
 TR_PREFERENCES_GENERAL_RESET_PREFERENCES = tr("NINJA-IDE", "Reset Preferences")
+TR_PREFERENCES_GENERAL_AUTOSAVE_CHECK = tr(
+    "NINJA-IDE", "Autosave modified files")
+TR_PREFERENCES_GENERAL_AUTOSAVE_INTERVAL = tr("NINJA-IDE", "Interval:")
+TR_PREFERENCES_GENERAL_EXTERNALLY_MOD = tr(
+    "NINJA-IDE", "Externally Modification:")
+TR_PREFERENCES_GENERAL_EXTERNALLY_MOD_LABEL = tr(
+    "NINJA-IDE", "When files are externally modified:")
 TR_PREFERENCES_GENERAL_SELECT_WORKSPACE = tr("NINJA-IDE", "Select Workspace")
 TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH = tr(
     "NINJA-IDE",
@@ -487,9 +570,9 @@ TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION = tr(
 TR_PREFERENCES_EDITOR_CONFIG_END_AT_LAST_LINE = tr(
     "NINJA-IDE",
     "Stop Scrolling At Last Line")
-TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING = tr(
-    "NINJA-IDE",
-    "Remove Trailing Spaces and\nAdd Last Line Automatically")
+# TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING = tr(
+#    "NINJA-IDE",
+#    "Remove Trailing Spaces and\nAdd Last Line Automatically")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES = tr(
     "NINJA-IDE",
     "Show Tabs and Spaces")
@@ -714,6 +797,7 @@ TR_BOTTOM = tr("NINJA-IDE", "bottom")
 TR_SELECT_SELECT_PYTHON_EXEC = tr("NINJA-IDE", "Select Python executable")
 TR_SELECT_PYTHON_EXEC = tr("NINJA-IDE", "Python Exec:")
 TR_WORKSPACE_PROJECTS = tr("NINJA-IDE", "Workspace and Project:")
+TR_PYTHON_OPTIONS = tr("NINJA-IDE", "Execution Options")
 TR_SELECT_EXEC_OPTION_B = tr(
     "NINJA-IDE",
     "-B: don't write .py[co] files on import")

@@ -68,6 +68,7 @@ from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
+from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
 # from ninja_ide.gui.dialogs.preferences import preferences_plugins
 # from ninja_ide.gui.dialogs.preferences import preferences_theme

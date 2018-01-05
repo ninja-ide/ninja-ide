@@ -27,6 +27,7 @@ from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QGroupBox
 from PyQt5.QtWidgets import QCheckBox
 from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QStyle
 from PyQt5.QtWidgets import QToolBar
 from PyQt5.QtWidgets import QLabel
@@ -55,9 +56,11 @@ class Interface(QWidget):
 
         groupBoxExplorer = QGroupBox(
             translations.TR_PREFERENCES_INTERFACE_EXPLORER_PANEL)
-        group_theme = QGroupBox("Ninja Theme:")
-        #groupBoxToolbar = QGroupBox(
-            #translations.TR_PREFERENCES_INTERFACE_TOOLBAR_CUSTOMIZATION)
+        group_theme = QGroupBox(
+            translations.TR_PREFERENCES_THEME)
+        group_hdpi = QGroupBox(translations.TR_PREFERENCES_SCREEN_RESOLUTION)
+        # groupBoxToolbar = QGroupBox(
+        #    translations.TR_PREFERENCES_INTERFACE_TOOLBAR_CUSTOMIZATION)
         groupBoxLang = QGroupBox(
             translations.TR_PREFERENCES_INTERFACE_LANGUAGE)
 
@@ -81,7 +84,7 @@ class Interface(QWidget):
         # Theme
         vbox_theme = QVBoxLayout(group_theme)
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel("Ninja Theme:"))
+        hbox.addWidget(QLabel(translations.TR_PREFERENCES_NINJA_THEME))
         self._combobox_themes = QComboBox()
         self._combobox_themes.addItems(theme.available_theme_names())
         self._combobox_themes.setCurrentText(settings.NINJA_SKIN)
@@ -89,6 +92,20 @@ class Interface(QWidget):
         vbox_theme.addLayout(hbox)
         vbox_theme.addWidget(
             QLabel(translations.TR_PREFERENCES_REQUIRES_RESTART))
+        # HDPI
+        hbox = QHBoxLayout(group_hdpi)
+        self._combo_resolution = QComboBox()
+        self._combo_resolution.addItems([
+            translations.TR_PREFERENCES_SCREEN_NORMAL,
+            translations.TR_PREFERENCES_SCREEN_AUTO_HDPI,
+            translations.TR_PREFERENCES_SCREEN_CUSTOM_HDPI
+        ])
+        self._combo_resolution.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed)
+        hbox.addWidget(self._combo_resolution)
+        self._line_custom_hdpi = QLineEdit()
+        self._line_custom_hdpi.setText("1.5")
+        hbox.addWidget(self._line_custom_hdpi)
         #GUI - Toolbar
         #vbox_toolbar = QVBoxLayout(groupBoxToolbar)
         #hbox_select_items = QHBoxLayout()
@@ -119,7 +136,7 @@ class Interface(QWidget):
         #vbox_toolbar.addWidget(self._toolbar_items)
         #vbox_toolbar.addWidget(QLabel(
             #translations.TR_PREFERENCES_TOOLBAR_CONFIG_HELP))
-        #Language
+        # Language
         vboxLanguage = QVBoxLayout(groupBoxLang)
         vboxLanguage.addWidget(QLabel(
             translations.TR_PREFERENCES_SELECT_LANGUAGE))
@@ -142,6 +159,7 @@ class Interface(QWidget):
 
         vbox.addWidget(groupBoxExplorer)
         vbox.addWidget(group_theme)
+        vbox.addWidget(group_hdpi)
         #vbox.addWidget(groupBoxToolbar)
         vbox.addWidget(groupBoxLang)
         vbox.addStretch(1)
@@ -153,9 +171,15 @@ class Interface(QWidget):
                      #self.toolbar_item_removed)
         #self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
                      #self.toolbar_items_default)
-
+        self._combo_resolution.currentIndexChanged.connect(
+            self._on_resolution_changed)
         self._preferences.savePreferences.connect(self.save)
 
+    def _on_resolution_changed(self, index):
+        enabled = False
+        if index == 2:
+            enabled = True
+        self._line_custom_hdpi.setEnabled(enabled)
     #def toolbar_item_added(self):
         #data = self._comboToolbarItems.itemData(
             #self._comboToolbarItems.currentIndex())

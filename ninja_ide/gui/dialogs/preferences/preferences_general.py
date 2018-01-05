@@ -24,9 +24,13 @@ from PyQt5.QtWidgets import (
     QSizePolicy,
     QSpacerItem,
     QGroupBox,
+    QSpinBox,
     QCheckBox,
+    QFileDialog,
     QLineEdit,
     QGridLayout,
+    QComboBox,
+    QMessageBox,
     QStyle
 )
 from PyQt5.QtCore import (
@@ -36,6 +40,8 @@ from PyQt5.QtCore import (
 from ninja_ide.gui.dialogs.preferences import preferences
 from ninja_ide import translations
 from ninja_ide.tools import ui_tools
+from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
 
 
 class GeneralConfiguration(QWidget):
@@ -50,6 +56,11 @@ class GeneralConfiguration(QWidget):
         group_box_start = QGroupBox(translations.TR_PREFERENCES_GENERAL_START)
         group_box_workspace = QGroupBox(
             translations.TR_PREFERENCES_GENERAL_WORKSPACE)
+        group_box_reset = QGroupBox(translations.TR_PREFERENCES_GENERAL_RESET)
+        group_box_autosave = QGroupBox(
+            translations.TR_PREFERENCES_GENERAL_AUTOSAVE)
+        group_box_modification = QGroupBox(
+            translations.TR_PREFERENCES_GENERAL_EXTERNALLY_MOD)
 
         # Group start
         box_start = QVBoxLayout(group_box_start)
@@ -61,19 +72,94 @@ class GeneralConfiguration(QWidget):
         box_start.addWidget(self._check_notify_updates)
         # Workspace and Project
         grid_workspace = QGridLayout(group_box_workspace)
-        self._text_workspace = ui_tools.LineEditButton(
-            self.style().standardIcon(self.style().SP_TrashIcon))
-        self._text_workspace.buttonClicked.connect(self._text_workspace.clear)
+        self._text_workspace = QLineEdit()
+        choose_workspace_action = self._text_workspace.addAction(
+            self.style().standardIcon(self.style().SP_DirIcon),
+            QLineEdit.TrailingPosition)
+        clear_workspace_action = self._text_workspace.addAction(
+            self.style().standardIcon(self.style().SP_LineEditClearButton),
+            QLineEdit.TrailingPosition)
         self._text_workspace.setReadOnly(True)
         grid_workspace.addWidget(
             QLabel(translations.TR_PREFERENCES_GENERAL_WORKSPACE), 0, 0)
         grid_workspace.addWidget(self._text_workspace, 0, 1)
 
+        # Resetting prefences
+        box_reset = QVBoxLayout(group_box_reset)
+        btn_reset = QPushButton(
+            translations.TR_PREFERENCES_GENERAL_RESET_PREFERENCES)
+        box_reset.addWidget(btn_reset)
+
+        # Autosave files
+        box_autosave = QHBoxLayout(group_box_autosave)
+        self._check_autosave = QCheckBox(
+            translations.TR_PREFERENCES_GENERAL_AUTOSAVE_CHECK)
+        box_autosave.addWidget(self._check_autosave)
+        box_autosave.addWidget(
+            QLabel(translations.TR_PREFERENCES_GENERAL_AUTOSAVE_INTERVAL),
+            alignment=Qt.AlignRight)
+        self._spin_interval = QSpinBox()
+        self._spin_interval.setSuffix("min")
+        box_autosave.addWidget(self._spin_interval)
+
+        # Externally modification
+        box_mod = QHBoxLayout(group_box_modification)
+        box_mod.addWidget(
+            QLabel(translations.TR_PREFERENCES_GENERAL_EXTERNALLY_MOD_LABEL))
+        self._combo_mod = QComboBox()
+        self._combo_mod.addItems(["Ask", "Reload", "Ignore"])
+        box_mod.addWidget(self._combo_mod)
+
         # Add groups to main layout
         vbox.addWidget(group_box_start)
         vbox.addWidget(group_box_workspace)
+        vbox.addWidget(group_box_autosave)
+        vbox.addWidget(group_box_modification)
+        vbox.addWidget(group_box_reset, alignment=Qt.AlignLeft)
         vbox.addSpacerItem(
             QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Expanding))
+
+        # Settings
+        qsettings = IDE.ninja_settings()
+        qsettings.beginGroup("preferences")
+        qsettings.beginGroup("general")
+        self._check_notify_updates.setChecked(
+            qsettings.value("notifyUpdates", defaultValue=True, type=bool))
+        qsettings.endGroup()
+        qsettings.endGroup()
+
+        # Connections
+        btn_reset.clicked.connect(self._reset_preferences)
+        choose_workspace_action.triggered.connect(self._load_workspace)
+        clear_workspace_action.triggered.connect(self._text_workspace.clear)
+        self._preferences.savePreferences.connect(self.save)
+
+    def _reset_preferences(self):
+        """Reset all preferences to default values"""
+
+        result = QMessageBox.question(
+            self,
+            translations.TR_PREFERENCES_GENERAL_RESET_TITLE,
+            translations.TR_PREFERENCES_GENERAL_RESET_BODY,
+            buttons=QMessageBox.Yes | QMessageBox.No
+        )
+        if result == QMessageBox.Yes:
+            qsettings = IDE.ninja_settings()
+            qsettings.clear()
+            self._preferences.close()
+
+    def _load_workspace(self):
+        """Ask the user for a Workspace path"""
+        path = QFileDialog.getExistingDirectory(
+            self, translations.TR_PREFERENCES_GENERAL_SELECT_WORKSPACE)
+        self._text_workspace.setText(path)
+
+    def save(self):
+        """Save all preferences values"""
+
+        qsettings = IDE.ninja_settings()
+        qsettings.setValue("preferences/general/notifyUpdates",
+                           self._check_notify_updates.isChecked())
 
 
 preferences.Preferences.register_configuration(
