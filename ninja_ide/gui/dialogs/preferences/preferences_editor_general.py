@@ -132,6 +132,7 @@ class EditorGeneral(QWidget):
         # Initial Settings
         btn_text = ', '.join(self._font.toString().split(',')[0:2])
         self._btn_editor_font.setText(btn_text)
+        self._check_font_antialiasing.setChecked(settings.FONT_ANTIALIASING)
 
         # Connections
         self._btn_editor_font.clicked.connect(self._load_editor_font)
@@ -145,14 +146,18 @@ class EditorGeneral(QWidget):
             self._btn_editor_font.setText(btn_text)
 
     def _save(self):
-        qsettings = IDE.ninja_settings()
-        settings.FONT = self._font
-        qsettings.setValue('preferences/editor/font', settings.FONT)
+        qsettings = IDE.editor_settings()
 
-        main_container = IDE.get_service("main_container")
-        editor = main_container.get_current_editor()
-        if editor is not None:
-            editor.set_font(self._font)
+        # qsettings.beginGroup("editor")
+        # qsettings.beginGroup("general")
+
+        settings.FONT = self._font
+        qsettings.setValue("editor/general/default_font", settings.FONT)
+        settings.FONT_ANTIALIASING = self._check_font_antialiasing.isChecked()
+        qsettings.setValue("editor/general/font_antialiasing",
+                           settings.FONT_ANTIALIASING)
+        # qsettings.endGroup()
+        # qsettings.endGroup()
 
 
 '''class EditorGeneral(QWidget):

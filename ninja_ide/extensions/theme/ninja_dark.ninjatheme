@@ -4,6 +4,7 @@
     "palette": {
         "Window": "#232729",
         "WindowText": "#ffffff",
+        "WindowTextDisabled": "#a3a6a7",
         "Base": "#2e2f30",
         "AlternateBase": "#ff515151",
         "ToolTipBase": "#66000000",
@@ -18,7 +19,7 @@
         "Midlight": "green",
         "Dark": "#ff1c1f25",
         "Mid": "#ffa0a0a0",
-        "Shadow": "#ff232729",
+        "Shadow": "#232729",
         "Highlight": "#FF5644",
         "HighlightedText": "#ffffff",
         "Link": "#ff007af4",

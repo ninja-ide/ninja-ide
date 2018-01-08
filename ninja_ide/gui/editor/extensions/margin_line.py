@@ -23,10 +23,10 @@ from PyQt5.QtGui import (
     QFontMetricsF
 )
 from PyQt5.QtCore import QRect
-from ninja_ide.gui.editor.extensions import Extension
+from ninja_ide.gui.editor.extensions import base
 
 
-class RightMargin(Extension):
+class RightMargin(base.Extension):
     """Displays a right margin at column the specified position"""
 
     @property
@@ -59,8 +59,8 @@ class RightMargin(Extension):
             self.__background = value
             self.update()
 
-    def __init__(self, neditor):
-        super().__init__(neditor)
+    def __init__(self):
+        super().__init__()
         self.__position = 79  # Default position
         self.__color = QColor("gray")
         self.__color.setAlpha(50)

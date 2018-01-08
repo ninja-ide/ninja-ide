@@ -40,3 +40,7 @@ class SideArea(QWidget):
         if self.isVisible():
             painter = QPainter(self)
             painter.fillRect(event.rect(), self.__background_color)
+
+    def setVisible(self, value):
+        super().setVisible(value)
+        self.neditor.update_viewport()

@@ -26,7 +26,9 @@ from PyQt5.QtWidgets import (
     QSpinBox,
     QGroupBox,
 )
+from ninja_ide.core import settings
 from ninja_ide import translations
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 
 
@@ -95,6 +97,45 @@ class Behavior(QWidget):
         container.addWidget(group_box_indentation)
         container.addWidget(group_box_mouse_kbr)
         container.addStretch(1)
+
+        # Settings
+        self._check_remove_spaces.setChecked(settings.REMOVE_TRAILING_SPACES)
+        self._check_add_new_line.setChecked(settings.ADD_NEW_LINE_AT_EOF)
+        self._check_hide_cursor.setChecked(settings.HIDE_MOUSE_CURSOR)
+        self._check_scroll_wheel.setChecked(settings.SCROLL_WHEEL_ZOMMING)
+        self._combo_tab_policy.setCurrentIndex(bool(settings.USE_TABS))
+        self._spin_indent_size.setValue(settings.INDENT)
+
+        self._preferences.savePreferences.connect(self._save)
+
+    def _save(self):
+        qsettings = IDE.ninja_settings()
+        editor_settings = IDE.editor_settings()
+
+        qsettings.beginGroup("editor")
+        editor_settings.beginGroup("editor")
+        qsettings.beginGroup("behavior")
+        editor_settings.beginGroup("behavior")
+
+        settings.REMOVE_TRAILING_SPACES = self._check_remove_spaces.isChecked()
+        qsettings.setValue("removeTrailingSpaces",
+                           settings.REMOVE_TRAILING_SPACES)
+        settings.ADD_NEW_LINE_AT_EOF = self._check_add_new_line.isChecked()
+        qsettings.setValue("addNewLineAtEnd", settings.ADD_NEW_LINE_AT_EOF)
+        settings.HIDE_MOUSE_CURSOR = self._check_hide_cursor.isChecked()
+        qsettings.setValue("hideMouseCursor", settings.HIDE_MOUSE_CURSOR)
+        settings.SCROLL_WHEEL_ZOMMING = self._check_scroll_wheel.isChecked()
+        qsettings.setValue("scrollWheelZomming", settings.SCROLL_WHEEL_ZOMMING)
+
+        settings.USE_TABS = bool(self._combo_tab_policy.currentIndex())
+        editor_settings.setValue("use_tabs", settings.USE_TABS)
+        settings.INDENT = self._spin_indent_size.value()
+        editor_settings.setValue("indentation_width", settings.INDENT)
+
+        qsettings.endGroup()
+        qsettings.endGroup()
+        editor_settings.endGroup()
+        editor_settings.endGroup()
 
 
 preferences.Preferences.register_configuration(

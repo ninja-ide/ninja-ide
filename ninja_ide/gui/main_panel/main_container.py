@@ -41,10 +41,10 @@ from ninja_ide.gui.main_panel import set_language
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel.helpers import split_orientation
 from ninja_ide.gui import dynamic_splitter
-from ninja_ide.gui.editor import editor
 from ninja_ide import translations
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor import editor
+from ninja_ide.gui.editor import helpers
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
 from ninja_ide.gui import indicator
@@ -256,8 +256,10 @@ class _MainContainer(QWidget):
                     return self.save_file_as(editor_widget)
                 # FIXME: beforeFileSaved.emit
                 if settings.REMOVE_TRAILING_SPACES:
-                    pass
+                    helpers.remove_trailing_spaces(editor_widget)
                 # FIXME: new line at end
+                if settings.ADD_NEW_LINE_AT_EOF:
+                    helpers.insert_block_at_end(editor_widget)
                 # Save content
                 editor_widget.neditable.save_content()
                 # FIXME: encoding
@@ -448,6 +450,35 @@ class _MainContainer(QWidget):
         editor_widget = self.get_current_editor()
         if editor_widget is not None:
             editor_widget.comment()
+
+    def editor_go_to_line(self, line):
+        editor_widget = self.get_current_editor()
+        if editor_widget is not None:
+            editor_widget.go_to_line(line)
+            editor_widget.setFocus()
+
+    def _editor_settings_changed(self, key, value):
+        key = key.split("/")[-1]
+        editor_widget = self.get_current_editor()
+        if editor_widget is not None:
+            callback = getattr(editor.NEditor, key, False)
+            if callback:
+                callback = callback
+                if not hasattr(callback, "__call__"):
+                    # Property!
+                    callback = callback.fset
+                callback(editor_widget, value)
+
+    def toggle_tabs_and_spaces(self):
+        """Toggle Show/Hide Tabs and Spaces"""
+
+        settings.SHOW_TABS_AND_SPACES = not settings.SHOW_TABS_AND_SPACES
+        qsettings = IDE.ninja_settings()
+        qsettings.setValue('preferences/editor/showTabsAndSpaces',
+                           settings.SHOW_TABS_AND_SPACES)
+        neditor = self.get_current_editor()
+        if neditor is not None:
+            neditor.show_whitespaces = settings.SHOW_TABS_AND_SPACES
 
 
 # Register Main Container

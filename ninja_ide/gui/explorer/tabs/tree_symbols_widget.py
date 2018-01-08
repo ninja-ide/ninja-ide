@@ -83,7 +83,7 @@ class TreeSymbolsWidget(QDialog):
         #             self._item_expanded)
 
         IDE.register_service('symbols_explorer', self)
-        # ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
+        ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
 
     def install_tab(self):
         """ Connect signals for goingdown """

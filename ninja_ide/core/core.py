@@ -18,10 +18,11 @@
 from __future__ import absolute_import
 
 import sys
+import os
 import signal
 
 from PyQt5.QtWidgets import QApplication
-
+from PyQt5.QtCore import Qt, QCoreApplication
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import cliparser
@@ -51,6 +52,9 @@ def run_ninja():
 
     # Load Settings
     settings.load_settings()
+    QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling, settings.HDPI)
+    if settings.CUSTOM_SCREEN_RESOLUTION:
+        os.environ["QT_SCALE_FACTOR"] = settings.CUSTOM_SCREEN_RESOLUTION
     # Start the UI
     app = QApplication(sys.argv)
     from ninja_ide.utils import theme

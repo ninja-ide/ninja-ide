@@ -120,15 +120,14 @@ def add_line_increment_for_dict(data, lineModified, diference,
 def remove_trailing_spaces(editor):
     cursor = editor.textCursor()
     block = editor.document().findBlockByLineNumber(0)
-    cursor.beginEditBlock()
-    while block.isValid():
-        text = block.text()
-        if text.endswith(' '):
-            cursor.setPosition(block.position())
-            cursor.select(QTextCursor.LineUnderCursor)
-            cursor.insertText(text.rstrip())
-        block = block.next()
-    cursor.endEditBlock()
+    with editor:
+        while block.isValid():
+            text = block.text()
+            if text.endswith(' '):
+                cursor.setPosition(block.position())
+                cursor.select(QTextCursor.LineUnderCursor)
+                cursor.insertText(text.rstrip())
+            block = block.next()
 
 
 def insert_block_at_end(editor):

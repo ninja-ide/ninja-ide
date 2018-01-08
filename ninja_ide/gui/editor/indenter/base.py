@@ -15,18 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from PyQt5.QtGui import QTextCursor
+from ninja_ide.core import settings
 
 
 class BaseIndenter(object):
 
-    WIDTH = 4
-    USE_TABS = False
-    LANG = ''
-
     def __init__(self, neditor):
         self._neditor = neditor  # Editor ref
-        self.width = self.WIDTH
-        self.use_tabs = self.USE_TABS
+        self.width = settings.INDENT
+        self.use_tabs = settings.USE_TABS
 
     def text(self):
         """Get indent text as \t or string of spaces"""
@@ -54,12 +51,12 @@ class BaseIndenter(object):
     def indent(self):
         """Indent a single line after tab pressed"""
         cursor = self._neditor.textCursor()
-        if self.USE_TABS:
+        if self.use_tabs:
             to_insert = self.text()
         else:
             text = cursor.block().text()
             text_before_cursor = text[:cursor.positionInBlock()]
-            to_insert = self.WIDTH - (len(text_before_cursor)) % self.WIDTH
+            to_insert = self.width - (len(text_before_cursor)) % self.width
             to_insert *= " "
         cursor.insertText(to_insert)
 

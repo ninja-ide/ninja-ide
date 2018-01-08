@@ -1,9 +1,9 @@
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtCore import Qt
-from ninja_ide.gui.editor.extensions import Extension
+from ninja_ide.gui.editor.extensions import base
 
 
-class AutocompleteQuotes(Extension):
+class AutocompleteQuotes(base.Extension):
 
     QUOTES = {
         Qt.Key_QuoteDbl: '"',

@@ -55,7 +55,7 @@ class Preferences(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent, Qt.Dialog)
         self.setWindowTitle(translations.TR_PREFERENCES_TITLE)
-        self.setMinimumSize(900, 600)
+        self.setMinimumSize(900, 650)
         box = QVBoxLayout(self)
         box.setContentsMargins(3, 3, 3, 3)
         self.setAutoFillBackground(True)

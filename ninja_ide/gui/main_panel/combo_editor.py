@@ -184,6 +184,7 @@ class ComboEditor(ui_tools.StyledBar):
             if self.__original:
                 neditable.askForSaveFileClosing.connect(self._ask_for_save)
                 neditable.fileChanged.connect(self._file_has_been_modified)
+                self.info_bar.reloadClicked.connect(neditable.reload_file)
             # Editor Signals
             editor.cursor_position_changed[int, int].connect(
                 self._update_cursor_position)
@@ -286,7 +287,7 @@ class ComboEditor(ui_tools.StyledBar):
     def _add_to_last_opened(self, path):
         if path not in settings.LAST_OPENED_FILES:
             settings.LAST_OPENED_FILES.append(path)
-            if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_TABS:
+            if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_EDITORS:
                 self.__lastOpened = self.__lastOpened[1:]
             print("RecentTabsModified")
             # self.emit(SIGNAL("recentTabsModified()"))
@@ -317,15 +318,11 @@ class ComboEditor(ui_tools.StyledBar):
             neditable.nfile.close()
 
     def _file_has_been_modified(self, neditable):
-        self.info_bar.show_message(translations.TR_FILE_MODIFIED_OUTSIDE)
-        # val = QMessageBox.No
-        # fileName = neditable.file_path
-        # val = QMessageBox.question(
-        #    self, translations.TR_FILE_HAS_BEEN_MODIFIED,
-        #    "%s%s" % (fileName, translations.TR_FILE_MODIFIED_OUTSIDE),
-        #    QMessageBox.Yes | QMessageBox.No)
-        # if val == QMessageBox.Yes:
-        #    neditable.reload_file()
+        # FIXME: use constant or enum
+        if settings.RELOAD_FILE == 0:
+            self.info_bar.show_message(translations.TR_FILE_MODIFIED_OUTSIDE)
+        elif settings.RELOAD_FILE == 1:
+            neditable.reload_file()
 
     def _run_file(self, path):
         self._main_container.run_file(path)
@@ -433,7 +430,8 @@ class ComboEditor(ui_tools.StyledBar):
         line, _ = neditable.editor.cursor_position
         self._set_current_symbol(line, True)
         tree_symbols = IDE.get_service('symbols_explorer')
-        tree_symbols.update_symbols_tree(symbols, neditable.file_path)
+        if tree_symbols is not None:
+            tree_symbols.update_symbols_tree(symbols, neditable.file_path)
 
     def _show_notification_icon(self, neditable):
         checkers = neditable.sorted_checkers

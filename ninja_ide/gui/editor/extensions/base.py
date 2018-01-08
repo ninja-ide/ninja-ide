@@ -14,50 +14,40 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-import os
-import imp
-from ninja_ide import resources
 
 
-class ExtensionRegistry(type):
-
-    extensions = []
-
-    def __new__(cls, classname, bases, attrs):
-        klass = super().__new__(cls, classname, bases, attrs)
-        if classname != 'Extension':
-            extension_name = attrs.get('name', attrs['__module__'])
-            klass.name = extension_name
-            cls.extensions.append(klass)
-        return klass
-
-
-class Extension(metaclass=ExtensionRegistry):
+class Extension(object):
     """Base class for Editor extensions"""
 
-    name = None
-    version = None
+    name = None  # Identifier
 
     @property
-    def enabled(self):
+    def actived(self):
         """Tells if the extension is enabled"""
-        return self.__enabled
 
-    @enabled.setter
-    def enabled(self, value):
-        if value != self.__enabled:
-            self.__enabled = value
+    @actived.setter
+    def actived(self, value):
+        if value != self.__actived:
+            self.__actived = value
             if value:
                 self.install()
             else:
                 self.shutdown()
 
-    def __init__(self, neditor):
-        self.__enabled = False
-        # NINJA-IDE NEditor ref
-        self._neditor = neditor
+    def __init__(self):
+        self.name = self.__class__.__name__
+        self._neditor = None
+        self.__actived = False
+
+    def initialize(self, neditor):
+        """Initialize the extension"""
+
+        self._neditor = neditor  # NINJA-IDE Neditor ref
+        self.actived = True
 
     def text_cursor(self):
+        """Returns the current QTextCursor"""
+
         return self._neditor.textCursor()
 
     def install(self):
@@ -71,17 +61,3 @@ class Extension(metaclass=ExtensionRegistry):
         This method is called when extension is disabled.
         You may override it if you need to disconnect editor's signals
         """
-
-
-def discover_all(extensions_dir='.'):
-    extensions_dir = os.path.join(resources.PRJ_PATH,
-                                  "gui", "editor", "extensions")
-    for filename in os.listdir(extensions_dir):
-        module_name, ext = os.path.splitext(filename)
-        if ext == '.py' and not filename.startswith('__'):
-            _file, path, descr = imp.find_module(module_name, [extensions_dir])
-            if _file:
-                imp.load_module(module_name, _file, path, descr)
-
-
-# discover_all()

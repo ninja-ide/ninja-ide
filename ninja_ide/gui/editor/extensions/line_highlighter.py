@@ -16,16 +16,34 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5.QtGui import (
-    QColor
+    QColor,
+    QPainter,
+    QPen
 )
-from ninja_ide.gui.editor.extensions import Extension
+from PyQt5.QtCore import Qt
+from ninja_ide.gui.editor.extensions import base
 from ninja_ide.gui.editor.extra_selection import ExtraSelection
 from ninja_ide import resources
+from ninja_ide.core import settings
 
 
-class CurrentLineHighlighter(Extension):
-    name = 'line_highlighter'
-    version = '0.1'
+class CurrentLineHighlighter(base.Extension):
+    """This extension highlight current line"""
+
+    # Modes
+    FULL = 0
+    SIMPLE = 1
+
+    @property
+    def mode(self):
+        return self.__mode
+
+    @mode.setter
+    def mode(self, value):
+        if value != self.__mode:
+            self.shutdown()
+            self.__mode = value
+            self.install()
 
     @property
     def background(self):
@@ -36,17 +54,42 @@ class CurrentLineHighlighter(Extension):
         if isinstance(color, str):
             color = QColor(color)
         self.__background = color
+        self._highlight()
 
-    def __init__(self, neditor):
-        super().__init__(neditor)
+    def __init__(self):
+        super().__init__()
         self.__background = QColor(resources.get_color('CurrentLine'))
-        self.__background.setAlpha(40)
+        self.__mode = settings.HIGHLIGHT_CURRENT_LINE_MODE
 
     def install(self):
-        self._neditor.cursorPositionChanged.connect(self._highlight)
+        if self.__mode == self.SIMPLE:
+            self._neditor.painted.connect(self.paint_simple_mode)
+        else:
+            self._neditor.cursorPositionChanged.connect(self._highlight)
+            self._highlight()
 
     def shutdown(self):
-        self._neditor.cursorPositionChanged.disconnect(self._highlight)
+        if self.__mode == self.SIMPLE:
+            self._neditor.painted.disconnect(self.paint_simple_mode)
+        else:
+            self._neditor.cursorPositionChanged.disconnect(self._highlight)
+            self._neditor.clear_extra_selections('current_line')
+
+    def paint_simple_mode(self):
+        block = self.text_cursor().block()
+        layout = block.layout()
+        line_count = layout.lineCount()
+        line = layout.lineAt(line_count - 1)
+        co = self._neditor.contentOffset()
+        top = self._neditor.blockBoundingGeometry(block).translated(co).top()
+        line_rect = line.naturalTextRect().translated(co.x(), top)
+        painter = QPainter(self._neditor.viewport())
+        painter.setPen(QPen(self.__background, 1))
+        painter.drawLine(line_rect.x(), line_rect.y(), self._neditor.width(),
+                         line_rect.y())
+        height = self._neditor.fontMetrics().height()
+        painter.drawLine(line_rect.x(), line_rect.y() + height,
+                         self._neditor.width(), line_rect.y() + height)
 
     def _highlight(self):
         self._neditor.clear_extra_selections('current_line')
@@ -54,4 +97,3 @@ class CurrentLineHighlighter(Extension):
         selection.set_full_width()
         selection.set_background(self.__background)
         self._neditor.add_extra_selections('current_line', [selection])
-

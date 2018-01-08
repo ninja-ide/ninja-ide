@@ -69,10 +69,10 @@ from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
 from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
+from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
 # from ninja_ide.gui.dialogs.preferences import preferences_plugins
 # from ninja_ide.gui.dialogs.preferences import preferences_theme
-import ninja_ide.gui.editor.extensions  # noqa
 # Templates
 from ninja_ide.core.template_registry import ntemplate_registry  # noqa
 from ninja_ide.core.template_registry import (
@@ -147,7 +147,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
     all_schemes = json_manager.load_editor_schemes()
-    scheme = qsettings.value("preferences/editor/scheme", "")
+    scheme = qsettings.value("editor/scheme", "")
     # FIXME:
     resources.COLOR_SCHEME = all_schemes['Ninja Dark']
     # if scheme:
@@ -180,26 +180,27 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
 
     # First check if we need to load last session files
-    files = data_qsettings.value('last_session/opened_files', [])
-    projects = data_qsettings.value('last_session/projects', [])
-    current_file = data_qsettings.value('last_session/current_file', '')
-    # FIXME: recent files
-    if files is None:
-        files = []
-    if projects is None:
-        projects = []
-    # Include files received from console args
-    files_with_lineno = [(f[0], (f[1] - 1, 0))
-                         for f in zip(filenames, linenos)]
-    files_without_lineno = [(f, (0, 0))
-                            for f in filenames[len(linenos):]]
-    files += files_with_lineno + files_without_lineno
-    # Include projects received from console args
-    if projects_path:
-        projects += projects_path
-    ninjaide.load_session_files_projects(
-        files, projects, current_file, []
-    )
+    if qsettings.value('general/loadFiles', True, type=bool):
+        files = data_qsettings.value('lastSession/openedFiles')
+        projects = data_qsettings.value('lastSession/projects')
+        current_file = data_qsettings.value('lastSession/currentFile')
+        # FIXME: recent files
+        if files is None:
+            files = []
+        if projects is None:
+            projects = []
+        # Include files received from console args
+        files_with_lineno = [(f[0], (f[1] - 1, 0))
+                             for f in zip(filenames, linenos)]
+        files_without_lineno = [(f, (0, 0))
+                                for f in filenames[len(linenos):]]
+        files += files_with_lineno + files_without_lineno
+        # Include projects received from console args
+        if projects_path:
+            projects += projects_path
+        ninjaide.load_session_files_projects(
+            files, projects, current_file, []
+        )
     # Load external plugins
     # if extra_plugins:
     #     ninjaide.load_external_plugins(extra_plugins)

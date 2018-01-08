@@ -32,7 +32,7 @@ from ninja_ide.gui.editor.checkers import (
     remove_checker,
 )
 from ninja_ide.tools import ui_tools
-from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
+# from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
 # TODO: limit results for performance
 

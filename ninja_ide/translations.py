@@ -248,6 +248,7 @@ TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
 TR_DISPLAY = tr("NINJA-IDE", "Display")
 TR_DISPLAY_ERRORS = tr("NINJA-IDE", "Display Errors and Warnings")
 TR_DISPLAY_LINE_NUMBERS = tr("NINJA-IDE", "Display Line Numbers")
+TR_DISPLAY_TEXT_CHANGES = tr("NINJA-IDE", "Mark Text Changes")
 TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 Violations: ")
 TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint Errors: ")
 
@@ -387,7 +388,7 @@ TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS = tr(
 TR_INSERT_BREAKPOINT = tr("NINJA-IDE", "Insert Bookmark/Breakpoint")
 TR_MOVE_TAB_TO_NEXT_SPLIT = tr("NINJA-IDE", "Move Current Tab to Next Split")
 TR_SHOW_TABS_IN_EDITOR = tr("NINJA-IDE", "Show/Hide Tabs in Editor")
-TR_SHOW_INDENTATION_GUIDE = tr("NINJA-IDE", "Show Indentation Guide")
+TR_SHOW_INDENTATION_GUIDES = tr("NINJA-IDE", "Show Indentation Guides")
 TR_HIGHLIGHT_OCCURRENCES = tr(
     "NINJA-IDE",
     "Highlight Occurrences of Word Under Cursor")
@@ -460,6 +461,9 @@ TR_PREFERENCES_EDITOR_DISPLAY_ENABLE_TEXT_WRAPPING = tr(
 TR_PREFERENCES_EDITOR_DISPLAY_RIGHT_MARGIN_LABEL = tr(
     "NINJA-IDE",
     "Display margin line at column:")
+TR_PREFERENCES_EDITOR_DISPLAY_RIGHT_MARGIN_BACKGROUND = tr(
+    "NINJA-IDE",
+    "Show background after limit")
 TR_PREFERENCES_EDITOR_DISPLAY = tr(
     "NINJA-IDE",
     "Display features:")
@@ -727,19 +731,23 @@ TR_FILES = tr("NINJA-IDE", "Files")
 
 
 # preferences editor completion
-TR_PREF_EDITOR_COMPLETE = tr("NINJA-IDE", "Complete:")
-TR_PREF_EDITOR_PARENTHESES = tr("NINJA-IDE", "Parentheses:")
-TR_PREF_EDITOR_KEYS = tr("NINJA-IDE", "Keys:")
-TR_PREF_EDITOR_BRACKETS = tr("NINJA-IDE", "Brackets:")
-TR_PREF_EDITOR_SIMPLE_QUOTES = tr("NINJA-IDE", "Simple Quotes:")
-TR_PREF_EDITOR_DOUBLE_QUOTES = tr("NINJA-IDE", "Double Quotes:")
-TR_PREF_EDITOR_COMPLETE_DECLARATIONS = tr(
-    "NINJA-IDE", "Complete Declarations\n"
-    "(execute the opposite action with: {0}).")
-TR_PREF_EDITOR_CODE_COMPLETION = tr("NINJA-IDE", "Code Completion:")
-TR_PREF_EDITOR_ACTIVATE_COMPLETION = tr(
-    "NINJA-IDE",
-    "Activate Code Completion With: \".\"")
+TR_COMPLETE_CHARS = tr("NINJA-IDE", "Matching Characters")
+TR_COMPLETE_BRACKETS = tr("NINJA-IDE", "Complete brackets")
+TR_COMPLETE_QUOTES = tr("NINJA-IDE", "Complete Quotes")
+
+# TR_PREF_EDITOR_COMPLETE = tr("NINJA-IDE", "Complete:")
+# TR_PREF_EDITOR_PARENTHESES = tr("NINJA-IDE", "Parentheses:")
+# TR_PREF_EDITOR_KEYS = tr("NINJA-IDE", "Keys:")
+# TR_PREF_EDITOR_BRACKETS = tr("NINJA-IDE", "Brackets:")
+# TR_PREF_EDITOR_SIMPLE_QUOTES = tr("NINJA-IDE", "Simple Quotes:")
+# TR_PREF_EDITOR_DOUBLE_QUOTES = tr("NINJA-IDE", "Double Quotes:")
+# TR_PREF_EDITOR_COMPLETE_DECLARATIONS = tr(
+#    "NINJA-IDE", "Complete Declarations\n"
+#    "(execute the opposite action with: {0}).")
+# TR_PREF_EDITOR_CODE_COMPLETION = tr("NINJA-IDE", "Code Completion:")
+# TR_PREF_EDITOR_ACTIVATE_COMPLETION = tr(
+#    "NINJA-IDE",
+#    "Activate Code Completion With: \".\"")
 
 
 # preferences shorcuts

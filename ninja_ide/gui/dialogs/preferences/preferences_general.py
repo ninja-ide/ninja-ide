@@ -121,12 +121,14 @@ class GeneralConfiguration(QWidget):
 
         # Settings
         qsettings = IDE.ninja_settings()
-        qsettings.beginGroup("preferences")
-        qsettings.beginGroup("general")
+        qsettings.beginGroup("ide")
+        self._check_last_session.setChecked(
+            qsettings.value("loadFiles", defaultValue=True, type=bool))
         self._check_notify_updates.setChecked(
             qsettings.value("notifyUpdates", defaultValue=True, type=bool))
         qsettings.endGroup()
-        qsettings.endGroup()
+        self._text_workspace.setText(settings.WORKSPACE)
+        self._combo_mod.setCurrentIndex(settings.RELOAD_FILE)
 
         # Connections
         btn_reset.clicked.connect(self._reset_preferences)
@@ -158,8 +160,17 @@ class GeneralConfiguration(QWidget):
         """Save all preferences values"""
 
         qsettings = IDE.ninja_settings()
-        qsettings.setValue("preferences/general/notifyUpdates",
+        qsettings.beginGroup("ide")
+
+        qsettings.setValue("loadFiles", self._check_last_session.isChecked())
+        qsettings.setValue("notifyUpdates",
                            self._check_notify_updates.isChecked())
+        settings.WORKSPACE = self._text_workspace.text()
+        qsettings.setValue("workspace", settings.WORKSPACE)
+        settings.RELOAD_FILE = self._combo_mod.currentIndex()
+        qsettings.setValue("reloadSetting", settings.RELOAD_FILE)
+
+        qsettings.endGroup()
 
 
 preferences.Preferences.register_configuration(

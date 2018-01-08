@@ -65,7 +65,7 @@ class GeneralExecution(QWidget):
         self._combo_python_path = QComboBox()
         self._combo_python_path.setEditable(True)
         self._combo_python_path.addItems(utils.get_python())
-        self._combo_python_path.setCurrentText(settings.PYTHON_EXEC)
+
         hbox_path.addWidget(self._combo_python_path)
         self._combo_python_path.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -88,7 +88,14 @@ class GeneralExecution(QWidget):
         self._check_s = QCheckBox(translations.TR_SELECT_EXEC_OPTION_s)
         self._check_S = QCheckBox(translations.TR_SELECT_EXEC_OPTION_S)
         self._check_v = QCheckBox(translations.TR_SELECT_EXEC_OPTION_V)
+        hbox = QHBoxLayout()
         self._check_W = QCheckBox(translations.TR_SELECT_EXEC_OPTION_W)
+        self._combo_warning = QComboBox()
+        self._combo_warning.addItems([
+            "default", "ignore", "all", "module", "once", "error"
+        ])
+        self._check_W.stateChanged.connect(
+            lambda state: self._combo_warning.setEnabled(bool(state)))
 
         vbox_opts.addWidget(self._check_B)
         vbox_opts.addWidget(self._check_d)
@@ -98,7 +105,9 @@ class GeneralExecution(QWidget):
         vbox_opts.addWidget(self._check_s)
         vbox_opts.addWidget(self._check_S)
         vbox_opts.addWidget(self._check_v)
-        vbox_opts.addWidget(self._check_W)
+        hbox.addWidget(self._check_W)
+        hbox.addWidget(self._combo_warning)
+        vbox_opts.addLayout(hbox)
         """
         completer = QCompleter(self)
         dirs = QDirModel(self)
@@ -113,6 +122,33 @@ class GeneralExecution(QWidget):
         box.addWidget(group_python_opt)
         box.addItem(QSpacerItem(0, 0,
                     QSizePolicy.Expanding, QSizePolicy.Expanding))
+
+        # Settings
+        self._combo_python_path.setCurrentText(settings.PYTHON_EXEC)
+        options = settings.EXECUTION_OPTIONS.split()
+        if "-B" in options:
+            self._check_B.setChecked(True)
+        if "-d" in options:
+            self._check_d.setChecked(True)
+        if "-E" in options:
+            self._check_E.setChecked(True)
+        if "-O" in options:
+            self._check_O.setChecked(True)
+        if "-OO" in options:
+            self._check_OO.setChecked(True)
+        if "-S" in options:
+            self._check_S.setChecked(True)
+        if "-s" in options:
+            self._check_s.setChecked(True)
+        if "-v" in options:
+            self._check_v.setChecked(True)
+        if settings.EXECUTION_OPTIONS.find("-W") > -1:
+            self._check_W.setChecked(True)
+            index = settings.EXECUTION_OPTIONS.find("-W")
+            opt = settings.EXECUTION_OPTIONS[index + 2:].strip()
+            index = self._combo_warning.findText(opt)
+
+            self._combo_warning.setCurrentIndex(index)
         # Connections
         self._preferences.savePreferences.connect(self.save)
         btn_choose_path.clicked.connect(self._load_python_path)
@@ -129,13 +165,35 @@ class GeneralExecution(QWidget):
         """Save all Execution Preferences"""
 
         qsettings = IDE.ninja_settings()
-        qsettings.beginGroup("preferences")
         qsettings.beginGroup("execution")
 
+        # Python executable
         settings.PYTHON_EXEC = self._combo_python_path.currentText()
         qsettings.setValue("pythonExec", settings.PYTHON_EXEC)
 
-        qsettings.endGroup()
+        # Execution options
+        options = ""
+        if self._check_B.isChecked():
+            options += " -B"
+        if self._check_d.isChecked():
+            options += " -d"
+        if self._check_E.isChecked():
+            options += " -E"
+        if self._check_O.isChecked():
+            options += " -O"
+        if self._check_OO.isChecked():
+            options += " -OO"
+        if self._check_s.isChecked():
+            options += " -s"
+        if self._check_S.isChecked():
+            options += " -S"
+        if self._check_v.isChecked():
+            options += " -v"
+        if self._check_W.isChecked():
+            options += " -W" + self._combo_warning.currentText()
+        settings.EXECUTION_OPTIONS = options
+        qsettings.setValue("executionOptions", options)
+
         qsettings.endGroup()
 
 

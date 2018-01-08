@@ -24,14 +24,14 @@ from PyQt5.QtCore import (
     QPoint,
     QLine
 )
-from ninja_ide.gui.editor.extensions import Extension
+from ninja_ide.gui.editor.extensions import base
 
 
-class IndentationGuide(Extension):
+class IndentationGuide(base.Extension):
     """Indentation guides extension for Ninja-IDE Editor"""
 
     def install(self):
-        self._indentation_width = self._neditor.indentation_width()
+        self._indentation_width = self._neditor.indentation_width
         self._neditor.painted.connect(self._draw)
         self._neditor.viewport().update()
 

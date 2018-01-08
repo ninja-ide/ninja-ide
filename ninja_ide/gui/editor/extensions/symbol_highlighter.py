@@ -22,11 +22,11 @@ from PyQt5.QtGui import (
     QPainter,
 )
 from ninja_ide import resources
-from ninja_ide.gui.editor.extensions import Extension
+from ninja_ide.gui.editor.extensions import base
 # TODO: change colors for all editor clones
 
 
-class SymbolHighlighter(Extension):
+class SymbolHighlighter(base.Extension):
     """Symbol Matcher extension for Ninja-IDE Editor"""
 
     OPEN_SYMBOLS = "([{"
@@ -59,8 +59,8 @@ class SymbolHighlighter(Extension):
             color = QColor(color)
         self.__unmatched_background = color
 
-    def __init__(self, neditor):
-        super().__init__(neditor)
+    def __init__(self):
+        super().__init__()
         self.__matched_background = QColor(
             resources.get_color('BraceMatched'))
         self.__unmatched_background = QColor(
@@ -68,9 +68,11 @@ class SymbolHighlighter(Extension):
 
     def install(self):
         self._neditor.painted.connect(self._highlight)
+        self._neditor.viewport().update()
 
     def shutdown(self):
         self._neditor.painted.disconnect(self._highlight)
+        self._neditor.viewport().update()
 
     def _highlight(self):
         cursor = self._neditor.textCursor()

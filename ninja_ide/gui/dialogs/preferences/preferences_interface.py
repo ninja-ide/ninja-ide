@@ -104,7 +104,7 @@ class Interface(QWidget):
             QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self._combo_resolution)
         self._line_custom_hdpi = QLineEdit()
-        self._line_custom_hdpi.setText("1.5")
+        self._line_custom_hdpi.setPlaceholderText("1.5")
         hbox.addWidget(self._line_custom_hdpi)
         #GUI - Toolbar
         #vbox_toolbar = QVBoxLayout(groupBoxToolbar)
@@ -146,31 +146,38 @@ class Interface(QWidget):
         vboxLanguage.addWidget(QLabel(
             translations.TR_PREFERENCES_REQUIRES_RESTART))
 
-       #Load Languages
+        # Load Languages
         self._load_langs()
 
-       #Settings
+        # Settings
         self._checkProjectExplorer.setChecked(
             settings.SHOW_PROJECT_EXPLORER)
         self._checkSymbols.setChecked(settings.SHOW_SYMBOLS_LIST)
         self._checkWebInspetor.setChecked(settings.SHOW_WEB_INSPECTOR)
         self._checkFileErrors.setChecked(settings.SHOW_ERRORS_LIST)
         self._checkMigrationTips.setChecked(settings.SHOW_MIGRATION_LIST)
+        self._line_custom_hdpi.setText(settings.CUSTOM_SCREEN_RESOLUTION)
+        index = 0
+        if settings.HDPI:
+            index = 1
+        elif settings.CUSTOM_SCREEN_RESOLUTION:
+            index = 2
+        self._combo_resolution.setCurrentIndex(index)
 
         vbox.addWidget(groupBoxExplorer)
         vbox.addWidget(group_theme)
         vbox.addWidget(group_hdpi)
-        #vbox.addWidget(groupBoxToolbar)
+        # vbox.addWidget(groupBoxToolbar)
         vbox.addWidget(groupBoxLang)
         vbox.addStretch(1)
 
-       #Signals
-        #self.connect(self._btnItemAdd, SIGNAL("clicked()"),
-                     #self.toolbar_item_added)
-        #self.connect(self._btnItemRemove, SIGNAL("clicked()"),
-                     #self.toolbar_item_removed)
-        #self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
-                     #self.toolbar_items_default)
+        # Signals
+        # self.connect(self._btnItemAdd, SIGNAL("clicked()"),
+        #             # self.toolbar_item_added)
+        # self.connect(self._btnItemRemove, SIGNAL("clicked()"),
+        #             # self.toolbar_item_removed)
+        # self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
+        #             # self.toolbar_items_default)
         self._combo_resolution.currentIndexChanged.connect(
             self._on_resolution_changed)
         self._preferences.savePreferences.connect(self.save)
@@ -317,7 +324,27 @@ class Interface(QWidget):
         qsettings = IDE.ninja_settings()
         ninja_theme = self._combobox_themes.currentText()
         settings.NINJA_SKIN = ninja_theme
-        qsettings.setValue("preferences/interface/skin", settings.NINJA_SKIN)
+        qsettings.beginGroup("ide")
+        qsettings.beginGroup("interface")
+
+        qsettings.setValue("skin", settings.NINJA_SKIN)
+        settings.SHOW_PROJECT_EXPLORER = self._checkProjectExplorer.isChecked()
+        qsettings.setValue("showProjectExplorer",
+                           settings.SHOW_PROJECT_EXPLORER)
+        settings.SHOW_SYMBOLS_LIST = self._checkSymbols.isChecked()
+        qsettings.setValue("showSymbolsList", settings.SHOW_SYMBOLS_LIST)
+        if self._line_custom_hdpi.isEnabled():
+            screen_resolution = self._line_custom_hdpi.text().strip()
+            settings.CUSTOM_SCREEN_RESOLUTION = screen_resolution
+        else:
+            settings.HDPI = bool(self._combo_resolution.currentIndex())
+            qsettings.setValue("autoHdpi", settings.HDPI)
+            settings.CUSTOM_SCREEN_RESOLUTION = ""
+        qsettings.setValue("customScreenResolution",
+                           settings.CUSTOM_SCREEN_RESOLUTION)
+
+        qsettings.endGroup()
+        qsettings.endGroup()
         # settings.TOOLBAR_ITEMS = self.toolbar_settings
         # lang = self._comboLang.currentText()
         #preferences/interface

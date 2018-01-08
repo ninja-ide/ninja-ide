@@ -527,7 +527,8 @@ class IDE(QMainWindow):
         """Load the files and projects from previous session."""
         # Load projects
         projects_explorer = IDE.get_service('projects_explorer')
-        projects_explorer.load_session_projects(projects)
+        if projects_explorer is not None:
+            projects_explorer.load_session_projects(projects)
         # Load files
         main_container = IDE.get_service('main_container')
         for path, cursor_pos in files:
@@ -609,6 +610,14 @@ class IDE(QMainWindow):
         return qsettings
 
     @classmethod
+    def editor_settings(cls):
+        qsettings = nsettings.NSettings(resources.SETTINGS_PATH)
+        main_container = cls.get_service("main_container")
+        # Connect valueChanged signal to _editor_settings_changed slot
+        qsettings.valueChanged.connect(main_container._editor_settings_changed)
+        return qsettings
+
+    @classmethod
     def data_settings(cls):
         qsettings = QSettings(
             resources.DATA_SETTINGS_PATH, QSettings.IniFormat)
@@ -657,29 +666,28 @@ class IDE(QMainWindow):
 
         data_settings = IDE.data_settings()
         ninja_settings = IDE.ninja_settings()
-        # Get opened files
-        opened_files = self.filesystem.get_files()
-        files_info = []
-        for path in opened_files:
-            editable = self.__neditables.get(opened_files[path])
-            files_info.append((path, editable.editor.cursor_position))
-        data_settings.setValue('last_session/opened_files', files_info)
-        # Current opened file
+        if data_settings.value("ide/loadFiles", True):
+            # Get opened files
+            opened_files = self.filesystem.get_files()
+            # Get opened projects
+            projects_obj = self.filesystem.get_projects()
+            projects = [projects_obj[project].path for project in projects_obj]
+            data_settings.setValue('lastSession/projects', projects)
+            files_info = []
+            for path in opened_files:
+                editable = self.__neditables.get(opened_files[path])
+                files_info.append((path, editable.editor.cursor_position))
+            data_settings.setValue('lastSession/openedFiles', files_info)
         main_container = self.get_service("main_container")
         neditor = main_container.get_current_editor()
+        # Current opened file
         current_file = ''
         if neditor is not None:
             current_file = neditor.file_path
-        data_settings.setValue('last_session/current_file', current_file)
+        data_settings.setValue('lastSession/currentFile', current_file)
         # Save toolbar visibility
         ninja_settings.setValue('window/hide_toolbar',
                                 not self.toolbar.isVisible())
-
-        # Get opened projects
-        projects_obj = self.filesystem.get_projects()
-        # rojects = [projects_obj[project].path for project in projects_obj]
-        projects = [projects_obj[project].path for project in projects_obj]
-        data_settings.setValue('last_session/projects', projects)
         # Save window state
         if self.isMaximized():
             ninja_settings.setValue("window/maximized", True)
@@ -687,7 +695,6 @@ class IDE(QMainWindow):
             ninja_settings.setValue("window/maximized", False)
             ninja_settings.setValue("window/size", self.size())
             ninja_settings.setValue("window/pos", self.pos())
-        data_settings.setValue('lastSession/openedFiles', files_info)
         # qsettings = IDE.ninja_settings()
         # data_qsettings = IDE.data_settings()
         # main_container = self.get_service("main_container")

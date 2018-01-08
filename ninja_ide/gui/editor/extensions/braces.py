@@ -1,14 +1,18 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
-from ninja_ide.gui.editor.extensions import Extension
+from ninja_ide.gui.editor.extensions import base
 
 
-class AutocompleteBraces(Extension):
+class AutocompleteBraces(base.Extension):
     """Automatically complete braces"""
 
     def install(self):
         self._neditor.postKeyPressed.connect(self._on_post_key_pressed)
         self._neditor.keyPressed.connect(self._on_key_pressed)
+
+    def shutdown(self):
+        self._neditor.postKeyPressed.disconnect(self._on_post_key_pressed)
+        self._neditor.keyPressed.disconnect(self._on_key_pressed)
 
     def _on_key_pressed(self, event):
         """Remove automatically right brace"""

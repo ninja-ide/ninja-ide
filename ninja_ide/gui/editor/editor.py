@@ -56,7 +56,7 @@ from ninja_ide.gui.editor.extensions import ExtensionRegistry
 from ninja_ide.gui.editor.side_area import (
     line_number_area,
     text_change_area,
-    marker_area,
+    marker_area
     # lint_area
 )
 # from ninja_ide.intellisensei.completion import completer_widget
@@ -72,11 +72,14 @@ from ninja_ide.gui.editor import extra_selection
 from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core import settings
-# from ninja_ide.gui.editor.extensions import (
-#    margin_line,
-#    line_highlighter,
-#    symbol_highlighter
-# )
+from ninja_ide.gui.editor.extensions import (
+    line_highlighter,
+    symbol_highlighter,
+    margin_line,
+    indentation_guides,
+    braces,
+    quotes
+)
 # from ninja_ide.gui.editor.indenter import base
 from ninja_ide.gui.editor import indenter
 from ninja_ide.tools.logger import NinjaLogger
@@ -125,6 +128,11 @@ class NEditor(QPlainTextEdit):
     @property
     def default_font(self):
         return self.document().defaultFont()
+
+    @default_font.setter
+    def default_font(self, font):
+        QPlainTextEdit.setFont(self, font)
+        self._update_tab_stop_width()
 
     @property
     def encoding(self):
@@ -208,6 +216,54 @@ class NEditor(QPlainTextEdit):
     def margins(self):
         return self.__margins
 
+    @property
+    def brace_matching(self):
+        return self._brace_matching.actived
+
+    @brace_matching.setter
+    def brace_matching(self, value):
+        self._brace_matching.actived = value
+
+    @property
+    def highlight_current_line(self):
+        return self._line_highlighter.actived
+
+    @highlight_current_line.setter
+    def highlight_current_line(self, value):
+        self._line_highlighter.actived = value
+
+    @property
+    def current_line_mode(self):
+        return self._line_highlighter.mode
+
+    @current_line_mode.setter
+    def current_line_mode(self, mode):
+        self._line_highlighter.mode = mode
+
+    @property
+    def margin_line(self):
+        return self._margin_line.actived
+
+    @margin_line.setter
+    def margin_line(self, value):
+        self._margin_line.actived = value
+
+    @property
+    def margin_line_position(self):
+        return self._margin_line.position
+
+    @margin_line_position.setter
+    def margin_line_position(self, position):
+        self._margin_line.position = position
+
+    @property
+    def margin_line_background(self):
+        return self._margin_line.background
+
+    @margin_line_background.setter
+    def margin_line_background(self, value):
+        self._margin_line.background = value
+
     def __init__(self, neditable):
         QPlainTextEdit.__init__(self)
         self.setFrameStyle(0)  # Remove border
@@ -225,7 +281,7 @@ class NEditor(QPlainTextEdit):
             resources.get_color('EditorSelectionBackground'))
         self.__apply_style()
 
-        self._init_settings()
+        self.setCursorWidth(2)
         self._highlighter = None
         self.__visible_blocks = []
         self._last_line_position = 0
@@ -234,29 +290,39 @@ class NEditor(QPlainTextEdit):
         self.__side_widgets = []
         # Extra Selections
         self._extra_selections = OrderedDict()
-        self._current_line_selection = None
-        self.__checker_extra_selections = []
         self.__occurrences = []
         # Load indenter based on language
         self._indenter = indenter.load_indenter(self, neditable.language())
         # Set editor font before build lexer
-        self.set_font(settings.FONT)
+        self.default_font = settings.FONT
         self.register_syntax_for(neditable.language())
-        # Register all editor extension
+        # Register extensions
         self.__extensions = {}
-        self.initialize_extensions()
-        # FIXME: based on lang
-        self.enable_extension(
-            'indentation_guides', settings.SHOW_INDENTATION_GUIDE)
-        self.enable_extension(
-            'margin_line', settings.SHOW_MARGIN_LINE)
-        self.enable_extension(
-            'line_highlighter', True)
-        self.enable_extension('symbol_highlighter', True)
-        self.enable_extension('quotes', True)
-        self.enable_extension('braces', True)
-        # self._symbol_completer = symbol_completer.SymbolCompleter(self)
-
+        # Brace matching
+        self._brace_matching = self.register_extension(
+            symbol_highlighter.SymbolHighlighter)
+        self.brace_matching = settings.BRACE_MATCHING
+        # Current line highlighter
+        self._line_highlighter = self.register_extension(
+            line_highlighter.CurrentLineHighlighter)
+        self.highlight_current_line = settings.HIGHLIGHT_CURRENT_LINE
+        # Right margin line
+        self._margin_line = self.register_extension(margin_line.RightMargin)
+        self.margin_line = settings.SHOW_MARGIN_LINE
+        self.margin_line_position = settings.MARGIN_LINE
+        self.margin_line_background = settings.MARGIN_LINE_BACKGROUND
+        # Indentation guides
+        self._indentation_guides = self.register_extension(
+            indentation_guides.IndentationGuide)
+        self.show_indentation_guides(settings.SHOW_INDENTATION_GUIDES)
+        # Autocomplete braces
+        self.__autocomplete_braces = self.register_extension(
+            braces.AutocompleteBraces)
+        self.autocomplete_braces(settings.AUTOCOMPLETE_BRACKETS)
+        # Autocomplete quotes
+        self.__autocomplete_quotes = self.register_extension(
+            quotes.AutocompleteQuotes)
+        self.autocomplete_quotes(settings.AUTOCOMPLETE_QUOTES)
         # Mark occurrences timer
         self._highlight_word_timer = QTimer()
         self._highlight_word_timer.setSingleShot(True)
@@ -277,25 +343,27 @@ class NEditor(QPlainTextEdit):
                 self._neditable.set_editor(self)
             self._neditable.checkersUpdated.connect(self._highlight_checkers)
         # Widgets on side area
-        self._line_number_area = None
-        if settings.SHOW_LINE_NUMBERS:
-            self._line_number_area = self.add_side_widget(
-                line_number_area.LineNumberArea, 2)
-        self._lint_area = None
-        # if settings.SHOW_LINT_AREA:
-        #    self._lint_area = self.add_side_widget(lint_area.LintArea, 3)
-        self._marker_area = None
-        if settings.SHOW_MARK_AREA:
-            self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
-        self._text_change_area = None
-        if settings.SHOW_TEXT_CHANGE_AREA:
-            self._text_change_area = self.add_side_widget(
-                text_change_area.TextChangeArea, 0)
+        self._line_number_area = self.add_side_widget(
+            line_number_area.LineNumberArea, order=2)
+        self.show_line_numbers(settings.SHOW_LINE_NUMBERS)
+
+        self._text_change_area = self.add_side_widget(
+            text_change_area.TextChangeArea, order=0)
+        self.show_text_changes(settings.SHOW_TEXT_CHANGES)
+
+        self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
+
         # FIXME: we need a method to initialize
         self.__set_whitespaces_flags(self.__show_whitespaces)
 
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.cursorPositionChanged.connect(self.viewport().update)
+
+    def autocomplete_braces(self, value):
+        self.__autocomplete_braces.actived = value
+
+    def autocomplete_quotes(self, value):
+        self.__autocomplete_quotes.actived = value
 
     def navigate_bookmarks(self, forward=True):
         if forward:
@@ -329,16 +397,45 @@ class NEditor(QPlainTextEdit):
             syntax.formats
         )
 
-    def initialize_extensions(self):
-        """Register all extensions in this Editor"""
+    def show_line_numbers(self, value):
+        self._line_number_area.setVisible(value)
 
-        for Klass in ExtensionRegistry.extensions:
-            self.__extensions[Klass.name] = Klass(self)
+    def show_text_changes(self, value):
+        self._text_change_area.setVisible(value)
 
+    def font_antialiasing(self, value):
+        font = self.default_font
+        style = font.PreferAntialias
+        if not value:
+            style = font.NoAntialias
+        font.setStyleStrategy(style)
+        self.default_font = font
+
+    def register_extension(self, Extension):
+        extension_instance = Extension()
+        self.__extensions[Extension.name] = extension_instance
+        extension_instance.initialize(self)
+        return extension_instance
+
+    def show_indentation_guides(self, value):
+        self._indentation_guides.actived = value
+
+    @property
     def indentation_width(self):
-        """Returns the indentation width of current indenter"""
-
         return self._indenter.width
+
+    @indentation_width.setter
+    def indentation_width(self, width):
+        self._indenter.width = width
+        self._update_tab_stop_width()
+
+    @property
+    def use_tabs(self):
+        return self._indenter.use_tabs
+
+    @use_tabs.setter
+    def use_tabs(self, value):
+        self._indenter.use_tabs = value
 
     def move_up_down(self, up=False):
         cursor = self.textCursor()
@@ -475,20 +572,16 @@ class NEditor(QPlainTextEdit):
     def all_extra_selections(self):
         return self._extra_selections
 
-    def _init_settings(self):
-        """Set some configuration flags for the Editor"""
-        # FIXME:
-        self.setCursorWidth(1)
-        # Wrap Mode
-        wrap_mode = QPlainTextEdit.NoWrap
-        if settings.ALLOW_WORD_WRAP:
+    def allow_word_wrap(self, value):
+        wrap_mode = wrap_mode = QPlainTextEdit.NoWrap
+        if value:
             wrap_mode = QPlainTextEdit.WidgetWidth
         self.setLineWrapMode(wrap_mode)
 
     def _update_tab_stop_width(self):
         """Update the tab stop width"""
 
-        width = self.fontMetrics().width(' ') * self._indenter.WIDTH
+        width = self.fontMetrics().width(' ') * self._indenter.width
         self.setTabStopWidth(width)
 
     def clone(self):
@@ -508,7 +601,6 @@ class NEditor(QPlainTextEdit):
 
     def set_font(self, font):
         """Set font and update tab stop width"""
-
         QPlainTextEdit.setFont(self, font)
         self._update_tab_stop_width()
 
@@ -594,6 +686,8 @@ class NEditor(QPlainTextEdit):
 
         total_width = 0
         for margin in self.__side_widgets:
+            # if not margin.isVisible():
+            #    continue
             margin.setGeometry(current_x, top,
                                margin.width(), height)
             current_x += margin.width()
@@ -629,7 +723,20 @@ class NEditor(QPlainTextEdit):
             ext_obj.enabled = value
             # logger.debug("Loaded '%s' extension" % extension_name)
 
+    def wheelEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:
+            if not settings.SCROLL_WHEEL_ZOMMING:
+                return
+            delta = event.angleDelta().y() / 120.
+            if delta != 0:
+                self.zoom(delta)
+            return
+        QPlainTextEdit.wheelEvent(self, event)
+
     def mouseMoveEvent(self, event):
+        # Restore mouse cursor if settings say hide while typing
+        if self.viewport().cursor().shape() == Qt.BlankCursor:
+            self.viewport().setCursor(Qt.IBeamCursor)
         '''if event.modifiers() == Qt.ControlModifier:
             if self.__link_selection is not None:
                 return
@@ -674,6 +781,8 @@ class NEditor(QPlainTextEdit):
         super().keyReleaseEvent(event)
 
     def keyPressEvent(self, event):
+        if settings.HIDE_MOUSE_CURSOR:
+            self.viewport().setCursor(Qt.BlankCursor)
         if self.isReadOnly():
             return
         # Emit a signal then plugins can do something
@@ -1084,9 +1193,6 @@ class NEditor(QPlainTextEdit):
             else:
                 self.ensureCursorVisible()
         self.addBackItemNavigation.emit()
-
-    def set_brace_matching(self, value):
-        pass
 
     def comment(self):
         pass
