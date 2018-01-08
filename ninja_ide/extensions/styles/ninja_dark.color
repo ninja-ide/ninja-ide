@@ -2,10 +2,10 @@
     "name": "Ninja Dark",
     "colors": {
         "Default": {
-            "color": "#d6cf9a"
+            "color": "#c5c8c6"
         },
         "Keyword": {
-            "color": "#45c6d6"
+            "color": "#83c1fb"
         },
         "Operators": {
             "color": "#FFFFFF"
@@ -20,16 +20,16 @@
             "color": "#ee8859"
         },
         "Comment": {
-            "color": "#65676a"
+            "color": "#7c7c7c"
         },
         "Decorator": {
-            "color": "#4EC9B0"
+            "color": "#fdb269"
         },
         "Number": {
-            "color": "#d19a66"
+            "color": "#F8A008"
         },
         "Definition": {
-            "color": "#ff8080"
+            "color": "#fdff74"
         },
         "DefinitionName": {
             "color": "#6EC7D7"
@@ -42,13 +42,13 @@
             "italic": true
         },
         "String": {
-            "color": "#98c378"
+            "color": "#d07cd3"
         },
         "RawString": {
             "color": "#98c378"
         },
         "Docstring": {
-            "color": "#98c378"
+            "color": "#86d986"
         },
         "EditorBackground": {
             "color": "#2e2f30"
