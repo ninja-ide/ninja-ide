@@ -72,7 +72,7 @@ class ErrorsChecker(QThread):
                 if reason.text is None:
                     logger.error("Syntax error")
                 else:
-                    self.checks[reason.lineno - 1] = [text % reason.args[0]]
+                    self.checks[reason.lineno - 1] = (text % reason.args[0], reason.offset - 1)
             else:
                 # Okay, now check it
                 lint_checker = checker.Checker(tree, self._path)
@@ -84,7 +84,7 @@ class ErrorsChecker(QThread):
                     else:
                         text = self.checks[lineno]
                         text += [message.message % message.message_args]
-                    self.checks[lineno] = text
+                    self.checks[lineno] = (text, message.col)
         self.checkerCompleted.emit()
 
     def message(self, lineno):
@@ -96,7 +96,7 @@ class ErrorsChecker(QThread):
 def remove_error_checker():
     checker = (
         ErrorsChecker,
-        resources.COLOR_SCHEME['ErrorUnderline'],
+        resources.get_color('ErrorUnderline'),
         10
     )
     remove_checker(checker)
@@ -105,7 +105,7 @@ def remove_error_checker():
 if settings.FIND_ERRORS:
     register_checker(
         checker=ErrorsChecker,
-        color=resources.COLOR_SCHEME['ErrorUnderline'],
+        color=resources.get_color('ErrorUnderline'),
         priority=10
     )
 

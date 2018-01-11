@@ -58,7 +58,7 @@ from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
 from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
 # from ninja_ide.gui.explorer.tabs import web_inspector
 # Checkers
-# from ninja_ide.gui.editor.checkers import errors_checker
+from ninja_ide.gui.editor.checkers import errors_checker  # noqa
 from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 # from ninja_ide.gui.editor.checkers import migration_2to3
 # Preferences
