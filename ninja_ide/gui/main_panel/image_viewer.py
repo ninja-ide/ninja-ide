@@ -102,9 +102,9 @@ class ImageViewer(QGraphicsView):
         new = current * factor
         actual = factor
         if new > 1000:
-            actual = 1000 / factor
+            actual = 1000 / current
         elif new < 0.001:
-            actual = 0.001 / factor
+            actual = 0.001 / current
         self.scale(actual, actual)
         self.__emit_scale_factor()
 
