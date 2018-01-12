@@ -24,7 +24,6 @@ from getpass import getuser
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QAction
-from PyQt5.QtWidgets import QSpacerItem
 from PyQt5.QtWidgets import QTabWidget
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QDialogButtonBox
@@ -36,9 +35,6 @@ from PyQt5.QtWidgets import QCompleter
 from PyQt5.QtWidgets import QDirModel
 from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QRadioButton
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QSpinBox
@@ -46,7 +42,8 @@ from PyQt5.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core import settings
+from ninja_ide.tools import utils
+from ninja_ide.gui.ide import IDE
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.dialogs.project_properties_widget')
@@ -185,7 +182,8 @@ class ProjectData(QWidget):
         grid.addWidget(self.line_path, 1, 1)
         grid.addWidget(QLabel(translations.TR_PROJECT_TYPE), 2, 0)
         self.line_type = QLineEdit()
-        completer = QCompleter(sorted(settings.PROJECT_TYPES))
+        template_registry = IDE.get_service("template_registry")
+        completer = QCompleter(template_registry.list_project_categories())
         completer.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.line_type.setCompleter(completer)
         self.line_type.setPlaceholderText("python")
@@ -198,7 +196,8 @@ class ProjectData(QWidget):
         grid.addWidget(QLabel(translations.TR_PROJECT_URL), 4, 0)
         self._line_url = QLineEdit()
         self._line_url.setText(self._parent.project.url)
-        self._line_url.setPlaceholderText('https://www.{}.com'.format(getuser()))
+        self._line_url.setPlaceholderText(
+            'https://www.{}.com'.format(getuser()))
         grid.addWidget(self._line_url, 4, 1)
         grid.addWidget(QLabel(translations.TR_PROJECT_LICENSE), 5, 0)
         self._combo_license = QComboBox()
@@ -209,7 +208,8 @@ class ProjectData(QWidget):
         grid.addWidget(self._combo_license, 5, 1)
 
         self._line_extensions = QLineEdit()
-        self._line_extensions.setText(', '.join(self._parent.project.extensions))
+        self._line_extensions.setText(
+            ', '.join(self._parent.project.extensions))
         self._line_extensions.setToolTip(
             translations.TR_PROJECT_EXTENSIONS_TOOLTIP)
         grid.addWidget(QLabel(translations.TR_PROJECT_EXTENSIONS), 6, 0)
@@ -228,7 +228,8 @@ class ProjectData(QWidget):
         self._combo_tabs_or_spaces.addItems([
             translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES.capitalize(),
             translations.TR_PREFERENCES_EDITOR_CONFIG_TABS.capitalize()])
-        self._combo_tabs_or_spaces.setCurrentIndex(int(self._parent.project.use_tabs))
+        self._combo_tabs_or_spaces.setCurrentIndex(
+            int(self._parent.project.use_tabs))
         grid.addWidget(self._combo_tabs_or_spaces, 9, 1)
 
     @property
@@ -302,8 +303,10 @@ class ProjectExecution(QWidget):
             self.style().standardIcon(self.style().SP_DirIcon),
             QLineEdit.TrailingPosition)
         self.line_interpreter.setText(self._parent.project.python_exec)
-        self.line_interpreter.setCompleter(QCompleter(
-            ('python', 'python2', 'python3', 'python.exe', 'pythonw.exe')))
+        completer = QCompleter(utils.get_python())
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchContains)
+        self.line_interpreter.setCompleter(completer)
         self.line_interpreter.setPlaceholderText("python")
         grid.addWidget(QLabel(
             translations.TR_PROJECT_PYTHON_INTERPRETER), 1, 0)
