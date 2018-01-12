@@ -801,8 +801,9 @@ class NEditor(QPlainTextEdit):
                 self._indenter.indent()
             event.accept()
         elif event.key() == Qt.Key_Backspace:
-            if self.__smart_backspace():
-                event.accept()
+            if not event.isAccepted():
+                if self.__smart_backspace():
+                    event.accept()
         if not event.isAccepted():
             super().keyPressEvent(event)
         # Post key press

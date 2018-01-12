@@ -6,6 +6,14 @@ from ninja_ide.gui.editor.extensions import base
 class AutocompleteBraces(base.Extension):
     """Automatically complete braces"""
 
+    OPENED_BRACES = "[{("
+    CLOSED_BRACES = "]})"
+    ALL_BRACES = {
+        "(": ")",
+        "[": "]",
+        "{": "}"
+    }
+
     def install(self):
         self._neditor.postKeyPressed.connect(self._on_post_key_pressed)
         self._neditor.keyPressed.connect(self._on_key_pressed)
@@ -15,32 +23,36 @@ class AutocompleteBraces(base.Extension):
         self._neditor.keyPressed.disconnect(self._on_key_pressed)
 
     def _on_key_pressed(self, event):
-        """Remove automatically right brace"""
         right = self._neditor.get_right_character()
-        if event.key() == Qt.Key_Backspace:
+        current_text = event.text()
+        if current_text in self.CLOSED_BRACES and right == current_text:
+            # Move cursor to right if same symbol is typing
+            cursor = self.text_cursor()
+            cursor.movePosition(QTextCursor.NextCharacter,
+                                QTextCursor.MoveAnchor)
+            self._neditor.setTextCursor(cursor)
+            event.accept()
+        elif event.key() == Qt.Key_Backspace:
+            # Remove automatically closed symbol if opened symbol is removed
             cursor = self.text_cursor()
             cursor.movePosition(QTextCursor.Left)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
             to_remove = cursor.selectedText()
-            if to_remove in '([{':
-                complementary = {'{': '}', '[': ']', '(': ')'}.get(to_remove)
+            if to_remove in self.ALL_BRACES.keys():  # Opened braces
+                complementary = self.ALL_BRACES.get(to_remove)
                 if complementary is not None and complementary == right:
-                    cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+                    cursor.movePosition(
+                        QTextCursor.Right, QTextCursor.KeepAnchor)
                     cursor.insertText('')
                     event.accept()
 
     def _on_post_key_pressed(self, event):
-        key = event.key()
+        # Insert complementary symbol
+        char = event.text()
+        if not char:
+            return
         cursor = self.text_cursor()
-        operations = {
-            Qt.Key_ParenLeft: ')',
-            Qt.Key_BraceLeft: '}',
-            Qt.Key_BracketLeft: ']'
-        }
-        if key in operations.keys():
-            cursor.insertText(operations[key])
+        if char in self.OPENED_BRACES:
+            cursor.insertText(self.ALL_BRACES[char])
             cursor.movePosition(QTextCursor.PreviousCharacter)
-        elif key in (Qt.Key_ParenRight, Qt.Key_BraceRight, Qt.Key_BracketRight):
-            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            cursor.removeSelectedText()
-        self._neditor.setTextCursor(cursor)
+            self._neditor.setTextCursor(cursor)
