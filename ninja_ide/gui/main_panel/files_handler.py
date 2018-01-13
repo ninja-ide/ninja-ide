@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout
 )
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.gui.ide import IDE
@@ -39,9 +39,8 @@ logger = NinjaLogger(__name__)
 class FilesHandler(QWidget):
 
     def __init__(self, parent=None):
-        super(FilesHandler, self).__init__(None)
+        super(FilesHandler, self).__init__(None, Qt.Popup)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowFlags(Qt.Popup)
         self.setFixedWidth(500)
         self.setFixedHeight(400)
         self._main_container = parent
@@ -168,6 +167,10 @@ class FilesHandler(QWidget):
         # self._root.show_animation()
         point = editor_widget.mapToGlobal(self.view.pos())
         self.move(point.x(), point.y())
+        # Trick
+        QTimer.singleShot(100, self.__set_focus)
+
+    def __set_focus(self):
         self.view.setFocus()
         self._root.activateInput()
 
