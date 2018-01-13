@@ -1,13 +1,10 @@
-import QtQuick 2.3
+import QtQuick 2.5
 
 Rectangle {
     id: root
 
-    radius: 5
-    color: "#202123"
-    border.width: 1
-    border.color: "gray"
-
+    color: theme.Base
+    focus: true
     PropertyAnimation {
         id: showAnim
         target: root
@@ -123,18 +120,17 @@ Rectangle {
 
     Rectangle {
         id: inputArea
-        radius: 2
-        color: "#2d2f31"
+        //radius: 2
+        color: theme.LocatorLineEditBackground
         height: 30
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            margins: 10
+            margins: 5
         }
-        border.color: "black"
+        border.color: theme.LocatorCurrentItem
         border.width: 1
-        smooth: true
 
         TextInput {
             id: input
@@ -142,11 +138,12 @@ Rectangle {
                 fill: parent
                 margins: 4
             }
-            focus: true
-            clip: true
-            color: "white"
-            font.pixelSize: 18
 
+            clip: true
+            focus: true
+            smooth: true
+            color: theme.LocatorText
+            font.pixelSize: 18
             onTextChanged: {
                 var firstValidItem = -1;
                 for (var i = 0; i < listFiles.model.count; i++) {
@@ -205,7 +202,7 @@ Rectangle {
             property int defaultValues: checkers ? 70 : 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
-            color: item.current ? "#6a6ea9" : "#27292b"
+            color: item.current ? theme.LocatorCurrentItem : theme.LocatorListBackground
 
             property string mainTextColor: item.current ? "white" : "#aaaaaa"
             property string mainTextModifiedColor: item.current ? "lightgreen" : "green"
@@ -239,16 +236,14 @@ Rectangle {
 
                 MouseArea {
                     anchors.fill: parent
-
                     onClicked: {
                         var path = listFiles.model.get(index).path;
                         var tempFile = listFiles.model.get(index).tempFile;
-                        //FIXME: when index == 0 then start removing the wrong items
-                        if(index == 0) {
-                            root.hide();
-                        }
                         root.close(path, tempFile);
                         listFiles.model.remove(index);
+                        if(listFiles.model.count === 0) {
+                            root.hide()
+                        }
                     }
                 }
             }
@@ -267,7 +262,7 @@ Rectangle {
                         right: parent.right
                         rightMargin: imgClose.width
                     }
-                    color: modified ? mainTextModifiedColor : mainTextColor
+                    color: modified ? mainTextModifiedColor : theme.LocatorText
                     font.pixelSize: 18
                     font.bold: true
                     text: name
@@ -279,20 +274,23 @@ Rectangle {
                         left: parent.left
                         right: parent.right
                     }
-                    color: item.current ? "#aaaaaa" : "#555555"
+                    color: item.current ? theme.LocatorText : theme.LocatorAlternativeText
                     elide: Text.ElideLeft
                     text: path
+
                 }
             }
             Row {
                 anchors {
                     right: parent.right
                     top: col.bottom
+                    margins: 3
                 }
                 spacing: 10
                 Repeater {
                     model: checkers
                     Text {
+                        renderType: Text.NativeRendering
                         color: checker_color
                         text: checker_text
                         visible: checker_text.length > 0 ? true : false
@@ -314,7 +312,7 @@ Rectangle {
         }
         spacing: 2
 
-        focus: true
+        //focus: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200
@@ -332,7 +330,7 @@ Rectangle {
         visible: !listFiles.visible
         spacing: 2
 
-        focus: true
+        //focus: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200

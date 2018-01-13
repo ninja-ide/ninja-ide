@@ -113,7 +113,7 @@ class _MainContainer(QWidget):
         self._vbox.addLayout(self.stack)
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
-        # self._files_handler = files_handler.FilesHandler(self)
+        self._files_handler = files_handler.FilesHandler(self)
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
         # documentation browser

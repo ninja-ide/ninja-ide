@@ -29,6 +29,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtQuickWidgets import QQuickWidget
 
 from ninja_ide.gui.ide import IDE
+from ninja_ide.utils import theme
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools.locator import locator
 from ninja_ide.tools.logger import NinjaLogger
@@ -38,12 +39,15 @@ logger = NinjaLogger(__name__)
 class FilesHandler(QWidget):
 
     def __init__(self, parent=None):
-        super(FilesHandler, self).__init__(
-            None, Qt.FramelessWindowHint | Qt.Popup)
+        super(FilesHandler, self).__init__(None)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(Qt.Popup)
+        self.setFixedWidth(500)
+        self.setFixedHeight(400)
         self._main_container = parent
-        self.setStyleSheet("background:transparent;")
         # Create the QML user interface.
         self.view = QQuickWidget()
+        self.view.rootContext().setContextProperty("theme", theme.get_colors())
         self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
         self._root = self.view.rootObject()
@@ -56,14 +60,10 @@ class FilesHandler(QWidget):
         self._temp_files = {}
         self._max_index = 0
 
-        self._root.open['QString', 'QString', 'QString'].connect(self._open)
+        self._root.open.connect(self._open)
+        self._root.close.connect(self._close)
+        self._root.fuzzySearch.connect(self._fuzzy_search)
         self._root.hide.connect(self.hide)
-        # self.connect(self._root, SIGNAL("open(QString, QString, QString)"),
-        #             self._open)
-        # self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
-        # self.connect(self._root, SIGNAL("hide()"), self.hide)
-        # self.connect(self._root, SIGNAL("fuzzySearch(QString)"),
-        #             self._fuzzy_search)
 
     def _open(self, path, temp, project):
         if project:
@@ -73,7 +73,7 @@ class FilesHandler(QWidget):
             nfile = self._temp_files[temp]
             ninjaide = IDE.get_service("ide")
             neditable = ninjaide.get_or_create_editable(nfile=nfile)
-            self._main_container.current_widget.set_current(neditable)
+            self._main_container.combo_area.set_current(neditable)
         else:
             self._main_container.open_file(path)
             index = self._model[path]
@@ -130,11 +130,10 @@ class FilesHandler(QWidget):
             for items in checkers:
                 checker, color, _ = items
                 if checker.dirty:
-                    # Colors needs to be reversed for QML
-                    color = "#%s" % color[::-1][:-1]
-                    checks.append(
-                        {"checker_text": checker.dirty_text,
-                         "checker_color": color})
+                    checks.append({
+                        "checker_text": checker.dirty_text,
+                        "checker_color": color
+                    })
             modified = neditable.editor.is_modified
             temp_file = str(uuid.uuid4()) if nfile.file_path is None else ""
             filepath = nfile.file_path if nfile.file_path is not None else ""
@@ -152,21 +151,22 @@ class FilesHandler(QWidget):
 
     def showEvent(self, event):
         self._add_model()
-        widget = self._main_container.get_current_editor()
-        if widget is None:
-            widget = self._main_container
-        if self._main_container.splitter.count() < 2:
-            width = max(widget.width() / 2, 500)
-            height = max(widget.height() / 2, 400)
-        else:
-            width = widget.width()
-            height = widget.height()
-        self.view.setFixedWidth(width)
-        self.view.setFixedHeight(height)
+        editor_widget = self._main_container.get_current_editor()
+        # widget = self._main_container.get_current_editor()
+        # if widget is None:
+        #    widget = self._main_container
+        # if self._main_container.splitter.count() < 2:
+        #    width = max(widget.width() / 2, 400)
+        #     height = max(widget.height() / 2, 300)
+        # else:
+        #    width = widget.width()
+        #    height = widget.height()
+        # self.view.setFixedWidth(width)
+        # self.view.setFixedHeight(height)
 
         super(FilesHandler, self).showEvent(event)
-        self._root.show_animation()
-        point = widget.mapToGlobal(self.view.pos())
+        # self._root.show_animation()
+        point = editor_widget.mapToGlobal(self.view.pos())
         self.move(point.x(), point.y())
         self.view.setFocus()
         self._root.activateInput()
@@ -175,11 +175,14 @@ class FilesHandler(QWidget):
         super(FilesHandler, self).hideEvent(event)
         self._temp_files = {}
         self._root.clear_model()
+        # Recovery focus
+        editor_widget = self._main_container.get_current_editor()
+        editor_widget.setFocus()
 
     def next_item(self):
         if not self.isVisible():
             self.show()
-        self._root.next_item()
+        # self._root.next_item()
 
     def previous_item(self):
         if not self.isVisible():

@@ -96,8 +96,8 @@ class ComboEditor(ui_tools.StyledBar):
             self._main_container.fileOpened['QString'].connect(
                 self._file_opened_by_main)
 
-        # self.bar.combo.showComboSelector.connect(
-        #    lambda: self._main_container.change_tab())
+        self.bar.combo_files.showComboSelector.connect(
+            lambda: self._main_container.show_files_handler())
         self.bar.change_current['PyQt_PyObject',
                                 int].connect(self._set_current)
         self.bar.splitEditor[bool].connect(self.split_editor)
@@ -494,8 +494,8 @@ class ActionBar(ui_tools.StyledBar):
         # self.lbl_checks.setFixedWidth(48)
         # self.lbl_checks.setVisible(False)
         # hbox.addWidget(self.lbl_checks)
-        # self.combo = ComboFiles()
-        self.combo_files = QComboBox()
+        self.combo_files = ComboFiles()
+        # self.combo_files = QComboBox()
         self.combo_files.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.combo_files.setProperty("border", True)

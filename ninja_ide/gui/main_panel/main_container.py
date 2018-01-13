@@ -39,6 +39,7 @@ from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import set_language
 from ninja_ide.gui.main_panel import image_viewer
+from ninja_ide.gui.main_panel import files_handler
 from ninja_ide.gui.main_panel.helpers import split_orientation
 from ninja_ide.gui import dynamic_splitter
 from ninja_ide import translations
@@ -60,6 +61,7 @@ class _MainContainer(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setAcceptDrops(True)
         self._vbox = QVBoxLayout(self)
         self._vbox.setContentsMargins(0, 0, 0, 0)
         self._vbox.setSpacing(0)
@@ -67,7 +69,8 @@ class _MainContainer(QWidget):
         self.stack.setStackingMode(QStackedLayout.StackAll)
         self._vbox.addLayout(self.stack)
         self.splitter = dynamic_splitter.DynamicSplitter()
-        self.setAcceptDrops(True)
+        self._files_handler = files_handler.FilesHandler(self)
+
         # Code Navigation
         self.__operations = {
             0: self._navigate_bookmarks
@@ -119,6 +122,9 @@ class _MainContainer(QWidget):
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
+
+    def show_files_handler(self):
+        self._files_handler.next_item()
 
     def navigate_code_history(self, operation, forward):
         self.__operations[operation](forward)

@@ -26,6 +26,7 @@ from ninja_ide.gui.editor.checkers import (
     remove_checker
 )
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import checker
 from ninja_ide.tools import ui_tools
@@ -91,6 +92,14 @@ class ErrorsChecker(QThread):
         if lineno in self.checks:
             return self.checks[lineno][0]
         return None
+
+    @property
+    def dirty(self):
+        return self.checks != {}
+
+    @property
+    def dirty_text(self):
+        return translations.TR_LINT_DIRTY_TEXT + str(len(self.checks))
 
 
 def remove_error_checker():
