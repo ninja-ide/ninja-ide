@@ -129,7 +129,7 @@ Rectangle {
             top: parent.top
             margins: 5
         }
-        border.color: theme.LocatorCurrentItem
+        border.color: "black"
         border.width: 1
 
         TextInput {
@@ -204,8 +204,8 @@ Rectangle {
             property bool current: ListView.isCurrentItem
             color: item.current ? theme.LocatorCurrentItem : theme.LocatorListBackground
 
-            property string mainTextColor: item.current ? "white" : "#aaaaaa"
-            property string mainTextModifiedColor: item.current ? "lightgreen" : "green"
+            property string mainTextColor: item.current ? theme.LocatorText : "red"
+            property string mainTextModifiedColor: item.current ? theme.LocatorText : "green"
 
             MouseArea {
                 anchors.fill: parent
@@ -224,7 +224,7 @@ Rectangle {
                 anchors.fill: imgClose
                 anchors.margins: 2
                 radius: width / 2
-                color: "white"
+                color: "black"
             }
 
             Image {

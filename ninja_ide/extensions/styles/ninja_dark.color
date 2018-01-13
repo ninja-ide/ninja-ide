@@ -11,10 +11,10 @@
             "color": "#FFFFFF"
         },
         "ErrorUnderline": {
-            "color": "#ff0000"
+            "color": "#f33c42"
         },
         "Pep8Underline": {
-            "color": "#ffa500"
+            "color": "#feaf41"
         },
         "Builtin": {
             "color": "#ee8859"

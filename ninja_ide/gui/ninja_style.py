@@ -129,7 +129,7 @@ class NinjaStyle(QProxyStyle):
         elif element == QStyle.CE_ToolBar:
             rect = opt.rect
             color = theme.get_color('ToolButtonColor')
-            if widget.property('gradient'):
+            if widget.property('gradient') and not theme.flag("FlatComboBox"):
                 base = QColor(theme.get_color('Window'))
                 color = QLinearGradient(
                     opt.rect.topRight(), opt.rect.bottomRight())
@@ -316,7 +316,7 @@ class NinjaStyle(QProxyStyle):
             return QProxyStyle.drawPrimitive(
                 self, element, opt, painter, widget)
         if element == QStyle.PE_PanelButtonTool:
-            flat = False
+            flat = theme.flag("FlatComboBox")
             pressed = (opt.state & STATE_SUNKEN or opt.state & STATE_ON)
             hovered = opt.state & STATE_ENABLED and opt.state & STATE_MOUSEOVER
             button_color = theme.get_color('ToolButtonColor')

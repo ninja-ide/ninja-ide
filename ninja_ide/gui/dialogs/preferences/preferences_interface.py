@@ -322,11 +322,12 @@ class Interface(QWidget):
 
     def save(self):
         qsettings = IDE.ninja_settings()
-        ninja_theme = self._combobox_themes.currentText()
-        settings.NINJA_SKIN = ninja_theme
+
         qsettings.beginGroup("ide")
         qsettings.beginGroup("interface")
 
+        ninja_theme = self._combobox_themes.currentText()
+        settings.NINJA_SKIN = ninja_theme
         qsettings.setValue("skin", settings.NINJA_SKIN)
         settings.SHOW_PROJECT_EXPLORER = self._checkProjectExplorer.isChecked()
         qsettings.setValue("showProjectExplorer",

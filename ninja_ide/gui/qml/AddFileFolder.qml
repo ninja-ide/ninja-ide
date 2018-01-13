@@ -25,7 +25,7 @@ Rectangle {
             color: theme.LineEditBackground
             height: 30
             border.width: 1
-            border.color: theme.LocatorCurrentItem
+            border.color: "black"
             width: parent.width
 
             TextInput {

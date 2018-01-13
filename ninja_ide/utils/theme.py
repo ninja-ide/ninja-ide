@@ -57,6 +57,7 @@ def flag(name):
 
 def load_theme(name):
     theme_data = available_themes()[name]
+    global FLAGS
     FLAGS = theme_data.get("flags")
     global DEFAULT_EDITOR_SCHEME
     DEFAULT_EDITOR_SCHEME = theme_data.get("editor-theme")

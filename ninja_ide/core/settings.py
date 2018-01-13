@@ -450,7 +450,7 @@ def load_settings():
     global EXECUTION_OPTIONS
     # global PYTHON_EXEC_CONFIGURED_BY_USER
     # global SESSIONS
-    # global NINJA_SKIN
+    global NINJA_SKIN
     # global SUPPORTED_EXTENSIONS
     global WORKSPACE
     global INDENT
@@ -527,8 +527,7 @@ def load_settings():
                                   sys.executable, type='QString')
     # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
-    # NINJA_SKIN = qsettings.value('preferences/interface/skin',
-    #                             'Dark', type='QString')
+    NINJA_SKIN = qsettings.value("ide/interface/skin", "Dark", type=str)
     # sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     RELOAD_FILE = qsettings.value("ide/reloadSetting", 0, type=int)
     CUSTOM_SCREEN_RESOLUTION = qsettings.value(

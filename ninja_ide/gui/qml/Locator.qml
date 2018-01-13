@@ -226,8 +226,8 @@ Rectangle {
         }
         color: theme.LocatorLineEditBackground
         height: 30
-        border.color: theme.LocatorCurrentItem
-        border.width: 2
+        border.color: "black"
+        border.width: 1
 
         TextInput {
             id: input
