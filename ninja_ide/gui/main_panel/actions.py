@@ -173,6 +173,15 @@ ACTIONS = (
             "weight": 130
         },
         "connect": "editor_comment"
+    },
+    {
+        "shortcut": "uncomment",
+        "action": {
+            "text": translations.TR_UNCOMMENT,
+            "section": (translations.TR_MENU_SOURCE, None),
+            "weight": 140
+        },
+        "connect": "editor_uncomment"
     }
 )
 """

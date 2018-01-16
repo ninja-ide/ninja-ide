@@ -453,9 +453,10 @@ class _MainContainer(QWidget):
             editor_widget.duplicate_line()
 
     def editor_comment(self):
+        """Mark the current line or selection as a comment."""
         editor_widget = self.get_current_editor()
         if editor_widget is not None:
-            editor_widget.comment()
+            helpers.comment_or_uncomment(editor_widget)
 
     def editor_go_to_line(self, line):
         editor_widget = self.get_current_editor()

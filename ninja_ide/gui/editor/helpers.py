@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import re
+import sys
 
 from PyQt5.QtWidgets import QInputDialog
 from PyQt5.QtGui import QTextCursor
@@ -265,7 +266,55 @@ def duplicate(editorWidget):
 
 
 def comment_or_uncomment(editor):
-    pass
+    cursor = editor.textCursor()
+    doc = editor.document()
+    block_start = doc.findBlock(cursor.selectionStart())
+    block_end = doc.findBlock(cursor.selectionEnd()).next()
+    key = editor.neditable.language()
+    card = settings.SYNTAX[key].get("comment", [])[0]
+    has_selection = editor.has_selection()
+    with editor:
+        # Save blocks for use later
+        temp_start, temp_end = block_start, block_end
+        min_indent = sys.maxsize
+        comment = True
+        card_lenght = len(card)
+        # Get operation (comment/uncomment) and the minimum indent
+        # of selected lines
+        while temp_start != temp_end:
+            block_number = temp_start.blockNumber()
+            indent = editor.line_indent(block_number)
+            if indent < min_indent:
+                min_indent = indent
+            block_text = temp_start.text().lstrip()
+            if block_text.startswith(card):
+                comment = False
+            elif block_text.startswith(card.strip()):
+                comment = False
+                card_lenght -= 1
+            else:
+                comment = True
+            temp_start = temp_start.next()
+
+        # Comment/uncomment blocks
+        while block_start != block_end:
+            cursor.setPosition(block_start.position())
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Right,
+                                QTextCursor.MoveAnchor, min_indent)
+            if block_start.text().lstrip():
+                if comment:
+                    cursor.insertText(card)
+                else:
+                    cursor.movePosition(QTextCursor.Right,
+                                        QTextCursor.KeepAnchor,
+                                        card_lenght)
+                    cursor.removeSelectedText()
+            block_start = block_start.next()
+
+        if not has_selection:
+            cursor.movePosition(QTextCursor.Down)
+            editor.setTextCursor(cursor)
 
 
 def uncomment(editorWidget):
