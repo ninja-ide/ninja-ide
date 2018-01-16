@@ -23,7 +23,6 @@ from PyQt5.QtWidgets import (
     QCommonStyle,
     QStyleFactory,
     QStyle,
-    QApplication,
     QComboBox,
     QToolBar,
     QMenuBar,
@@ -63,30 +62,6 @@ class NinjaStyle(QProxyStyle):
         super().__init__(style)
 
     def drawControl(self, element, opt, painter, widget):
-        """elif element == QStyle.CE_PushButtonBevel:
-            # States
-            is_down = (opt.state & STATE_SUNKEN) | (opt.state & STATE_ON)
-            hovered = opt.state & STATE_ENABLED and opt.state & STATE_MOUSEOVER
-            has_focus = opt.state & STATE_HASFOCUS
-
-            rect = opt.rect
-            btn_color = opt.palette.button().color()
-            painter.setPen(btn_color)
-            painter.setRenderHint(QPainter.Antialiasing)
-            path = QPainterPath()
-            path.addRoundedRect(QRectF(rect), 3, 3)
-            if is_down:
-                painter.setBrush(btn_color.darker(115))
-            elif has_focus:
-                painter.setBrush(btn_color.lighter(130))
-            elif hovered:
-                grad = QLinearGradient(rect.topLeft(), rect.bottomLeft())
-                grad.setColorAt(0.6, btn_color)
-                grad.setColorAt(1, btn_color.lighter(120))
-                painter.setBrush(grad)
-            else:
-                painter.setBrush(btn_color)
-            painter.drawPath(path)"""
         if element == QStyle.CE_ComboBoxLabel:
             cb = opt
             painter.save()
@@ -135,14 +110,10 @@ class NinjaStyle(QProxyStyle):
                     opt.rect.topRight(), opt.rect.bottomRight())
                 color.setColorAt(0.2, base.lighter(150))
                 color.setColorAt(0.9, base.darker(135))
-            # print(widget.property("border"), widget)
             painter.fillRect(rect, color)
             if widget.property("border"):
-                # painter.setPen(opt.palette.light().color().lighter(150))
                 painter.setPen(theme.get_color('Border'))
                 painter.drawLine(rect.topRight(), rect.bottomRight())
-            # painter.setPen(theme.get_color(Border'])
-            # painter.drawLine(opt.rect.topRight(), opt.rect.bottomRight())
 
         elif element == QStyle.CE_MenuItem:
             painter.save()
@@ -167,9 +138,6 @@ class NinjaStyle(QProxyStyle):
             painter.drawLine(opt.rect.bottomLeft() + QPointF(.5, .5),
                              opt.rect.bottomRight() + QPointF(.5, .5))
             painter.restore()
-        # elif element == QStyle.CE_PushButtonBevel:
-        #    painter.setPen(Qt.red)
-        #    painter.fillRect(opt.rect, QColor("red"))
         elif element == QStyle.CE_MenuBarItem:
             painter.save()
             act = opt.state & (STATE_SUNKEN | QStyle.State_Selected)
@@ -359,32 +327,6 @@ class NinjaStyle(QProxyStyle):
         #        color = color.lighter(110)
         #    painter.fillRect(opt.rect, color)
 
-        elif element == QStyle.PE_PanelLineEdit:
-            painter.save()
-            # Fill background
-            rect = opt.rect
-            enabled = False
-            if opt.state & STATE_ENABLED:
-                enabled = True
-            if not enabled:
-                painter.setOpacity(0.55)
-            painter.fillRect(rect, theme.get_color('LineEditBackground'))
-            has_focus = False
-            if opt.state & QStyle.State_HasFocus:
-                has_focus = True
-            if enabled and (has_focus or opt.state & STATE_MOUSEOVER):
-                # FIXME: color from theme
-                # hover = QColor("#6a6ea9")
-                # if has_focus:
-                #    alpha = 200
-                # else:
-                #    alpha = 55
-                # hover.setAlpha(alpha)
-                # painter.setPen(QPen(hover, 2, Qt.SolidLine,
-                #               Qt.SquareCap, Qt.RoundJoin))
-                # painter.drawRect(rect.adjusted(0, 0, 0, 0))
-                pass
-            painter.restore()
         elif element == QStyle.PE_IndicatorToolBarSeparator:
             rect = opt.rect
             painter.setPen(theme.get_color('SeparatorColor'))
@@ -434,5 +376,5 @@ class NinjaStyle(QProxyStyle):
                     isinstance(w, QToolBar) or \
                     isinstance(w, QMenuBar):
                 return True
-            w = w.parentWidget()
+            w = w.parent()
         return False

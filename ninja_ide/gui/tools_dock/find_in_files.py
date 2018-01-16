@@ -17,6 +17,7 @@
 
 import queue
 import re
+import os
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -24,13 +25,12 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QComboBox,
     QCheckBox,
+    QLabel,
     QGridLayout,
-    QFrame,
     QToolButton,
     QSizePolicy,
     QPushButton,
     QTreeView,
-    QLabel,
     QStyle,
     QItemDelegate
 )
@@ -48,15 +48,12 @@ from PyQt5.QtCore import (
     QThread,
     QModelIndex
 )
-from PyQt5.QtGui import (
-    QColor,
-    # QBrush,
-    QPalette
-)
+from PyQt5.QtGui import QPalette
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.core import settings
 from ninja_ide.utils import theme
+from ninja_ide import translations
 
 
 class FindInFilesWorker(QObject):
@@ -114,8 +111,6 @@ class FindInFilesWorker(QObject):
             # Take the next line
             line = stream.readLine()
             line_index += 1
-
-        import os
 
         p = os.path.join(self.root_dir, file_path)
         self.finished.emit((p, lines))
@@ -181,15 +176,23 @@ class FindInFilesWidget(QWidget):
     def _on_worker_finished(self, lines):
         self._tree_results.add_result(lines)
 
-    @pyqtSlot('QString', bool)
-    def _on_search_requested(self, to_find, cs):
-        ninjaide = IDE.get_service('ide')
-        # editor = self._main_container.get_current_editor()
-        nproject = ninjaide.get_current_project()
-        to_find = QRegExp(to_find, cs)
-        filters = re.split(",", '*.py,*.md')
+    @pyqtSlot('QString', bool, bool, bool)
+    def _on_search_requested(self, to_find, cs, regex, wo):
+        type_ = QRegExp.FixedString
+        if regex:
+            type_ = QRegExp.RegExp
+        if wo:
+            type_ = QRegExp.RegExp
+            to_find = "|".join(["\\b" + word.strip() + "\\b"
+                                for word in to_find.split()])
+        filters = re.split(",", "*.py")
+        pattern = QRegExp(to_find, cs, type_)
         self._search_worker.find_in_files(
-            nproject.path, filters, to_find, True)
+            self._actions.current_project_path,
+            filters,
+            pattern,
+            recursive=True
+        )
 
     def showEvent(self, event):
         self._actions._line_search.setFocus()
@@ -372,31 +375,34 @@ class SearchResultModel(QAbstractItemModel):
 
 class FindInFilesActions(QWidget):
 
-    searchRequested = pyqtSignal('QString', bool)
+    searchRequested = pyqtSignal('QString', bool, bool, bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Ignored)
         self._scope = QComboBox()
+        self._scope.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.ninjaide = IDE.get_service('ide')
         self.ninjaide.filesAndProjectsLoaded.connect(
             self._update_combo_projects)
 
         main_layout = QVBoxLayout(self)
-        main_layout.addWidget(self._scope)
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel(translations.TR_SEARCH_SCOPE))
+        hbox.addWidget(self._scope)
+        main_layout.addLayout(hbox)
         widgets_layout = QGridLayout()
         widgets_layout.setContentsMargins(0, 0, 0, 0)
         self._line_search = QLineEdit()
-        self._line_search.setPlaceholderText('Search for')
+        self._line_search.setPlaceholderText(translations.TR_SEARCH_FOR)
         main_layout.addWidget(self._line_search)
-        self._btn_search = QPushButton('Search!')
-        self._btn_search.setEnabled(False)
         # TODO: replace
-        self._check_cs = QCheckBox('Case Sensitive')
+        self._check_cs = QCheckBox(translations.TR_SEARCH_CASE_SENSITIVE)
+        self._check_cs.setChecked(True)
         widgets_layout.addWidget(self._check_cs, 2, 0)
-        self._check_wo = QCheckBox('Whole words only')
+        self._check_wo = QCheckBox(translations.TR_SEARCH_WHOLE_WORDS)
         widgets_layout.addWidget(self._check_wo, 2, 1)
-        self._check_re = QCheckBox('Regular expression')
+        self._check_re = QCheckBox(translations.TR_SEARCH_REGEX)
         widgets_layout.addWidget(self._check_re, 3, 0)
         self._check_recursive = QCheckBox('Recursive')
         widgets_layout.addWidget(self._check_recursive, 3, 1)
@@ -408,7 +414,13 @@ class FindInFilesActions(QWidget):
 
     def _update_combo_projects(self):
         projects = self.ninjaide.get_projects()
-        self._scope.addItems(projects.keys())
+        for nproject in projects.values():
+            self._scope.addItem(nproject.name, nproject.path)
+
+    @property
+    def current_project_path(self):
+        """Returns NProject.path of current project"""
+        return self._scope.itemData(self._scope.currentIndex())
 
     def search_requested(self):
         text = self._line_search.text()
@@ -416,4 +428,6 @@ class FindInFilesActions(QWidget):
             return
         has_search = self._line_search.text()
         cs = self._check_cs.isChecked()
-        self.searchRequested.emit(has_search, cs)
+        regex = self._check_re.isChecked()
+        wo = self._check_wo.isChecked()
+        self.searchRequested.emit(has_search, cs, regex, wo)

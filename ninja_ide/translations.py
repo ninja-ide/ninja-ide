@@ -241,7 +241,10 @@ TR_REPLACE_ALL = tr("NINJA-IDE", "Replace All")
 TR_REPLACE_SELECTION = tr("NINJA-IDE", "Replace Selection")
 TR_SEARCH_TITLE = tr("NINJA-IDE", "Close this panel with the 'Esc' key")
 TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Case Sensitive")
-TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
+TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Whole Words only")
+TR_SEARCH_REGEX = tr("NINJA-IDE", "Regular Expression")
+TR_SEARCH_FOR = tr("NINJA-IDE", "Search for")
+TR_SEARCH_SCOPE = tr("NINJA-IDE", "Scope:")
 
 
 # Checkers
