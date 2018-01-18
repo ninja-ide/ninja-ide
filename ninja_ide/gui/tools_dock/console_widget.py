@@ -28,10 +28,10 @@ from PyQt5.QtCore import Qt
 from ninja_ide import resources
 from ninja_ide.tools import console
 from ninja_ide.core import settings
-from ninja_ide.gui.editor import syntaxhighlighter
+from ninja_ide.gui.editor import highlighter
 
 
-class Highlighter(syntaxhighlighter.SyntaxHighlighter):
+class Highlighter(highlighter.SyntaxHighlighter):
     """Extends syntax highlighter to only highlight code after prompt"""
 
     def highlightBlock(self, text):
@@ -55,13 +55,13 @@ class ConsoleWidget(QPlainTextEdit):
 
         self.moveCursor(QTextCursor.EndOfLine)
         self._console = console.Console()
-        syntax = syntaxhighlighter.build_highlighter_for(language='python')
-        self._highlighter = Highlighter(
-            self.document(),
-            syntax.partition_scanner,
-            syntax.scanners,
-            syntax.formats
-        )
+        # syntax = highlighter.build_highlighter_for(language='python')
+        # self._highlighter = Highlighter(
+        #     self.document(),
+        #     syntax.partition_scanner,
+        #     syntax.scanners,
+        #     syntax.formats
+        # )
 
         self.apply_editor_style()
         # Key operations

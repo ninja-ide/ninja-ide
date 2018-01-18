@@ -58,7 +58,7 @@ from ninja_ide.extensions import handlers
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
-from ninja_ide.gui.main_panel import set_language
+# from ninja_ide.gui.main_panel import set_language
 from ninja_ide.utils import theme
 
 
@@ -418,7 +418,10 @@ class ComboEditor(ui_tools.StyledBar):
         self._main_container.current_editor_changed(neditable.file_path)
 
     def _load_symbols(self, neditable):
-        symbols_handler = handlers.get_symbols_handler('py')
+        # Get symbols handler by language
+        symbols_handler = handlers.get_symbols_handler(neditable.language())
+        if symbols_handler is None:
+            return
         source = neditable.editor.text
         source = source.encode(neditable.editor.encoding)
         symbols, symbols_simplified = symbols_handler.obtain_symbols(
@@ -511,6 +514,7 @@ class ActionBar(ui_tools.StyledBar):
         hbox.addWidget(self.combo_files)
 
         self.symbols_combo = QComboBox()
+        self.symbols_combo.setModel(Model([]))
         self.symbols_combo.setProperty("border", True)
         self.symbols_combo.setProperty("gradient", True)
         self.symbols_combo.setSizeAdjustPolicy(
@@ -558,7 +562,7 @@ class ActionBar(ui_tools.StyledBar):
         hbox.addWidget(self.btn_close)
 
         # Added for set language
-        self._setter_language = set_language.SetLanguageFile()
+        # self._setter_language = set_language.SetLanguageFile()
 
     # def _on_lbl_position_clicked(self):
     #    main_container = IDE.get_service("main_container")

@@ -46,10 +46,10 @@ class NEditable(QObject):
         self.__editor = None
         # Create NFile
         self._nfile = nfile
-        self.text_modified = False
         self._has_checkers = False
+        self.__language = None
+        self.text_modified = False
         self.ignore_checkers = False
-        self._language = None
         # Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
@@ -68,12 +68,11 @@ class NEditable(QObject):
         return self._nfile.file_ext()
 
     def language(self):
-        if self._language is None:
-            return settings.LANGUAGE_MAP.get(self.extension())
-        return self._language
-
-    def set_language(self, lang):
-        self._language = lang
+        if self.__language is None:
+            self.__language = settings.LANGUAGE_MAP.get(self.extension())
+            if self.__language is None and self._nfile.is_new_file:
+                self.__language = "python"
+        return self.__language
 
     def _about_to_close_file(self, path, force_close):
         modified = False
@@ -93,7 +92,7 @@ class NEditable(QObject):
         """Set the Editor (UI component) associated with this object."""
         self.__editor = editor
         # If we have an editor, let's include the checkers:
-        self.include_checkers()
+        self.include_checkers(self.language())
         content = ''
         if not self._nfile.is_new_file:
             content = self._nfile.read()

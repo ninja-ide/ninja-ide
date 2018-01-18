@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
-from . import python_syntax
+from . import python
 
-SYNTAXES = {"python": python_syntax.syntax}
+SYNTAXES = {"python": python.syntax}
 
 
 def register_builtin_syntaxes(IDE):

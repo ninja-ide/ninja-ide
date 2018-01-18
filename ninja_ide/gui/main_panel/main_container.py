@@ -37,7 +37,7 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import start_page
-from ninja_ide.gui.main_panel import set_language
+# from ninja_ide.gui.main_panel import set_language
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import files_handler
 from ninja_ide.gui.main_panel.helpers import split_orientation
@@ -107,7 +107,7 @@ class _MainContainer(QWidget):
         esc_sort.activated.connect(self._set_focus_to_editor)
 
         # Added for set language
-        self._setter_language = set_language.SetLanguageFile()
+        # self._setter_language = set_language.SetLanguageFile()
 
     def install(self):
         ninjaide = IDE.get_service("ide")
@@ -308,7 +308,7 @@ class _MainContainer(QWidget):
             if not extension:
                 filename = "%s.%s" % (filename, "py")
             editor_widget.neditable.save_content(path=filename, force=force)
-            self._setter_language.set_language_from_extension(extension)
+            # self._setter_language.set_language_from_extension(extension)
             self.fileSaved.emit("File Saved: {}".format(filename))
             self.currentEditorChanged.emit(filename)
             return True
@@ -415,6 +415,11 @@ class _MainContainer(QWidget):
 
     def create_folder(self, base_path, project_path):
         self._add_file_folder.create_folder(base_path, project_path)
+
+    def restyle_editor(self):
+        neditables = self.combo_area.bar.get_editables()
+        for neditable in neditables:
+            neditable.editor.restyle()
 
     def zoom_in_editor(self):
         """Increase the font size in the current editor"""

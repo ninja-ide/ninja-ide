@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import sys
+import yaml
 import os
 from PyQt5.QtCore import (
     QObject,
     QTimer
 )
+from ninja_ide import resources
 
 
 IS_PY_34 = False
@@ -23,14 +25,31 @@ def get_home_dir():
 
 
 def get_python():
-        found = []
-        for search_path in ('/usr/bin', '/usr/local/bin'):
-            files = os.listdir(search_path)
-            for fname in files:
-                if fname.startswith('python') and not fname.count('config') \
-                        and not fname.endswith("m"):
-                    found.append(os.path.join(search_path, fname))
-        return found
+    found = []
+    for search_path in ('/usr/bin', '/usr/local/bin'):
+        files = os.listdir(search_path)
+        for fname in files:
+            if fname.startswith('python') and not fname.count('config') \
+                    and not fname.endswith("m"):
+                found.append(os.path.join(search_path, fname))
+    return found
+
+
+def load_editor_schemes():
+    skins = {}
+    files = os.listdir(resources.EDITOR_SCHEMES)
+    found = [f for f in files if f.endswith(".color")]
+    for fname in found:
+        filename = os.path.join(resources.EDITOR_SCHEMES, fname)
+        with open(filename) as fp:
+            try:
+                structure = yaml.load(fp)
+            except Exception as reason:
+                pass
+            name = structure["name"]
+            colors = structure["colors"]
+            skins[name] = colors
+    return skins
 
 
 class SignalFlowControl(QObject):

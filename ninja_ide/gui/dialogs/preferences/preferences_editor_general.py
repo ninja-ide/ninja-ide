@@ -54,7 +54,9 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_scheme_designer
-from ninja_ide.tools import json_manager
+# from ninja_ide.tools import json_manager
+from ninja_ide.tools import utils
+from ninja_ide.utils import theme
 
 
 class ListModelScheme(QAbstractListModel):
@@ -107,23 +109,28 @@ class EditorGeneral(QWidget):
         box = QVBoxLayout(group_scheme)
         self._combo_themes = QComboBox()
         box.addWidget(self._combo_themes)
-        self._list_view_scheme = QListView()
-        schemes = json_manager.load_editor_schemes()
-        from collections import namedtuple
-        CategoryEntry = namedtuple('CategoryEntry', 'name color')
-        list_of_categories = []
-        for scheme_name, categories in schemes.items():
-            for category_name in categories.keys():
-                category = CategoryEntry(
-                    category_name,
-                    categories[category_name]['color']
-                )
-                list_of_categories.append(category)
+        schemes = utils.load_editor_schemes()
+        for scheme_name, colors in schemes.items():
+            self._combo_themes.addItem(scheme_name, colors)
+        self.__current_scheme = settings.EDITOR_SCHEME
 
-        model = ListModelScheme(list_of_categories)
-        model.set_font(self._font)
-        self._list_view_scheme.setModel(model)
-        box.addWidget(self._list_view_scheme)
+        # self._list_view_scheme = QListView()
+        # schemes = json_manager.load_editor_schemes()
+        # from collections import namedtuple
+        # CategoryEntry = namedtuple('CategoryEntry', 'name color')
+        # list_of_categories = []
+        # for scheme_name, categories in schemes.items():
+        #     for category_name in categories.keys():
+        #         category = CategoryEntry(
+        #             category_name,
+        #             categories[category_name]['color']
+        #         )
+        #         list_of_categories.append(category)
+
+        # model = ListModelScheme(list_of_categories)
+        # model.set_font(self._font)
+        # self._list_view_scheme.setModel(model)
+        # box.addWidget(self._list_view_scheme)
         # Add group widgets
         vbox.addWidget(group_typo)
         vbox.addWidget(group_scheme)
@@ -133,7 +140,7 @@ class EditorGeneral(QWidget):
         btn_text = ', '.join(self._font.toString().split(',')[0:2])
         self._btn_editor_font.setText(btn_text)
         self._check_font_antialiasing.setChecked(settings.FONT_ANTIALIASING)
-
+        self._combo_themes.setCurrentText(settings.EDITOR_SCHEME)
         # Connections
         self._btn_editor_font.clicked.connect(self._load_editor_font)
         self._preferences.savePreferences.connect(self._save)
@@ -148,16 +155,22 @@ class EditorGeneral(QWidget):
     def _save(self):
         qsettings = IDE.editor_settings()
 
-        # qsettings.beginGroup("editor")
-        # qsettings.beginGroup("general")
-
         settings.FONT = self._font
         qsettings.setValue("editor/general/default_font", settings.FONT)
         settings.FONT_ANTIALIASING = self._check_font_antialiasing.isChecked()
         qsettings.setValue("editor/general/font_antialiasing",
                            settings.FONT_ANTIALIASING)
-        # qsettings.endGroup()
-        # qsettings.endGroup()
+        settings.EDITOR_SCHEME = self._combo_themes.currentText()
+        qsettings.setValue("editor/general/scheme",
+                           settings.EDITOR_SCHEME)
+
+        scheme = self._combo_themes.currentText()
+        if scheme != self.__current_scheme:
+            index = self._combo_themes.currentIndex()
+            colors = self._combo_themes.itemData(index)
+            resources.COLOR_SCHEME = colors
+            main = IDE.get_service("main_container")
+            main.restyle_editor()
 
 
 '''class EditorGeneral(QWidget):

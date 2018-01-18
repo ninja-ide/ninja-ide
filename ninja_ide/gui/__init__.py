@@ -36,6 +36,7 @@ from ninja_ide import resources
 from ninja_ide.core import ipc
 # from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
+from ninja_ide.tools import utils
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui import ninja_style
 logger = NinjaLogger(__name__)
@@ -146,10 +147,11 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # Loading Schemes
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
-    all_schemes = json_manager.load_editor_schemes()
-    scheme = qsettings.value("editor/scheme", "")
-    # FIXME:
-    resources.COLOR_SCHEME = all_schemes['Ninja Dark']
+    all_schemes = utils.load_editor_schemes()
+    scheme = qsettings.value("editor/general/scheme", "")
+    if not scheme:
+        scheme = "Ninja Dark"
+    resources.COLOR_SCHEME = all_schemes[scheme]
     # if scheme:
     #    color_scheme = all_schemes[scheme]
     #    resources.CUSTOM_SCHEME = color_scheme

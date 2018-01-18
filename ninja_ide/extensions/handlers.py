@@ -16,29 +16,29 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
-#Symbols handler per language (file extension)
+# Symbols handler per language
 SYMBOLS_HANDLER = {}
 
 
-def set_symbols_handler(file_extension, symbols_handler):
+def set_symbols_handler(language, symbols_handler):
     """
-    Set a symbol handler for the given file_extension
-    """
-    global SYMBOLS_HANDLER
-    SYMBOLS_HANDLER[file_extension] = symbols_handler
-
-
-def get_symbols_handler(file_extension):
-    """
-    Returns the symbol handler for the given file_extension
+    Set a symbol handler for the given language
     """
     global SYMBOLS_HANDLER
-    return SYMBOLS_HANDLER.get(file_extension, None)
+    SYMBOLS_HANDLER[language] = symbols_handler
+
+
+def get_symbols_handler(language):
+    """
+    Returns the symbol handler for the given language
+    """
+    global SYMBOLS_HANDLER
+    return SYMBOLS_HANDLER.get(language, None)
 
 
 def init_basic_handlers():
     # Import introspection here, it not needed in the namespace of
     # the rest of the file.
     from ninja_ide.tools import introspection
-    #Set Default Symbol Handler
-    set_symbols_handler('py', introspection)
+    # Set Default Symbol Handler
+    set_symbols_handler('python', introspection)

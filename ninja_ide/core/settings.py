@@ -162,6 +162,7 @@ LAST_CLEAN_LOCATOR = None
 # EDITOR
 ###############################################################################
 
+EDITOR_SCHEME = "Ninja Dark"
 # IntelliSense
 AUTOCOMPLETE_BRACKETS = AUTOCOMPLETE_QUOTES = True
 # by default Unix (\n) is used
@@ -276,8 +277,12 @@ _SUPPORTED_EXTENSIONS = [
 ]
 
 LANGUAGE_MAP = {
-    'py': 'python',
-    'pyw': 'python',
+    "py": "python",
+    "pyw": "python",
+    "js": "javascript",
+    "html": "html",
+    "md": "markdown",
+    "yml": "yaml"
 }
 
 ###############################################################################
@@ -512,6 +517,7 @@ def load_settings():
     global HIGHLIGHT_CURRENT_LINE
     global HIGHLIGHT_CURRENT_LINE_MODE
     global BRACE_MATCHING
+    global EDITOR_SCHEME
     # General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     # TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
@@ -605,6 +611,8 @@ def load_settings():
         'editor/display/show_line_numbers', True, type=bool)
     SHOW_TEXT_CHANGES = qsettings.value(
         "editor/display/show_text_changes", True, type=bool)
+    EDITOR_SCHEME = qsettings.value(
+        "editor/general/scheme", "Ninja Dark", type=str)
     # REMOVE_TRAILING_SPACES = qsettings.value(
     #    'preferences/editor/removeTrailingSpaces', True, type=bool)
     # ADD_NEW_LINE_AT_EOF = qsettings.value(

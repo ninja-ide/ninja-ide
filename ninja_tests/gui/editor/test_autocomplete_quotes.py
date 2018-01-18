@@ -104,8 +104,6 @@ def test_last(qtbot):
     cur.movePosition(cur.End)
     editor_ref.setTextCursor(cur)
     qtbot.keyPress(editor_ref, Qt.Key_Return)
-    for i in range(4):
-        qtbot.keyPress(editor_ref, Qt.Key_Space)
     qtbot.keyPress(editor_ref, Qt.Key_QuoteDbl)
     qtbot.keyPress(editor_ref, Qt.Key_QuoteDbl)
     qtbot.keyPress(editor_ref, Qt.Key_QuoteDbl)

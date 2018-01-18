@@ -32,14 +32,17 @@ class SideArea(QWidget):
     def __init__(self, neditor):
         QWidget.__init__(self, neditor)
         self.object_name = self.__class__.__name__
-        self.__background_color = QColor(resources.get_color('SidebarBackground'))
+        # self.__background_color = QColor(
+        #    resources.get_color('SidebarBackground'))
         neditor.updateRequest.connect(self.update)
         self.neditor = neditor
 
     def paintEvent(self, event):
         if self.isVisible():
+            background_color = QColor(
+                resources.get_color('SidebarBackground'))
             painter = QPainter(self)
-            painter.fillRect(event.rect(), self.__background_color)
+            painter.fillRect(event.rect(), background_color)
 
     def setVisible(self, value):
         super().setVisible(value)

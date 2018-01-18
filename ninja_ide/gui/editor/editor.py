@@ -47,7 +47,7 @@ from PyQt5.QtCore import (
     Qt
 )
 from ninja_ide.gui.editor import (
-    syntaxhighlighter,
+    highlighter,
     scrollbar,
     # symbol_highlighter,
     # line_highlighter
@@ -271,18 +271,10 @@ class NEditor(QPlainTextEdit):
         self.setMouseTracking(True)
 
         # Style
-        self._background_color = QColor(
-            resources.get_color('EditorBackground'))
-        self._foreground_color = QColor(
-            resources.get_color('Default'))
-        self._selection_color = QColor(
-            resources.get_color('EditorSelectionColor'))
-        self._selection_background_color = QColor(
-            resources.get_color('EditorSelectionBackground'))
+        self.__init_style()
         self.__apply_style()
 
-        self.setCursorWidth(2)
-        self._highlighter = None
+        self.setCursorWidth(2)  # FIXME: from setting
         self.__visible_blocks = []
         self._last_line_position = 0
         self.__encoding = None
@@ -292,10 +284,11 @@ class NEditor(QPlainTextEdit):
         self._extra_selections = OrderedDict()
         self.__occurrences = []
         # Load indenter based on language
+        # self._highlighter = None
         self._indenter = indenter.load_indenter(self, neditable.language())
         # Set editor font before build lexer
-        self.default_font = settings.FONT
-        self.register_syntax_for(neditable.language())
+        self.set_font(settings.FONT)
+        # self.register_syntax_for(neditable.language())
         # Register extensions
         self.__extensions = {}
         # Brace matching
@@ -342,6 +335,7 @@ class NEditor(QPlainTextEdit):
             else:
                 self._neditable.set_editor(self)
             self._neditable.checkersUpdated.connect(self._highlight_checkers)
+        self.register_syntax_for(language=neditable.language())
         # Widgets on side area
         self._line_number_area = self.add_side_widget(
             line_number_area.LineNumberArea, order=2)
@@ -382,20 +376,17 @@ class NEditor(QPlainTextEdit):
         self.register_syntax_for(language=language)
         self._indenter = indenter.load_indenter(self, lang=language)
 
-    def register_syntax_for(self, language=None):
-        if language is None:
-            return
-        syntax_registry = IDE.get_service("syntax_registry")
-        syntax = syntax_registry.get_syntax_for(language)
-        if syntax is None:
-            syntax = syntaxhighlighter.build_highlighter_for(language)
+    def register_syntax_for(self, language="python", force=False):
+        syntax = highlighter.build_highlighter(language, force=force)
+        if syntax is not None:
+            self._highlighter = highlighter.SyntaxHighlighter(
+                self.document(), syntax)
 
-        self._highlighter = syntaxhighlighter.SyntaxHighlighter(
-            self.document(),
-            syntax.partition_scanner,
-            syntax.scanners,
-            syntax.formats
-        )
+    def restyle(self):
+        self.__init_style()
+        self.__apply_style()
+        self.register_syntax_for(force=True)
+        self._highlighter.rehighlight()
 
     def show_line_numbers(self, value):
         self._line_number_area.setVisible(value)
@@ -602,6 +593,7 @@ class NEditor(QPlainTextEdit):
     def set_font(self, font):
         """Set font and update tab stop width"""
         QPlainTextEdit.setFont(self, font)
+        self.font_antialiasing(settings.FONT_ANTIALIASING)
         self._update_tab_stop_width()
 
     def line_text(self, line):
@@ -663,6 +655,16 @@ class NEditor(QPlainTextEdit):
             self.update_viewport()
         self.__side_widgets.sort(key=lambda widget: widget.order)
         return obj
+
+    def __init_style(self):
+        self._background_color = QColor(
+            resources.get_color('EditorBackground'))
+        self._foreground_color = QColor(
+            resources.get_color('Default'))
+        self._selection_color = QColor(
+            resources.get_color('EditorSelectionColor'))
+        self._selection_background_color = QColor(
+            resources.get_color('EditorSelectionBackground'))
 
     def __apply_style(self):
         palette = self.palette()
