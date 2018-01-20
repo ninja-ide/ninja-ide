@@ -54,9 +54,8 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_scheme_designer
-# from ninja_ide.tools import json_manager
-from ninja_ide.tools import utils
-from ninja_ide.utils import theme
+from ninja_ide.tools import json_manager
+# from ninja_ide.utils import theme
 
 
 class ListModelScheme(QAbstractListModel):
@@ -109,7 +108,7 @@ class EditorGeneral(QWidget):
         box = QVBoxLayout(group_scheme)
         self._combo_themes = QComboBox()
         box.addWidget(self._combo_themes)
-        schemes = utils.load_editor_schemes()
+        schemes = json_manager.load_editor_schemes()
         for scheme_name, colors in schemes.items():
             self._combo_themes.addItem(scheme_name, colors)
         self.__current_scheme = settings.EDITOR_SCHEME

@@ -1,59 +1,90 @@
-name: Ninja Dark
-colors:
-  Default:
-    color: "#c5c8c6"
-  Keyword:
-    color: "#83c1fb"
-  Operators:
-    color: "#FFFFFF"
-  ErrorUnderline:
-    color: "#f33c42"
-  Pep8Underline:
-    color: "#feaf41"
-  Builtin:
-    color: "#ee8859"
-  Comment:
-    color: "#7c7c7c"
-  Decorator:
-    color: "#fdb269"
-  Number:
-    color: "#F8A008"
-  Definition:
-    color: "#fdff74"
-  DefinitionName:
-    color: "#6EC7D7"
-  Function:
-    color: "#ff8080"
-  ProperObject:
-    color: "#6EC7D7"
-    italic: true
-  String:
-    color: "#d07cd3"
-  RawString:
-    color: "#98c378"
-  Docstring:
-    color: "#86d986"
-  EditorBackground:
-    color: "#2e2f30"
-  EditorSelectionColor:
-    color: "#bec0c2"
-  EditorSelectionBackground:
-    color: "#1d545c"
-  SidebarBackground:
-    color: "#2e2f30"
-  SidebarForeground:
-    color: "#595959"
-  CurrentLine:
-    color: "#434343"
-  ModifiedColor:
-    color: "#BE4F44"
-  SavedColor:
-    color: "#00f569"
-  BraceMatched:
-    color: "#d6c540"
-  BraceUnmatched:
-    color: "#d65645"
-  SearchResult:
-    color: "#8a402c"
-  CurrentLineNumber:
-    color: "#d6c540"
+{
+  "name": "Ninja Dark",
+  "colors": {
+    "Default": {
+      "color": "#c5c8c6"
+    },
+    "Keyword": {
+      "color": "#83c1fb"
+    },
+    "Operators": {
+      "color": "#FFFFFF"
+    },
+    "ErrorUnderline": {
+      "color": "#f33c42"
+    },
+    "Pep8Underline": {
+      "color": "#feaf41"
+    },
+    "Builtin": {
+      "color": "#ee8859"
+    },
+    "Comment": {
+      "color": "#7c7c7c"
+    },
+    "Decorator": {
+      "color": "#fdb269"
+    },
+    "Number": {
+      "color": "#F8A008"
+    },
+    "Definition": {
+      "color": "#fdff74"
+    },
+    "DefinitionName": {
+      "color": "#6EC7D7"
+    },
+    "Function": {
+      "color": "#ff8080"
+    },
+    "ProperObject": {
+      "color": "#6EC7D7",
+      "italic": true
+    },
+    "String": {
+      "color": "#d07cd3"
+    },
+    "RawString": {
+      "color": "#98c378"
+    },
+    "Docstring": {
+      "color": "#86d986"
+    },
+    "EditorBackground": {
+      "color": "#2e2f30"
+    },
+    "EditorSelectionColor": {
+      "color": "#bec0c2"
+    },
+    "EditorSelectionBackground": {
+      "color": "#1d545c"
+    },
+    "SidebarBackground": {
+      "color": "#2e2f30"
+    },
+    "SidebarForeground": {
+      "color": "#595959"
+    },
+    "CurrentLine": {
+      "color": "#434343"
+    },
+    "ModifiedColor": {
+      "color": "#BE4F44"
+    },
+    "SavedColor": {
+      "color": "#00f569"
+    },
+    "BraceMatched": {
+      "color": "#d6c540"
+    },
+    "BraceUnmatched": {
+      "color": "#d65645"
+    },
+    "SearchResult": {
+      "color": "#8a402c"
+    },
+    "CurrentLineNumber": {
+      "color": "#d6c540"
+    }
+  }
+}

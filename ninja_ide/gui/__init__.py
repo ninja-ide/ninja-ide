@@ -147,7 +147,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # Loading Schemes
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
-    all_schemes = utils.load_editor_schemes()
+    all_schemes = json_manager.load_editor_schemes()
     scheme = qsettings.value("editor/general/scheme", "")
     if not scheme:
         scheme = "Ninja Dark"
