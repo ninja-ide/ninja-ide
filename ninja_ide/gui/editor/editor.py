@@ -888,13 +888,12 @@ class NEditor(QPlainTextEdit):
         if new_point_size != previous_point_size:
             font.setPointSize(new_point_size)
             self.set_font(font)
-            # Set font in all margins
-            for side_area in self.__side_widgets:
-                side_area.setFont(font)
             # Emit signal for indicator
             default_point_size = settings.FONT.pointSize()
             percent = new_point_size / default_point_size * 100.0
             self.zoomChanged.emit(percent)
+        # Update all side widgets
+        self.side_widgets.update_viewport()
 
     def reset_zoom(self):
         font = self.default_font
