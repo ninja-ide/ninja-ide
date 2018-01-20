@@ -42,6 +42,7 @@ class BaseIndenter(object):
                 indent = self._compute_indent(cursor)
                 if indent is not None:
                     cursor.insertText(indent)
+        self._neditor.ensureCursorVisible()
 
     def block_indent(self, block):
         block_text = block.text()

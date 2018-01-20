@@ -163,7 +163,6 @@ def load_editor_schemes():
     for fname in files:
         file_name = os.path.join(resources.EDITOR_SCHEMES, fname)
         structure = read_json(file_name)
-        print(structure)
         name = structure['name']
         colors = structure['colors']
         skins[name] = colors
