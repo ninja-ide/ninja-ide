@@ -51,7 +51,7 @@ class IndentationGuide(base.Extension):
             user_data = cursor.block().userData()
             if user_data is not None:
                 for x in range(self._indentation_width,
-                               user_data.indentation,
+                               user_data.get("indentation"),
                                self._indentation_width):
                     width = self._neditor.fontMetrics().width('i' * x) + offset
                     if width > 0:

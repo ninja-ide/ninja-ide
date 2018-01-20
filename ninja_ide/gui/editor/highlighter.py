@@ -10,6 +10,7 @@ from PyQt5.QtGui import (
     QTextFormat
 )
 from ninja_ide import resources
+from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor.syntaxes import (
     python,
     html,
@@ -267,8 +268,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
     def current_block_user_data(self):
         user_data = self.currentBlockUserData()
-        if not isinstance(user_data, BlockUserData):
-            user_data = BlockUserData()
+        if not isinstance(user_data, editor.BlockUserData):
+            user_data = editor.BlockUserData()
             self.setCurrentBlockUserData(user_data)
         return user_data
 
@@ -306,7 +307,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         if text.strip():
             leading_ws = text[:len(text) - len(text.lstrip())]
             user_data = self.current_block_user_data()
-            user_data.indentation = len(leading_ws)
+            # user_data.indentation = len(leading_ws)
+            user_data["indentation"] = len(leading_ws)
 
 
 def _create_context():

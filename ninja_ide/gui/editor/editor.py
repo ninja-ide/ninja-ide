@@ -32,7 +32,9 @@ from PyQt5.QtGui import (
     QTextBlock,
     QTextDocument,
     QKeySequence,
+    QPainter,
     QColor,
+    QTextBlockUserData,
     # QBrush,
     QFontMetrics,
     QTextOption,
@@ -43,6 +45,7 @@ from PyQt5.QtCore import (
     pyqtSignal,
     QTimer,
     pyqtSlot,
+    QRectF,
     # QObject,
     Qt
 )
@@ -56,7 +59,8 @@ from ninja_ide.gui.editor.extensions import ExtensionRegistry
 from ninja_ide.gui.editor.side_area import (
     line_number_area,
     text_change_area,
-    marker_area
+    marker_area,
+    code_folding
     # lint_area
 )
 # from ninja_ide.intellisensei.completion import completer_widget
@@ -305,9 +309,9 @@ class NEditor(QPlainTextEdit):
         self.margin_line_position = settings.MARGIN_LINE
         self.margin_line_background = settings.MARGIN_LINE_BACKGROUND
         # Indentation guides
-        self._indentation_guides = self.register_extension(
-            indentation_guides.IndentationGuide)
-        self.show_indentation_guides(settings.SHOW_INDENTATION_GUIDES)
+        # self._indentation_guides = self.register_extension(
+        #     indentation_guides.IndentationGuide)
+        # self.show_indentation_guides(settings.SHOW_INDENTATION_GUIDES)
         # Autocomplete braces
         self.__autocomplete_braces = self.register_extension(
             braces.AutocompleteBraces)
@@ -346,6 +350,8 @@ class NEditor(QPlainTextEdit):
         self.show_text_changes(settings.SHOW_TEXT_CHANGES)
 
         self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
+
+        self.add_side_widget(code_folding.CodeFoldingArea, 3)
 
         # FIXME: we need a method to initialize
         self.__set_whitespaces_flags(self.__show_whitespaces)
@@ -1204,6 +1210,32 @@ class NEditor(QPlainTextEdit):
         state = {}
         state['vscrollbar'] = self.verticalScrollBar().value()
         return state
+
+    def user_data(self, block=None):
+        if block is None:
+            block = self.textCursor().block()
+        user_data = block.userData()
+        if user_data is None:
+            user_data = BlockUserData()
+            block.setUserData(user_data)
+        return user_data
+
+
+class BlockUserData(QTextBlockUserData):
+    """Representation of the data for a block"""
+
+    def __init__(self):
+        QTextBlockUserData.__init__(self)
+        self.attrs = {}
+
+    def get(self, name, default=None):
+        return self.attrs.get(name, default)
+
+    def __getitem__(self, name):
+        return self.attrs[name]
+
+    def __setitem__(self, name, value):
+        self.attrs[name] = value
 
 
 def create_editor(neditable=None):
