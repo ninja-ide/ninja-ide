@@ -24,6 +24,7 @@ class SideWidgetManager(object):
         self._neditor = neditor
 
         neditor.blockCountChanged.connect(self.update_viewport)
+        neditor.updateRequest.connect(self._update)
 
     def add(self, Widget):
         """Installs a widget on left area of the editor"""
@@ -38,6 +39,10 @@ class SideWidgetManager(object):
         """Returns a side widget instance"""
 
         return self.__widgets.get(object_name)
+
+    def _update(self):
+        for widget in self:
+            widget.update()
 
     def __iter__(self):
         return iter(self.__widgets.values())
