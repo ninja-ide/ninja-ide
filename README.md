@@ -1,6 +1,5 @@
 # Ninja-IDE Is Not Just Another IDE
-![Travis report](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master "Travis-C.I. Testing report")
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/ninja-ide/ninja-ide.svg?columns=all)](https://waffle.io/ninja-ide/ninja-ide)
+[![Build Status](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master)](https://travis-ci.org/ninja-ide/ninja-ide)
 
  [Ninja-IDE](http://ninja-ide.org) is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
 
@@ -28,7 +27,7 @@ This is the development branch. Therefore, ninja is very unstable. The following
 - [x] Better bracket highlighter
 - [x] Side Areas Manager
 - [x] Text change side area
-- [ ] Better Code Folding
+- [x] Better Code Folding
 - [x] Highlight ScrollBar
 - [ ] Fix indentation
 - [ ] Auto scroll
