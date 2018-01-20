@@ -29,16 +29,15 @@ from PyQt5.QtCore import (
 from ninja_ide.gui.editor import side_area
 
 
-class MarkerArea(side_area.SideArea):
+class MarkerWidget(side_area.SideWidget):
 
     @property
     def bookmarks(self):
         return sorted(self.__bookmarks)
 
-    def __init__(self, editor):
-        side_area.SideArea.__init__(self, editor)
+    def __init__(self):
+        side_area.SideWidget.__init__(self)
         self.setMouseTracking(True)
-        self._editor = editor
         self.__bookmarks = []
         self.__line_hovered = -1
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -60,25 +59,25 @@ class MarkerArea(side_area.SideArea):
 
     def next_bookmark(self):
         if self.__bookmarks:
-            current_line, col = self._editor.cursor_position
+            current_line, col = self._neditor.cursor_position
             index = bisect.bisect(self.bookmarks, current_line)
             try:
                 line = self.bookmarks[index]
             except IndexError:
                 line = self.bookmarks[0]
-            self._editor.cursor_position = line, col
+            self._neditor.cursor_position = line, col
 
     def previous_bookmark(self):
         if self.__bookmarks:
-            current_line, col = self._editor.cursor_position
+            current_line, col = self._neditor.cursor_position
             index = bisect.bisect(self.bookmarks, current_line)
             line = self.bookmarks[index - 1]
             if line == current_line:
                 line = self.bookmarks[index - 2]
-            self._editor.cursor_position = line, col
+            self._neditor.cursor_position = line, col
 
     def sizeHint(self):
-        font_metrics = QFontMetrics(self._editor.font())
+        font_metrics = QFontMetrics(self._neditor.font())
         size = QSize(font_metrics.height(), font_metrics.height())
         return size
 
@@ -89,7 +88,7 @@ class MarkerArea(side_area.SideArea):
         if event.button() == Qt.LeftButton:
             # Get line number from position
             y_pos = event.pos().y()
-            line = self._editor.line_from_position(y_pos)
+            line = self._neditor.line_from_position(y_pos)
             if line not in self.__bookmarks:
                 # Add marker
                 self.__bookmarks.append(line)
@@ -103,7 +102,7 @@ class MarkerArea(side_area.SideArea):
         self.repaint()
 
     def mouseMoveEvent(self, event):
-        line = self._editor.line_from_position(event.pos().y())
+        line = self._neditor.line_from_position(event.pos().y())
         self.__line_hovered = line
         self.repaint()
 
@@ -117,13 +116,13 @@ class MarkerArea(side_area.SideArea):
             color.setAlpha(100)
             painter.setPen(color)
             painter.setBrush(color)
-            for top, block_number, _ in self._editor.visible_blocks:
+            for top, block_number, _ in self._neditor.visible_blocks:
                 if self.__line_hovered == block_number:
                     painter.drawEllipse(5, top + 3, r, r)
         color.setAlpha(255)
         painter.setPen(color)
         painter.setBrush(color)
-        for top, block_number, _ in self._editor.visible_blocks:
+        for top, block_number, _ in self._neditor.visible_blocks:
             for marker in self.__bookmarks:
                 if marker == block_number:
                     painter.drawEllipse(5, top + 3, r, r)

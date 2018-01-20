@@ -155,8 +155,8 @@ class EditorDisplay(QWidget):
                            settings.SHOW_TABS_AND_SPACES)
         settings.SHOW_INDENTATION_GUIDES = \
             self._check_indentation_guides.isChecked()
-        qsettings.setValue("show_indentation_guides",
-                           settings.SHOW_INDENTATION_GUIDES)
+        # qsettings.setValue("show_indentation_guides",
+        #                    settings.SHOW_INDENTATION_GUIDES)
         settings.SHOW_MARGIN_LINE = self._check_margin_line.isChecked()
         qsettings.setValue("margin_line", settings.SHOW_MARGIN_LINE)
         settings.MARGIN_LINE = self._spin_margin_line.value()

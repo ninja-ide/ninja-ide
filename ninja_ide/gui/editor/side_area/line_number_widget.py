@@ -27,21 +27,18 @@ from ninja_ide.gui.editor import side_area
 from ninja_ide import resources
 
 
-class LineNumberArea(side_area.SideArea):
+class LineNumberWidget(side_area.SideWidget):
     """
     Line number area Widget
     """
     LEFT_MARGIN = 5
     RIGHT_MARGIN = 3
 
-    def __init__(self, neditor):
-        side_area.SideArea.__init__(self, neditor)
-        self.neditor = neditor
+    def __init__(self):
+        side_area.SideWidget.__init__(self)
         self._color_unselected = QColor(
             resources.get_color('SidebarForeground'))
         self._color_selected = QColor(resources.get_color('CurrentLineNumber'))
-        self.__width = self.__calculate_width()
-        self.neditor.blockCountChanged.connect(self.__update_width)
 
     def sizeHint(self):
         return QSize(self.__calculate_width(), 0)
@@ -50,18 +47,18 @@ class LineNumberArea(side_area.SideArea):
         super().paintEvent(event)
         painter = QPainter(self)
         width = self.width() - self.RIGHT_MARGIN - self.LEFT_MARGIN
-        height = self.neditor.fontMetrics().height()
-        font = self.neditor.font()
-        font_bold = self.neditor.font()
+        height = self._neditor.fontMetrics().height()
+        font = self._neditor.font()
+        font_bold = self._neditor.font()
         font_bold.setBold(True)
         pen = QPen(self._color_unselected)
         pen_selected = QPen(self._color_selected)
         painter.setFont(font)
-        sel_start, sel_end = self.neditor.selection_range()
+        sel_start, sel_end = self._neditor.selection_range()
         has_sel = sel_start != sel_end
-        current_line, _ = self.neditor.cursor_position
+        current_line, _ = self._neditor.cursor_position
         # Draw visible blocks
-        for top, line, block in self.neditor.visible_blocks:
+        for top, line, block in self._neditor.visible_blocks:
             # Set bold to current line and selected lines
             if ((has_sel and sel_start <= line <= sel_end) or
                     (not has_sel and current_line == line)):
@@ -74,21 +71,8 @@ class LineNumberArea(side_area.SideArea):
                              Qt.AlignRight, str(line + 1))
 
     def __calculate_width(self):
-        digits = len(str(max(1, self.neditor.blockCount())))
+        digits = len(str(max(1, self._neditor.blockCount())))
         fmetrics_width = QFontMetrics(
-            self.neditor.document().defaultFont()).width('9')
+            self._neditor.document().defaultFont()).width('9')
 
         return self.LEFT_MARGIN + fmetrics_width * digits + self.RIGHT_MARGIN
-
-    def __update_width(self):
-        width = self.__calculate_width()
-        if width != self.__width:
-            self.__width = width
-            self.neditor.update_viewport()
-
-    def width(self):
-        return self.__width
-
-    def setFont(self, font):
-        QWidget.setFont(self, font)
-        self.__update_width()

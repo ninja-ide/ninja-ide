@@ -88,18 +88,19 @@ IMPLEMENTATIONS = {
 }
 
 
-class CodeFoldingArea(side_area.SideArea):
+class CodeFoldingWidget(side_area.SideWidget):
     """Code folding widget"""
 
-    def __init__(self, neditor):
-        super().__init__(neditor)
+    def __init__(self):
+        super().__init__()
         self.code_folding = PythonCodeFolding()
         self.setMouseTracking(True)
-        self.user_data = neditor.user_data
-        self._neditor = neditor
         self.__mouse_over = None
 
-        self._neditor.painted.connect(self.__draw_collapsed_rect)
+    def register(self, neditor):
+        super().register(neditor)
+        self.user_data = neditor.user_data
+        neditor.painted.connect(self.__draw_collapsed_rect)
 
     def __draw_collapsed_rect(self):
         painter = QPainter(self._neditor.viewport())
@@ -140,9 +141,6 @@ class CodeFoldingArea(side_area.SideArea):
         fm = self._neditor.fontMetrics()
         return QSize(fm.height(), fm.height())
 
-    def width(self):
-        return self.sizeHint().width()
-
     def leaveEvent(self, event):
         self.__mouse_over = None
         self.update()
@@ -169,7 +167,8 @@ class CodeFoldingArea(side_area.SideArea):
         for top, _, block in self._neditor.visible_blocks:
             if not self.is_foldable_block(block):
                 continue
-            branch_rect = QRect(0, top, self.width(), self.sizeHint().height())
+            branch_rect = QRect(0, top, self.sizeHint().width(),
+                                self.sizeHint().height())
             opt = QStyleOptionViewItem()
             opt.rect = branch_rect
             opt.state = (QStyle.State_Active |
@@ -190,7 +189,8 @@ class CodeFoldingArea(side_area.SideArea):
                     color = self.palette().highlight().color()
                     color.setAlpha(100)
                     painter.fillRect(QRect(
-                        0, top, self.width(), rect_height + fm_height), color)
+                        0, top, self.sizeHint().width(),
+                        rect_height + fm_height), color)
 
     def fold(self, block):
         if not self.code_folding.is_foldable(block):
@@ -219,3 +219,4 @@ class CodeFoldingArea(side_area.SideArea):
         self.user_data(block)["folded"] = False
         self._neditor.document().markContentsDirty(
             block.position(), _block.position())
+        self._neditor.repaint()

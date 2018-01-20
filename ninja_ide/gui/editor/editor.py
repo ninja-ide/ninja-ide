@@ -57,9 +57,10 @@ from ninja_ide.gui.editor import (
 )
 from ninja_ide.gui.editor.extensions import ExtensionRegistry
 from ninja_ide.gui.editor.side_area import (
-    line_number_area,
-    text_change_area,
-    marker_area,
+    manager,
+    line_number_widget,
+    text_change_widget,
+    marker_widget,
     code_folding
     # lint_area
 )
@@ -341,23 +342,27 @@ class NEditor(QPlainTextEdit):
             self._neditable.checkersUpdated.connect(self._highlight_checkers)
         self.register_syntax_for(language=neditable.language())
         # Widgets on side area
-        self._line_number_area = self.add_side_widget(
-            line_number_area.LineNumberArea, order=2)
-        self.show_line_numbers(settings.SHOW_LINE_NUMBERS)
-
-        self._text_change_area = self.add_side_widget(
-            text_change_area.TextChangeArea, order=0)
+        self.side_widgets = manager.SideWidgetManager(self)
+        # Mark text changes
+        self._text_change_widget = self.side_widgets.add(
+            text_change_widget.TextChangeWidget)
         self.show_text_changes(settings.SHOW_TEXT_CHANGES)
-
-        self._marker_area = self.add_side_widget(marker_area.MarkerArea, 1)
-
-        self.add_side_widget(code_folding.CodeFoldingArea, 3)
+        # Breakpoints/bookmarks widget
+        self._marker_area = self.side_widgets.add(
+            marker_widget.MarkerWidget)
+        # Line number widget
+        self._line_number_widget = self.side_widgets.add(
+            line_number_widget.LineNumberWidget)
+        self.show_line_numbers(settings.SHOW_LINE_NUMBERS)
+        # Code folding
+        self.side_widgets.add(code_folding.CodeFoldingWidget)
 
         # FIXME: we need a method to initialize
         self.__set_whitespaces_flags(self.__show_whitespaces)
 
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.cursorPositionChanged.connect(self.viewport().update)
+        self.blockCountChanged.connect(self.update)
 
     def autocomplete_braces(self, value):
         self.__autocomplete_braces.actived = value
@@ -395,10 +400,10 @@ class NEditor(QPlainTextEdit):
         self._highlighter.rehighlight()
 
     def show_line_numbers(self, value):
-        self._line_number_area.setVisible(value)
+        self._line_number_widget.setVisible(value)
 
     def show_text_changes(self, value):
-        self._text_change_area.setVisible(value)
+        self._text_change_widget.setVisible(value)
 
     def font_antialiasing(self, value):
         font = self.default_font
@@ -653,15 +658,6 @@ class NEditor(QPlainTextEdit):
             marker = Marker(current_line, 'white', priority=2)
             self._scrollbar.add_marker('current_line', marker)
 
-    def add_side_widget(self, Widget, order=0):
-        obj = Widget(self)
-        obj.order = order
-        self.__side_widgets.append(obj)
-        if obj.isVisible:
-            self.update_viewport()
-        self.__side_widgets.sort(key=lambda widget: widget.order)
-        return obj
-
     def __init_style(self):
         self._background_color = QColor(
             resources.get_color('EditorBackground'))
@@ -682,33 +678,13 @@ class NEditor(QPlainTextEdit):
         # FIXME: no funciona con qpalette
         # self.setStyleSheet('border: 0px solid transparent;')
 
-    def update_viewport(self):
-        """
-        Recalculates geometry for all the side widgets and the editor viewport
-        """
-
-        cr = self.contentsRect()
-        current_x = cr.left()
-        top = cr.top()
-        height = cr.height()
-
-        total_width = 0
-        for margin in self.__side_widgets:
-            # if not margin.isVisible():
-            #    continue
-            margin.setGeometry(current_x, top,
-                               margin.width(), height)
-            current_x += margin.width()
-            total_width += margin.width()
-        self.setViewportMargins(total_width, 0, 0, 0)
-
     def focusInEvent(self, event):
         super().focusInEvent(event)
         self.editorFocusObtained.emit()
 
     def resizeEvent(self, event):
         QPlainTextEdit.resizeEvent(self, event)
-        self.update_viewport()
+        self.side_widgets.resize()
         self.adjust_scrollbar_ranges()
 
     def paintEvent(self, event):
@@ -971,23 +947,6 @@ class NEditor(QPlainTextEdit):
         user_data = cursor.block().userData()
         if user_data is not None:
             pass
-
-        # this_syntax = syntax_registry.get_syntax_for()
-        # if syntax is not None:
-        #    self._hig = syntaxhighlighter.SyntaxHighlighter(
-        #        self.document(),
-        #        syntax.partition_scanner,
-        #        syntax.scanners,
-        #        syntax.formats
-        #    )
-
-        # syntax = syntaxhighlighter.load_syntax(language)
-        # if syntax is not None:
-        #    partition_scanner = syntax.partition_scanner
-        #    scanners = syntax.scanners
-        #    formats = syntax.formats
-        #    self._highlighter = syntaxhighlighter.SyntaxHighlighter(
-        #        self.document(), partition_scanner, scanners, formats)
 
     def line_indent(self, line=-1):
         """Returns the indentation level of `line`"""

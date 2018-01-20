@@ -23,19 +23,23 @@ from PyQt5.QtGui import (
 from ninja_ide import resources
 
 
-class SideArea(QWidget):
+class SideWidget(QWidget):
     """
-    Base class for editor side areas
+    Base class for editor side widgets
     """
 
-    # FIXME: update width on resize
-    def __init__(self, neditor):
-        QWidget.__init__(self, neditor)
+    def __init__(self):
+        QWidget.__init__(self)
         self.object_name = self.__class__.__name__
-        # self.__background_color = QColor(
-        #    resources.get_color('SidebarBackground'))
-        neditor.updateRequest.connect(self.update)
-        self.neditor = neditor
+        self.order = -1
+
+    def register(self, neditor):
+        """Set the NEditor instance as the parent widget
+
+        When override this method, call super!
+        """
+        self.setParent(neditor)
+        self._neditor = neditor
 
     def paintEvent(self, event):
         if self.isVisible():
@@ -45,5 +49,6 @@ class SideArea(QWidget):
             painter.fillRect(event.rect(), background_color)
 
     def setVisible(self, value):
-        super().setVisible(value)
-        self.neditor.update_viewport()
+        """Show/Hide the widget"""
+        QWidget.setVisible(self, value)
+        self._neditor.side_widgets.update_viewport()

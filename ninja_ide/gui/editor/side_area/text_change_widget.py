@@ -22,14 +22,14 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtCore import (
     pyqtSlot,
-    Qt,
+    QSize,
     QTimer
 )
-from ninja_ide.gui.editor.side_area import SideArea
+from ninja_ide.gui.editor.side_area import SideWidget
 from ninja_ide import resources
 
 
-class TextChangeArea(SideArea):
+class TextChangeWidget(SideWidget):
 
     @property
     def unsaved_color(self):
@@ -61,14 +61,11 @@ class TextChangeArea(SideArea):
             self.__delay = ms
             self._timer.setInterval(self.__delay)
 
-    def __init__(self, neditor):
-        SideArea.__init__(self, neditor)
-        self._neditor = neditor
+    def __init__(self):
+        SideWidget.__init__(self)
         self.__unsaved_markers = []
         self.__saved_markers = []
         self.__saved = False
-        self.__text = neditor.toPlainText()
-        self.__last_saved_text = neditor.toPlainText()
         # Default properties
         self.__unsaved_color = QColor(resources.get_color('ModifiedColor'))
         self.__saved_color = QColor(resources.get_color('SavedColor'))
@@ -78,10 +75,16 @@ class TextChangeArea(SideArea):
         self._timer.setInterval(self.__delay)
         self._timer.setSingleShot(True)
         self._timer.timeout.connect(self.__on_text_changed)
+
+    def register(self, neditor):
+        SideWidget.register(self, neditor)
+        self.__text = neditor.toPlainText()
+        self.__last_saved_text = neditor.toPlainText()
         # Connect textChanged signal to the timer
         # the __on_text_chaned slot is executed each '__delay' milliseconds
-        self._neditor.textChanged.connect(self._timer.start)
-        self._neditor.neditable.fileSaved.connect(self.__on_file_saved)
+        neditor.textChanged.connect(self._timer.start)
+        neditor.updateRequest.connect(self.update)
+        neditor.neditable.fileSaved.connect(self.__on_file_saved)
 
     @pyqtSlot()
     def __on_file_saved(self):
@@ -108,19 +111,20 @@ class TextChangeArea(SideArea):
                     if lineno in self.__saved_markers:
                         self.__saved_markers.remove(lineno)
 
-    def width(self):
-        return 4
+    def sizeHint(self):
+        return QSize(2, 0)
 
     def paintEvent(self, event):
         super().paintEvent(event)
         painter = QPainter(self)
         height = self._neditor.fontMetrics().height()
+        width = self.sizeHint().width()
         for top, block_number, _ in self._neditor.visible_blocks:
             for lineno in self.__unsaved_markers:
                 if block_number == lineno:
-                    painter.fillRect(2, top, self.width(),
+                    painter.fillRect(0, top, width,
                                      height + 1, self.__unsaved_color)
             for lineno in self.__saved_markers:
                 if block_number == lineno:
-                    painter.fillRect(2, top, self.width(), height + 1,
-                                     self.__saved_color)
+                    painter.fillRect(0, top, width,
+                                     height + 1, self.__saved_color)
