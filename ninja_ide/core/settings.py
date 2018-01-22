@@ -95,6 +95,7 @@ MAX_OPACITY = TOOLBAR_AREA = 1
 # 001 : Central Rotate
 # 010 : Panels Rotate
 # 100 : Central Orientation
+NOTIFICATION_ON_SAVE = True
 # UI_LAYOUT = NOTIFICATION_POSITION = 0
 
 LANGUAGE = EXECUTION_OPTIONS = ""
@@ -507,6 +508,7 @@ def load_settings():
     # global DOCMAP_CURRENT_LINE
     # global DOCMAP_SEARCH_LINES
     # global NOTIFICATION_POSITION
+    global NOTIFICATION_ON_SAVE
     # global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
     global SHOW_LINE_NUMBERS
@@ -702,11 +704,13 @@ def load_settings():
     # for key in breakpoints:
     #    if key:
     #         BREAKPOINTS[key] = [int(i) for i in tuple(breakpoints[key])]
+    NOTIFICATION_ON_SAVE = qsettings.value(
+        "editor/general/notificate_on_save", True, type=bool)
     # Checkers
     # CHECK_FOR_DOCSTRINGS = qsettings.value(
     #    'preferences/editor/checkForDocstrings', False, type=bool)
     # NOTIFICATION_POSITION = qsettings.value(
-    #    'preferences/general/notification_position', 0, type=int)
+    #    'interface/notification_position', 1, type=int)
     # NOTIFICATION_COLOR = qsettings.value(
     #    'preferences/general/notification_color', "#222", type='QString')
     LAST_CLEAN_LOCATOR = qsettings.value("ide/cleanLocator", None)

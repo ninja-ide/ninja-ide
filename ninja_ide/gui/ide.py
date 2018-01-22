@@ -809,7 +809,6 @@ class IDE(QMainWindow):
 
     def show_message(self, message, duration=3000):
         """Show status message."""
-        print(message)
         # self.notification.set_message(message, duration)
         # self.notification.show()
 

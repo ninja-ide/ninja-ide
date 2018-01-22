@@ -13,6 +13,7 @@ from PyQt5.QtCore import (
     QPropertyAnimation,
     QTimer
 )
+from ninja_ide.core import settings
 
 # FIXME: move to ui_tools
 
@@ -51,7 +52,10 @@ class Indicator(QWidget):
 
     def set_text(self, text):
         self._label.setText(text)
-        self.move(self.parent().rect().center() - self.rect().center())
+        width = self.parent().width()
+        x = width - (self._label.sizeHint().width() + 50)
+        y = self.parent().rect().y()
+        self.move(x, y + 10)
 
     def paintEvent(self, event):
         painter = QPainter(self)

@@ -901,11 +901,10 @@ class NEditor(QPlainTextEdit):
         if font.pointSize() != default_point_size:
             font.setPointSize(default_point_size)
             self.set_font(font)
-            # Set font in all margins
-            for margin in self.__side_widgets:
-                margin.setFont(font)
             # Emit signal for indicator
             self.zoomChanged.emit(100)
+        # Update all side widgets
+        self.side_widgets.update_viewport()
 
     def __set_whitespaces_flags(self, show):
         """Sets white spaces flag"""

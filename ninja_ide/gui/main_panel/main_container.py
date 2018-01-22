@@ -48,7 +48,7 @@ from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
-from ninja_ide.gui import indicator
+from ninja_ide.gui import indicator, notification
 
 logger = NinjaLogger(__name__)
 
@@ -122,6 +122,12 @@ class _MainContainer(QWidget):
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
+        self.fileSaved.connect(self._show_message_about_saved)
+
+    def _show_message_about_saved(self, message):
+        if settings.NOTIFICATION_ON_SAVE:
+            editor_widget = self.get_current_editor()
+            indicator.Indicator.show_text(editor_widget, message)
 
     def show_files_handler(self):
         self._files_handler.next_item()
