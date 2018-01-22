@@ -37,6 +37,11 @@ marker = namedtuple('Marker', 'position color priority')
 
 class ScrollBarOverlay(QWidget):
 
+    class Position:
+        LEFT = 0
+        CENTER = 1
+        RIGHT = 2
+
     def __init__(self, nscrollbar):
         super().__init__(nscrollbar)
         self._nscrollbar = nscrollbar
@@ -63,7 +68,6 @@ class ScrollBarOverlay(QWidget):
         vertical_margin = ((rect.height() / sb_range) - result_height) / 2
 
         painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing, False)
 
         for lineno in self.cache.keys():
             marker = self.cache[lineno]

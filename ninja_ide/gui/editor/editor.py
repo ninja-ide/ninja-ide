@@ -524,6 +524,7 @@ class NEditor(QPlainTextEdit):
         """Add checker selections to the Editor"""
         # Remove selections if they exists
         self.clear_extra_selections('checker')
+        self._scrollbar.remove_marker("checker")
         # Get checkers from neditable
         checkers = neditable.sorted_checkers
         self.highlight_checker_updated.emit(checkers)
@@ -533,6 +534,11 @@ class NEditor(QPlainTextEdit):
             checker, color, _ = items
             lines = checker.checks.keys()
             for line in lines:
+
+                Marker = scrollbar.marker
+                marker = Marker(line, color, priority=1)
+                self._scrollbar.add_marker("checker", marker)
+
                 msg, col = checker.checks[line]
                 selection = QTextEdit.ExtraSelection()
                 selection.cursor = self.textCursor()
