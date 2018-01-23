@@ -54,6 +54,7 @@ class GeneralConfiguration(QWidget):
 
         # Groups
         group_box_start = QGroupBox(translations.TR_PREFERENCES_GENERAL_START)
+        group_box_close = QGroupBox(translations.TR_PREFERENCES_GENERAL_CLOSE)
         group_box_workspace = QGroupBox(
             translations.TR_PREFERENCES_GENERAL_WORKSPACE)
         group_box_reset = QGroupBox(translations.TR_PREFERENCES_GENERAL_RESET)
@@ -70,6 +71,11 @@ class GeneralConfiguration(QWidget):
             translations.TR_PREFERENCES_GENERAL_NOTIFY_UPDATES)
         box_start.addWidget(self._check_last_session)
         box_start.addWidget(self._check_notify_updates)
+        # Group close
+        box_close = QVBoxLayout(group_box_close)
+        self._check_confirm_exit = QCheckBox(
+            translations.TR_PREFERENCES_GENERAL_CONFIRM_EXIT)
+        box_close.addWidget(self._check_confirm_exit)
         # Workspace and Project
         grid_workspace = QGridLayout(group_box_workspace)
         self._text_workspace = QLineEdit()
@@ -112,6 +118,7 @@ class GeneralConfiguration(QWidget):
 
         # Add groups to main layout
         vbox.addWidget(group_box_start)
+        vbox.addWidget(group_box_close)
         vbox.addWidget(group_box_workspace)
         vbox.addWidget(group_box_autosave)
         vbox.addWidget(group_box_modification)
@@ -129,7 +136,7 @@ class GeneralConfiguration(QWidget):
         qsettings.endGroup()
         self._text_workspace.setText(settings.WORKSPACE)
         self._combo_mod.setCurrentIndex(settings.RELOAD_FILE)
-
+        self._check_confirm_exit.setChecked(settings.CONFIRM_EXIT)
         # Connections
         btn_reset.clicked.connect(self._reset_preferences)
         choose_workspace_action.triggered.connect(self._load_workspace)
@@ -162,6 +169,8 @@ class GeneralConfiguration(QWidget):
         qsettings = IDE.ninja_settings()
         qsettings.beginGroup("ide")
 
+        settings.CONFIRM_EXIT = self._check_confirm_exit.isChecked()
+        qsettings.setValue("confirmExit", settings.CONFIRM_EXIT)
         qsettings.setValue("loadFiles", self._check_last_session.isChecked())
         qsettings.setValue("notifyUpdates",
                            self._check_notify_updates.isChecked())

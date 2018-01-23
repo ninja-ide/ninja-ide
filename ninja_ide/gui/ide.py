@@ -788,6 +788,8 @@ class IDE(QMainWindow):
             if dialog.exec_() == QDialog.Rejected:
                 event.ignore()
                 return
+        else:
+            self._save_unsaved_files(_unsaved_files)
         self.save_settings()
         self.goingDown.emit()
         # close python documentation server (if running)
