@@ -18,13 +18,12 @@
 
 import re
 from collections import OrderedDict
-# import time
+
 from typing import Tuple
 from PyQt5.QtWidgets import (
     QPlainTextEdit,
     QAbstractSlider,
-    QTextEdit,
-    # QToolTip
+    QTextEdit
 )
 from PyQt5.QtGui import (
     QKeyEvent,
@@ -32,30 +31,24 @@ from PyQt5.QtGui import (
     QTextBlock,
     QTextDocument,
     QKeySequence,
-    QPainter,
     QColor,
     QTextBlockUserData,
-    # QBrush,
+
     QFontMetrics,
     QTextOption,
     QTextCharFormat,
-    # QPen
+    QPaintEvent
 )
 from PyQt5.QtCore import (
     pyqtSignal,
     QTimer,
     pyqtSlot,
-    QRectF,
-    # QObject,
     Qt
 )
 from ninja_ide.gui.editor import (
     highlighter,
-    scrollbar,
-    # symbol_highlighter,
-    # line_highlighter
+    scrollbar
 )
-from ninja_ide.gui.editor.extensions import ExtensionRegistry
 from ninja_ide.gui.editor.side_area import (
     manager,
     line_number_widget,
@@ -64,18 +57,8 @@ from ninja_ide.gui.editor.side_area import (
     code_folding
     # lint_area
 )
-# from ninja_ide.intellisensei.completion import completer_widget
-# from ninja_ide.gui.editor.extensions import (
-    # extension,
-    # margin_line,
-    # symbol_highlighter,
-    # indentation_guides
-# )
-
-# from ninja_ide.gui.editor import symbol_completer
 from ninja_ide.gui.editor import extra_selection
 from ninja_ide import resources
-from ninja_ide.gui.ide import IDE
 from ninja_ide.core import settings
 from ninja_ide.gui.editor.extensions import (
     line_highlighter,
@@ -85,7 +68,6 @@ from ninja_ide.gui.editor.extensions import (
     braces,
     quotes
 )
-# from ninja_ide.gui.editor.indenter import base
 from ninja_ide.gui.editor import indenter
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger(__name__)
@@ -104,7 +86,7 @@ class NEditor(QPlainTextEdit):
     cursor_position_changed = pyqtSignal(int, int)
     keyPressed = pyqtSignal(QKeyEvent)
     postKeyPressed = pyqtSignal(QKeyEvent)
-    painted = pyqtSignal()
+    painted = pyqtSignal(QPaintEvent)
     current_line_changed = pyqtSignal(int)
     # FIXME: cambiar esto
     highlight_checker_updated = pyqtSignal('PyQt_PyObject')
@@ -284,7 +266,6 @@ class NEditor(QPlainTextEdit):
         self._last_line_position = 0
         self.__encoding = None
         self.__show_whitespaces = settings.SHOW_TABS_AND_SPACES
-        self.__side_widgets = []
         # Extra Selections
         self._extra_selections = OrderedDict()
         self.__occurrences = []
@@ -310,9 +291,9 @@ class NEditor(QPlainTextEdit):
         self.margin_line_position = settings.MARGIN_LINE
         self.margin_line_background = settings.MARGIN_LINE_BACKGROUND
         # Indentation guides
-        # self._indentation_guides = self.register_extension(
-        #     indentation_guides.IndentationGuide)
-        # self.show_indentation_guides(settings.SHOW_INDENTATION_GUIDES)
+        self._indentation_guides = self.register_extension(
+            indentation_guides.IndentationGuide)
+        self.show_indentation_guides(settings.SHOW_INDENTATION_GUIDES)
         # Autocomplete braces
         self.__autocomplete_braces = self.register_extension(
             braces.AutocompleteBraces)
@@ -361,7 +342,6 @@ class NEditor(QPlainTextEdit):
         self.__set_whitespaces_flags(self.__show_whitespaces)
 
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
-        self.cursorPositionChanged.connect(self.viewport().update)
         self.blockCountChanged.connect(self.update)
 
     def autocomplete_braces(self, value):
@@ -695,9 +675,9 @@ class NEditor(QPlainTextEdit):
 
     def paintEvent(self, event):
         self._update_visible_blocks()
-        # Emit signal for extensions
-        self.painted.emit()
         QPlainTextEdit.paintEvent(self, event)
+        # Emit signal for extensions
+        self.painted.emit(event)
 
     def mouseReleaseEvent(self, event):
         # if event.modifiers() == Qt.ControlModifier:

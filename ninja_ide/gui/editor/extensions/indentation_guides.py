@@ -15,20 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtGui import (
-    QPainter,
-    QColor,
-    QTextCursor
-)
-from PyQt5.QtCore import (
-    QPoint,
-    QLine
-)
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QColor
+from PyQt5.QtCore import Qt
 from ninja_ide.gui.editor.extensions import base
 
 
 class IndentationGuide(base.Extension):
     """Indentation guides extension for Ninja-IDE Editor"""
+
+    def __init__(self):
+        super().__init__()
+        self.color = Qt.darkGray
 
     def install(self):
         self._indentation_width = self._neditor.indentation_width
@@ -39,33 +37,23 @@ class IndentationGuide(base.Extension):
         self._neditor.painted.disconnect(self._draw)
         self._neditor.viewport().update()
 
-    def _draw(self):
-        doc, viewport = self._neditor.document(), self._neditor.viewport()
-        painter = QPainter(viewport)
-        painter.setPen(QColor("#444"))
+    def _draw(self, event):
+        doc = self._neditor.document()
+        painter = QPainter(self._neditor.viewport())
+        color = QColor(self.color)
+        color.setAlphaF(.3)
+        painter.setPen(color)
         offset = doc.documentMargin() + self._neditor.contentOffset().x()
-
-        def paint(cursor):
-            y3 = self._neditor.cursorRect(cursor).top()
-            y4 = self._neditor.cursorRect(cursor).bottom()
-            user_data = cursor.block().userData()
-            if user_data is not None:
-                for x in range(self._indentation_width,
-                               user_data.get("indentation"),
-                               self._indentation_width):
-                    width = self._neditor.fontMetrics().width('i' * x) + offset
-                    if width > 0:
-                        painter.drawLine(QLine(width, y3, width, y4))
-        self.do(paint)
-
-    def do(self, func):
-        cursor = self._neditor.cursorForPosition(QPoint(0, 0))
-        cursor.movePosition(QTextCursor.StartOfBlock)
-        while True:
-            func(QTextCursor(cursor))
-            y = self._neditor.cursorRect(cursor).bottom()
-            if y > self._neditor.height():
-                break
-            if not cursor.block().next().isValid():
-                break
-            cursor.movePosition(QTextCursor.NextBlock)
+        for top, lineno, block in self._neditor.visible_blocks:
+            bottom = top + self._neditor.blockBoundingRect(block).height()
+            user_data = block.userData()
+            if user_data is None:
+                continue
+            indentation = user_data.get("indentation")
+            if indentation is None:
+                indentation = 8
+            # if indentation is not None:
+            for i in range(self._indentation_width, indentation,
+                            self._indentation_width):
+                x = self._neditor.fontMetrics().width(i * '9') + offset
+                painter.drawLine(x, top, x, bottom)

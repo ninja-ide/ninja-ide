@@ -64,6 +64,8 @@ class CurrentLineHighlighter(base.Extension):
     def install(self):
         if self.__mode == self.SIMPLE:
             self._neditor.painted.connect(self.paint_simple_mode)
+            self._neditor.cursorPositionChanged.connect(
+                self._neditor.viewport().update)
         else:
             self._neditor.cursorPositionChanged.connect(self._highlight)
             self._highlight()
@@ -71,6 +73,8 @@ class CurrentLineHighlighter(base.Extension):
     def shutdown(self):
         if self.__mode == self.SIMPLE:
             self._neditor.painted.disconnect(self.paint_simple_mode)
+            self._neditor.cursorPositionChanged.connect(
+                self._neditor.viewport().update)
         else:
             self._neditor.cursorPositionChanged.disconnect(self._highlight)
             self._neditor.clear_extra_selections('current_line')
@@ -80,6 +84,9 @@ class CurrentLineHighlighter(base.Extension):
         layout = block.layout()
         line_count = layout.lineCount()
         line = layout.lineAt(line_count - 1)
+        if line_count < 1:
+            # Avoid segmentation fault
+            return
         co = self._neditor.contentOffset()
         top = self._neditor.blockBoundingGeometry(block).translated(co).top()
         line_rect = line.naturalTextRect().translated(co.x(), top)
