@@ -669,8 +669,8 @@ class ActionBar(ui_tools.StyledBar):
         #    actionReopen.setEnabled(False)
 
         # set language action
-        menu_set_language = menu.addMenu(translations.TR_SET_LANGUAGE)
-        self._set_list_languages(menu_set_language)
+        # menu_set_language = menu.addMenu(translations.TR_SET_LANGUAGE)
+        # self._set_list_languages(menu_set_language)
 
         # Connect actions
         action_undock.triggered.connect(self._undock_editor)
