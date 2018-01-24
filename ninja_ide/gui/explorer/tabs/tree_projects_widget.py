@@ -51,7 +51,7 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
-# from ninja_ide.gui.dialogs import add_to_project
+from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
 from ninja_ide.gui.dialogs import new_project_manager
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
@@ -627,9 +627,9 @@ class TreeProjectsWidget(QTreeView):
         # FIXME: We need nfilesystem support for this
         if not path:
             path = self.model().filePath(self.currentIndex())
-            main_container = IDE.get_service('main_container')
-            project_path = self.project.path
-            main_container.create_folder(path, project_path)
+        main_container = IDE.get_service('main_container')
+        project_path = self.project.path
+        main_container.create_folder(path, project_path)
 
     def _delete_file(self, path=''):
         if not path:
@@ -716,6 +716,7 @@ class TreeProjectsWidget(QTreeView):
         new_path = file_manager.create_path(addToProject.pathSelected, name)
         ide_srv = IDE.get_service("ide")
         current_nfile = ide_srv.get_or_create_nfile(path)
+        current_nfile.close()
         # FIXME: Catch willOverWrite and willMove signals
         current_nfile.move(new_path)
 

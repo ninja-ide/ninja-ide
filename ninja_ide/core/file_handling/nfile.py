@@ -65,6 +65,7 @@ class NFile(QObject):
     @willAttachToExistingFile(PyQt_PyObject, QString)
     """
     fileChanged = pyqtSignal()
+    fileRemoved = pyqtSignal()
     willAttachToExistingFile = pyqtSignal('PyQt_PyObject', 'QString')
     gotAPath = pyqtSignal('PyQt_PyObject')
     willSave = pyqtSignal('QString', 'QString')
@@ -130,10 +131,13 @@ class NFile(QObject):
             self.__watcher.addPath(self._file_path)
 
     def _file_changed(self, path):
-        current_mtime = os.path.getmtime(self._file_path)
-        if current_mtime != self.__mtime:
-            self.__mtime = current_mtime
-            self.fileChanged.emit()
+        if self._exists():
+            current_mtime = os.path.getmtime(self._file_path)
+            if current_mtime != self.__mtime:
+                self.__mtime = current_mtime
+                self.fileChanged.emit()
+        else:
+            self.fileRemoved.emit()
 
     def has_write_permission(self):
         if not self._exists():

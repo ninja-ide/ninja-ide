@@ -36,6 +36,7 @@ class NEditable(QObject):
     @fileSaved(PyQt_PyObject)
     """
     fileSaved = pyqtSignal('PyQt_PyObject')
+    fileRemoved = pyqtSignal('PyQt_PyObject')
     fileChanged = pyqtSignal('PyQt_PyObject')
     fileClosing = pyqtSignal('PyQt_PyObject')
     askForSaveFileClosing = pyqtSignal('PyQt_PyObject')
@@ -60,6 +61,12 @@ class NEditable(QObject):
                                     bool].connect(self._about_to_close_file)
             self._nfile.fileChanged.connect(
                 lambda: self.fileChanged.emit(self))
+            self._nfile.fileRemoved.connect(
+                self._on_file_removed_from_disk)
+
+    def _on_file_removed_from_disk(self):
+        # FIXME: maybe we should ask for save, save as...
+        self._nfile.close()
 
     def extension(self):
         # FIXME This sucks, we should have a way to define lang

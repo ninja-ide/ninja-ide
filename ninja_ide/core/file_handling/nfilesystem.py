@@ -48,8 +48,7 @@ class NVirtualFileSystem(QObject):
         project_path = project.path
         qfsm = None  # Should end up having a QFileSystemModel
         if project_path not in self.__projects:
-            # qfsm = QFileSystemModel()
-            qfsm = ui_tools.FileSystemModel()
+            qfsm = QFileSystemModel()
             project.model = qfsm
             qfsm.setRootPath(project_path)
             qfsm.setFilter(QDir.AllDirs | QDir.Files | QDir.NoDotAndDotDot)
