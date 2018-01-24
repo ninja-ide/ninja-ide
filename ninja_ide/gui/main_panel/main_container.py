@@ -253,6 +253,10 @@ class _MainContainer(QWidget):
         self.combo_area.add_image_viewer(viewer)
         self.stack.setCurrentWidget(self.splitter)
 
+    def autosave_file(self):
+        for neditable in self.combo_area.bar.get_editables():
+            neditable.autosave_file()
+
     def save_file(self, editor_widget=None):
         if editor_widget is None:
             # This may return None if there is not editor present

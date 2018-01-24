@@ -219,9 +219,11 @@ class NFile(QObject):
         # If we have a file system watcher, add the saved path back
         # to its watch list, otherwise create a watcher and start
         # watching
+        print(self.__watcher.files())
         if self.__watcher is not None:
             if new_path:
-                self.__watcher.removePath(self.__watcher.files()[0])
+                # FIXME: what?
+                # self.__watcher.removePath(self.__watcher.files()[0])
                 self.__watcher.addPath(self._file_path)
             else:
                 self.__watcher.addPath(save_path)

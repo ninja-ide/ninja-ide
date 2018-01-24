@@ -51,6 +51,7 @@ class NEditable(QObject):
         self.__language = None
         self.text_modified = False
         self.ignore_checkers = False
+        self.__autosave = False
         # Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
@@ -63,6 +64,18 @@ class NEditable(QObject):
                 lambda: self.fileChanged.emit(self))
             self._nfile.fileRemoved.connect(
                 self._on_file_removed_from_disk)
+
+        self.autosave_file()
+
+    def autosave_file(self):
+        self.startTimer(settings.AUTOSAVE_INTERVAL * 6000)
+
+    def timerEvent(self, event):
+        if settings.AUTOSAVE:
+            if self.__editor.is_modified:
+                self.save_content(self.file_path)
+        else:
+            self.killTimer(event.timerId())
 
     def _on_file_removed_from_disk(self):
         # FIXME: maybe we should ask for save, save as...

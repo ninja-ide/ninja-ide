@@ -87,6 +87,9 @@ def detect_python_path():
 
 HDPI = False
 CUSTOM_SCREEN_RESOLUTION = ""
+# Autosave
+AUTOSAVE = False
+AUTOSAVE_INTERVAL = 1  # min
 
 MAX_OPACITY = TOOLBAR_AREA = 1
 # MIN_OPACITY = 0.3
@@ -454,6 +457,8 @@ def load_settings():
     # global UI_LAYOUT
     global PYTHON_EXEC
     global EXECUTION_OPTIONS
+    global AUTOSAVE
+    global AUTOSAVE_INTERVAL
     # global PYTHON_EXEC_CONFIGURED_BY_USER
     # global SESSIONS
     global NINJA_SKIN
@@ -535,6 +540,9 @@ def load_settings():
                                   sys.executable, type='QString')
     # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
+    AUTOSAVE = qsettings.value("ide/autosave", False, type=bool)
+    AUTOSAVE_INTERVAL = qsettings.value("ide/autosaveInterval", 1, type=int)
+
     NINJA_SKIN = qsettings.value("ide/interface/skin", "Dark", type=str)
     # sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     RELOAD_FILE = qsettings.value("ide/reloadSetting", 0, type=int)

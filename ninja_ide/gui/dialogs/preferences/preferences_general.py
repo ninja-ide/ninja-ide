@@ -101,9 +101,6 @@ class GeneralConfiguration(QWidget):
         self._check_autosave = QCheckBox(
             translations.TR_PREFERENCES_GENERAL_AUTOSAVE_CHECK)
         box_autosave.addWidget(self._check_autosave)
-        box_autosave.addWidget(
-            QLabel(translations.TR_PREFERENCES_GENERAL_AUTOSAVE_INTERVAL),
-            alignment=Qt.AlignRight)
         self._spin_interval = QSpinBox()
         self._spin_interval.setSuffix("min")
         box_autosave.addWidget(self._spin_interval)
@@ -134,6 +131,8 @@ class GeneralConfiguration(QWidget):
         self._check_notify_updates.setChecked(
             qsettings.value("notifyUpdates", defaultValue=True, type=bool))
         qsettings.endGroup()
+        self._check_autosave.setChecked(settings.AUTOSAVE)
+        self._spin_interval.setValue(settings.AUTOSAVE_INTERVAL)
         self._text_workspace.setText(settings.WORKSPACE)
         self._combo_mod.setCurrentIndex(settings.RELOAD_FILE)
         self._check_confirm_exit.setChecked(settings.CONFIRM_EXIT)
@@ -169,6 +168,8 @@ class GeneralConfiguration(QWidget):
         qsettings = IDE.ninja_settings()
         qsettings.beginGroup("ide")
 
+        main_container = IDE.get_service("main_container")
+
         settings.CONFIRM_EXIT = self._check_confirm_exit.isChecked()
         qsettings.setValue("confirmExit", settings.CONFIRM_EXIT)
         qsettings.setValue("loadFiles", self._check_last_session.isChecked())
@@ -178,6 +179,13 @@ class GeneralConfiguration(QWidget):
         qsettings.setValue("workspace", settings.WORKSPACE)
         settings.RELOAD_FILE = self._combo_mod.currentIndex()
         qsettings.setValue("reloadSetting", settings.RELOAD_FILE)
+
+        settings.AUTOSAVE = self._check_autosave.isChecked()
+        qsettings.setValue("autosave", settings.AUTOSAVE)
+        settings.AUTOSAVE_INTERVAL = self._spin_interval.value()
+        qsettings.setValue("autosaveInterval", settings.AUTOSAVE_INTERVAL)
+
+        main_container.autosave_file()
 
         qsettings.endGroup()
 
