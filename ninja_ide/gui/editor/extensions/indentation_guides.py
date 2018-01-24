@@ -30,11 +30,13 @@ class IndentationGuide(base.Extension):
 
     def install(self):
         self._indentation_width = self._neditor.indentation_width
+        self._neditor.updateRequest.connect(self._neditor.viewport().update)
         self._neditor.painted.connect(self._draw)
         self._neditor.viewport().update()
 
     def shutdown(self):
         self._neditor.painted.disconnect(self._draw)
+        self._neditor.updateRequest.connect(self._neditor.viewport().update)
         self._neditor.viewport().update()
 
     def _draw(self, event):
@@ -44,16 +46,14 @@ class IndentationGuide(base.Extension):
         color.setAlphaF(.3)
         painter.setPen(color)
         offset = doc.documentMargin() + self._neditor.contentOffset().x()
+        previous = 0
         for top, lineno, block in self._neditor.visible_blocks:
             bottom = top + self._neditor.blockBoundingRect(block).height()
-            user_data = block.userData()
-            if user_data is None:
-                continue
-            indentation = user_data.get("indentation")
-            if indentation is None:
-                indentation = 8
-            # if indentation is not None:
+            indentation = len(block.text()) - len(block.text().lstrip())
+            if not block.text().strip():
+                indentation = max(indentation, previous)
+            previous = indentation
             for i in range(self._indentation_width, indentation,
-                            self._indentation_width):
+                           self._indentation_width):
                 x = self._neditor.fontMetrics().width(i * '9') + offset
                 painter.drawLine(x, top, x, bottom)
