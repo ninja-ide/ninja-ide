@@ -40,13 +40,16 @@ class PythonIndenter(base.BaseIndenter):
         # Get result of parsed text
         bracket_stack, last_closed_line, should_hang, last_colon_line = results
         logger.debug(results)
-
         if should_hang:
             cursor = self._neditor.textCursor()
-            cursor.insertBlock()
-            cursor.insertText(current_indent)
-            cursor.movePosition(cursor.Up)
-            self._neditor.setTextCursor(cursor)
+            next_char = cursor.block().text()[0]
+            if next_char in "}])":
+                cursor.insertBlock()
+                cursor.insertText(current_indent)
+                cursor.movePosition(cursor.Up)
+                self._neditor.setTextCursor(cursor)
+            else:
+                cursor.insertText(current_indent)
             cursor.insertText(current_indent + self.text())
             return None
         if (not bracket_stack):

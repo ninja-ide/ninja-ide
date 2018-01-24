@@ -143,3 +143,23 @@ def test_17():
     print(nombre)
     """
     assert text == expected
+
+
+def test_18():
+    a_text = "d = []"
+    editor_ref = create_editor('python')
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 1, 5
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "d = [\n    \n]"
+    assert editor_ref.text == expected
+
+
+def test_19():
+    a_text = "d = ['one', 'two']"
+    editor_ref = create_editor('python')
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 1, 5
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "d = [\n    'one', 'two']"
+    assert editor_ref.text == expected
