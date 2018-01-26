@@ -28,6 +28,15 @@ ACTIONS = (
         "connect": "execute_file"
     },
     {
+        "shortcut": "run-selection",
+        "action": {
+            "text": translations.TR_RUN_SELECTION,
+            "section": (translations.TR_MENU_PROJECT, None),
+            "weight": 110
+        },
+        "connect": "execute_selection"
+    },
+    {
         "shortcut": "run-project",
         "action": {
             "text": translations.TR_RUN_PROJECT,
@@ -45,13 +54,13 @@ ACTIONS = (
                'weight': 120},
     "connect": "kill_application"
     },
-    {
-        "shortcut": "hide-misc",
-        "action": {
-            "text": translations.TR_TOOLS_VISIBILITY,
-            "section": (translations.TR_MENU_VIEW, None),
-            "weight": 100
-        },
-        "connect": "change_visibility"
-    },
+    # {
+    #     "shortcut": "hide-misc",
+    #     "action": {
+    #         "text": translations.TR_TOOLS_VISIBILITY,
+    #         "section": (translations.TR_MENU_VIEW, None),
+    #         "weight": 100
+    #     },
+    #     "connect": "change_visibility"
+    # },
 )

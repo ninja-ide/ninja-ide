@@ -249,6 +249,28 @@ class _ToolsDock(ui_tools.StyledBar):
             if extension == "py":
                 self._run_application(file_path)
 
+    def execute_selection(self):
+        """Execute selected text or current line if not have a selection"""
+
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        if editor_widget is not None:
+            text = editor_widget.selected_text().splitlines()
+            if not text:
+                # Execute current line
+                text = [editor_widget.line_text()]
+            code = []
+            for line_text in text:
+                # Get part before firs '#'
+                code.append(line_text.split("#", 1)[0])
+
+            # Join to execute with python -c command
+            final_code = ";".join([line.strip() for line in code if line])
+            # Highlight code to be executed
+            editor_widget.show_run_cursor()
+            # Ok run!
+            self._run_application(text=final_code)
+
     def execute_project(self):
         """Execute the project marked as Main Project."""
         projects_explorer = IDE.get_service("projects_explorer")
@@ -276,7 +298,7 @@ class _ToolsDock(ui_tools.StyledBar):
                     program_params=nproject.program_params
                 )
 
-    def _run_application(self, filename, python_exec=False,
+    def _run_application(self, filename='', text='', python_exec=False,
                          pre_exec_script="", post_exec_script="",
                          program_params=""):
         """Execute the process to run the application"""
@@ -284,6 +306,7 @@ class _ToolsDock(ui_tools.StyledBar):
         self._show(0)  # Show widget in index = 0
         self._run_widget.start_process(
             filename,
+            text,
             python_exec,
             pre_exec_script,
             post_exec_script,

@@ -284,6 +284,7 @@ SHORTCUTS = {
     "hide-editor": QKeySequence(Qt.Key_F3),
     "hide-explorer": QKeySequence(Qt.Key_F2),
     "run-file": QKeySequence(Qt.CTRL + Qt.Key_F6),
+    "run-selection": QKeySequence(Qt.CTRL + Qt.Key_F7),
     "run-project": QKeySequence(Qt.Key_F6),
     "debug": QKeySequence(Qt.Key_F7),
     "show-selector": QKeySequence(Qt.CTRL + Qt.Key_QuoteLeft),

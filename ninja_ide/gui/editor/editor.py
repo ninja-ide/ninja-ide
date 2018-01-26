@@ -593,14 +593,15 @@ class NEditor(QPlainTextEdit):
         self.font_antialiasing(settings.FONT_ANTIALIASING)
         self._update_tab_stop_width()
 
-    def line_text(self, line):
+    def line_text(self, line=-1):
         """Returns the text of the specified line.
 
         :param line: The line number of the text to return.
         :return: Entire lines text.
         :rtype: str.
         """
-
+        if line == -1:
+            line, _ = self.cursor_position
         block = self.document().findBlockByNumber(line)
         return block.text()
 
@@ -1049,6 +1050,34 @@ class NEditor(QPlainTextEdit):
             self.add_extra_selections('searchs', ss)
 
         return index, results
+
+    def show_run_cursor(self):
+        """Highlight momentarily a piece of code"""
+
+        cursor = self.textCursor()
+        if self.has_selection():
+            # Get selection range
+            start_pos, end_pos = cursor.selectionStart(), cursor.selectionEnd()
+        else:
+            # If no selected text, highlight current line
+            cursor.movePosition(QTextCursor.StartOfLine)
+            start_pos = cursor.position()
+            cursor.movePosition(QTextCursor.EndOfLine)
+            end_pos = cursor.position()
+        # Create extra selection
+        selection = extra_selection.ExtraSelection(
+            cursor,
+            start_pos=start_pos,
+            end_pos=end_pos
+        )
+        selection.set_background("gray")
+        self.add_extra_selections("run_cursor", [selection])
+        # Clear selection for show correctly the extra selection
+        cursor.clearSelection()
+        self.setTextCursor(cursor)
+        # Remove extra selection after 0.3 seconds
+        QTimer.singleShot(
+            300, lambda: self.clear_extra_selections("run_cursor"))
 
     def is_comment(self, block):
         """Check if the block is a inline comment"""

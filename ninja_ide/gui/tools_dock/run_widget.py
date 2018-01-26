@@ -158,14 +158,23 @@ class RunProcess(QObject):
         output = self._current_process.readAllStandardOutput().data().decode()
         self.stdoutAvailable.emit(output.strip())
 
-    def start_process(self, filename, python_exec, pre_exec_script,
+    def start_process(self, filename, text, python_exec, pre_exec_script,
                       post_exec_script, program_params):
-        self._filename = filename
         self._python_exec = python_exec
         self._pre_exec_script = pre_exec_script
         self._post_exec_script = post_exec_script
-        self._params = program_params
-        self.__pre_execution()
+        if text:
+            self.__execute_text_code(text)
+        else:
+            self._filename = filename
+            self._params = program_params
+            self.__pre_execution()
+
+    def __execute_text_code(self, code):
+        self._current_process = self._process
+        self._process.setProgram(self.python_exec)
+        self._process.setArguments(["-c"] + [code])
+        self._process.start()
 
     def __pre_execution(self):
         """Execute a script before executing the project"""
@@ -368,7 +377,7 @@ class RunWidget(QWidget):
 
         data = self.input.text()
         self._process.write(data.encode())
-        self.output.append_message(data)
+        self.output.append_message(data)  # FIXME
         self.input.clear()
 
     def set_font(self, font):
@@ -380,12 +389,13 @@ class RunWidget(QWidget):
         # self.output.error_format.setFont(f)
         pass
 
-    def start_process(self, filename, python_exec, pre_exec_script,
+    def start_process(self, filename, text, python_exec, pre_exec_script,
                       post_exec_script, program_params):
         self.label_input.show()
         self.input.show()
         self._process.start_process(
             filename,
+            text,
             python_exec,
             pre_exec_script,
             post_exec_script,
