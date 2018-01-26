@@ -256,7 +256,6 @@ class NEditor(QPlainTextEdit):
         self.setFrameStyle(0)  # Remove border
         self._neditable = neditable
         self.setMouseTracking(True)
-
         # Style
         self.__init_style()
         self.__apply_style()
@@ -340,7 +339,6 @@ class NEditor(QPlainTextEdit):
 
         # FIXME: we need a method to initialize
         self.__set_whitespaces_flags(self.__show_whitespaces)
-
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.blockCountChanged.connect(self.update)
 

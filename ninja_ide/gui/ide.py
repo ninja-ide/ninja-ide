@@ -666,6 +666,10 @@ class IDE(QMainWindow):
 
         data_settings = IDE.data_settings()
         ninja_settings = IDE.ninja_settings()
+        # Remove swap files
+        for editable in self.__neditables.values():
+            editable.swap_file._file_closed()
+
         if data_settings.value("ide/loadFiles", True):
             # Get opened files
             opened_files = self.filesystem.get_files()

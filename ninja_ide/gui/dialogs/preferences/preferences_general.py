@@ -58,8 +58,8 @@ class GeneralConfiguration(QWidget):
         group_box_workspace = QGroupBox(
             translations.TR_PREFERENCES_GENERAL_WORKSPACE)
         group_box_reset = QGroupBox(translations.TR_PREFERENCES_GENERAL_RESET)
-        group_box_autosave = QGroupBox(
-            translations.TR_PREFERENCES_GENERAL_AUTOSAVE)
+        group_box_swap = QGroupBox(
+            translations.TR_PREFERENCES_GENERAL_SWAPFILE)
         group_box_modification = QGroupBox(
             translations.TR_PREFERENCES_GENERAL_EXTERNALLY_MOD)
 
@@ -96,14 +96,25 @@ class GeneralConfiguration(QWidget):
             translations.TR_PREFERENCES_GENERAL_RESET_PREFERENCES)
         box_reset.addWidget(btn_reset)
 
-        # Autosave files
-        box_autosave = QHBoxLayout(group_box_autosave)
-        self._check_autosave = QCheckBox(
-            translations.TR_PREFERENCES_GENERAL_AUTOSAVE_CHECK)
-        box_autosave.addWidget(self._check_autosave)
-        self._spin_interval = QSpinBox()
-        self._spin_interval.setSuffix("min")
-        box_autosave.addWidget(self._spin_interval)
+        # Swap File
+        box_swap = QGridLayout(group_box_swap)
+        box_swap.addWidget(QLabel(
+            translations.TR_PREFERENCES_GENERAL_SWAPFILE_LBL), 0, 0)
+        self._combo_swap_file = QComboBox()
+        self._combo_swap_file.addItems([
+            translations.TR_PREFERENCES_GENERAL_SWAPFILE_DISABLE,
+            translations.TR_PREFERENCES_GENERAL_SWAPFILE_ENABLE
+        ])
+        self._combo_swap_file.currentIndexChanged.connect(
+            self._change_swap_widgets_state)
+        box_swap.addWidget(self._combo_swap_file, 0, 1)
+        box_swap.addWidget(QLabel(
+            translations.TR_PREFERENCES_GENERAL_SWAPFILE_SYNC_INTERVAL), 1, 0)
+        self._spin_swap = QSpinBox()
+        self._spin_swap.setSuffix("s")
+        self._spin_swap.setRange(5, 600)
+        self._spin_swap.setSingleStep(5)
+        box_swap.addWidget(self._spin_swap, 1, 1)
 
         # Externally modification
         box_mod = QHBoxLayout(group_box_modification)
@@ -117,7 +128,7 @@ class GeneralConfiguration(QWidget):
         vbox.addWidget(group_box_start)
         vbox.addWidget(group_box_close)
         vbox.addWidget(group_box_workspace)
-        vbox.addWidget(group_box_autosave)
+        vbox.addWidget(group_box_swap)
         vbox.addWidget(group_box_modification)
         vbox.addWidget(group_box_reset, alignment=Qt.AlignLeft)
         vbox.addSpacerItem(
@@ -131,8 +142,8 @@ class GeneralConfiguration(QWidget):
         self._check_notify_updates.setChecked(
             qsettings.value("notifyUpdates", defaultValue=True, type=bool))
         qsettings.endGroup()
-        self._check_autosave.setChecked(settings.AUTOSAVE)
-        self._spin_interval.setValue(settings.AUTOSAVE_INTERVAL)
+        self._combo_swap_file.setCurrentIndex(settings.SWAP_FILE)
+        self._spin_swap.setValue(settings.SWAP_FILE_INTERVAL)
         self._text_workspace.setText(settings.WORKSPACE)
         self._combo_mod.setCurrentIndex(settings.RELOAD_FILE)
         self._check_confirm_exit.setChecked(settings.CONFIRM_EXIT)
@@ -141,6 +152,12 @@ class GeneralConfiguration(QWidget):
         choose_workspace_action.triggered.connect(self._load_workspace)
         clear_workspace_action.triggered.connect(self._text_workspace.clear)
         self._preferences.savePreferences.connect(self.save)
+
+    def _change_swap_widgets_state(self, index):
+        if index == 0:
+            self._spin_swap.setEnabled(False)
+        else:
+            self._spin_swap.setEnabled(True)
 
     def _reset_preferences(self):
         """Reset all preferences to default values"""
@@ -168,8 +185,6 @@ class GeneralConfiguration(QWidget):
         qsettings = IDE.ninja_settings()
         qsettings.beginGroup("ide")
 
-        main_container = IDE.get_service("main_container")
-
         settings.CONFIRM_EXIT = self._check_confirm_exit.isChecked()
         qsettings.setValue("confirmExit", settings.CONFIRM_EXIT)
         qsettings.setValue("loadFiles", self._check_last_session.isChecked())
@@ -180,12 +195,10 @@ class GeneralConfiguration(QWidget):
         settings.RELOAD_FILE = self._combo_mod.currentIndex()
         qsettings.setValue("reloadSetting", settings.RELOAD_FILE)
 
-        settings.AUTOSAVE = self._check_autosave.isChecked()
-        qsettings.setValue("autosave", settings.AUTOSAVE)
-        settings.AUTOSAVE_INTERVAL = self._spin_interval.value()
-        qsettings.setValue("autosaveInterval", settings.AUTOSAVE_INTERVAL)
-
-        main_container.autosave_file()
+        settings.SWAP_FILE = self._combo_swap_file.currentIndex()
+        qsettings.setValue("swapFile", settings.SWAP_FILE)
+        settings.SWAP_FILE_INTERVAL = self._spin_swap.value()
+        qsettings.setValue("swapFileInterval", settings.SWAP_FILE_INTERVAL)
 
         qsettings.endGroup()
 

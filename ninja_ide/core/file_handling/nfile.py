@@ -66,6 +66,7 @@ class NFile(QObject):
     """
     fileChanged = pyqtSignal()
     fileRemoved = pyqtSignal()
+    fileReaded = pyqtSignal()
     willAttachToExistingFile = pyqtSignal('PyQt_PyObject', 'QString')
     gotAPath = pyqtSignal('PyQt_PyObject')
     willSave = pyqtSignal('QString', 'QString')
@@ -219,7 +220,6 @@ class NFile(QObject):
         # If we have a file system watcher, add the saved path back
         # to its watch list, otherwise create a watcher and start
         # watching
-        print(self.__watcher.files())
         if self.__watcher is not None:
             if new_path:
                 # FIXME: what?
@@ -251,6 +251,7 @@ class NFile(QObject):
                 content = f.read()
         except IOError as reason:
             raise NinjaIOException(reason)
+        self.fileReaded.emit()
         return content
 
     def move(self, new_path):

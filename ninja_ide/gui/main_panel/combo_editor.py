@@ -184,7 +184,13 @@ class ComboEditor(ui_tools.StyledBar):
             if self.__original:
                 neditable.askForSaveFileClosing.connect(self._ask_for_save)
                 neditable.fileChanged.connect(self._file_has_been_modified)
+
                 self.info_bar.reloadClicked.connect(neditable.reload_file)
+                if neditable.swap_file:
+                    self.info_bar.discardClicked.connect(
+                        neditable.swap_file.discard)
+                    self.info_bar.recoverClicked.connect(
+                        neditable.swap_file.recover)
             # Editor Signals
             editor.cursor_position_changed[int, int].connect(
                 self._update_cursor_position)
@@ -320,7 +326,7 @@ class ComboEditor(ui_tools.StyledBar):
     def _file_has_been_modified(self, neditable):
         # FIXME: use constant or enum
         if settings.RELOAD_FILE == 0:
-            self.info_bar.show_message(translations.TR_FILE_MODIFIED_OUTSIDE)
+            self.info_bar.show_message(msg_type="reload")
         elif settings.RELOAD_FILE == 1:
             neditable.reload_file()
 
@@ -958,6 +964,9 @@ class CodeNavigator(QWidget):
 class InfoBar(QFrame):
 
     reloadClicked = pyqtSignal()
+    cancelClicked = pyqtSignal()
+    recoverClicked = pyqtSignal()
+    discardClicked = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -967,30 +976,52 @@ class InfoBar(QFrame):
         # self.setFrameStyle(QFrame.Panel | QFrame.Raised)
         self.setAutoFillBackground(True)
         self.setPalette(pal)
+        self._state = "reload"
 
-        hbox = QHBoxLayout(self)
-
-        self.message = QLabel("")
-        # self.message.setWordWrap(Qt.TextWordWrap)
-        hbox.addWidget(self.message)
-        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        self._layout = QHBoxLayout(self)
+        self._message = QLabel("")
+        self._layout.addWidget(self._message)
+        # Reload buttons
         btn_reload = QPushButton("Reload")
-        hbox.addWidget(btn_reload)
-        btn_cancel = QPushButton("Cancel")
-        hbox.addWidget(btn_cancel)
+        btn_cancel_reload = QPushButton("Cancel")
+        # Recovery buttons
+        btn_discard = QPushButton("Discard")
+        btn_recover = QPushButton("Recover")
 
-        # Connections
-        btn_reload.clicked.connect(self.__on_reload_clicked)
-        btn_cancel.clicked.connect(self.hide)
+        self._buttons = {
+            "reload": [btn_reload, btn_cancel_reload],
+            "recovery": [btn_recover, btn_discard]
+        }
+        for buttons in self._buttons.values():
+            for button in buttons:
+                button.clicked.connect(self.on_clicked)
 
-    def __on_reload_clicked(self):
-        self.reloadClicked.emit()
+    def on_clicked(self):
+        signal_name = "%sClicked" % self.sender().text().lower()
+        signal = getattr(self, signal_name)
+        signal.emit()
         self.hide()
 
-    def show_message(self, text):
-        self.message.setText(text)
+    def init(self, type_):
+        buttons = self._buttons.get(type_)
+        if self._state != type_:
+            for btn in self._buttons.get(self._state):
+                self._layout.removeWidget(btn)
+
+        self._layout.addStretch(1)
+        for btn in buttons:
+            self._layout.addWidget(btn)
+
+    def show_message(self, msg_type="recovery"):
+        self.init(msg_type)
+        if msg_type == "reload":
+            text = translations.TR_FILE_MODIFIED_OUTSIDE
+        else:
+            text = "The file was not closed properly"
+        self._message.setText(text)
         if not self.isVisible():
             self.show()
+        self._state = msg_type
 
 
 class Model(QAbstractItemModel):

@@ -29,6 +29,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QMenu,
     QAction,
+    QFrame,
     QCompleter,
     QLineEdit,
     QItemDelegate,

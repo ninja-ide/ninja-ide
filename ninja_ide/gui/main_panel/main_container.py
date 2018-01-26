@@ -358,6 +358,10 @@ class _MainContainer(QWidget):
     def add_editor(self, filename=None):
         ninjaide = IDE.get_service("ide")
         editable = ninjaide.get_or_create_editable(filename)
+
+        editable.canBeRecovered.connect(
+            lambda: self.combo_area.info_bar.show_message(msg_type="recovery"))
+
         if editable.editor:
             # If already open
             logger.debug("%s is already open" % filename)

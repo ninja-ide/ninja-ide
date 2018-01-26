@@ -22,6 +22,7 @@ from PyQt5.QtCore import (
 )
 
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core.file_handling import nswapfile
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
 from ninja_ide.core import settings
@@ -36,6 +37,8 @@ class NEditable(QObject):
     @fileSaved(PyQt_PyObject)
     """
     fileSaved = pyqtSignal('PyQt_PyObject')
+    fileLoaded = pyqtSignal('PyQt_PyObject')
+    canBeRecovered = pyqtSignal('PyQt_PyObject')
     fileRemoved = pyqtSignal('PyQt_PyObject')
     fileChanged = pyqtSignal('PyQt_PyObject')
     fileClosing = pyqtSignal('PyQt_PyObject')
@@ -51,7 +54,8 @@ class NEditable(QObject):
         self.__language = None
         self.text_modified = False
         self.ignore_checkers = False
-        self.__autosave = False
+        # Swap File
+        self._swap_file = None
         # Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
@@ -64,18 +68,6 @@ class NEditable(QObject):
                 lambda: self.fileChanged.emit(self))
             self._nfile.fileRemoved.connect(
                 self._on_file_removed_from_disk)
-
-        self.autosave_file()
-
-    def autosave_file(self):
-        self.startTimer(settings.AUTOSAVE_INTERVAL * 6000)
-
-    def timerEvent(self, event):
-        if settings.AUTOSAVE:
-            if self.__editor.is_modified:
-                self.save_content(self.file_path)
-        else:
-            self.killTimer(event.timerId())
 
     def _on_file_removed_from_disk(self):
         # FIXME: maybe we should ask for save, save as...
@@ -119,6 +111,7 @@ class NEditable(QObject):
             self._nfile.start_watching()
             self.__editor.text = content
             self.__editor.document().setModified(False)
+            self.create_swap_file()
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
             if not self.ignore_checkers:
@@ -129,6 +122,14 @@ class NEditable(QObject):
         # New file then try to add a coding line
         if not content:
             helpers.insert_coding_line(self.__editor)
+
+        self.fileLoaded.emit(self)
+
+    def create_swap_file(self):
+        if settings.SWAP_FILE:
+            self._swap_file = nswapfile.NSwapFile(self)
+            self._swap_file.canBeRecovered.connect(
+                lambda: self.canBeRecovered.emit(self))
 
     def reload_file(self):
         if self._nfile:
@@ -171,6 +172,10 @@ class NEditable(QObject):
         return self.__editor
 
     @property
+    def swap_file(self):
+        return self._swap_file
+
+    @property
     def nfile(self):
         return self._nfile
 
@@ -192,6 +197,8 @@ class NEditable(QObject):
     def save_content(self, path=None, force=False):
         """Save the content of the UI to a file."""
 
+        if self._swap_file is None:
+            self.create_swap_file()
         if self.__editor.is_modified or force:
             content = self.__editor.text
             nfile = self._nfile.save(content, path)
