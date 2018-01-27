@@ -1,5 +1,6 @@
 # Ninja-IDE Is Not Just Another IDE
 [![Build Status](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master)](https://travis-ci.org/ninja-ide/ninja-ide)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
  [Ninja-IDE](http://ninja-ide.org) is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
 
@@ -9,52 +10,7 @@
 
 
 ## Important
-This is the development branch. Therefore, ninja is very unstable. The following list (can grow) shows the tasks we must do to get to a beta version.
-
-### Editor
-- [ ] Comment/Uncomment with single shortcut
-- [x] Indenter API
-- [x] Python Indenter
-- [ ] Snippets
-- [ ] Autcomplete API
-- [ ] Python Autocomplete
-- [ ] Syntax Highlighting API
-- [x] Multiple Split
-- [ ] Calltips
-- [x] Extensions API
-- [x] Better Extra Selections
-- [ ] Goto def
-- [x] Better bracket highlighter
-- [x] Side Areas Manager
-- [x] Text change side area
-- [x] Better Code Folding
-- [x] Highlight ScrollBar
-- [ ] Fix indentation
-- [ ] Auto scroll
-- [ ] New Editor Scheme Manager
-
-### UI
-- [x] New Style based on QProxyStyle
-- [x] Theme based on QPalette
-- [ ] Icons
-
-### General
-- [ ] New template wizard with templates
-- [x] New Tools Dock Widget
-- [x] Better Find in Files
-- [ ] Better Console Widget
-- [ ] Better Output Widget
-- [x] New Start Page
-- [ ] Git Support
-- [ ] Django Support
-- [ ] Better Virtualenv Support
-- [ ] New Preferences Widget
-
-## Platforms
-- Linux/X11
-- Mac OS X
-- Windows
-- BSD
+Currently version 3.0 is being developed, therefore this branch is unstable. [This set of issues](https://github.com/ninja-ide/ninja-ide/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22Version+3.0+-+Beta%22) lists the tasks we must complete to get to a beta version.
 
 ## Requirements
 On any system you want **Ninja-IDE**, you'll need to have this dependencies installed:
