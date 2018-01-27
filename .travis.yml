@@ -12,7 +12,7 @@ install:
   - pip install pip --upgrade
   - pip install pytest
   - pip install pytest-qt
-  - pip install PyQt5
+  - pip install PyQt5==5.9
 
 before_script: rm --recursive --force --verbose *.py[cod]
 
