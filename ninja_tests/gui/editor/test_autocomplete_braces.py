@@ -72,3 +72,26 @@ def test_8(qtbot):
     for i in range(repeat - 1):
         qtbot.keyPress(editor_ref, Qt.Key_Backspace)
     assert editor_ref.text == '{}'
+
+
+def test_9(qtbot):
+    editor_ref = create_editor()
+    editor_ref.text = "test content"
+    cursor = editor_ref.textCursor()
+    cursor.movePosition(cursor.EndOfBlock)
+    editor_ref.setTextCursor(cursor)
+    # Press '('
+    qtbot.keyPress(editor_ref, Qt.Key_ParenLeft)
+    assert editor_ref.text == "test content()"
+
+
+def test_10(qtbot):
+    editor_ref = create_editor()
+    editor_ref.text = "test content"
+    cursor = editor_ref.textCursor()
+    cursor.movePosition(cursor.EndOfBlock)
+    cursor.movePosition(cursor.Left)
+    editor_ref.setTextCursor(cursor)
+    # Press '('
+    qtbot.keyPress(editor_ref, Qt.Key_ParenLeft)
+    assert editor_ref.text == "test conten(t"

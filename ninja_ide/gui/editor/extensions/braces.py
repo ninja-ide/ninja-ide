@@ -51,8 +51,11 @@ class AutocompleteBraces(base.Extension):
         char = event.text()
         if not char:
             return
+        right = self._neditor.get_right_character()
         cursor = self.text_cursor()
         if char in self.OPENED_BRACES:
-            cursor.insertText(self.ALL_BRACES[char])
-            cursor.movePosition(QTextCursor.PreviousCharacter)
-            self._neditor.setTextCursor(cursor)
+            to_insert = self.ALL_BRACES[char]
+            if not right or right in self.CLOSED_BRACES or right.isspace():
+                cursor.insertText(to_insert)
+                cursor.movePosition(QTextCursor.PreviousCharacter)
+                self._neditor.setTextCursor(cursor)
