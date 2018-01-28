@@ -180,7 +180,8 @@ class FilesHandler(QWidget):
         self._root.clear_model()
         # Recovery focus
         editor_widget = self._main_container.get_current_editor()
-        editor_widget.setFocus()
+        if editor_widget is not None:
+            editor_widget.setFocus()
 
     def next_item(self):
         if not self.isVisible():
