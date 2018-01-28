@@ -668,7 +668,9 @@ class IDE(QMainWindow):
         ninja_settings = IDE.ninja_settings()
         # Remove swap files
         for editable in self.__neditables.values():
-            editable.swap_file._file_closed()
+            if editable.swap_file is not None:
+                # A new file does not have a swap file
+                editable.swap_file._file_closed()
 
         if data_settings.value("ide/loadFiles", True):
             # Get opened files
