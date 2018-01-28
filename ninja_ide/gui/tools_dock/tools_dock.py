@@ -85,21 +85,22 @@ class ToolButton(QToolButton):
         self._text = text
 
     def paintEvent(self, event):
+        super().paintEvent(event)
         fm = self.fontMetrics()
         base_line = (self.height() - fm.height()) / 2 + fm.ascent()
         number_width = fm.width(self._number)
 
         painter = QPainter(self)
-        opt = QStyleOption()
-        opt.initFrom(self)
-        hovered = opt.state & QStyle.State_MouseOver
-        c = theme.get_color('ToolButtonColor')
-        if hovered:
-            c = theme.get_color('ToolButtonHover')
-        elif self.isDown() or self.isChecked():
-            c = QColor('#66000000')
-        painter.fillRect(self.rect(), c)
-        painter.setPen(theme.get_color('ToolButtonTextColor'))
+        # opt = QStyleOption()
+        # opt.initFrom(self)
+        # hovered = opt.state & QStyle.State_MouseOver
+        # c = theme.get_color('ToolButtonColor')
+        # if hovered:
+        #     c = theme.get_color('ToolButtonHover')
+        # elif self.isDown() or self.isChecked():
+        #     c = QColor('#66000000')
+        # painter.fillRect(self.rect(), c)
+        # painter.setPen(theme.get_color('ToolButtonTextColor'))
         # Draw shortcut number
         painter.drawText(
             (15 - number_width) / 2,

@@ -5,8 +5,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import (
     QPainter,
-    QTextBlock,
-    QColor
+    QTextBlock
 )
 from PyQt5.QtCore import (
     QSize,
@@ -163,6 +162,7 @@ class CodeFoldingWidget(side_area.SideWidget):
                 self.fold(block)
 
     def paintEvent(self, event):
+        super().paintEvent(event)
         painter = QPainter(self)
         for top, _, block in self._neditor.visible_blocks:
             if not self.is_foldable_block(block):

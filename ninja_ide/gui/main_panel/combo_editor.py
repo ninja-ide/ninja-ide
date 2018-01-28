@@ -877,7 +877,7 @@ class CodeNavigator(QWidget):
     def __init__(self):
         super(CodeNavigator, self).__init__()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
         self.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
