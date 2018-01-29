@@ -28,7 +28,7 @@ from PyQt5.QtGui import (
 class ExtraSelection(QTextEdit.ExtraSelection):
 
     def __init__(self, cursor, start_pos=None,
-                 end_pos=None, start_line=None):
+                 end_pos=None, start_line=None, offset=0):
         super().__init__()
         self.cursor = QTextCursor(cursor)
         if start_pos is not None:
@@ -36,10 +36,15 @@ class ExtraSelection(QTextEdit.ExtraSelection):
         if end_pos is not None:
             self.cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
         if start_line is not None:
+            # Selection from offset to end of line
             self.cursor.movePosition(QTextCursor.Start,
                                      QTextCursor.MoveAnchor)
             self.cursor.movePosition(QTextCursor.Down,
                                      QTextCursor.MoveAnchor, start_line)
+            self.cursor.movePosition(QTextCursor.Right,
+                                     QTextCursor.MoveAnchor, offset)
+            self.cursor.movePosition(QTextCursor.EndOfLine,
+                                     QTextCursor.KeepAnchor)
 
     def set_underline(self, color, style=QTextCharFormat.SingleUnderline):
         if isinstance(color, str):

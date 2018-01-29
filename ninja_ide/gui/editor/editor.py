@@ -506,31 +506,24 @@ class NEditor(QPlainTextEdit):
         # Get checkers from neditable
         checkers = neditable.sorted_checkers
         self.highlight_checker_updated.emit(checkers)
+
         selections = []
-        # FIXME: generalize it with extra_selection.ExtraSelection
         for items in checkers:
             checker, color, _ = items
             lines = checker.checks.keys()
             for line in lines:
-
+                # Scrollbar marker
                 Marker = scrollbar.marker
                 marker = Marker(line, color, priority=1)
                 self._scrollbar.add_marker("checker", marker)
-
+                # Extra selection
                 msg, col = checker.checks[line]
-                selection = QTextEdit.ExtraSelection()
-                selection.cursor = self.textCursor()
-                selection.cursor.movePosition(
-                    QTextCursor.Start, QTextCursor.MoveAnchor)
-                selection.cursor.movePosition(
-                    QTextCursor.Down, QTextCursor.MoveAnchor, line)
-                selection.cursor.movePosition(
-                    QTextCursor.Right, QTextCursor.MoveAnchor, col - 1)
-                selection.cursor.movePosition(
-                    QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-                selection.format.setUnderlineStyle(
-                    QTextCharFormat.SingleUnderline)
-                selection.format.setUnderlineColor(QColor(color))
+                selection = extra_selection.ExtraSelection(
+                    self.textCursor(),
+                    start_line=line,
+                    offset=col - 1
+                )
+                selection.set_underline(color)
                 selections.append(selection)
 
         self.add_extra_selections('checker', selections)
