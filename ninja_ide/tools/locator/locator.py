@@ -376,7 +376,8 @@ class LocateSymbolsThread(QThread):
             except:
                 print("ResultItem couldn't be loaded, let's analyze it again'")
         # obtain a symbols handler for this file extension
-        symbols_handler = handlers.get_symbols_handler(file_ext)
+        lang = settings.LANGUAGE_MAP.get(file_ext)
+        symbols_handler = handlers.get_symbols_handler(lang)
         if symbols_handler is None:
             return
         results = []
