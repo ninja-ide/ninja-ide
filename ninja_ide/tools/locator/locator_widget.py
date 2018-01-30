@@ -117,11 +117,6 @@ class LocatorWidget(QDialog):
     def showEvent(self, event):
         """Method takes an event to show the Notification"""
         super(LocatorWidget, self).showEvent(event)
-        pgeo = self._parent.geometry()
-        x = pgeo.left() + (self._parent.width() / 2) - (self.width() / 2)
-        y = pgeo.top()
-        # y = self._parent.y() + self._main_container.combo_header_size
-        self.setGeometry(x, y, self.width(), self.height())
         self._root.activateInput()
         self._refresh_filter()
 
