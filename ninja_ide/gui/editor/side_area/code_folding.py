@@ -185,7 +185,7 @@ class CodeFoldingWidget(side_area.SideWidget):
                 if not folded:
                     fm_height = self._neditor.fontMetrics().height()
                     foldable_blocks = self.code_folding.foldable_blocks(block)
-                    rect_height = (len(list(foldable_blocks)) + 1) * fm_height
+                    rect_height = (len(list(foldable_blocks))) * fm_height
                     color = self.palette().highlight().color()
                     color.setAlpha(100)
                     painter.fillRect(QRect(
