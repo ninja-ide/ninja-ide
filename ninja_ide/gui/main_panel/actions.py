@@ -182,6 +182,14 @@ ACTIONS = (
             "weight": 140
         },
         "connect": "editor_uncomment"
+    },
+    {
+        "shortcut": "navigate-back",
+        "connect": "navigate_back"
+    },
+    {
+        "shortcut": "navigate-forward",
+        "connect": "navigate_forward"
     }
 )
 """

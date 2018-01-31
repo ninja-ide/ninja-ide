@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -72,8 +73,11 @@ class _MainContainer(QWidget):
         self._files_handler = files_handler.FilesHandler(self)
 
         # Code Navigation
+        self.__code_back = []
+        self.__code_forward = []
         self.__operations = {
-            0: self._navigate_bookmarks
+            0: self._navigate_code_jumps,
+            1: self._navigate_bookmarks
         }
         # QML UI
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
@@ -135,7 +139,27 @@ class _MainContainer(QWidget):
     def navigate_code_history(self, operation, forward):
         self.__operations[operation](forward)
 
+    def _navigate_code_jumps(self, forward=False):
+        """Navigate between the jump points"""
+
+        node = None
+        if not forward and self.__code_back:
+            if len(self.__code_back) == 1:
+                return
+            node = self.__code_back.pop()
+            self.__code_forward.append(node)
+            node = self.__code_back[-1]
+        elif forward and self.__code_forward:
+            node = self.__code_forward.pop()
+            self.__code_back.append(node)
+        if node is not None:
+            filename = node[0]
+            line, col = node[1]
+            self.open_file(filename, line, col)
+
     def _navigate_bookmarks(self, forward=True):
+        """Navigate between the bookmarks"""
+
         current_editor = self.get_current_editor()
         current_editor.navigate_bookmarks(forward=forward)
 
@@ -390,8 +414,17 @@ class _MainContainer(QWidget):
         neditor = editor.create_editor(editable)
         neditor.zoomChanged.connect(self._show_zoom_indicator)
         neditor.destroyed.connect(self.__on_editor_destroyed)
+        neditor.addBackItemNavigation.connect(self.add_back_item_navigation)
         # editable.fileSaved.connect(self._editor_tab)
         return neditor
+
+    def add_back_item_navigation(self):
+        editor_widget = self.get_current_editor()
+        if editor_widget is not None:
+            item = (editor_widget.file_path, editor_widget.cursor_position)
+            if item not in self.__code_back:
+                self.__code_back.append(item)
+                # self.__code_forward.clear()
 
     def _show_zoom_indicator(self, zoom):
         neditor = self.get_current_editor()
@@ -505,6 +538,17 @@ class _MainContainer(QWidget):
         neditor = self.get_current_editor()
         if neditor is not None:
             neditor.show_whitespaces = settings.SHOW_TABS_AND_SPACES
+
+    def __navigate_with_keyboard(self, forward):
+        """Navigate between the positions in the jump history stack."""
+        operation = self.combo_area.bar.code_navigator.operation
+        self.navigate_code_history(operation, forward)
+
+    def navigate_back(self):
+        self.__navigate_with_keyboard(forward=False)
+
+    def navigate_forward(self):
+        self.__navigate_with_keyboard(forward=True)
 
 
 # Register Main Container

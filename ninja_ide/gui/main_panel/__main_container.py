@@ -432,7 +432,7 @@ class _MainContainer(QWidget):
             editorWidget = self.get_current_editor()
             if editorWidget:
                 self.__codeBack.append((editorWidget.file_path,
-                                       editorWidget.getCursorPosition()))
+                                                   editorWidget.getCursorPosition()))
         if node:
             filename = node[0]
             line, col = node[1]

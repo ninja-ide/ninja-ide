@@ -887,12 +887,12 @@ class CodeNavigator(QWidget):
             hbox.setSpacing(0)
         self.btnPrevious = QToolButton()
         self.btnPrevious.clicked.connect(self._on_previous_pressed)
-        self.btnPrevious.setIcon(ui_tools.get_icon('navigate-left'))
+        self.btnPrevious.setIcon(ui_tools.get_icon('code-left'))
         self.btnPrevious.setProperty("gradient", True)
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         self.btnNext = QToolButton()
         self.btnNext.clicked.connect(self._on_next_pressed)
-        self.btnNext.setIcon(ui_tools.get_icon('navigate-right'))
+        self.btnNext.setIcon(ui_tools.get_icon('code-right'))
         self.btnNext.setProperty("gradient", True)
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         hbox.addWidget(self.btnPrevious)
@@ -915,12 +915,9 @@ class CodeNavigator(QWidget):
         # 2 = Breakpoints
         self.operation = 0
 
-        # self.connect(self.codeAction, SIGNAL("triggered()"),
-        #             self._show_code_nav)
-        # self.connect(self.breakpointsAction, SIGNAL("triggered()"),
-        #             self._show_breakpoints)
-        # self.connect(self.bookmarksAction, SIGNAL("triggered()"),
-        #             self._show_bookmarks)
+        self.codeAction.triggered.connect(self._show_code_nav)
+        self.breakpointsAction.triggered.connect(self._show_breakpoints)
+        self.bookmarksAction.triggered.connect(self._show_bookmarks)
 
     def contextMenuEvent(self, event):
         self.show_menu_navigation()
@@ -937,24 +934,24 @@ class CodeNavigator(QWidget):
         self.previousPressed.emit(self.operation, True)
 
     def _show_bookmarks(self):
-        self.btnPrevious.setIcon(QIcon(':img/book-left'))
-        self.btnNext.setIcon(QIcon(':img/book-right'))
+        self.btnPrevious.setIcon(ui_tools.get_icon("book-left"))
+        self.btnNext.setIcon(ui_tools.get_icon("book-right"))
         self.bookmarksAction.setChecked(True)
         self.breakpointsAction.setChecked(False)
         self.codeAction.setChecked(False)
         self.operation = 1
 
     def _show_breakpoints(self):
-        self.btnPrevious.setIcon(QIcon(':img/break-left'))
-        self.btnNext.setIcon(QIcon(':img/break-right'))
+        self.btnPrevious.setIcon(ui_tools.get_icon("break-left"))
+        self.btnNext.setIcon(ui_tools.get_icon("break-right"))
         self.bookmarksAction.setChecked(False)
         self.breakpointsAction.setChecked(True)
         self.codeAction.setChecked(False)
         self.operation = 2
 
     def _show_code_nav(self):
-        self.btnPrevious.setIcon(QIcon(':img/nav-code-left'))
-        self.btnNext.setIcon(QIcon(':img/nav-code-right'))
+        self.btnPrevious.setIcon(ui_tools.get_icon("code-left"))
+        self.btnNext.setIcon(ui_tools.get_icon("code-right"))
         self.bookmarksAction.setChecked(False)
         self.breakpointsAction.setChecked(False)
         self.codeAction.setChecked(True)
