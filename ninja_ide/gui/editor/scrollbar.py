@@ -61,10 +61,12 @@ class ScrollBarOverlay(QWidget):
         rect = self._nscrollbar.overlay_rect()
         sb_range = self._nscrollbar.get_scrollbar_range()
         sb_range = max(self.visible_range, sb_range)
-        horizontal_margin = 3
-        result_width = rect.width() - 2 * horizontal_margin + 1
+        # horizontal_margin = 3
+        # result_width = rect.width() - 2 * horizontal_margin + 1
+        result_width = rect.width() / 3
         result_height = min(rect.height() / sb_range + 1, 4)
-        x = rect.left() + horizontal_margin
+        # x = rect.left() + horizontal_margin
+        x = rect.center().x() - 1
         offset = rect.height() / sb_range * self.range_offset
         vertical_margin = ((rect.height() / sb_range) - result_height) / 2
 
@@ -74,12 +76,12 @@ class ScrollBarOverlay(QWidget):
             marker = self.cache[lineno]
             top = rect.top() + offset + vertical_margin + \
                 marker.position / sb_range * rect.height()
-            bottom = top + result_height
+            # bottom = top + result_height
             painter.fillRect(
                 x,
                 top,
                 result_width,
-                bottom - top,
+                4,
                 QColor(marker.color))
 
     def update_cache(self):
