@@ -28,7 +28,6 @@ from PyQt5.QtCore import (
     Qt,
     pyqtSignal
 )
-# from ninja_ide.utils import theme
 from ninja_ide.gui.main_panel import combo_editor
 # from ninja_ide.gui.ide import IDE
 

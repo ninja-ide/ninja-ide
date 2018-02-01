@@ -52,7 +52,6 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
-# from ninja_ide.utils import theme
 from ninja_ide.tools.logger import NinjaLogger
 
 # Logger

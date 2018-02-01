@@ -40,7 +40,6 @@ from PyQt5.QtCore import QSize
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
-# from ninja_ide.utils import theme
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences

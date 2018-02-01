@@ -55,7 +55,6 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.tools_dock import actions
 from ninja_ide.core.file_handling import file_manager
-# from ninja_ide.utils import theme
 
 
 logger = NinjaLogger(__name__)
