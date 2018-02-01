@@ -30,7 +30,8 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt
 from PyQt5.QtQuickWidgets import QQuickWidget
 
-from ninja_ide.utils import theme
+# from ninja_ide.utils import
+from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
@@ -54,7 +55,7 @@ class LocatorWidget(QDialog):
         self.setFixedHeight(400)
         self.setFixedWidth(500)
         view = QQuickWidget()
-        view.rootContext().setContextProperty("theme", theme.get_colors())
+        view.rootContext().setContextProperty("theme", resources.QML_COLORS)
         view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("Locator.qml"))
         self._root = view.rootObject()

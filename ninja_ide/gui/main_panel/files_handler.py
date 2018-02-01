@@ -28,8 +28,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtQuickWidgets import QQuickWidget
 
+from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
-from ninja_ide.utils import theme
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools.locator import locator
 from ninja_ide.tools.logger import NinjaLogger
@@ -46,7 +46,8 @@ class FilesHandler(QWidget):
         self._main_container = parent
         # Create the QML user interface.
         self.view = QQuickWidget()
-        self.view.rootContext().setContextProperty("theme", theme.get_colors())
+        self.view.rootContext().setContextProperty(
+            "theme", resources.QML_COLORS)
         self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
         self._root = self.view.rootObject()

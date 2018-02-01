@@ -3,7 +3,7 @@ import QtQuick 2.5
 Rectangle {
     id: root
 
-    color: theme.Base
+    color: theme.FilesHandlerBackground
     focus: true
     PropertyAnimation {
         id: showAnim
@@ -121,7 +121,7 @@ Rectangle {
     Rectangle {
         id: inputArea
         //radius: 2
-        color: theme.LocatorLineEditBackground
+        color: theme.FilesHandlerInput
         height: 30
         anchors {
             left: parent.left
@@ -142,7 +142,7 @@ Rectangle {
             clip: true
             focus: true
             smooth: true
-            color: theme.LocatorText
+            color: theme.FilesHandlerText
             font.pixelSize: 18
             onTextChanged: {
                 var firstValidItem = -1;
@@ -202,10 +202,10 @@ Rectangle {
             property int defaultValues: checkers ? 70 : 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
-            color: item.current ? theme.LocatorCurrentItem : theme.LocatorListBackground
+            color: item.current ? theme.FilesHandlerCurrentItem : theme.FilesHandlerListView
 
-            property string mainTextColor: item.current ? theme.LocatorText : "red"
-            property string mainTextModifiedColor: item.current ? theme.LocatorText : "green"
+            property string mainTextColor: item.current ? theme.FilesHandlerText : "red"
+            property string mainTextModifiedColor: item.current ? theme.FilesHandlerText : "green"
 
             MouseArea {
                 anchors.fill: parent
@@ -262,7 +262,7 @@ Rectangle {
                         right: parent.right
                         rightMargin: imgClose.width
                     }
-                    color: modified ? mainTextModifiedColor : theme.LocatorText
+                    color: modified ? mainTextModifiedColor : theme.FilesHandlerText
                     font.pixelSize: 18
                     font.bold: true
                     text: name
@@ -274,7 +274,7 @@ Rectangle {
                         left: parent.left
                         right: parent.right
                     }
-                    color: item.current ? theme.LocatorText : theme.LocatorAlternativeText
+                    color: item.current ? theme.FilesHandlerText : theme.FilesHandlerAlternativeText
                     elide: Text.ElideLeft
                     text: path
 

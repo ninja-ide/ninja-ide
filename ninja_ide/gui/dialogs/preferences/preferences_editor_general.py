@@ -55,7 +55,6 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 # from ninja_ide.gui.dialogs.preferences import preferences_editor_scheme_designer
 from ninja_ide.tools import json_manager
-# from ninja_ide.utils import theme
 
 
 class ListModelScheme(QAbstractListModel):

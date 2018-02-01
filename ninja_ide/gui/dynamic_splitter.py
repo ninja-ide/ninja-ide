@@ -28,7 +28,7 @@ from PyQt5.QtCore import (
     Qt,
     pyqtSignal
 )
-from ninja_ide.utils import theme
+# from ninja_ide.utils import theme
 from ninja_ide.gui.main_panel import combo_editor
 # from ninja_ide.gui.ide import IDE
 
@@ -91,7 +91,7 @@ class SplitterHandle(QSplitterHandle):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.fillRect(event.rect(), theme.get_color('Splitter'))
+        # painter.fillRect(event.rect(), theme.get_color('Splitter'))
 
     def resizeEvent(self, event):
         if self.orientation() == Qt.Horizontal:

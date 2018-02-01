@@ -24,24 +24,15 @@ from PyQt5.QtGui import (
 )
 from PyQt5.QtCore import (
     Qt,
-    # QTextCodec,
-    QCoreApplication,
-    # QTranslator,
-    # QLibraryInfo,
-    # QLocale
+    QCoreApplication
 )
 
 from ninja_ide import resources
-# from ninja_ide.core import settings
 from ninja_ide.core import ipc
-# from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
-from ninja_ide.tools import utils
 from ninja_ide.tools.logger import NinjaLogger
-from ninja_ide.gui import ninja_style
+# from ninja_ide.gui import ninja_style
 logger = NinjaLogger(__name__)
-
-resources.load_shortcuts()
 # Register Components:
 # lint:disable
 import ninja_ide.gui.main_panel.main_container  # noqa
@@ -76,9 +67,7 @@ from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  #
 # from ninja_ide.gui.dialogs.preferences import preferences_theme
 # Templates
 from ninja_ide.core.template_registry import ntemplate_registry  # noqa
-from ninja_ide.core.template_registry import (
-    bundled_project_types
-)
+from ninja_ide.core.template_registry import bundled_project_types  # noqa
 ###########################################################################
 # Start Virtual Env that supports encapsulation of plugins
 ###########################################################################
@@ -162,13 +151,10 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #        resources.CUSTOM_SCHEME = json_manager.parse(open(scheme))
 
     # Loading Shortcuts
-    # resources.load_shortcuts()
+    resources.load_shortcuts()
     # Loading GUI
     splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
     ninjaide = ide.IDE(start_server)
-
-    # Style
-    app.setStyle(ninja_style.NinjaStyle())
 
     # Showing GUI
     ninjaide.show()

@@ -52,7 +52,6 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
 
     def __init__(self, orientation=Qt.Vertical):
         super(ExplorerContainer, self).__init__(orientation)
-        self.setProperty("lightcolored", True)
         self.create_tab_widget()
         IDE.register_service('explorer_container', self)
 

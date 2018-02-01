@@ -57,8 +57,10 @@ def run_ninja():
         os.environ["QT_SCALE_FACTOR"] = settings.CUSTOM_SCREEN_RESOLUTION
     # Start the UI
     app = QApplication(sys.argv)
-    from ninja_ide.utils import theme
-    theme.load_theme(settings.NINJA_SKIN)
+    from ninja_ide import ninja_style
+    app.setStyle(ninja_style.NinjaStyle(resources.load_theme()))
+    # from ninja_ide.utils import theme
+    # theme.load_theme(settings.NINJA_SKIN)
 
     from ninja_ide import gui
     gui.start_ide(app, filenames, projects_path, extra_plugins, linenos)

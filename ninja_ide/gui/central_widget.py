@@ -15,27 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-
 from PyQt5.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QVBoxLayout,
-    # QComboBox,
-    # QSizePolicy
 )
-# from PyQt5.QtGui import QKeySequence
+
 from PyQt5.QtCore import Qt
 
-# from ninja_ide import resources
-# from ninja_ide.core import settings
 from ninja_ide.gui import actions
 from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 
 
-class CentralWidget(ui_tools.StyledBar):
+class CentralWidget(QWidget):
     """
     splitterCentralRotated()
     """
@@ -58,9 +52,6 @@ class CentralWidget(ui_tools.StyledBar):
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
-        # Main Toolbar
-        # main_toolbar = maintoolbar.MainToolbar(self)
-        # hbox.addWidget(main_toolbar)
         # Create Splitters to divide the UI 3 regions
         self._splitter_base = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
         self._splitter_base.setOpaqueResize(True)
@@ -68,10 +59,9 @@ class CentralWidget(ui_tools.StyledBar):
         self._splitter_inside.setOpaqueResize(True)
         self._splitter_base.addWidget(self._splitter_inside)
 
-        # Add to Main Layout        pass
+        # Add to Main Layout
         hbox.addWidget(self._splitter_base)
         vbox.addLayout(hbox)
-        # w = IDE.get_service("tools_dock")
         tool = IDE.get_service('tools_dock')
         vbox.addWidget(tool._buttons_widget)
         IDE.register_service('central_container', self)
@@ -196,7 +186,7 @@ class CentralWidget(ui_tools.StyledBar):
         self.lateral_panel.add_new_copy(text)
 
 
-class LateralPanel(ui_tools.StyledBar):
+class LateralPanel(QWidget):
 
     def __init__(self, parent=None):
         super(LateralPanel, self).__init__(parent)

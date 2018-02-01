@@ -21,6 +21,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import json
 
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import (
@@ -28,6 +29,8 @@ from PyQt5.QtCore import (
     QSettings,
     Qt
 )
+
+from ninja_ide.core.file_handling import file_manager
 
 ###############################################################################
 # CHECK PYTHON VERSION
@@ -78,6 +81,9 @@ EDITOR_SCHEMES = os.path.join(PRJ_PATH, "extensions", "styles")
 NINJA_THEMES_DOWNLOAD = os.path.join(EXTENSIONS_PATH, "theme")
 
 NINJA_THEMES = os.path.join(PRJ_PATH, "extensions", "theme")
+
+# NINJA_THEME = os.path.join(PRJ_PATH, "extensions", "theme", "ninja_dark.qss")
+NINJA_QSS = os.path.join(PRJ_PATH, "extensions", "theme", "qss")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
@@ -235,6 +241,7 @@ COLOR_SCHEME = {
 }
 
 CUSTOM_SCHEME = {}
+QML_COLORS = {}
 
 
 def get_color(key):
@@ -384,3 +391,19 @@ def create_home_dir_structure():
                       LANGS, NINJA_THEMES_DOWNLOAD, NINJA_KNOWLEDGE_PATH):
         if not os.path.isdir(directory):
             os.mkdir(directory)
+
+
+def load_theme(name="Dark"):
+    themes = {}
+    for theme_dir in (NINJA_THEMES, NINJA_THEMES_DOWNLOAD):
+        files = file_manager.get_files_from_folder(theme_dir, ".ninjatheme")
+        for theme_file in files:
+            filename = os.path.join(theme_dir, theme_file)
+            with open(filename) as json_f:
+                content = json.load(json_f)
+                theme_name = content["name"]
+                themes[theme_name] = content
+    ninja_theme = themes[name]
+    global QML_COLORS
+    QML_COLORS = ninja_theme["qml"]
+    return ninja_theme

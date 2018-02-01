@@ -2,7 +2,7 @@ import QtQuick 2.5
 
 Rectangle {
     id: root
-    color: theme.QMLBackground
+    color: theme.FileFolderBackground
     height: 80
 
     property bool fileDialog: true
@@ -17,19 +17,19 @@ Rectangle {
             id: headerText
             text: root.fileDialog ? qsTr("+ Enter the path for the new file") :
                                     qsTr("+ Enter the path for the new folder")
-            color: theme.GoToLineTextColor
+            color: theme.FileFolderText
             font.bold: true
         }
         Rectangle {
             id: inputArea
-            color: theme.LineEditBackground
+            color: theme.FileFolderLineEdit
             height: 30
             border.width: 1
             border.color: "black"
             width: parent.width
 
             TextInput {
-                color: theme.GoToLineTextColor
+                color: theme.FileFolderText
                 anchors {
                     fill: parent
                     margins: 5

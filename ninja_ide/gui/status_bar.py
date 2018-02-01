@@ -68,7 +68,7 @@ _STATUSBAR_STATE_FILEOPENER = "FILEOPENER"
 # FIXME: translations
 
 
-class _StatusBar(ui_tools.StyledBar):
+class _StatusBar(QWidget):
     """StatusBar widget to used in the IDE for several purposes"""
 
     def __init__(self):

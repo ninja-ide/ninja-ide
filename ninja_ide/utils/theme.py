@@ -83,7 +83,7 @@ def load_theme(name):
             color_role = getattr(qpalette, role)
             qpalette.setBrush(color_group, color_role, qcolor)
             COLORS[role] = qcolor
-    QApplication.setPalette(qpalette)
+    # QApplication.setPalette(qpalette)
 
 
 def available_themes():

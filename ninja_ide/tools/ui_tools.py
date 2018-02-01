@@ -33,6 +33,8 @@ from PyQt5.QtWidgets import (
     QCompleter,
     QLineEdit,
     QItemDelegate,
+    QStyleOptionComboBox,
+    QComboBox,
     QTableWidgetItem,
     QAbstractItemView,
     QShortcut,
@@ -45,6 +47,7 @@ from PyQt5.QtWidgets import (
     QFileSystemModel,
     QGraphicsOpacityEffect,
     QLayout,
+    QStylePainter,
     QLabel,
     QStyle
 )
@@ -98,33 +101,22 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.tools.ui_tools')
 
 
-class StyledBar(QWidget):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setProperty("panelwidget", True)
+class NComboBox(QComboBox):
 
     def paintEvent(self, event):
-        painter = QPainter(self)
-        option = QStyleOptionToolBar()
-        option.rect = self.rect()
-        option.state = QStyle.State_Horizontal
-        self.style().drawControl(QStyle.CE_ToolBar, option, painter, self)
+        super().paintEvent(event)
+        # painter = QStylePainter(self)
+        # opt = QStyleOptionComboBox()
+        # self.initStyleOption(opt)
+        # arrow_rect = QRect((opt.rect.left() + opt.rect.right()) / 2 + 6,
+        #                    opt.rect.center().y(), 7, 7)
+        # arrow_rect.moveRight(opt.rect.width() - 10)
+        # opt.rect = arrow_rect
+        # opt.rect.translate(0, -6)
+        # painter.drawPrimitive(QStyle.PE_IndicatorArrowUp, opt)
+        # opt.rect.translate(0, 6)
+        # painter.drawPrimitive(QStyle.PE_IndicatorArrowDown, opt)
 
-
-class FileSystemModel(QFileSystemModel):
-    """QFileSystemModel with custom icons"""
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-    # def data(self, index, role):
-    #    if role == Qt.DecorationRole:
-    #        info = self.fileInfo(index)
-    #        if info.isDir():
-    #            return colored_icon(
-    #                ":img/folder", NTheme.get_color('IconBaseColor'))
-    #    return super().data(index, role)
 
 
 ###############################################################################

@@ -24,9 +24,12 @@ import os
 from PyQt5.QtWidgets import (
     QTreeView,
     QAbstractItemView,
+    QWidget,
+    QFrame,
     QStackedLayout,
     QDialog,
     QComboBox,
+    QStyledItemDelegate,
     QVBoxLayout,
     QFileDialog,
     QInputDialog,
@@ -78,15 +81,18 @@ class ProjectTreeColumn(QDialog):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self._buttons = []
-        combo_container = ui_tools.StyledBar()
-        combo_container.setProperty('gradient', True)
-        combo_layout = QVBoxLayout(combo_container)
-        combo_layout.setContentsMargins(0, 0, 0, 0)
+        frame = QFrame()
+        frame.setObjectName("actionbar")
+        box = QVBoxLayout(frame)
+        box.setContentsMargins(0, 0, 0, 0)
+        box.setSpacing(0)
+
         self._combo_project = QComboBox()
-        combo_layout.addWidget(self._combo_project)
-        self._combo_project.setProperty("gradient", True)
+        self._combo_project.setItemDelegate(QStyledItemDelegate())
+        self._combo_project.setObjectName("combo_projects")
+        box.addWidget(self._combo_project)
+        vbox.addWidget(frame)
         self._combo_project.setContextMenuPolicy(Qt.CustomContextMenu)
-        vbox.addWidget(combo_container)
         self._projects_area = QStackedLayout()
         logger.debug("This is the projects area")
         vbox.addLayout(self._projects_area)
@@ -455,7 +461,6 @@ class TreeProjectsWidget(QTreeView):
 
     def __init__(self, project, state_index=list()):
         super(TreeProjectsWidget, self).__init__()
-        self.setProperty("lightcolored", True)
         self.setFrameShape(0)
         self.project = project
         self._added_to_console = False

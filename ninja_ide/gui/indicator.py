@@ -60,7 +60,7 @@ class Indicator(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.setBrush(self.palette().color(QPalette.Shadow))
+        painter.setBrush(self.palette().color(QPalette.AlternateBase))
         painter.setPen(Qt.NoPen)
         painter.drawRoundedRect(self.rect(), 1, 1)
 

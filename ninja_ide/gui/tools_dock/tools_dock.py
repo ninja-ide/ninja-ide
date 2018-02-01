@@ -14,11 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
+
 from PyQt5.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QVBoxLayout,
+    QPushButton,
     QToolBar,
     QLabel,
     QStackedWidget,
@@ -54,7 +55,7 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.tools_dock import actions
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.utils import theme
+# from ninja_ide.utils import theme
 
 
 logger = NinjaLogger(__name__)
@@ -77,10 +78,12 @@ class Separator(QWidget):
             QStyle.PE_IndicatorToolBarSeparator, option, painter, self)
 
 
-class ToolButton(QToolButton):
+class ToolButton(QPushButton):
 
     def __init__(self, number, text, parent=None):
         super().__init__(parent)
+        self.setFlat(True)
+        self.setCheckable(True)
         self._number = str(number)
         self._text = text
 
@@ -122,7 +125,7 @@ class ToolButton(QToolButton):
         return s.expandedTo(QApplication.globalStrut())
 
 
-class _ToolsDock(ui_tools.StyledBar):
+class _ToolsDock(QWidget):
 
     projectExecuted = pyqtSignal("QString")
 
@@ -137,13 +140,11 @@ class _ToolsDock(ui_tools.StyledBar):
         #    },
         # )
         # Buttons Widget
-        self._buttons_widget = ui_tools.StyledBar()
-        self._buttons_widget.setProperty("border", True)
+        self._buttons_widget = QWidget()
         self._buttons_widget.setFixedHeight(26)
         self._buttons_widget.setLayout(QHBoxLayout())
         self._buttons_widget.layout().setContentsMargins(2, 2, 0, 2)
         self._buttons_widget.layout().setSpacing(10)
-
         IDE.register_service('tools_dock', self)
 
     def install(self):
@@ -207,7 +208,6 @@ class _ToolsDock(ui_tools.StyledBar):
             if wi is None:
                 continue
             btn = ToolButton(number, wi.display_name())
-            btn.setCheckable(True)
             # Action
             # action = QAction(wi.display_name(), self)
             # action.triggered.connect(self._triggered)
@@ -217,8 +217,7 @@ class _ToolsDock(ui_tools.StyledBar):
             self._stack.addWidget(wi)
             btn.clicked.connect(self._button_triggered)
             # Toolbar buttons
-            container = ui_tools.StyledBar(self._tool_stack)
-            container.setProperty('border', True)
+            container = QWidget(self._tool_stack)
             tool_buttons_layout = QVBoxLayout()
             tool_buttons_layout.setContentsMargins(0, 0, 0, 0)
             tool_buttons_layout.setSpacing(0)

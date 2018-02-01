@@ -52,7 +52,7 @@ from PyQt5.QtGui import QPalette
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.core import settings
-from ninja_ide.utils import theme
+# from ninja_ide.utils import theme
 from ninja_ide import translations
 
 
@@ -138,9 +138,9 @@ class FindInFilesWidget(QWidget):
         super().__init__(parent)
         # Button widgets
         self._btn_clean = QToolButton()
-        self._btn_clean.setIcon(
-            ui_tools.colored_icon(
-                ':img/clean', theme.get_color('IconBaseColor')))
+        # self._btn_clean.setIcon(
+            # ui_tools.colored_icon(
+                # ':img/clean', theme.get_color('IconBaseColor')))
         self._btn_clean.clicked.connect(self._clear_results)
 
         container = QHBoxLayout(self)

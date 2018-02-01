@@ -4,7 +4,7 @@ Rectangle {
     id: root
     width: 500
     height: 400
-    color: theme.Base
+    color: theme.LocatorBackground
 
     property string filterVerbose: "<font color='#8f8f8f'>@Filename &lt;Class &gt;Function -Attribute .Current /Opened :Line !NoPython</font>"
     property string filterComposite: ""
@@ -224,7 +224,7 @@ Rectangle {
             top: parent.top
             margins: 10
         }
-        color: theme.LocatorLineEditBackground
+        color: theme.LocatorLineEdit
         height: 30
         border.color: "black"
         border.width: 1
@@ -309,7 +309,7 @@ Rectangle {
                 }
                 height: 55
                 property bool current: ListView.isCurrentItem
-                color: listItem.current ? theme.LocatorCurrentItem : theme.LocatorListBackground
+                color: listItem.current ? theme.LocatorCurrentItem : theme.LocatorListView
 
                 MouseArea {
                     anchors.fill: parent

@@ -27,6 +27,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     QMenu,
     QFrame,
+    QStyledItemDelegate,
     QVBoxLayout,
     QHBoxLayout,
     QStackedLayout,
@@ -59,10 +60,9 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 # from ninja_ide.gui.main_panel import set_language
-from ninja_ide.utils import theme
 
 
-class ComboEditor(ui_tools.StyledBar):
+class ComboEditor(QWidget):
     # Signals
     closeSplit = pyqtSignal('PyQt_PyObject')
     splitEditor = pyqtSignal(
@@ -471,7 +471,7 @@ class ComboEditor(ui_tools.StyledBar):
             super(ComboEditor, self).reject()
 
 
-class ActionBar(ui_tools.StyledBar):
+class ActionBar(QFrame):
     """
     SIGNALS:
     @changeCurrent(PyQt_PyObject)
@@ -492,8 +492,7 @@ class ActionBar(ui_tools.StyledBar):
 
     def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
-        # self.setObjectName("actionbar")
-        self.setProperty('gradient', True)
+        self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
@@ -504,11 +503,10 @@ class ActionBar(ui_tools.StyledBar):
         # self.lbl_checks.setVisible(False)
         # hbox.addWidget(self.lbl_checks)
         self.combo_files = ComboFiles()
+        self.combo_files.setObjectName("combotab")
         # self.combo_files = QComboBox()
         self.combo_files.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.combo_files.setProperty("border", True)
-        self.combo_files.setProperty("gradient", True)
         self.combo_files.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self.combo_files.setMaximumWidth(300)
@@ -520,12 +518,12 @@ class ActionBar(ui_tools.StyledBar):
         hbox.addWidget(self.combo_files)
 
         self.symbols_combo = QComboBox()
+        self.symbols_combo.setObjectName("combo_symbols")
+        # For correctly style sheet
+        self.symbols_combo.setItemDelegate(QStyledItemDelegate())
         self.symbols_combo.setModel(Model([]))
-        self.symbols_combo.setProperty("border", True)
-        self.symbols_combo.setProperty("gradient", True)
         self.symbols_combo.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
-        self.symbols_combo.setObjectName("combo_symbols")
         self.symbols_combo.activated[int].connect(self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
@@ -541,7 +539,7 @@ class ActionBar(ui_tools.StyledBar):
 
         self._pos_text = "Line: %d, Col: %d"
         self.lbl_position = QLabel()
-        self.lbl_position.setProperty("gradient", True)
+        self.lbl_position.setObjectName("position")
         self.lbl_position.setText(self._pos_text % (0, 0))
         margin = self.style().pixelMetric(
             QStyle.PM_LayoutHorizontalSpacing) / 2
@@ -549,19 +547,20 @@ class ActionBar(ui_tools.StyledBar):
         self.lbl_position.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.lbl_position)
 
-        self.btn_close = QToolButton()
-        self.btn_close.setProperty("gradient", True)
+        self.btn_close = QPushButton()
 
         if main_combo:
-            self.btn_close.setIcon(
-                ui_tools.colored_icon(
-                    ':img/close', theme.get_color('IconBaseColor')))
+            self.btn_close.setObjectName('close_button_combo')
+            # self.btn_close.setIcon(
+                # ui_tools.colored_icon(
+                    # ':img/close', theme.get_color('IconBaseColor')))
             self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
             self.btn_close.clicked.connect(self.about_to_close_file)
         else:
-            self.btn_close.setIcon(
-                ui_tools.colored_icon(
-                    ':img/close', "#ff9222"))
+            self.btn_close.setObjectName('close_split')
+            # self.btn_close.setIcon(
+                # ui_tools.colored_icon(
+                    # ':img/close', "#ff9222"))
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
             self.btn_close.clicked.connect(self.close_split)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -885,15 +884,15 @@ class CodeNavigator(QWidget):
             hbox.setSpacing(10)
         else:
             hbox.setSpacing(0)
-        self.btnPrevious = QToolButton()
+        self.btnPrevious = QPushButton()
+        self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.clicked.connect(self._on_previous_pressed)
         self.btnPrevious.setIcon(ui_tools.get_icon('code-left'))
-        self.btnPrevious.setProperty("gradient", True)
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
-        self.btnNext = QToolButton()
+        self.btnNext = QPushButton()
+        self.btnNext.setObjectName('navigation_button')
         self.btnNext.clicked.connect(self._on_next_pressed)
         self.btnNext.setIcon(ui_tools.get_icon('code-right'))
-        self.btnNext.setProperty("gradient", True)
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         hbox.addWidget(self.btnPrevious)
         hbox.addWidget(self.btnNext)

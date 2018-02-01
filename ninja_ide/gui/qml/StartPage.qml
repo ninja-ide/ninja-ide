@@ -9,7 +9,7 @@ Rectangle {
     signal onDrop(string files);
     signal openProject(string path)
     signal newFile
-    color: theme.WelcomeBackground;
+    color: theme.StartPageBackground;
 
     NumberAnimation {
         id: animationEnd
@@ -68,7 +68,7 @@ Rectangle {
                 text: "Ninja IDE Is Not Just Another IDE"
                 renderType: Text.NativeRendering
                 font.pointSize: 12
-                color: theme.WelcomeTextColor
+                color: theme.StartPageAlternativeText
                 font.family: "monospace"
             }
             Rectangle {
@@ -149,19 +149,19 @@ Rectangle {
                 spacing: 0
                 Text {
                     text: "• Open a Project with <%1>".arg(shortcuts.openproject)
-                    color: theme.WelcomeAlternativeTextColor
+                    color: theme.StartPageText
                     renderType: Text.NativeRendering
                     font.family: "monospace"
                 }
                 Text {
                     text: "• Locates anything in the project with <%1>".arg(shortcuts.locator)
-                    color: theme.WelcomeAlternativeTextColor
+                    color: theme.StartPageText
                     renderType: Text.NativeRendering
                     font.family: "monospace"
                 }
                 Text {
                     text: "• Drag and drop files here!"
-                    color: theme.WelcomeAlternativeTextColor
+                    color: theme.StartPageText
                     renderType: Text.NativeRendering
                     font.family: "monospace"
                 }
@@ -268,7 +268,7 @@ Rectangle {
                 id: link
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "ninja-ide.org"
-                color: theme.WelcomeLinkColor
+                color: theme.StartPageLink
                 font.family: "monospace"
                 font.pointSize: 8
                 renderType: Text.NativeRendering

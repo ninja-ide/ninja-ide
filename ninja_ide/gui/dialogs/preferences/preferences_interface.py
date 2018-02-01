@@ -40,7 +40,7 @@ from PyQt5.QtCore import QSize
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
-from ninja_ide.utils import theme
+# from ninja_ide.utils import theme
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
@@ -86,7 +86,7 @@ class Interface(QWidget):
         hbox = QHBoxLayout()
         hbox.addWidget(QLabel(translations.TR_PREFERENCES_NINJA_THEME))
         self._combobox_themes = QComboBox()
-        self._combobox_themes.addItems(theme.available_theme_names())
+        # self._combobox_themes.addItems(theme.available_theme_names())
         self._combobox_themes.setCurrentText(settings.NINJA_SKIN)
         hbox.addWidget(self._combobox_themes)
         vbox_theme.addLayout(hbox)

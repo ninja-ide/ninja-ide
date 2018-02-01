@@ -52,7 +52,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
-from ninja_ide.utils import theme
+# from ninja_ide.utils import theme
 from ninja_ide.tools.logger import NinjaLogger
 
 # Logger
@@ -262,21 +262,21 @@ class RunWidget(QWidget):
         self.output = OutputWidget(self)
         # Button Widgets
         self._btn_zoom_in = QToolButton()
-        self._btn_zoom_in.setIcon(
-            ui_tools.colored_icon(
-                ':img/plus', theme.get_color('IconBaseColor')))
+        # self._btn_zoom_in.setIcon(
+            # ui_tools.colored_icon(
+                # ':img/plus', theme.get_color('IconBaseColor')))
         self._btn_zoom_in.setToolTip('Zoom In')
         self._btn_zoom_in.clicked.connect(self.output.zoomIn)
         self._btn_zoom_out = QToolButton()
-        self._btn_zoom_out.setIcon(
-            ui_tools.colored_icon(
-                ':img/minus', theme.get_color('IconBaseColor')))
+        # self._btn_zoom_out.setIcon(
+            # ui_tools.colored_icon(
+                # ':img/minus', theme.get_color('IconBaseColor')))
         self._btn_zoom_out.setToolTip('Zoom Out')
         self._btn_zoom_out.clicked.connect(self.output.zoomOut)
         self._btn_clean = QToolButton()
-        self._btn_clean.setIcon(
-            ui_tools.colored_icon(
-                ':img/clean', theme.get_color('IconBaseColor')))
+        # self._btn_clean.setIcon(
+            # ui_tools.colored_icon(
+                # ':img/clean', theme.get_color('IconBaseColor')))
         self._btn_clean.setToolTip('Clear Output')
         self._btn_stop = QToolButton()
         self._btn_stop.setIcon(ui_tools.colored_icon(':img/stop', '#d74044'))

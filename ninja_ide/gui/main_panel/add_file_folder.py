@@ -16,20 +16,23 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+
 from PyQt5.QtWidgets import (
     QDialog,
     QShortcut,
     QVBoxLayout
 )
+
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtQuickWidgets import QQuickWidget
 from PyQt5.QtCore import (
     Qt,
     pyqtSlot
 )
+
+from ninja_ide import resources
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
-from ninja_ide.utils import theme
 from ninja_ide.core.file_handling import file_manager
 
 
@@ -43,7 +46,7 @@ class AddFileFolderWidget(QDialog):
         self.setFixedWidth(650)
         # Create the QML UI
         view = QQuickWidget()
-        view.rootContext().setContextProperty("theme", theme.get_colors())
+        view.rootContext().setContextProperty("theme", resources.QML_COLORS)
         view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("AddFileFolder.qml"))
         self._root = view.rootObject()

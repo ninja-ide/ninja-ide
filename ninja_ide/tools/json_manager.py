@@ -170,25 +170,6 @@ def load_editor_schemes():
     return skins
 
 
-def load_editor_schemess():
-    pass
-
-    """
-    for fname in files:
-        file_name = os.path.join(resources.EDITOR_SCHEMES, fname)
-        structure = read_json(file_name)
-        name = structure['name']
-        colors = structure['colors']
-        skins[name] = colors
-        # structure = read_json(file_name)
-        # if structure is None:
-        #    continue
-        # name = fname[:-6]
-        # skins[name] = structure
-
-    return skins
-    """
-
 def save_editor_skins(filename, scheme):
     with open(filename, 'w') as fp:
         try:

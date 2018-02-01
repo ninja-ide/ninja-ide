@@ -28,7 +28,6 @@ from PyQt5.QtCore import (
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
-from ninja_ide.utils import theme
 from ninja_ide import resources
 
 
@@ -44,7 +43,7 @@ class StartPage(QWidget):
         vbox.setSpacing(0)
         self.view = QQuickWidget()
         self.view.rootContext().setContextProperty(
-            "theme", theme.get_colors())
+            "theme", resources.QML_COLORS)
         self.view.rootContext().setContextProperty(
             "shortcuts", self.get_shortcuts())
         self.view.setMinimumWidth(400)
