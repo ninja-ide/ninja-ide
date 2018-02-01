@@ -17,9 +17,9 @@
 
 from collections import namedtuple
 from collections import defaultdict
-from collections import OrderedDict
 from PyQt5.QtWidgets import (
     QScrollBar,
+    QToolTip,
     QStyleOptionSlider,
     QWidget,
     QStyle
@@ -28,8 +28,9 @@ from PyQt5.QtGui import (
     QPainter,
     QColor
 )
-from PyQt5.QtCore import Qt, QSize, QRect, QTimer
-from ninja_ide import resources
+
+from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QTimer
 
 
 marker = namedtuple('Marker', 'position color priority')
@@ -143,6 +144,22 @@ class NScrollBar(QScrollBar):
             return
         QScrollBar.resizeEvent(self, event)
         self._overlay.resize(self.size())
+
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
+        from_line = self._neditor.first_visible_block().blockNumber() + 1
+        to_line = self._neditor.last_visible_block().blockNumber()
+        text = "<center>%d<br/>&#x2014;<br/>%d</center>"
+        QToolTip.showText(tooltip_position, text % (from_line, to_line))
+
+    def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
+        tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
+        from_line = self._neditor.first_visible_block().blockNumber() + 1
+        to_line = self._neditor.last_visible_block().blockNumber()
+        text = "<center>%d<br/>&#x2014;<br/>%d</center>"
+        QToolTip.showText(tooltip_position, text % (from_line, to_line))
 
     def remove_marker(self, category):
         if category in self._overlay.markers:

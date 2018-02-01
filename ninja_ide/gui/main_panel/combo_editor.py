@@ -548,19 +548,15 @@ class ActionBar(QFrame):
         hbox.addWidget(self.lbl_position)
 
         self.btn_close = QPushButton()
+        self.btn_close.setIcon(
+            self.style().standardIcon(QStyle.SP_DialogCloseButton))
 
         if main_combo:
             self.btn_close.setObjectName('close_button_combo')
-            # self.btn_close.setIcon(
-                # ui_tools.colored_icon(
-                    # ':img/close', theme.get_color('IconBaseColor')))
             self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
             self.btn_close.clicked.connect(self.about_to_close_file)
         else:
             self.btn_close.setObjectName('close_split')
-            # self.btn_close.setIcon(
-                # ui_tools.colored_icon(
-                    # ':img/close', "#ff9222"))
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
             self.btn_close.clicked.connect(self.close_split)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

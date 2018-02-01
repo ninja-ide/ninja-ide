@@ -20,33 +20,18 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QPushButton,
-    QToolBar,
-    QLabel,
     QStackedWidget,
-    QPlainTextEdit,
     QSpacerItem,
-    QAction,
     QSizePolicy,
-    QToolButton,
-    QStyleOptionToolBar,
     QStyleOption,
     QStyle,
-    QShortcut,
     QApplication
 )
-from PyQt5.QtGui import (
-    QPainter,
-    QColor,
-    QIcon,
-    QKeySequence
-)
+from PyQt5.QtGui import QPainter
+
 from PyQt5.QtCore import (
     pyqtSlot,
     pyqtSignal,
-    QRectF,
-    QPoint,
-    QRect,
-    QSize,
     Qt
 )
 from ninja_ide.gui.ide import IDE
@@ -93,16 +78,6 @@ class ToolButton(QPushButton):
         number_width = fm.width(self._number)
 
         painter = QPainter(self)
-        # opt = QStyleOption()
-        # opt.initFrom(self)
-        # hovered = opt.state & QStyle.State_MouseOver
-        # c = theme.get_color('ToolButtonColor')
-        # if hovered:
-        #     c = theme.get_color('ToolButtonHover')
-        # elif self.isDown() or self.isChecked():
-        #     c = QColor('#66000000')
-        # painter.fillRect(self.rect(), c)
-        # painter.setPen(theme.get_color('ToolButtonTextColor'))
         # Draw shortcut number
         painter.drawText(
             (15 - number_width) / 2,
@@ -140,6 +115,7 @@ class _ToolsDock(QWidget):
         # )
         # Buttons Widget
         self._buttons_widget = QWidget()
+        self._buttons_widget.setObjectName("tools_dock")
         self._buttons_widget.setFixedHeight(26)
         self._buttons_widget.setLayout(QHBoxLayout())
         self._buttons_widget.layout().setContentsMargins(2, 2, 0, 2)

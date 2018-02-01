@@ -112,9 +112,14 @@ QComboBox#combo_symbols::down-arrow {
      right: 7px;
 }
 
+QWidget#tools_dock {
+    background-color:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
+    border-top: 1px solid rgba(25, 25, 25, 75);
+}
+
 QFrame#actionbar {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #727272, stop: 1.0 #222222);
+        stop: 0 #707070, stop: 1.0 #222222);
     color: gray;
     border: 0px solid darkgray;
     border-radius: 5px;

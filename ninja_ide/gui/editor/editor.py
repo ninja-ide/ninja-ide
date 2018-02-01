@@ -43,6 +43,7 @@ from PyQt5.QtCore import (
     pyqtSignal,
     QTimer,
     pyqtSlot,
+    QPoint,
     Qt
 )
 from ninja_ide.gui.editor import (
@@ -675,6 +676,13 @@ class NEditor(QPlainTextEdit):
         # if event.modifiers() == Qt.ControlModifier:
         #    self._code_completion.go_to_definition()
         super().mouseReleaseEvent(event)
+
+    def first_visible_block(self):
+        return self.firstVisibleBlock()
+
+    def last_visible_block(self):
+        return self.cursorForPosition(
+            QPoint(0, self.viewport().height())).block()
 
     def enable_extension(self, extension_name, value):
         # I'm sure the object always exists
