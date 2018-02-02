@@ -45,7 +45,8 @@ from PyQt5.QtGui import (
 from PyQt5.QtCore import (
     Qt,
     pyqtSignal,
-    QDateTime
+    QDateTime,
+    QModelIndex
 )
 
 from ninja_ide import translations
@@ -355,12 +356,41 @@ class ProjectTreeColumn(QDialog):
 
     def context_menu_for_root(self):
         menu = QMenu(self)
+        if self.current_tree is None:
+            # No projects
+            return
         path = self.current_tree.project.path
+        # Reset index
+        self.current_tree.setCurrentIndex(QModelIndex())
+
         action_add_file = menu.addAction(QIcon(":img/new"),
                                          translations.TR_ADD_NEW_FILE)
         action_add_folder = menu.addAction(QIcon(
             ":img/openProj"), translations.TR_ADD_NEW_FOLDER)
         action_create_init = menu.addAction(translations.TR_CREATE_INIT)
+        action_properties = menu.addAction(translations.TR_PROJECT_PROPERTIES)
+        # menu.addSeparator()
+        action_close = menu.addAction(translations.TR_CLOSE_PROJECT)
+
+        # Connections
+        action_add_file.triggered.connect(
+            lambda: self.current_tree._add_new_file(path))
+        action_add_folder.triggered.connect(
+            lambda: self.current_tree._add_new_folder(path))
+        action_create_init.triggered.connect(self.current_tree._create_init)
+        action_properties.triggered.connect(
+            self.current_tree.open_project_properties)
+        action_close.triggered.connect(self.current_tree._close_project)
+        # self.connect(action_close, SIGNAL("triggered()"),
+        #             self.current_tree._close_project)
+        # menu for the project
+        for m in self.current_tree.extra_menus_by_scope['project']:
+            if isinstance(m, QMenu):
+                menu.addSeparator()
+                menu.addMenu(m)
+
+        # show the menu!
+        menu.exec_(QCursor.pos())
 
         # self.connect(action_add_file, SIGNAL("triggered()"),
         #             lambda: self.current_tree._add_new_file(path))
@@ -391,26 +421,6 @@ class ProjectTreeColumn(QDialog):
         #                                  translations.TR_PROJECT_PROPERTIES)
         # self.connect(actionProperties, SIGNAL("triggered()"),
         #             self.current_tree.open_project_properties)
-        action_properties = menu.addAction(translations.TR_PROJECT_PROPERTIES)
-        action_properties.triggered.connect(
-            self.current_tree.open_project_properties)
-        # menu.addSeparator()
-        action_close = menu.addAction(translations.TR_CLOSE_PROJECT)
-        action_add_file.triggered.connect(
-            lambda: self.current_tree._add_new_file(path))
-        action_add_folder.triggered.connect(
-            lambda: self.current_tree._add_new_folder(path))
-        action_close.triggered.connect(self.current_tree._close_project)
-        # self.connect(action_close, SIGNAL("triggered()"),
-        #             self.current_tree._close_project)
-        # menu for the project
-        for m in self.current_tree.extra_menus_by_scope['project']:
-            if isinstance(m, QMenu):
-                menu.addSeparator()
-                menu.addMenu(m)
-
-        # show the menu!
-        menu.exec_(QCursor.pos())
 
 
 class TreeProjectsWidget(QTreeView):
@@ -614,6 +624,8 @@ class TreeProjectsWidget(QTreeView):
 
     def _create_init(self):
         path = self.model().filePath(self.currentIndex())
+        if not path:
+            path = self.project.path
         try:
             # file_manager.create_init_file_complete(path)
             file_manager.create_init_file(path)
