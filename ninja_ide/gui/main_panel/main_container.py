@@ -136,6 +136,9 @@ class _MainContainer(QWidget):
     def show_files_handler(self):
         self._files_handler.next_item()
 
+    def hide_files_handler(self):
+        self._files_handler.hide()
+
     def navigate_code_history(self, operation, forward):
         self.__operations[operation](forward)
 

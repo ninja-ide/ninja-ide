@@ -97,7 +97,10 @@ class ComboEditor(QWidget):
                 self._file_opened_by_main)
 
         self.bar.combo_files.showComboSelector.connect(
-            lambda: self._main_container.show_files_handler())
+            self._main_container.show_files_handler)
+        self.bar.combo_files.hideComboSelector.connect(
+            self._main_container.hide_files_handler)
+
         self.bar.change_current['PyQt_PyObject',
                                 int].connect(self._set_current)
         self.bar.splitEditor[bool].connect(self.split_editor)
@@ -830,9 +833,13 @@ class ActionBar(QFrame):
 
 class ComboFiles(QComboBox):
     showComboSelector = pyqtSignal()
+    hideComboSelector = pyqtSignal()
 
     def showPopup(self):
         self.showComboSelector.emit()
+
+    def hidePopup(self):
+        self.hideComboSelector.emit()
 
 
 class ImageViewerControls(QWidget):
