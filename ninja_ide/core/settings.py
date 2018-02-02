@@ -330,7 +330,7 @@ def get_supported_extensions_filter():
     _filter = [ftype.title() + " Files (*.{})".format(
                " *.".join(SUPPORTED_EXTENSIONS[ftype]))
                for ftype in SUPPORTED_EXTENSIONS.keys()]
-    return ";;".join(_filter) + ";; All Files (*.*)"
+    return ";;".join(_filter) + ";;All Files (*)"
 
 
 # def set_project_type_handler(project_type, project_type_handler):

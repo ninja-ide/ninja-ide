@@ -453,10 +453,10 @@ class ProjectExecution(QWidget):
 
     def select_file(self):
         """Ask the user a python main file and set its value"""
-        filename = QFileDialog.getOpenFileName(
+        filename, _ = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_MAIN_FILE,
             self._parent.project.path,
-            'Python Files (*.py);;Python Bytecode (*.py[codw]);;*(*.*)')[0]
+            'Python Files (*.py);;Python Bytecode (*.py[codw]);;All Files(*)')
         if filename:
             filename = file_manager.convert_to_relative(
                 self._parent.project.path, filename)
