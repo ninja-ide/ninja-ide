@@ -67,18 +67,19 @@ class AddFileFolderWidget(QDialog):
     def create_file(self, base_path, project_path):
         self._create_file_operation = True
         self._base_path = project_path
-        base_path = os.path.relpath(base_path, project_path)
-
+        path = os.path.relpath(base_path, project_path) + os.path.sep
+        if base_path == project_path:
+            path = ""
         self._root.setDialogType(self._create_file_operation)
-        self._root.setBasePath(base_path + os.path.sep)
+        self._root.setBasePath(path)
         self.show()
 
     def create_folder(self, base_path, project_path):
         self._create_file_operation = False
         self._base_path = project_path
-        path = ""
-        if base_path != project_path:
-            path = os.path.relpath(base_path, project_path) + os.path.sep
+        path = os.path.relpath(base_path, project_path) + os.path.sep
+        if base_path == project_path:
+            path = ""
         self._root.setDialogType(self._create_file_operation)
         self._root.setBasePath(path)
         self.show()
