@@ -368,8 +368,10 @@ class ProjectTreeColumn(QDialog):
         action_add_folder = menu.addAction(QIcon(
             ":img/openProj"), translations.TR_ADD_NEW_FOLDER)
         action_create_init = menu.addAction(translations.TR_CREATE_INIT)
+        menu.addSeparator()
+        action_run_project = menu.addAction(translations.TR_RUN_PROJECT)
         action_properties = menu.addAction(translations.TR_PROJECT_PROPERTIES)
-        # menu.addSeparator()
+        menu.addSeparator()
         action_close = menu.addAction(translations.TR_CLOSE_PROJECT)
 
         # Connections
@@ -378,6 +380,8 @@ class ProjectTreeColumn(QDialog):
         action_add_folder.triggered.connect(
             lambda: self.current_tree._add_new_folder(path))
         action_create_init.triggered.connect(self.current_tree._create_init)
+        action_run_project.triggered.connect(
+            self.current_tree._execute_project)
         action_properties.triggered.connect(
             self.current_tree.open_project_properties)
         action_close.triggered.connect(self.current_tree._close_project)
@@ -750,7 +754,7 @@ class TreeProjectsWidget(QTreeView):
     def _execute_project(self):
         tools_dock = IDE.get_service('tools_dock')
         if tools_dock:
-            tools_dock.execute_project(self.project.path)
+            tools_dock.execute_project()
 
     def keyPressEvent(self, event):
         super(TreeProjectsWidget, self).keyPressEvent(event)
