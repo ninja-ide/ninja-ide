@@ -15,12 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
+
 
 class SideWidgetManager(object):
     """Manages side widgets"""
 
     def __init__(self, neditor):
-        self.__widgets = {}
+        self.__widgets = OrderedDict()
         self._neditor = neditor
 
         neditor.blockCountChanged.connect(self.update_viewport)
