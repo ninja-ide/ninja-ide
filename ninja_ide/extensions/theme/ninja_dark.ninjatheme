@@ -19,6 +19,7 @@
         "BrightText": "#ff0000",
         "Link": "#2a82da",
         "Highlight": "#ff1a1a",
+        "HighlightInactive": "#ff1a1a",
         "HighlightDisabled": "#505050",
         "HighlightedText": "#ffffff",
         "HighlightedTextDisabled": "#7f7f7f"

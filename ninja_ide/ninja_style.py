@@ -42,6 +42,10 @@ class NinjaStyle(QProxyStyle):
                 if role.endswith("Disabled"):
                     role = role.split("Disabled")[0]
                     color_group = QPalette.Disabled
+                elif role.endswith("Inactive"):
+                    role = role.split("Inactive")[0]
+                    qcolor.setAlpha(90)
+                    color_group = QPalette.Inactive
                 color_role = getattr(palette, role)
                 palette.setBrush(color_group, color_role, qcolor)
         elif isinstance(args, QApplication):
