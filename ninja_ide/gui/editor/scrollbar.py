@@ -31,6 +31,7 @@ from PyQt5.QtGui import (
 
 from PyQt5.QtCore import QPoint
 from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt
 
 
 marker = namedtuple('Marker', 'position color priority')
@@ -149,11 +150,12 @@ class NScrollBar(QScrollBar):
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
-        tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
-        from_line = self._neditor.first_visible_block().blockNumber() + 1
-        to_line = self._neditor.last_visible_block().blockNumber()
-        text = "<center>%d<br/>&#x2014;<br/>%d</center>"
-        QToolTip.showText(tooltip_position, text % (from_line, to_line))
+        if event.button() == Qt.LeftButton:
+            tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
+            from_line = self._neditor.first_visible_block().blockNumber() + 1
+            to_line = self._neditor.last_visible_block().blockNumber()
+            text = "<center>%d<br/>&#x2014;<br/>%d</center>"
+            QToolTip.showText(tooltip_position, text % (from_line, to_line))
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
