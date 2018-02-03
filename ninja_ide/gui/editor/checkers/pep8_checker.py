@@ -89,8 +89,8 @@ class Pep8Checker(QThread):
                 path,
                 lines=source.splitlines(True)
             )
-            for lineno, col, code, text in temp_data:
             # for lineno, offset, code, text, doc in temp_data:
+            for lineno, col, code, text in temp_data:
                 message = '[PEP8] %s: %s' % (code, text)
                 self.checks[lineno - 1] = (message, col)
         self.checkerCompleted.emit()
@@ -102,7 +102,7 @@ class Pep8Checker(QThread):
 
     def refresh_display(self):
         # error_list = IDE.get_service('tab_errors')
-        error_tree = IDE.get_service('errors_tree')
+        # error_tree = IDE.get_service('errors_tree')
         # error_tree.refresh(self.checks, self._path)
         """
         if error_list:
