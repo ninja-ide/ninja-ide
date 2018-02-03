@@ -59,6 +59,7 @@ from ninja_ide.extensions import handlers
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
+from ninja_ide.core.file_handling import file_manager
 # from ninja_ide.gui.main_panel import set_language
 
 
@@ -716,14 +717,10 @@ class ActionBar(QFrame):
         self._setter_language.set_language_to_editor(language)
 
     def _show_containing_folder(self):
-        # FIXME: mover y cross platform
         main_container = IDE.get_service("main_container")
         editor_widget = main_container.get_current_editor()
         filename = editor_widget.file_path
-        import subprocess
-        from ninja_ide.core.file_handling import file_manager
-        folder = file_manager.get_folder(filename)
-        subprocess.call(["xdg-open", folder])
+        file_manager.show_containing_folder(filename)
 
     def _create_menu_syntax(self, menuSyntax):
         """Create Menu with the list of syntax supported."""

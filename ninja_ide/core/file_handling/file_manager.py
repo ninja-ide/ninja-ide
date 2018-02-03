@@ -340,3 +340,21 @@ def is_supported_extension(filename, extensions=None):
     if os.path.splitext(filename.lower())[-1] in extensions:
         return True
     return False
+
+
+def show_containing_folder(path):
+    """Cross-platform show containing folder of path"""
+
+    file_info = QtCore.QFileInfo(path)
+    if settings.IS_WINDOWS:
+        explorer = "explorer.exe"
+        fname = QtCore.QDir.toNativeSeparators(file_info.canonicalFilePath())
+        param = ["/select,", fname]
+        QtCore.QProcess.startDetached(explorer, param)
+    elif settings.IS_MAC_OS:
+        # FIXME: ask Gatox about this
+        pass
+    else:
+        folder = file_info.absolutePath()
+        program = "xdg-open"
+        QtCore.QProcess.startDetached(program, [folder])
