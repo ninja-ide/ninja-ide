@@ -344,8 +344,14 @@ TR_WEB_PREVIEW = tr("NINJA-IDE", "Web Preview")
 TR_CONTENT = tr("NINJA-IDE", "Content")
 TR_SHORTCUT = tr("NINJA-IDE", "Shortcut")
 TR_ACCEPT = tr("NINJA-IDE", "Accept")
-
-
+TR_PROCESS_EXITED_NORMALLY = tr(
+    "NINJA-IDE",
+    "The process exited normally with code %d")
+TR_PROCESS_INTERRUPTED = tr("NINJA-IDE", "Execution Interrupted!")
+TR_CLOSE_TAB = tr("NINJA-IDE", "Close Tab")
+TR_CLOSE_ALL_TABS = tr("NINJA-IDE", "Close All Tabs")
+TR_CLOSE_OTHER_TABS = tr("NINJA-IDE", "Close Other Tabs")
+TR_CLICK_TO_SHOW_SOURCE = tr("NINJA-IDE", "Click to show the source")
 # shortcut manager
 TR_REMOVE_LINE_SELECTION = tr("NINJA-IDE", "Remove Line/Selection")
 TR_MOVE_LINE_SELECTION_UP = tr("NINJA-IDE", "Move Line/Selection Up")

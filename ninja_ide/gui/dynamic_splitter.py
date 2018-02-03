@@ -90,7 +90,7 @@ class SplitterHandle(QSplitterHandle):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        # painter.fillRect(event.rect(), theme.get_color('Splitter'))
+        painter.fillRect(event.rect(), self.palette().window().color())
 
     def resizeEvent(self, event):
         if self.orientation() == Qt.Horizontal:
