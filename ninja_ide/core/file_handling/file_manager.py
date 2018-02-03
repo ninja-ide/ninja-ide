@@ -352,8 +352,9 @@ def show_containing_folder(path):
         param = ["/select,", fname]
         QtCore.QProcess.startDetached(explorer, param)
     elif settings.IS_MAC_OS:
-        # FIXME: ask Gatox about this
-        pass
+        folder = file_info.absolutePath()
+        program = "open"
+        QtCore.QProcess.startDetached(program, ["-R", folder])
     else:
         folder = file_info.absolutePath()
         program = "xdg-open"
