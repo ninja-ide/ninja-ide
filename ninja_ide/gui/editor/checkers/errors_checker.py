@@ -86,7 +86,6 @@ class ErrorsChecker(QThread):
                         text = [message.message % message.message_args]
                     else:
                         text = self.checks[lineno]
-                        print(text)
                         text += (message.message % message.message_args,)
                     self.checks[lineno] = (text, message.col)
         self.checkerCompleted.emit()
