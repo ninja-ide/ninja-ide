@@ -166,7 +166,7 @@ def read_file_content(fileName):
             content = f.read()
     except IOError as reason:
         raise NinjaIOException(reason)
-    except:
+    except Exception:
         raise
     return content
 
@@ -210,7 +210,7 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
         f.write(encoded_stream)
         f.flush()
         f.close()
-    except:
+    except Exception:
         raise
     return os.path.abspath(fileName)
 
@@ -328,7 +328,7 @@ def get_files_from_folder(folder, ext):
     """Get the files in folder with the specified extension."""
     try:
         filesExt = os.listdir(folder)
-    except:
+    except Exception:
         filesExt = []
     filesExt = [f for f in filesExt if f.endswith(ext)]
     return filesExt
