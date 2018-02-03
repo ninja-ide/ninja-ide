@@ -346,16 +346,18 @@ def show_containing_folder(path):
     """Cross-platform show containing folder of path"""
 
     file_info = QtCore.QFileInfo(path)
+    program = ""
+    param = []
     if settings.IS_WINDOWS:
-        explorer = "explorer.exe"
-        fname = QtCore.QDir.toNativeSeparators(file_info.canonicalFilePath())
-        param = ["/select,", fname]
-        QtCore.QProcess.startDetached(explorer, param)
+        program = "explorer.exe"
+        param.append("/select,")
+        param.append(QtCore.QDir.toNativeSeparators(file_info.canonicalFilePath()))
     elif settings.IS_MAC_OS:
-        folder = file_info.absolutePath()
         program = "open"
-        QtCore.QProcess.startDetached(program, ["-R", folder])
+        param.append("-R")
+        param.append(file_info.absolutePath())
     else:
-        folder = file_info.absolutePath()
         program = "xdg-open"
-        QtCore.QProcess.startDetached(program, [folder])
+        param.append(file_info.absolutePath())
+
+    QtCore.QProcess.startDetached(program, param)
