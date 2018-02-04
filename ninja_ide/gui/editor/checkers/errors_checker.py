@@ -27,6 +27,7 @@ from ninja_ide.gui.editor.checkers import (
 )
 from ninja_ide import resources
 from ninja_ide import translations
+from ninja_ide.gui.ide import IDE
 from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import checker
 from ninja_ide.tools import ui_tools
@@ -51,6 +52,8 @@ class ErrorsChecker(QThread):
             resources.get_color('ErrorUnderline')
         )
 
+        self.checkerCompleted.connect(self.refresh_display)
+
     def run_checks(self):
         if not self.isRunning():
             self._path = self._neditor.file_path
@@ -73,27 +76,35 @@ class ErrorsChecker(QThread):
                 if reason.text is None:
                     logger.error("Syntax error")
                 else:
-                    self.checks[reason.lineno - 1] = (
+                    self.checks[reason.lineno - 1] = [(
                                             text % reason.args[0],
-                                            reason.offset - 1)
+                                            reason.offset - 1)]
             else:
                 # Okay, now check it
                 lint_checker = checker.Checker(tree, self._path)
                 lint_checker.messages.sort(key=lambda msg: msg.lineno)
+                data = ()
                 for message in lint_checker.messages:
                     lineno = message.lineno - 1
                     if lineno not in self.checks:
-                        text = [message.message % message.message_args]
+                        data = (message.message % message.message_args, message.col)
                     else:
-                        text = self.checks[lineno]
-                        text += (message.message % message.message_args,)
-                    self.checks[lineno] = (text, message.col)
+                        pass
+                        # data = self.checks[lineno]
+                        # data.append((message.message % message.message_args, message.col))
+
+                    self.checks[lineno] = data
         self.checkerCompleted.emit()
 
     def message(self, lineno):
         if lineno in self.checks:
             return self.checks[lineno][0]
         return None
+
+    def refresh_display(self):
+        error_list = IDE.get_service('tab_errors')
+        if error_list:
+            error_list.refresh_error_list(self.checks)
 
     @property
     def dirty(self):

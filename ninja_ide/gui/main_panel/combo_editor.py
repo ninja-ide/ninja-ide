@@ -303,13 +303,12 @@ class ComboEditor(QWidget):
             # self.emit(SIGNAL("recentTabsModified()"))
 
     def _editor_with_focus(self):
-        # if self._main_container.current_widget is not self:
         self._main_container.combo_area = self
-        editor = self.current_editor()
-        self._main_container.current_editor_changed(
-            editor.neditable.file_path)
-        self._load_symbols(editor.neditable)
-        editor.neditable.update_checkers_display()
+        # editor = self.current_editor()
+        # self._main_container.current_editor_changed(
+        #     editor.neditable.file_path)
+        # self._load_symbols(editor.neditable)
+        # editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
         val = QMessageBox.No
@@ -414,7 +413,6 @@ class ComboEditor(QWidget):
     def _go_to_symbol(self, index):
         line = self._symbols_index[index]
         editor = self.current_editor()
-        print(line)
         editor.go_to_line(line, center=True)
         editor.setFocus()
 
@@ -532,17 +530,6 @@ class ActionBar(QFrame):
         self.symbols_combo.activated[int].connect(self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
-        self.combo = QComboBox()
-        hbox.addWidget(self.combo)
-
-        self.combo.addItem("Gatox1")
-        self.combo.addItem("Gatox2")
-        self.combo.addItem("Gatox3")
-        self.combo.addItem("Gatox4")
-        self.combo.addItem("Gatox5")
-
-        self.combo.activated[int].connect(self.combo_changed)
-
         # Code Navigator actions
         self.code_navigator = CodeNavigator()
         hbox.addWidget(self.code_navigator)
@@ -586,9 +573,6 @@ class ActionBar(QFrame):
     #    editor_widget = main_container.get_current_editor()
         # self._go_to_line_widget.set_line_count(editor_widget.line_count())
         # self._go_to_line_widget.show()
-
-    def combo_changed(self, val):
-        print(val)
 
     def resizeEvent(self, event):
         super(ActionBar, self).resizeEvent(event)
@@ -640,8 +624,6 @@ class ActionBar(QFrame):
         """Change the current symbol in the combo."""
         if index <= 0:
             return
-        print("==================")
-        print(index)
         self.goToSymbol.emit(index - 1)
 
     def set_language_combo_changed(self, index):
@@ -1029,6 +1011,7 @@ class InfoBar(QFrame):
 
 
 class Model(QAbstractItemModel):
+
     def __init__(self, data):
         QAbstractItemModel.__init__(self)
         self.__data = data
@@ -1054,6 +1037,9 @@ class Model(QAbstractItemModel):
                     return '<Select Symbol>'
                 return '<No Symbols>'
             return
+
+        # return self.__data[index.row() - 1]
+
         if role == Qt.DisplayRole:
             return self.__data[index.row() - 1][1][0]
         elif role == Qt.DecorationRole:

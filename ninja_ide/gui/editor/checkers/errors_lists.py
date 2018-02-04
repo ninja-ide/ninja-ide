@@ -46,6 +46,10 @@ class ErrorsWidget(QDialog):
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
+        # Errors
+        self._list_errors = QListWidget()
+        self._list_errors.setWordWrap(True)
+        self._list_errors.setSortingEnabled(True)
         # PEP8
         self._list_pep8 = QListWidget()
         self._list_pep8.setWordWrap(True)
@@ -62,13 +66,19 @@ class ErrorsWidget(QDialog):
         hbox.addWidget(self._btn_pep8)
         box.addLayout(hbox)
         box.addWidget(self._list_pep8)
+        box.addWidget(self._list_errors)
 
         # Connections
+        # self._list_errors.clicked.connect(self.__on_pep8_item_selected)
         self._list_pep8.clicked.connect(self.__on_pep8_item_selected)
         self._btn_pep8.clicked.connect(self._turn_on_off_pep8)
         # Register service
         IDE.register_service("tab_errors", self)
-        # ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
+        ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
+
+    # def install_tab(self):
+    #     ide = IDE.get_service('ide')
+        # self.connect(ide, SIGNAL("goingDown()"), self.close)
 
     @pyqtSlot()
     def __on_pep8_item_selected(self):
@@ -99,6 +109,20 @@ class ErrorsWidget(QDialog):
             item.setData(Qt.UserRole, lineno)
             self._list_pep8.addItem(item)
         self._pep8_label.setText("PEP8 Errors: %s" % len(errors))
+
+    def refresh_error_list(self, errors):
+        # self._outRefresh = False
+        self._list_errors.clear()
+        for lineno, message in errors.items():
+            lineno_str = 'L%s\t' % str(lineno + 1)
+            item = QListWidgetItem(lineno_str + message[0])
+            item.setToolTip(lineno_str + message[0])
+            item.setData(Qt.UserRole, lineno)
+            self._list_errors.addItem(item)
+
+        # self.errorsLabel.setText(self.tr("Static Errors: %s") %
+        #                          len(errors))
+        # self._outRefresh = True
 
     def reject(self):
         if self.parent() is None:
