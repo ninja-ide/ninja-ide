@@ -30,7 +30,6 @@ class ToolsDock(QWidget):
         IDE.register_service("tools_dock", self)
 
     def install(self):
-
         ninja_ide = IDE.get_service("ide")
         # ninja_ide.place_me_on("tools_dock", self, "central")
 

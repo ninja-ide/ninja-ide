@@ -219,6 +219,9 @@ class _ToolsDock(QWidget):
             # FIXME: Emit a signal for plugin!
             # self.fileExecuted.emit(editor_widget.file_path)
             file_path = editor_widget.file_path
+            if (file_path is None):
+                return
+
             extension = file_manager.get_file_extension(file_path)
             # TODO: Remove the IF statment and use Handlers
             if extension == "py":

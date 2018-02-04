@@ -414,6 +414,7 @@ class ComboEditor(QWidget):
     def _go_to_symbol(self, index):
         line = self._symbols_index[index]
         editor = self.current_editor()
+        print(line)
         editor.go_to_line(line, center=True)
         editor.setFocus()
 
@@ -531,6 +532,17 @@ class ActionBar(QFrame):
         self.symbols_combo.activated[int].connect(self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
+        self.combo = QComboBox()
+        hbox.addWidget(self.combo)
+
+        self.combo.addItem("Gatox1")
+        self.combo.addItem("Gatox2")
+        self.combo.addItem("Gatox3")
+        self.combo.addItem("Gatox4")
+        self.combo.addItem("Gatox5")
+
+        self.combo.activated[int].connect(self.combo_changed)
+
         # Code Navigator actions
         self.code_navigator = CodeNavigator()
         hbox.addWidget(self.code_navigator)
@@ -575,6 +587,9 @@ class ActionBar(QFrame):
         # self._go_to_line_widget.set_line_count(editor_widget.line_count())
         # self._go_to_line_widget.show()
 
+    def combo_changed(self, val):
+        print(val)
+
     def resizeEvent(self, event):
         super(ActionBar, self).resizeEvent(event)
         if event.size().width() < 400:
@@ -601,17 +616,8 @@ class ActionBar(QFrame):
 
     def add_symbols(self, symbols):
         """Add the symbols to the symbols's combo."""
-
         mo = Model(symbols)
         self.symbols_combo.setModel(mo)
-        # self.symbols_combo.clear()
-        # for symbol in symbols:
-        #    data = symbol[1]
-        #    if data[1] == 'f':
-        #        icon = QIcon(":img/function")
-        #    else:
-        #        icon = QIcon(":img/class")
-        #    self.symbols_combo.addItem(icon, data[0])
 
     def set_current_symbol(self, index):
         self.symbols_combo.setCurrentIndex(index + 1)
@@ -632,8 +638,10 @@ class ActionBar(QFrame):
 
     def current_symbol_changed(self, index):
         """Change the current symbol in the combo."""
-        if index == 0:
+        if index <= 0:
             return
+        print("==================")
+        print(index)
         self.goToSymbol.emit(index - 1)
 
     def set_language_combo_changed(self, index):
