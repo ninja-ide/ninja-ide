@@ -100,3 +100,11 @@ def test_uncomment(qtbot):
     helpers.comment_or_uncomment(editor_ref)
     assert editor_ref.text == ("# This is a comment\ndef foo():\n    "
                                "# pass\n    pass")
+
+
+def test_uncomment2(qtbot):
+    editor_ref = create_editor("python")
+    editor_ref.text = "print\n# print"
+    editor_ref.selectAll()
+    helpers.comment_or_uncomment(editor_ref)
+    assert editor_ref.text == "# print\n# # print"

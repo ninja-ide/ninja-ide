@@ -273,6 +273,8 @@ def comment_or_uncomment(editor):
     key = editor.neditable.language()
     card = settings.SYNTAX[key].get("comment", [])[0]
     has_selection = editor.has_selection()
+    lines_commented = 0
+    lines_without_comment = 0
     with editor:
         # Save blocks for use later
         temp_start, temp_end = block_start, block_end
@@ -284,18 +286,26 @@ def comment_or_uncomment(editor):
         while temp_start != temp_end:
             block_number = temp_start.blockNumber()
             indent = editor.line_indent(block_number)
-            if indent < min_indent:
-                min_indent = indent
             block_text = temp_start.text().lstrip()
+            if not block_text:
+                temp_start = temp_start.next()
+                continue
+            min_indent = min(indent, min_indent)
             if block_text.startswith(card):
+                lines_commented += 1
                 comment = False
             elif block_text.startswith(card.strip()):
+                lines_commented += 1
                 comment = False
                 card_lenght -= 1
             else:
+                lines_without_comment += 1
                 comment = True
             temp_start = temp_start.next()
 
+        total_lines = lines_commented + lines_without_comment
+        if lines_commented > 0 and lines_commented != total_lines:
+            comment = True
         # Comment/uncomment blocks
         while block_start != block_end:
             cursor.setPosition(block_start.position())
