@@ -182,6 +182,7 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
         tab_widget.setStyleSheet("QTabWidget::pane {border: 0;}")
         tab_widget.setTabPosition(QTabWidget.East)
         tab_widget.setMovable(True)
+        tab_widget.setDocumentMode(True)
         tabBar = tab_widget.tabBar()
         tabBar.hide()
         tabBar.setContextMenuPolicy(Qt.CustomContextMenu)

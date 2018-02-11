@@ -71,8 +71,6 @@ class SideWidgetManager(object):
         height = cr.height()
         left = 0
         for widget in self:
-            if not widget.isVisible():
-                continue
             size_hint = widget.sizeHint()
             width = size_hint.width()
             widget.setGeometry(current_x + left, top, width, height)
