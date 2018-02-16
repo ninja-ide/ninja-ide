@@ -31,6 +31,8 @@ class ExtraSelection(QTextEdit.ExtraSelection):
                  end_pos=None, start_line=None, offset=0):
         super().__init__()
         self.cursor = QTextCursor(cursor)
+        # Highest value will appear on top of the lowest values
+        self.order = 0
         if start_pos is not None:
             self.cursor.setPosition(start_pos)
         if end_pos is not None:

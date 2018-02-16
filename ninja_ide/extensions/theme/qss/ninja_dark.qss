@@ -237,3 +237,11 @@ QCheckBox::indicator:indeterminate:disabled,
 QGroupBox::indicator:indeterminate:disabled {
     image:url(:img/checkbox-indeterminate-disabled);
 }
+
+QLineEdit {
+    background-color: palette(base);
+}
+
+QLineEdit:focus {
+    border: 1px solid black;
+}
