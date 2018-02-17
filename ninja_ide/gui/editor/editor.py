@@ -1101,33 +1101,12 @@ class NEditor(QPlainTextEdit):
             selection.set_full_width()
             selection.set_background(resources.get_color('SearchResult'))
             append(selection)
+            # TODO: highlight results in scrollbar
+            # line = selection.cursor.blockNumber()
+            # Marker = scrollbar.marker
+            # marker = Marker(line, resources.get_color("SearchResult"), 0)
+            # self._scrollbar.add_marker("find", marker)
         self.add_extra_selections("find", selections)
-        # import keyword
-        # self.__clear_occurrences()
-
-        # text = self._text_under_cursor()
-        # if not text:
-        #     return
-        # # Do not highlight keywords
-        # if text in keyword.kwlist or text == 'self':
-        #     return
-        # result = self._get_find_index_results(text, False, True)[1]
-        # selections = []
-        # for start, end in result:
-        #     selection = extra_selection.ExtraSelection(
-        #         self.textCursor(),
-        #         start_pos=start,
-        #         end_pos=end
-        #     )
-        #     selection.set_full_width()
-        #     # FIXME: from theme
-        #     selection.set_background(resources.get_color('SearchResult'))
-        #     selections.append(selection)
-        #     line = selection.cursor.blockNumber()
-        #     Marker = scrollbar.marker
-        #     marker = Marker(line, resources.get_color('SearchResult'), 0)
-        #     self._scrollbar.add_marker('occurrence', marker)
-        # # self.add_extra_selections('occurrences', selections)
 
     def line_from_position(self, position):
         height = self.fontMetrics().height()

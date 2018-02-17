@@ -177,7 +177,7 @@ class _MainContainer(QWidget):
         elif status_bar.isVisible():
             status_bar.hide_status_bar()
         if editor_widget is not None:
-            editor_widget.clear_extra_selections('searchs')
+            editor_widget.clear_extra_selections('find')
 
     def split_assistance(self):
         split_widget = split_orientation.SplitOrientation(self)
