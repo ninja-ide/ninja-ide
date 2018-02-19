@@ -233,7 +233,7 @@ TR_IDE_CONFIRM_EXIT_BODY = tr(
     "The following files have unsaved changes:")
 TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 TR_SHOW_CONTAINING_FOLDER = tr("NINJA-IDE", "Open Containing Folder")
-
+TR_COPIED_TO_CLIPBOARD = tr("NINJA-IDE", "Copied to the Clipboard!")
 # Status Bar
 TR_LINE_FIND = tr("NINJA-IDE", "Find")
 TR_LINE_REPLACE = tr("NINJA-IDE", "Replace")
