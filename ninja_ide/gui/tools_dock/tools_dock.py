@@ -106,13 +106,13 @@ class _ToolsDock(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Register signals connections
-        # connections = (
-        #    {
-        #        "target": "main_container",
-        #        "signal_name": "runFile",
-        #        "slot": self.execute_file
-        #    },
-        # )
+        connections = (
+           {
+               "target": "main_container",
+               "signal_name": "runFile",
+               "slot": self.execute_file
+           },
+        )
         # Buttons Widget
         self._buttons_widget = QWidget()
         self._buttons_widget.setObjectName("tools_dock")
@@ -120,6 +120,8 @@ class _ToolsDock(QWidget):
         self._buttons_widget.setLayout(QHBoxLayout())
         self._buttons_widget.layout().setContentsMargins(2, 2, 0, 2)
         self._buttons_widget.layout().setSpacing(10)
+
+        IDE.register_signals("tols_dock", connections)
         IDE.register_service('tools_dock', self)
 
     def install(self):

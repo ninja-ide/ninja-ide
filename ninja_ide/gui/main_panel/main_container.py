@@ -59,6 +59,7 @@ class _MainContainer(QWidget):
     currentEditorChanged = pyqtSignal("QString")
     fileOpened = pyqtSignal("QString")
     fileSaved = pyqtSignal("QString")
+    runFile = pyqtSignal("QString")
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -127,6 +128,9 @@ class _MainContainer(QWidget):
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
         self.fileSaved.connect(self._show_message_about_saved)
+
+    def run_file(self, filepath):
+        self.runFile.emit(filepath)
 
     def _show_message_about_saved(self, message):
         if settings.NOTIFICATION_ON_SAVE:

@@ -651,7 +651,7 @@ class ActionBar(QFrame):
             return
         menu = QMenu()
         # actionAdd = menu.addAction(translations.TR_ADD_TO_PROJECT)
-        # actionRun = menu.addAction(translations.TR_RUN_FILE)
+        action_run = menu.addAction(translations.TR_RUN_FILE)
         # menuSyntax = menu.addMenu(translations.TR_CHANGE_SYNTAX)
         show_folder = menu.addAction("Show Containing Folder")
         # self._create_menu_syntax(menuSyntax)
@@ -678,6 +678,7 @@ class ActionBar(QFrame):
         # self._set_list_languages(menu_set_language)
 
         # Connect actions
+        action_run.triggered.connect(self._run_this_file)
         action_undock.triggered.connect(self._undock_editor)
         show_folder.triggered.connect(self._show_containing_folder)
         # self.connect(actionSplitH, SIGNAL("triggered()"),
@@ -775,10 +776,9 @@ class ActionBar(QFrame):
         return index
 
     def _run_this_file(self):
-        """Execute the current file."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
-        print("Emitir runFile")
-        # self.emit(SIGNAL("runFile(QString)"), neditable.file_path)
+        """Execute the current file"""
+        neditable = self.combo_files.itemData(self.combo_files.currentIndex())
+        self.runFile.emit(neditable.file_path)
 
     def _add_to_project(self):
         """Emit a signal to let someone handle the inclusion of the file
