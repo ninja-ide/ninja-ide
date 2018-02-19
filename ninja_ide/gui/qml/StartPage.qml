@@ -275,7 +275,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
-
+                    cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor;
                     onHoveredChanged: {
                         if(link.font.underline) {
                             link.font.underline = false
@@ -283,6 +283,7 @@ Rectangle {
                             link.font.underline = true;
                         }
                     }
+                    onClicked: Qt.openUrlExternally("http://ninja-ide.org");
                 }
             }
         }
