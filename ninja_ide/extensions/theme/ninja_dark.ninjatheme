@@ -37,14 +37,14 @@
         "StartPageAlternativeText": "#FF5644",
         "StartPageLink": "#FF5644",
 
-        "FilesHandlerBackground": "#555555",
+        "FilesHandlerBackground": "#444444",
         "FilesHandlerInput": "#232729",
         "FilesHandlerText": "#ffffff",
         "FilesHandlerCurrentItem": "#303538",
         "FilesHandlerListView": "#232729",
         "FilesHandlerAlternativeText": "#9c9e9e",
 
-        "FileFolderBackground": "#252526",
+        "FileFolderBackground": "#444444",
         "FileFolderText": "#ffffff",
         "FileFolderLineEdit": "#232729",
 
