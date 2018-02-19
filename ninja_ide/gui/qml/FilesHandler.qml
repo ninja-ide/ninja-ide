@@ -207,7 +207,8 @@ Rectangle {
             property string mainTextColor: item.current ? theme.FilesHandlerText : "red"
             property string mainTextModifiedColor: item.current ? theme.FilesHandlerText : "green"
 
-            ListView.onRemove: SequentialAnimation {
+            SequentialAnimation {
+                id: closeAnimation
                 PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
                 NumberAnimation { target: item; property: "scale"; to: 0; duration: 250; easing.type: Easing.InOutQuad }
                 PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
@@ -250,6 +251,7 @@ Rectangle {
                         if(listFiles.model.count === 0) {
                             root.hide()
                         }
+                        closeAnimation.start();
                     }
                 }
             }

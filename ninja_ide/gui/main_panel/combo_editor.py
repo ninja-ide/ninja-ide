@@ -650,24 +650,25 @@ class ActionBar(QFrame):
             # If there is not an Editor opened, don't show the menu
             return
         menu = QMenu()
-        # actionAdd = menu.addAction(translations.TR_ADD_TO_PROJECT)
+        action_add = menu.addAction(translations.TR_ADD_TO_PROJECT)
         action_run = menu.addAction(translations.TR_RUN_FILE)
         # menuSyntax = menu.addMenu(translations.TR_CHANGE_SYNTAX)
-        show_folder = menu.addAction("Show Containing Folder")
+        action_show_folder = menu.addAction(
+            translations.TR_SHOW_CONTAINING_FOLDER)
         # self._create_menu_syntax(menuSyntax)
         menu.addSeparator()
-        # actionClose = menu.addAction(translations.TR_CLOSE_FILE)
-        # actionCloseAll = menu.addAction(translations.TR_CLOSE_ALL_FILES)
-        # actionCloseAllNotThis = menu.addAction(
-        #    translations.TR_CLOSE_OTHER_FILES)
-        # menu.addSeparator()
+        action_close = menu.addAction(translations.TR_CLOSE_FILE)
+        action_close_all = menu.addAction(translations.TR_CLOSE_ALL_FILES)
+        action_close_all_not_this = menu.addAction(
+           translations.TR_CLOSE_OTHER_FILES)
+        menu.addSeparator()
         # actionSplitH = menu.addAction(translations.TR_SPLIT_VERTICALLY)
         # actionSplitV = menu.addAction(translations.TR_SPLIT_HORIZONTALLY)
         # menu.addSeparator()
-        # actionCopyPath = menu.addAction(
-        #    translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
-        # actionShowFileInExplorer = menu.addAction(
-        #    translations.TR_SHOW_FILE_IN_EXPLORER)
+        action_copy_path = menu.addAction(
+           translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
+        action_show_file_in_explorer = menu.addAction(
+           translations.TR_SHOW_FILE_IN_EXPLORER)
         # actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
         action_undock = menu.addAction(translations.TR_UNDOCK_EDITOR)
         # if len(settings.LAST_OPENED_FILES) == 0:
@@ -678,9 +679,17 @@ class ActionBar(QFrame):
         # self._set_list_languages(menu_set_language)
 
         # Connect actions
+        action_close.triggered.connect(self.about_to_close_file)
+        action_close_all.triggered.connect(self._close_all_files)
+        action_close_all_not_this.triggered.connect(
+            self._close_all_files_except_this)
         action_run.triggered.connect(self._run_this_file)
         action_undock.triggered.connect(self._undock_editor)
-        show_folder.triggered.connect(self._show_containing_folder)
+        action_show_folder.triggered.connect(self._show_containing_folder)
+        action_copy_path.triggered.connect(self._copy_file_location)
+        action_show_file_in_explorer.triggered.connect(
+            self._show_file_in_explorer)
+        action_add.triggered.connect(self._add_to_project)
         # self.connect(actionSplitH, SIGNAL("triggered()"),
         #             lambda: self._split(False))
         # self.connect(actionSplitV, SIGNAL("triggered()"),
@@ -783,17 +792,15 @@ class ActionBar(QFrame):
     def _add_to_project(self):
         """Emit a signal to let someone handle the inclusion of the file
         inside a project."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
-        print("Emitir adToProject")
-        # self.emit(SIGNAL("addToProject(QString)"), neditable.file_path)
+        neditable = self.combo_files.itemData(self.combo_files.currentIndex())
+        self.addToProject.emit(neditable.file_path)
 
     def _show_file_in_explorer(self):
         '''Triggered when the "Show File in Explorer" context
         menu action is selected. Emits the "showFileInExplorer(QString)"
         signal with the current file's full path as argument.'''
-        neditable = self.combo.itemData(self.combo.currentIndex())
-        print("Emitir showFileInExplorer")
-        # self.emit(SIGNAL("showFileInExplorer(QString)"), neditable.file_path)
+        neditable = self.combo_files.itemData(self.combo_files.currentIndex())
+        self.showFileInExplorer.emit(neditable.file_path)
 
     def _reopen_last_tab(self):
         print("Emitir reopenTab y recentTabsModified")
@@ -816,14 +823,14 @@ class ActionBar(QFrame):
 
     def _close_all_files(self):
         """Close all the files opened."""
-        for i in range(self.combo.count()):
+        for i in range(self.combo_files.count()):
             self.about_to_close_file(0)
 
     def _close_all_files_except_this(self):
         """Close all the files except the current one."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
-        for i in reversed(list(range(self.combo.count()))):
-            ne = self.combo.itemData(i)
+        neditable = self.combo_files.itemData(self.combo_files.currentIndex())
+        for i in reversed(list(range(self.combo_files.count()))):
+            ne = self.combo_files.itemData(i)
             if ne is not neditable:
                 self.about_to_close_file(i)
 

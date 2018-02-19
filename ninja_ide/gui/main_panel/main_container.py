@@ -60,6 +60,8 @@ class _MainContainer(QWidget):
     fileOpened = pyqtSignal("QString")
     fileSaved = pyqtSignal("QString")
     runFile = pyqtSignal("QString")
+    showFileInExplorer = pyqtSignal("QString")
+    addToProject = pyqtSignal("QString")
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -131,6 +133,12 @@ class _MainContainer(QWidget):
 
     def run_file(self, filepath):
         self.runFile.emit(filepath)
+
+    def _show_file_in_explorer(self, filepath):
+        self.showFileInExplorer.emit(filepath)
+
+    def _add_to_project(self, filepath):
+        self.addToProject.emit(filepath)
 
     def _show_message_about_saved(self, message):
         if settings.NOTIFICATION_ON_SAVE:

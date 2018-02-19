@@ -107,10 +107,10 @@ class ProjectTreeColumn(QDialog):
 
         connections = (
             {'target': 'main_container',
-             'signal_name': 'addToProject(QString)',
+             'signal_name': 'addToProject',
              'slot': self._add_file_to_project},
             {'target': 'main_container',
-             'signal_name': 'showFileInExplorer(QString)',
+             'signal_name': 'showFileInExplorer',
              'slot': self._show_file_in_explorer},
         )
         IDE.register_service('projects_explorer', self)
@@ -464,7 +464,7 @@ class TreeProjectsWidget(QTreeView):
 
     def set_current_item(self, path: str):
         index = self.model().index(path)
-        if index != self.currentIndex():
+        if index.isValid():
             self.setCurrentIndex(index)
 
     def setModel(self, model):
