@@ -207,6 +207,12 @@ Rectangle {
             property string mainTextColor: item.current ? theme.FilesHandlerText : "red"
             property string mainTextModifiedColor: item.current ? theme.FilesHandlerText : "green"
 
+            ListView.onRemove: SequentialAnimation {
+                PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
+                NumberAnimation { target: item; property: "scale"; to: 0; duration: 250; easing.type: Easing.InOutQuad }
+                PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
+            }
+
             MouseArea {
                 anchors.fill: parent
 
