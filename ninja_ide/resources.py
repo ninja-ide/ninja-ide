@@ -247,7 +247,7 @@ QML_COLORS = {}
 def get_color(key):
     if key in COLOR_SCHEME:
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME[key])['color']
-    return "red"
+    return None
 
 
 def get_color_scheme(key):
