@@ -102,7 +102,7 @@ class ComboEditor(QWidget):
             self._main_container.show_files_handler)
         self.bar.combo_files.hideComboSelector.connect(
             self._main_container.hide_files_handler)
-
+        self.bar.needUpdateFocus.connect(self._editor_with_focus)
         self.bar.change_current['PyQt_PyObject',
                                 int].connect(self._set_current)
         self.bar.splitEditor[bool].connect(self.split_editor)
@@ -494,6 +494,7 @@ class ActionBar(QFrame):
     undockEditor = pyqtSignal()
     reopenTab = pyqtSignal('QString')
     closeImageViewer = pyqtSignal(int)
+    needUpdateFocus = pyqtSignal()
 
     def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
@@ -516,6 +517,7 @@ class ActionBar(QFrame):
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self.combo_files.setMaximumWidth(300)
         self.combo_files.currentIndexChanged[int].connect(self.current_changed)
+        self.combo_files.needUpdateFocus.connect(lambda: self.needUpdateFocus.emit())
         self.combo_files.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
         self.combo_files.setContextMenuPolicy(Qt.CustomContextMenu)
         self.combo_files.customContextMenuRequested.connect(
@@ -845,6 +847,10 @@ class ActionBar(QFrame):
 class ComboFiles(QComboBox):
     showComboSelector = pyqtSignal()
     hideComboSelector = pyqtSignal()
+    needUpdateFocus = pyqtSignal()
+
+    def focusInEvent(self, event):
+        self.needUpdateFocus.emit()
 
     def showPopup(self):
         self.showComboSelector.emit()
