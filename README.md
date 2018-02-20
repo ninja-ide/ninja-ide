@@ -16,7 +16,7 @@ Currently version 3.0 is being developed, therefore this branch is unstable. [Th
 On any system you want **Ninja-IDE**, you'll need to have this dependencies installed:
 
 - [Python](https://python.org "Python Homepage") 3.4+
-- [PyQt5](https://riverbankcomputing.com/software/pyqt/intro) 5.5+
+- [PyQt5](https://riverbankcomputing.com/software/pyqt/intro) 5.6+
 - python3-pyqt5.qtquick
 - qml-module-qtquick2
 
