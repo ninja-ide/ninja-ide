@@ -246,3 +246,12 @@ QLineEdit {
 QLineEdit:focus {
     border: 1px solid black;
 }
+
+QSplitter::handle {
+    background: palette(dark);
+    border: 1px solid transparent;
+}
+
+QSplitter:handle:hover {
+    background: palette(shadow);
+}

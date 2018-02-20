@@ -743,6 +743,9 @@ TR_SOME_PLUGINS_NEED_DEPENDENCIES = tr(
 TR_PROJECT = tr("NINJA-IDE", "Project")
 TR_FILES = tr("NINJA-IDE", "Files")
 
+# image viewer
+TR_FIT_TO_SCREEN = tr("NINJA-IDE", "Fit to Screen")
+TR_RESTORE_SIZE = tr("NINJA-IDE", "Restore Size")
 
 # preferences editor completion
 TR_COMPLETE_CHARS = tr("NINJA-IDE", "Matching Characters")
