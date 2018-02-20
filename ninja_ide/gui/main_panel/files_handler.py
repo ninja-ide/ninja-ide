@@ -198,6 +198,9 @@ class FilesHandler(QWidget):
         if event.key() == Qt.Key_Escape:
             self.hide()
         elif (event.modifiers() == Qt.ControlModifier and
+                event.key() == Qt.Key_Tab):
+            self._root.next_item()
+        elif (event.modifiers() == Qt.ControlModifier and
                 event.key() == Qt.Key_PageDown) or event.key() == Qt.Key_Down:
             self._root.next_item()
         elif (event.modifiers() == Qt.ControlModifier and

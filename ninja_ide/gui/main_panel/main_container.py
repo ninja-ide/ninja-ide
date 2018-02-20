@@ -113,6 +113,8 @@ class _MainContainer(QWidget):
         esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
         esc_sort.activated.connect(self._set_focus_to_editor)
 
+        fhandler_short = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Tab), self)
+        fhandler_short.activated.connect(self.show_files_handler)
         # Added for set language
         # self._setter_language = set_language.SetLanguageFile()
 
