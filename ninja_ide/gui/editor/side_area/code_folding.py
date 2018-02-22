@@ -100,6 +100,7 @@ class CodeFoldingWidget(side_area.SideWidget):
 
     def __draw_collapsed_rect(self):
         painter = QPainter(self._neditor.viewport())
+        painter.setFont(self._neditor.font())
         for top, _, block in self._neditor.visible_blocks:
             if not block.next().isVisible():
                 layout = block.layout()
@@ -114,11 +115,6 @@ class CodeFoldingWidget(side_area.SideWidget):
                     self._neditor.fontMetrics().width("..."),
                     line_rect.height() / 2
                 )
-                color = Qt.white
-                painter.setPen(color)
-                f = painter.font()
-                f.setPointSize(10)
-                painter.setFont(f)
                 painter.drawText(collapsed_rect, Qt.AlignCenter, "...")
 
     def __block_under_mouse(self, event):
