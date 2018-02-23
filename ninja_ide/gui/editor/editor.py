@@ -715,19 +715,6 @@ class NEditor(QPlainTextEdit):
             return
         QPlainTextEdit.wheelEvent(self, event)
 
-    def _update_link(self):
-        self.__link_cursor.select(QTextCursor.WordUnderCursor)
-        start, end = self.__link_cursor.selectionStart(), self.__link_cursor.selectionEnd()
-        s = extra_selection.ExtraSelection(
-            self.__link_cursor,
-            start_pos=start - 1,
-            end_pos=end + 1
-        )
-        s.set_underline("red")
-        s.set_full_width()
-        self.add_extra_selections("link", [s])
-        self.viewport().setCursor(Qt.PointingHandCursor)
-
     def clear_link(self):
         self.clear_extra_selections("link")
         self.viewport().setCursor(Qt.IBeamCursor)
