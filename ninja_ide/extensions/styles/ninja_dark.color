@@ -85,6 +85,9 @@
     },
     "CurrentLineNumber": {
       "color": "#d6c540"
+    },
+    "LinkNavigate": {
+    "color": "#ff9800"
     }
   }
 }

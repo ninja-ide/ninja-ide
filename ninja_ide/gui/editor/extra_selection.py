@@ -54,6 +54,11 @@ class ExtraSelection(QTextEdit.ExtraSelection):
         self.format.setUnderlineStyle(style)
         self.format.setUnderlineColor(color)
 
+    def set_foreground(self, color):
+        if isinstance(color, str):
+            color = QColor(color)
+        self.format.setForeground(color)
+
     def set_background(self, color):
         if isinstance(color, str):
             color = QColor(color)

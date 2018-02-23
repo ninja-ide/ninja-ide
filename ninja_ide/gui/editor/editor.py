@@ -265,6 +265,11 @@ class NEditor(QPlainTextEdit):
         self.__init_style()
         self.__apply_style()
 
+        # List of word separators
+        # Can be used by code completion and the link emulator
+        self.word_separators = [
+            ",", ".", "[", "]", "(", ")", "{", "}"
+        ]
         self.setCursorWidth(2)  # FIXME: from setting
         self.__visible_blocks = []
         self._last_line_position = 0
@@ -273,6 +278,7 @@ class NEditor(QPlainTextEdit):
         # Extra Selections
         self._extra_selections = OrderedDict()
         self.__occurrences = []
+        self.__link_cursor = QTextCursor()
         # Load indenter based on language
         # self._highlighter = None
         self._indenter = indenter.load_indenter(self, neditable.language())
@@ -679,8 +685,8 @@ class NEditor(QPlainTextEdit):
         self.painted.emit(event)
 
     def mouseReleaseEvent(self, event):
-        # if event.modifiers() == Qt.ControlModifier:
-        #    self._code_completion.go_to_definition()
+        if event.modifiers() == Qt.ControlModifier:
+            pass
         super().mouseReleaseEvent(event)
 
     def first_visible_block(self):
@@ -709,7 +715,46 @@ class NEditor(QPlainTextEdit):
             return
         QPlainTextEdit.wheelEvent(self, event)
 
+    def _update_link(self):
+        self.__link_cursor.select(QTextCursor.WordUnderCursor)
+        start, end = self.__link_cursor.selectionStart(), self.__link_cursor.selectionEnd()
+        s = extra_selection.ExtraSelection(
+            self.__link_cursor,
+            start_pos=start - 1,
+            end_pos=end + 1
+        )
+        s.set_underline("red")
+        s.set_full_width()
+        self.add_extra_selections("link", [s])
+        self.viewport().setCursor(Qt.PointingHandCursor)
+
+    def clear_link(self):
+        self.clear_extra_selections("link")
+        self.viewport().setCursor(Qt.IBeamCursor)
+        self.__link_cursor = QTextCursor()
+
     def mouseMoveEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:
+            cursor = self.cursorForPosition(event.pos())
+            cursor = self.word_under_cursor(cursor)
+            if self.__link_cursor == cursor:
+                return
+            if not cursor.selectedText():
+                return
+            self.__link_cursor = cursor
+            start, end = cursor.selectionStart(), cursor.selectionEnd()
+            selection = extra_selection.ExtraSelection(
+                cursor,
+                start_pos=start,
+                end_pos=end
+            )
+            link_color = resources.get_color("LinkNavigate")
+            selection.set_underline(link_color)
+            selection.set_foreground(link_color)
+            self.add_extra_selections("link", [selection])
+            self.viewport().setCursor(Qt.PointingHandCursor)
+        else:
+            self.clear_link()
         # Restore mouse cursor if settings say hide while typing
         if self.viewport().cursor().shape() == Qt.BlankCursor:
             self.viewport().setCursor(Qt.IBeamCursor)
@@ -749,7 +794,8 @@ class NEditor(QPlainTextEdit):
         return text_block[:text_cursor.positionInBlock()]
 
     def keyReleaseEvent(self, event):
-        # if event.key() == Qt.Key_Control:
+        if event.key() == Qt.Key_Control:
+            self.clear_link()
         #    if self.__link_selection is not None:
         #        self.remove_extra_selection(self.__link_selection)
         #        self.__link_selection = None
@@ -1116,6 +1162,37 @@ class NEditor(QPlainTextEdit):
             if top <= position <= top + height:
                 return line
         return -1
+
+    def word_under_cursor(self, cursor=None):
+        """Returns QTextCursor that contains a word under passed cursor
+        or actual cursor"""
+        if cursor is None:
+            cursor = self.textCursor()
+        start_pos = end_pos = cursor.position()
+        while not cursor.atStart():
+            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+            char = cursor.selectedText()[0]
+            selected_text = cursor.selectedText()
+            if (selected_text in self.word_separators and (
+                    selected_text != "n" and selected_text != "t") or
+                    char.isspace()):
+                break
+            start_pos = cursor.position()
+            cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos)
+        while not cursor.atEnd():
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            char = cursor.selectedText()[0]
+            selected_text = cursor.selectedText()
+            if (selected_text in self.word_separators and (
+                    selected_text != "n" and selected_text != "t") or
+                    char.isspace()):
+                break
+            end_pos = cursor.position()
+            cursor.setPosition(end_pos)
+        cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
+        return cursor
 
     def _text_under_cursor(self):
         text_cursor = self.textCursor()
