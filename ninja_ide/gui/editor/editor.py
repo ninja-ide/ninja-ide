@@ -999,7 +999,9 @@ class NEditor(QPlainTextEdit):
             self.setTextCursor(found)
 
         elif wrap_around:
-            if forward:
+            if not backward and not forward:
+                cursor.movePosition(QTextCursor.Start)
+            elif forward:
                 cursor.movePosition(QTextCursor.Start)
             else:
                 cursor.movePosition(QTextCursor.End)
