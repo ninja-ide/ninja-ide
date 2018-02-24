@@ -218,6 +218,11 @@ class IDE(QMainWindow):
                 "target": "main_container",
                 "signal_name": "currentEditorChanged",
                 "slot": self._change_item_in_project
+            },
+            {
+                "target": "main_container",
+                "signal_name": "allFilesClosed",
+                "slot": self.change_window_title
             }
         )
         self.register_signals('ide', connections)
@@ -584,14 +589,25 @@ class IDE(QMainWindow):
 
     Session = property(__get_session, __set_session)
 
-    def change_window_title(self, title):
+    def change_window_title(self, text=""):
         """Change the title of the Application."""
+
         # display_name - project - NINJA-IDE
+        title = []
+        if text:
+            title.append(text)
         if self._session is None:
-            self.setWindowTitle('%s - NINJA-IDE' % title)
+            if self.get_current_project() is not None:
+                # No project
+                project_name = self.get_current_project().name
+                title.append(project_name)
         else:
-            self.setWindowTitle((translations.TR_SESSION_IDE_HEADER %
-                                {'session': self._session}) + ' - %s' % title)
+            title.append(
+                translations.TR_SESSION_IDE_HEADER.format(self._session))
+
+        title.append("NINJA-IDE")
+        formated_list = ["{}" for _ in title]
+        self.setWindowTitle(" - ".join(formated_list).format(*title))
 
     def wheelEvent(self, event):
         """Change the opacity of the application."""

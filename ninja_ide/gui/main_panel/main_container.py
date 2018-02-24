@@ -62,6 +62,7 @@ class _MainContainer(QWidget):
     runFile = pyqtSignal("QString")
     showFileInExplorer = pyqtSignal("QString")
     addToProject = pyqtSignal("QString")
+    allFilesClosed = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -124,6 +125,7 @@ class _MainContainer(QWidget):
 
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.combo_area.allFilesClosed.connect(self._files_closed)
+        self.combo_area.allFilesClosed.connect(lambda: self.allFilesClosed.emit())
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
         # self.current_widget = self.combo_area

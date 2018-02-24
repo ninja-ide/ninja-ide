@@ -16,7 +16,7 @@ TR_MENU_ABOUT = tr("NINJA-IDE", "Abou&t")
 
 
 TR_SHOW_SELECTOR = tr("NINJA-IDE", "Show Selector")
-TR_SESSION_IDE_HEADER = tr("NINJA-IDE", "NINJA-IDE (SESSION: %(session)s)")
+TR_SESSION_IDE_HEADER = tr("NINJA-IDE", "NINJA-IDE (SESSION: {})")
 TR_DUPLICATE = tr("NINJA-IDE", "Duplicate")
 TR_REMOVE_LINE = tr("NINJA-IDE", "Remove Line")
 TR_MOVE_UP = tr("NINJA-IDE", "Move Up")
