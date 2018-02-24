@@ -15,21 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import (
-    QSplitter,
-    # QWidget,
-    QSplitterHandle
-)
-from PyQt5.QtGui import (
-    QPainter,
-    QRegion
-)
-from PyQt5.QtCore import (
-    Qt,
-    pyqtSignal
-)
+from PyQt5.QtWidgets import QSplitter
+from PyQt5.QtCore import Qt
 from ninja_ide.gui.main_panel import combo_editor
-# from ninja_ide.gui.ide import IDE
 
 
 class DynamicSplitter(QSplitter):
@@ -37,6 +25,7 @@ class DynamicSplitter(QSplitter):
     def __init__(self, orientation=Qt.Horizontal):
         super().__init__(orientation)
         self.setHandleWidth(1)
+        self.setOpaqueResize(True)
 
     def add_widget(self, widget, top=False):
         if top:
@@ -76,26 +65,3 @@ class DynamicSplitter(QSplitter):
             self.widget(new_index).setFocus()
         else:
             self.deleteLater()
-
-    def createHandle(self):
-        return SplitterHandle(self.orientation(), self)
-
-
-class SplitterHandle(QSplitterHandle):
-
-    def __init__(self, orientation=Qt.Horizontal, parent=None):
-        super().__init__(orientation, parent)
-        self.setMask(QRegion(self.contentsRect()))
-        self.setAttribute(Qt.WA_MouseNoMask, True)
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        # painter.fillRect(event.rect(), theme.get_color('Splitter'))
-
-    def resizeEvent(self, event):
-        if self.orientation() == Qt.Horizontal:
-            self.setContentsMargins(2, 0, 2, 0)
-        else:
-            self.setContentsMargins(0, 2, 0, 2)
-        self.setMask(QRegion(self.contentsRect()))
-        super().resizeEvent(event)

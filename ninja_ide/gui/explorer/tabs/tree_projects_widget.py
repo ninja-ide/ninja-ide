@@ -107,10 +107,10 @@ class ProjectTreeColumn(QDialog):
 
         connections = (
             {'target': 'main_container',
-             'signal_name': 'addToProject(QString)',
+             'signal_name': 'addToProject',
              'slot': self._add_file_to_project},
             {'target': 'main_container',
-             'signal_name': 'showFileInExplorer(QString)',
+             'signal_name': 'showFileInExplorer',
              'slot': self._show_file_in_explorer},
         )
         IDE.register_service('projects_explorer', self)
@@ -241,6 +241,8 @@ class ProjectTreeColumn(QDialog):
     def add_project(self, project):
         if project not in self.projects:
             self._combo_project.addItem(project.name)
+            index = self._combo_project.count() - 1
+            self._combo_project.setItemData(index, project)
             ptree = TreeProjectsWidget(project)
             self._projects_area.addWidget(ptree)
             ptree.closeProject['PyQt_PyObject'].connect(self._close_project)
@@ -273,6 +275,14 @@ class ProjectTreeColumn(QDialog):
         self.updateLocator.emit()
 
     def _change_current_project(self, index):
+        nproject = self._combo_project.itemData(index)
+        ninjaide = IDE.get_service("ide")
+        projects = ninjaide.get_projects()
+        for project in projects.values():
+            if project == nproject:
+                nproject.is_current = True
+            else:
+                project.is_current = False
         self._projects_area.setCurrentIndex(index)
 
     def close_opened_projects(self):
@@ -464,7 +474,7 @@ class TreeProjectsWidget(QTreeView):
 
     def set_current_item(self, path: str):
         index = self.model().index(path)
-        if index != self.currentIndex():
+        if index.isValid():
             self.setCurrentIndex(index)
 
     def setModel(self, model):

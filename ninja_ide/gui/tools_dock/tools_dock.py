@@ -106,13 +106,13 @@ class _ToolsDock(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         # Register signals connections
-        # connections = (
-        #    {
-        #        "target": "main_container",
-        #        "signal_name": "runFile",
-        #        "slot": self.execute_file
-        #    },
-        # )
+        connections = (
+           {
+               "target": "main_container",
+               "signal_name": "runFile",
+               "slot": self.execute_file
+           },
+        )
         # Buttons Widget
         self._buttons_widget = QWidget()
         self._buttons_widget.setObjectName("tools_dock")
@@ -120,6 +120,8 @@ class _ToolsDock(QWidget):
         self._buttons_widget.setLayout(QHBoxLayout())
         self._buttons_widget.layout().setContentsMargins(2, 2, 0, 2)
         self._buttons_widget.layout().setSpacing(10)
+
+        IDE.register_signals("tols_dock", connections)
         IDE.register_service('tools_dock', self)
 
     def install(self):
@@ -128,12 +130,13 @@ class _ToolsDock(QWidget):
         ide.place_me_on('tools_dock', self, 'central')
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
         ide.goingDown.connect(self._save_settings)
-        settings = IDE.ninja_settings()
-        index = int(settings.value("tools_dock/tool_visible", -1))
-        if index == -1:
-            self.hide()
-        else:
-            self.set_current_index(index)
+        self.hide()
+        # settings = IDE.ninja_settings()
+        # index = int(settings.value("tools_dock/tool_visible", -1))
+        # if index == -1:
+        #     self.hide()
+        # else:
+        #     self.set_current_index(index)
 
     def setup_ui(self):
         self._stack = QStackedWidget()
@@ -151,6 +154,7 @@ class _ToolsDock(QWidget):
         tool_layout.setSpacing(0)
 
         self._run_widget = run_widget.RunWidget()
+        self._run_widget.allTabsClosed.connect(self.hide)
 
         main_layout.addLayout(tool_layout)
         self._tool_stack = QStackedWidget()
@@ -213,8 +217,8 @@ class _ToolsDock(QWidget):
 
         main_container = IDE.get_service("main_container")
         editor_widget = main_container.get_current_editor()
-        if editor_widget is not None and editor_widget.is_modified or \
-                editor_widget.file_path:
+        if editor_widget is not None and (editor_widget.is_modified or
+                                          editor_widget.file_path):
             main_container.save_file(editor_widget)
             # FIXME: Emit a signal for plugin!
             # self.fileExecuted.emit(editor_widget.file_path)
@@ -241,13 +245,13 @@ class _ToolsDock(QWidget):
             for line_text in text:
                 # Get part before firs '#'
                 code.append(line_text.split("#", 1)[0])
-
             # Join to execute with python -c command
             final_code = ";".join([line.strip() for line in code if line])
             # Highlight code to be executed
             editor_widget.show_run_cursor()
             # Ok run!
-            self._run_application(text=final_code)
+            self._run_application(
+                filename=editor_widget.file_path, text=final_code)
 
     def execute_project(self):
         """Execute the project marked as Main Project."""
@@ -283,14 +287,14 @@ class _ToolsDock(QWidget):
 
         self._show(0)  # Show widget in index = 0
         self._run_widget.start_process(
-            filename,
-            text,
-            python_exec,
-            pre_exec_script,
-            post_exec_script,
-            program_params
+            filename=filename,
+            code=text,
+            python_exec=python_exec,
+            pre_script=pre_exec_script,
+            post_script=post_exec_script,
+            params=program_params
         )
-        self._run_widget.input.setFocus()
+        # self._run_widget.input.setFocus()
 
     @pyqtSlot()
     def _button_triggered(self):

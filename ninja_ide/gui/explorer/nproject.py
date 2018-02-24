@@ -51,7 +51,8 @@ class NProject(QObject):
         self.venv = project.get('venv', '')
         self.related_projects = project.get('relatedProjects', [])
         self.added_to_console = False
-        # TODO: handle this
+        # FIXME: This is handle in tree_projects_widget._change_current_project
+        # Review to maybe improve.
         self.is_current = True
         # Model is a QFileSystemModel to be set on runtime
         self.__model = None

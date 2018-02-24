@@ -17,6 +17,8 @@
 
 
 import re
+import sre_constants
+
 from collections import OrderedDict
 
 from typing import Tuple
@@ -46,10 +48,12 @@ from PyQt5.QtCore import (
     QPoint,
     Qt
 )
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import (
     highlighter,
     scrollbar
 )
+
 from ninja_ide.gui.editor.side_area import (
     manager,
     line_number_widget,
@@ -261,6 +265,11 @@ class NEditor(QPlainTextEdit):
         self.__init_style()
         self.__apply_style()
 
+        # List of word separators
+        # Can be used by code completion and the link emulator
+        self.word_separators = [
+            ",", ".", "[", "]", "(", ")", "{", "}"
+        ]
         self.setCursorWidth(2)  # FIXME: from setting
         self.__visible_blocks = []
         self._last_line_position = 0
@@ -269,6 +278,7 @@ class NEditor(QPlainTextEdit):
         # Extra Selections
         self._extra_selections = OrderedDict()
         self.__occurrences = []
+        self.__link_cursor = QTextCursor()
         # Load indenter based on language
         # self._highlighter = None
         self._indenter = indenter.load_indenter(self, neditable.language())
@@ -306,8 +316,9 @@ class NEditor(QPlainTextEdit):
         self._highlight_word_timer = QTimer()
         self._highlight_word_timer.setSingleShot(True)
         self._highlight_word_timer.setInterval(800)
-        self._highlight_word_timer.timeout.connect(
-            self.highlight_selected_word)
+        # FIXME
+        # self._highlight_word_timer.timeout.connect(
+            # self.highlight_selected_word)
         # Install custom scrollbar
         self._scrollbar = scrollbar.NScrollBar(self)
         self._scrollbar.setAttribute(Qt.WA_OpaquePaintEvent, False)
@@ -547,6 +558,7 @@ class NEditor(QPlainTextEdit):
         extra_selections = []
         for key, selection in self._extra_selections.items():
             extra_selections.extend(selection)
+        extra_selections = sorted(extra_selections, key=lambda sel: sel.order)
         self.setExtraSelections(extra_selections)
 
     def all_extra_selections(self):
@@ -673,8 +685,8 @@ class NEditor(QPlainTextEdit):
         self.painted.emit(event)
 
     def mouseReleaseEvent(self, event):
-        # if event.modifiers() == Qt.ControlModifier:
-        #    self._code_completion.go_to_definition()
+        if event.modifiers() == Qt.ControlModifier:
+            pass
         super().mouseReleaseEvent(event)
 
     def first_visible_block(self):
@@ -703,7 +715,33 @@ class NEditor(QPlainTextEdit):
             return
         QPlainTextEdit.wheelEvent(self, event)
 
+    def clear_link(self):
+        self.clear_extra_selections("link")
+        self.viewport().setCursor(Qt.IBeamCursor)
+        self.__link_cursor = QTextCursor()
+
     def mouseMoveEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:
+            cursor = self.cursorForPosition(event.pos())
+            cursor = self.word_under_cursor(cursor)
+            if self.__link_cursor == cursor:
+                return
+            if not cursor.selectedText():
+                return
+            self.__link_cursor = cursor
+            start, end = cursor.selectionStart(), cursor.selectionEnd()
+            selection = extra_selection.ExtraSelection(
+                cursor,
+                start_pos=start,
+                end_pos=end
+            )
+            link_color = resources.get_color("LinkNavigate")
+            selection.set_underline(link_color)
+            selection.set_foreground(link_color)
+            self.add_extra_selections("link", [selection])
+            self.viewport().setCursor(Qt.PointingHandCursor)
+        else:
+            self.clear_link()
         # Restore mouse cursor if settings say hide while typing
         if self.viewport().cursor().shape() == Qt.BlankCursor:
             self.viewport().setCursor(Qt.IBeamCursor)
@@ -743,7 +781,8 @@ class NEditor(QPlainTextEdit):
         return text_block[:text_cursor.positionInBlock()]
 
     def keyReleaseEvent(self, event):
-        # if event.key() == Qt.Key_Control:
+        if event.key() == Qt.Key_Control:
+            self.clear_link()
         #    if self.__link_selection is not None:
         #        self.remove_extra_selection(self.__link_selection)
         #        self.__link_selection = None
@@ -942,113 +981,97 @@ class NEditor(QPlainTextEdit):
         return indentation
 
     def replace_match(self, word_old, word_new, cs=False, wo=False,
-                      all_words=False, selection=False):
+                      wrap_around=True):
         """
         Find if searched text exists and replace it with new one.
         If there is a selection just do it inside it and exit
         """
 
         cursor = self.textCursor()
-        if selection:
-            if not cursor.hasSelection():
-                return
-            start, end = cursor.selectionStart(), cursor.selectionEnd()
-            text = cursor.selectedText()
-            old_len = len(text)
-            text = text.replace(word_old, word_new)
-            new_len = len(text)
-            cursor.insertText(text)
-            # Set selection
-            cursor.setPosition(start)
-            cursor.setPosition(end + new_len - old_len, QTextCursor.KeepAnchor)
-            self.setTextCursor(cursor)
-            return
+        text = cursor.selectedText()
+        if not cs:
+            word_old = word_old.lower()
+            text = text.lower()
+        if text == word_old:
+            cursor.insertText(word_new)
 
-        # Replace once
-        cursor.insertText(word_new)
-        if not all_words:
-            return
+        # Next
+        return self.find_match(word_old, cs, wo, forward=True,
+                               wrap_around=wrap_around)
 
-        # Replace all
-        flags = QTextDocument.FindFlags()
-        if wo:
-            flags |= QTextDocument.FindWholeWords
-        if cs:
-            flags |= QTextDocument.FindCaseSensitively
-
-        self.moveCursor(QTextCursor.Start)
-
-        cursor.beginEditBlock()
-
-        while all_words:
-            found = self.find(word_old, flags)
-            if found:
-                cursor = self.textCursor()
-                if cursor.hasSelection():
-                    cursor.insertText(word_new)
-            else:
-                break
-        # Set cursor on last replace text
+    def replace_all(self, word_old, word_new, cs=False, wo=False):
+        # Save cursor for restore later
+        cursor = self.textCursor()
+        with self:
+            # Move to beginning of text and replace all
+            self.moveCursor(QTextCursor.Start)
+            found = True
+            while found:
+                found = self.replace_match(word_old, word_new, cs, wo,
+                                           wrap_around=False)
+        # Reset position
         self.setTextCursor(cursor)
-        cursor.endEditBlock()
 
-    def find_matches(self, search, case_sensitive=False, whole_word=False,
-                     backward=False, find_next=True):
+    def find_match(self, search, case_sensitive=False, whole_word=False,
+                   backward=False, forward=False, wrap_around=True):
+
+        if not backward and not forward:
+            self.moveCursor(QTextCursor.StartOfWord)
+
         flags = QTextDocument.FindFlags()
         if case_sensitive:
-            flags = QTextDocument.FindCaseSensitively
+            flags |= QTextDocument.FindCaseSensitively
         if whole_word:
             flags |= QTextDocument.FindWholeWords
         if backward:
             flags |= QTextDocument.FindBackward
-        if find_next or backward:
-            self.moveCursor(QTextCursor.NoMove)
-        else:
-            self.moveCursor(QTextCursor.StartOfWord)
-        found = self.find(search, flags)
+
         cursor = self.textCursor()
-        if not found:
-            # Original cursor is saved for restore later
-            cursor = self.textCursor()
-            # Move cursor to beginning of document to search again
-            if backward:
-                self.moveCursor(QTextCursor.End)
+        found = self.document().find(search, cursor, flags)
+        if not found.isNull():
+            self.setTextCursor(found)
+
+        elif wrap_around:
+            if not backward and not forward:
+                cursor.movePosition(QTextCursor.Start)
+            elif forward:
+                cursor.movePosition(QTextCursor.Start)
             else:
-                self.moveCursor(QTextCursor.Start)
-            found = self.find(search, flags)
-            if not found:
-                # self.clear_extra_selections()
-                # Restore cursor
-                self.setTextCursor(cursor)
-                self.clear_extra_selections('searchs')
-                return 0, []
-        index, results = self._get_find_index_results(search,
-                                                      case_sensitive,
-                                                      whole_word)
-        # TODO: obtain line numbers for highlight in scrollbar
-        # TODO: cambiar el 2
-        # FIXME: clear its ok?
-        self.clear_extra_selections('searchs')
+                cursor.movePosition(QTextCursor.End)
 
-        if len(search) > 2:
-            ss = []
-            append = ss.append
-            results = results[:500]
-            for start, end in results:
-                s = extra_selection.ExtraSelection(
-                    self.textCursor(),
-                    start_pos=start,
-                    end_pos=end
-                )
-                s.set_full_width()
-                c = QColor('yellow')
-                c.setAlpha(40)
-                s.set_background(c)
-                s.set_outline('gray')
-                append(s)
-            self.add_extra_selections('searchs', ss)
+            # Try again
+            found = self.document().find(search, cursor, flags)
+            if not found.isNull():
+                self.setTextCursor(found)
 
-        return index, results
+        return not found.isNull()
+
+    def _get_find_index_results(self, expr, cs, wo):
+
+        text = self.text
+        current_index = 0
+
+        if not cs:
+            text = text.lower()
+            expr = expr.lower()
+
+        if wo:
+            expr = r"\b%s\b" % expr
+
+        def find_all_iter(string, sub):
+            try:
+                reobj = re.compile(sub)
+            except sre_constants.error:
+                return
+            for match in reobj.finditer(string):
+                yield match.span()
+
+        matches = list(find_all_iter(text, expr))
+
+        if len(matches) > 0:
+            position = self.textCursor().position()
+            current_index = sum(1 for _ in re.finditer(expr, text[:position]))
+        return current_index, matches
 
     def show_run_cursor(self):
         """Highlight momentarily a piece of code"""
@@ -1084,30 +1107,6 @@ class NEditor(QPlainTextEdit):
         text_block = block.text().lstrip()
         return text_block.startswith('#')  # FIXME: generalize it
 
-    def _get_find_index_results(self, expr: str,
-                                cs: bool, wo: bool) -> Tuple[int, list]:
-        text = self.text
-        has_search = len(expr) > 0
-        if not has_search:
-            return 0, 0
-
-        def find_all_iter(string, sub, flags):
-            for i in re.finditer(sub, string, flags):
-                yield i.span()
-
-        flags = re.UNICODE
-        search = expr  # for count whole words
-        if wo:
-            expr = "\\b{}\\b".format(expr)
-        if not cs:
-            text = text.lower()
-            expr = expr.lower()
-            flags |= re.IGNORECASE
-        results = list(find_all_iter(text, expr, flags))
-        pos = self.textCursor().position()
-        index = text[:pos].count(search)
-        return index, results
-
     def __clear_occurrences(self):
         """Clear extra selection occurrences from editor and scrollbar"""
 
@@ -1115,33 +1114,34 @@ class NEditor(QPlainTextEdit):
         self._scrollbar.remove_marker('occurrence')
         self.clear_extra_selections('occurrences')
 
-    def highlight_selected_word(self):
-        import keyword
-        self.__clear_occurrences()
+    def highlight_selected_word(self, word_find=None, results=None, cs=True):
+        if results is None:
+            word = self._text_under_cursor()
+            if word_find is not None:
+                word = word_find
+            results = self._get_find_index_results(word, cs=cs, wo=True)[1]
 
-        text = self._text_under_cursor()
-        if not text:
-            return
-        # Do not highlight keywords
-        if text in keyword.kwlist or text == 'self':
-            return
-        result = self._get_find_index_results(text, False, True)[1]
         selections = []
-        for start, end in result:
+        # On very big files where a lots of occurrences can be found,
+        # this freeze the editor during a few seconds. So, we can limit of 500
+        # and make sure the editor will always remain responsive
+        append = selections.append
+        results = results[:500]
+        for start, end in results:
             selection = extra_selection.ExtraSelection(
                 self.textCursor(),
                 start_pos=start,
                 end_pos=end
             )
             selection.set_full_width()
-            # FIXME: from theme
             selection.set_background(resources.get_color('SearchResult'))
-            selections.append(selection)
-            line = selection.cursor.blockNumber()
-            Marker = scrollbar.marker
-            marker = Marker(line, resources.get_color('SearchResult'), 0)
-            self._scrollbar.add_marker('occurrence', marker)
-        self.add_extra_selections('occurrences', selections)
+            append(selection)
+            # TODO: highlight results in scrollbar
+            # line = selection.cursor.blockNumber()
+            # Marker = scrollbar.marker
+            # marker = Marker(line, resources.get_color("SearchResult"), 0)
+            # self._scrollbar.add_marker("find", marker)
+        self.add_extra_selections("find", selections)
 
     def line_from_position(self, position):
         height = self.fontMetrics().height()
@@ -1149,6 +1149,37 @@ class NEditor(QPlainTextEdit):
             if top <= position <= top + height:
                 return line
         return -1
+
+    def word_under_cursor(self, cursor=None):
+        """Returns QTextCursor that contains a word under passed cursor
+        or actual cursor"""
+        if cursor is None:
+            cursor = self.textCursor()
+        start_pos = end_pos = cursor.position()
+        while not cursor.atStart():
+            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+            char = cursor.selectedText()[0]
+            selected_text = cursor.selectedText()
+            if (selected_text in self.word_separators and (
+                    selected_text != "n" and selected_text != "t") or
+                    char.isspace()):
+                break
+            start_pos = cursor.position()
+            cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos)
+        while not cursor.atEnd():
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            char = cursor.selectedText()[0]
+            selected_text = cursor.selectedText()
+            if (selected_text in self.word_separators and (
+                    selected_text != "n" and selected_text != "t") or
+                    char.isspace()):
+                break
+            end_pos = cursor.position()
+            cursor.setPosition(end_pos)
+        cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
+        return cursor
 
     def _text_under_cursor(self):
         text_cursor = self.textCursor()

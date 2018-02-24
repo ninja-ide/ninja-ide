@@ -15,24 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import (
-    QGraphicsView,
-    QMenu,
-    QGraphicsScene,
-    QGraphicsPixmapItem,
-    QScrollArea
-)
-from PyQt5.QtGui import (
-    QPainter,
-    QPixmap,
-    QColor,
-    QBrush
-)
-from PyQt5.QtCore import (
-    Qt,
-    pyqtSignal,
-    pyqtSlot
-)
+from PyQt5.QtWidgets import QGraphicsView
+from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QGraphicsPixmapItem
+
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QBrush
+
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt
+
+from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
 
 
@@ -67,9 +63,9 @@ class ImageViewer(QGraphicsView):
 
     def _show_menu(self, point):
         menu = QMenu(self)
-        fit_action = menu.addAction("Fit to Screen")
+        fit_action = menu.addAction(translations.TR_FIT_TO_SCREEN)
         fit_action.triggered.connect(self.fit_to_screen)
-        restore_action = menu.addAction("Restore Size")
+        restore_action = menu.addAction(translations.TR_RESTORE_SIZE)
         restore_action.triggered.connect(self.restore_to_original_size)
 
         menu.exec_(self.mapToGlobal(point))

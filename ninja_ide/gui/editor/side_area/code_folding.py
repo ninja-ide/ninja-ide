@@ -1,17 +1,14 @@
 import re
-from PyQt5.QtWidgets import (
-    QStyleOptionViewItem,
-    QStyle,
-)
-from PyQt5.QtGui import (
-    QPainter,
-    QTextBlock
-)
-from PyQt5.QtCore import (
-    QSize,
-    QRect,
-    Qt
-)
+from PyQt5.QtWidgets import QStyleOptionViewItem
+from PyQt5.QtWidgets import QStyle
+
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QTextBlock
+
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QRect
+from PyQt5.QtCore import Qt
+
 from ninja_ide.gui.editor import side_area
 
 
@@ -103,6 +100,7 @@ class CodeFoldingWidget(side_area.SideWidget):
 
     def __draw_collapsed_rect(self):
         painter = QPainter(self._neditor.viewport())
+        painter.setFont(self._neditor.font())
         for top, _, block in self._neditor.visible_blocks:
             if not block.next().isVisible():
                 layout = block.layout()
@@ -117,11 +115,6 @@ class CodeFoldingWidget(side_area.SideWidget):
                     self._neditor.fontMetrics().width("..."),
                     line_rect.height() / 2
                 )
-                color = Qt.white
-                painter.setPen(color)
-                f = painter.font()
-                f.setPointSize(10)
-                painter.setFont(f)
                 painter.drawText(collapsed_rect, Qt.AlignCenter, "...")
 
     def __block_under_mouse(self, event):
@@ -182,15 +175,16 @@ class CodeFoldingWidget(side_area.SideWidget):
                                        painter, self)
             # Draw folded region background
             if block == self.__mouse_over:
+                fm_height = self._neditor.fontMetrics().height()
+                rect_height = 0
+                color = self.palette().highlight().color()
+                color.setAlpha(100)
                 if not folded:
-                    fm_height = self._neditor.fontMetrics().height()
                     foldable_blocks = self.code_folding.foldable_blocks(block)
                     rect_height = (len(list(foldable_blocks))) * fm_height
-                    color = self.palette().highlight().color()
-                    color.setAlpha(100)
-                    painter.fillRect(QRect(
-                        0, top, self.sizeHint().width(),
-                        rect_height + fm_height), color)
+                painter.fillRect(QRect(
+                    0, top, self.sizeHint().width(),
+                    rect_height + fm_height), color)
 
     def fold(self, block):
         if not self.code_folding.is_foldable(block):

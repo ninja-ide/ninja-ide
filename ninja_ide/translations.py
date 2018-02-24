@@ -16,7 +16,7 @@ TR_MENU_ABOUT = tr("NINJA-IDE", "Abou&t")
 
 
 TR_SHOW_SELECTOR = tr("NINJA-IDE", "Show Selector")
-TR_SESSION_IDE_HEADER = tr("NINJA-IDE", "NINJA-IDE (SESSION: %(session)s)")
+TR_SESSION_IDE_HEADER = tr("NINJA-IDE", "NINJA-IDE (SESSION: {})")
 TR_DUPLICATE = tr("NINJA-IDE", "Duplicate")
 TR_REMOVE_LINE = tr("NINJA-IDE", "Remove Line")
 TR_MOVE_UP = tr("NINJA-IDE", "Move Up")
@@ -232,8 +232,8 @@ TR_IDE_CONFIRM_EXIT_BODY = tr(
     "NINJA-IDE",
     "The following files have unsaved changes:")
 TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
-
-
+TR_SHOW_CONTAINING_FOLDER = tr("NINJA-IDE", "Open Containing Folder")
+TR_COPIED_TO_CLIPBOARD = tr("NINJA-IDE", "Copied to the Clipboard!")
 # Status Bar
 TR_LINE_FIND = tr("NINJA-IDE", "Find")
 TR_LINE_REPLACE = tr("NINJA-IDE", "Replace")
@@ -344,8 +344,14 @@ TR_WEB_PREVIEW = tr("NINJA-IDE", "Web Preview")
 TR_CONTENT = tr("NINJA-IDE", "Content")
 TR_SHORTCUT = tr("NINJA-IDE", "Shortcut")
 TR_ACCEPT = tr("NINJA-IDE", "Accept")
-
-
+TR_PROCESS_EXITED_NORMALLY = tr(
+    "NINJA-IDE",
+    "The process exited normally with code %d")
+TR_PROCESS_INTERRUPTED = tr("NINJA-IDE", "Execution Interrupted!")
+TR_CLOSE_TAB = tr("NINJA-IDE", "Close Tab")
+TR_CLOSE_ALL_TABS = tr("NINJA-IDE", "Close All Tabs")
+TR_CLOSE_OTHER_TABS = tr("NINJA-IDE", "Close Other Tabs")
+TR_CLICK_TO_SHOW_SOURCE = tr("NINJA-IDE", "Click to show the source")
 # shortcut manager
 TR_REMOVE_LINE_SELECTION = tr("NINJA-IDE", "Remove Line/Selection")
 TR_MOVE_LINE_SELECTION_UP = tr("NINJA-IDE", "Move Line/Selection Up")
@@ -737,6 +743,9 @@ TR_SOME_PLUGINS_NEED_DEPENDENCIES = tr(
 TR_PROJECT = tr("NINJA-IDE", "Project")
 TR_FILES = tr("NINJA-IDE", "Files")
 
+# image viewer
+TR_FIT_TO_SCREEN = tr("NINJA-IDE", "Fit to Screen")
+TR_RESTORE_SIZE = tr("NINJA-IDE", "Restore Size")
 
 # preferences editor completion
 TR_COMPLETE_CHARS = tr("NINJA-IDE", "Matching Characters")

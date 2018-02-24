@@ -151,19 +151,19 @@ class NScrollBar(QScrollBar):
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
         if event.button() == Qt.LeftButton:
-            tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
+            self._tooltip_pos = event.globalPos() - QPoint(event.pos().x(), 0)
             from_line = self._neditor.first_visible_block().blockNumber() + 1
             to_line = self._neditor.last_visible_block().blockNumber()
             text = "<center>%d<br/>&#x2014;<br/>%d</center>"
-            QToolTip.showText(tooltip_position, text % (from_line, to_line))
+            QToolTip.showText(self._tooltip_pos, text % (from_line, to_line))
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
-        tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
+        # tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
         from_line = self._neditor.first_visible_block().blockNumber() + 1
         to_line = self._neditor.last_visible_block().blockNumber()
         text = "<center>%d<br/>&#x2014;<br/>%d</center>"
-        QToolTip.showText(tooltip_position, text % (from_line, to_line))
+        QToolTip.showText(self._tooltip_pos, text % (from_line, to_line))
 
     def remove_marker(self, category):
         if category in self._overlay.markers:

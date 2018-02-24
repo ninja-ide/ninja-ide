@@ -1,5 +1,6 @@
 QMenuBar {
-    background-color:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
+    /*background-color:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 palette(base),stop:1 rgba(53,53,53,75));*/
+    background-color: palette(base);
     border-bottom:2px solid rgba(25,25,25,75);
 }
 QMenuBar::item {
@@ -21,7 +22,7 @@ QMenuBar::item:pressed {
 }
 
 QMenu {
-    background-color: palette(base);
+    background-color: palette(dark);
     border: 1px solid lightblue;
     border-radius: 2px;
 }
@@ -113,7 +114,7 @@ QComboBox#combo_symbols::down-arrow {
 }
 
 QWidget#tools_dock {
-    background-color:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
+    background-color: palette(base);
     border-top: 1px solid rgba(25, 25, 25, 75);
 }
 
@@ -127,11 +128,11 @@ QFrame#actionbar {
 }
 
 QPushButton#navigation_button {
-    border-style: solid;
-    border-width: 0px;
-    border-color: gray;
-    background: transparent;
-    padding: 2px 0 3px 0;
+    border-radius: 3px;
+    border: 1px solid gray;
+    background: none;
+    margin-left: 5px;
+    padding: 0;
 }
 
 QPushButton#close_split {
@@ -236,4 +237,21 @@ QGroupBox::indicator:indeterminate:pressed {
 QCheckBox::indicator:indeterminate:disabled,
 QGroupBox::indicator:indeterminate:disabled {
     image:url(:img/checkbox-indeterminate-disabled);
+}
+
+QLineEdit {
+    background-color: palette(base);
+}
+
+QLineEdit:focus {
+    border: 1px solid black;
+}
+
+QSplitter::handle {
+    background: palette(dark);
+    border: 1px solid transparent;
+}
+
+QSplitter:handle:hover {
+    background: palette(shadow);
 }

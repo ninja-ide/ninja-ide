@@ -17,6 +17,9 @@
 
 from __future__ import absolute_import
 
+import re
+import sre_constants
+
 from PyQt5.QtWidgets import (
     QLabel,
     # QFileSystemModel,
@@ -24,27 +27,25 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QLineEdit,
-    # QPushButton,
+    QPushButton,
     # QStyleOptionFrame,
     QToolButton,
     # QStyle,
 #    QShortcut,
-    QCheckBox
+    QCheckBox,
+
 )
 # from PyQt4.QtGui import QCompleter
-# from PyQt5.QtGui import (
+from PyQt5.QtGui import QTextDocument
 #    QPainter,
 #    QKeySequence,
 #    QColor,
 #    QPalette,
 #    QIcon,
 # )
-from PyQt5.QtCore import (
-    QTimer
-)
-#    QSize,
-#    Qt
-# )
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import QTimer
 
 # from ninja_ide import resources
 from ninja_ide import translations
@@ -87,7 +88,10 @@ class _StatusBar(QWidget):
         # Search Layout
         self._search_widget = SearchWidget()
         vbox.addWidget(self._search_widget)
-
+        # Replace Layout
+        self._replace_widget = ReplaceWidget()
+        self._replace_widget.hide()
+        vbox.addWidget(self._replace_widget)
         # Not configurable shortcuts
         # short_esc_status = QShortcut(QKeySequence(Qt.Key_Escape), self)
         # short_esc_status.activated.connect(self.hide_status_bar)
@@ -113,19 +117,29 @@ class _StatusBar(QWidget):
 
         self.current_status = _STATUSBAR_STATE_SEARCH
         self._search_widget.setVisible(True)
-        self._search_widget._line_search.setFocus()
         self.show()
         main_container = IDE.get_service("main_container")
-        editor_widget = main_container.get_current_editor()
-        if editor_widget is not None:
-            if editor_widget.selected_text():
-                text = editor_widget.selected_text()
-                self._search_widget._line_search.setText(text)
-                self._search_widget._line_search.selectAll()
+        editor = main_container.get_current_editor()
+        if editor is not None and editor.has_selection():
+            text = editor.selected_text()
+            self._search_widget._line_search.setText(text)
+            self._search_widget.find()
+        self._search_widget._line_search.setFocus()
+        self._search_widget._line_search.selectAll()
+
+    def show_replace(self):
+        """Show the status bar with search/replace widget"""
+        self.current_status = _STATUSBAR_STATE_REPLACE
+        self._replace_widget.setVisible(True)
+        self.show_search()
+        if self._search_widget._line_search.text():
+            self._replace_widget._line_replace.setFocus()
 
 
 class SearchWidget(QWidget):
     """Search widget component, search for text inside the editor"""
+
+    highlightResultsRequested = pyqtSignal("PyQt_PyObject")
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -147,16 +161,14 @@ class SearchWidget(QWidget):
         self._check_whole_word = QCheckBox(
             translations.TR_SEARCH_WHOLE_WORDS)
         hbox.addWidget(self._check_whole_word)
-        # Timer
-        self._timer = QTimer()
-        self._timer.setSingleShot(True)
-        self._timer.setInterval(150)
-        self._timer.timeout.connect(self.execute_search)
+
         # Connections
-        self._line_search.textChanged.connect(self._timer.start)
+        self._line_search.textChanged.connect(self.find)
         self._line_search.returnPressed.connect(self.find_next)
-        self._btn_find_previous.clicked.connect(self.find_previous)
+        self._check_sensitive.stateChanged.connect(self.find)
+        self._check_whole_word.stateChanged.connect(self.find)
         self._btn_find_next.clicked.connect(self.find_next)
+        self._btn_find_previous.clicked.connect(self.find_previous)
 
         IDE.register_service("status_search", self)
 
@@ -166,37 +178,86 @@ class SearchWidget(QWidget):
 
         return self._line_search.text()
 
-    def find_next(self):
-        """Find the next occurrence of the word to search"""
+    @property
+    def search_flags(self):
+        return (
+            self._check_sensitive.isChecked(),
+            self._check_whole_word.isChecked()
+        )
 
-        self.execute_search(find_next=True)
+    def find_next(self):
+        self.find(forward=True)
 
     def find_previous(self):
-        """Find the previous occurrence of the word to search"""
+        self.find(backward=True)
 
-        self.execute_search(backward=True)
-
-    def execute_search(self, backward=False, find_next=False):
+    @pyqtSlot()
+    def find(self, backward=False, forward=False):
         """Collect flags and execute search in the editor"""
+        main_container = IDE.get_service("main_container")
+        editor = main_container.get_current_editor()
+        if editor is None:
+            return
+        cs, wo = self.search_flags
+        index, matches = 0, []
+        found = editor.find_match(self.search_text, cs, wo, backward, forward)
+        if found:
+            index, matches = editor._get_find_index_results(
+                self.search_text, cs, wo)
+            editor.highlight_selected_word(results=matches)
+        else:
+            editor.clear_extra_selections("find")
+        self._line_search.counter.update_count(
+            index, len(matches), len(self.search_text) > 0)
 
-        cs = self._check_sensitive.isChecked()
-        wo = self._check_sensitive.isChecked()
 
+class ReplaceWidget(QWidget):
+    """Replace widget to find and replace occurrences of words in editor"""
+
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        hbox = QHBoxLayout(self)
+        hbox.setContentsMargins(5, 0, 5, 0)
+        self._line_replace = TextLine()
+        self._line_replace.setPlaceholderText(translations.TR_LINE_REPLACE)
+        self._line_replace._mode = _STATUSBAR_STATE_REPLACE
+        hbox.addWidget(self._line_replace)
+        self._btn_replace = QPushButton("Replace")
+        hbox.addWidget(self._btn_replace)
+        self._btn_replace_all = QPushButton("Replace All")
+        hbox.addWidget(self._btn_replace_all)
+        self._btn_replace_selection = QPushButton("In Selection")
+        hbox.addWidget(self._btn_replace_selection)
+
+        self._btn_replace.clicked.connect(self._replace)
+        self._btn_replace_all.clicked.connect(self._replace_all)
+        self._btn_replace_selection.clicked.connect(self._replace_selection)
+        self._line_replace.returnPressed.connect(self._replace)
+
+    def _replace(self):
+        """Replace one occurrence of the word"""
+
+        status_search = IDE.get_service("status_search")
+        cs, wo = status_search.search_flags
         main_container = IDE.get_service("main_container")
         editor_widget = main_container.get_current_editor()
-        if editor_widget is not None:
-            index, matches = editor_widget.find_matches(
-                self.search_text,
-                case_sensitive=cs,
-                whole_word=wo,
-                backward=backward,
-                find_next=find_next
-            )
-            self._line_search.counter.update_count(
-                index,
-                len(matches),
-                len(self.search_text) > 0
-            )
+        editor_widget.replace_match(
+            status_search.search_text, self._line_replace.text(), cs, wo)
+
+    def _replace_selection(self):
+        """Replace the occurrences of the word in the selected blocks"""
+        self._replace_all(selected=True)
+
+    def _replace_all(self, selected=False):
+        """Replace all the occurrences of the word"""
+
+        status_search = IDE.get_service("status_search")
+        cs, wo = status_search.search_flags
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        editor_widget.replace_all(
+            status_search.search_text, self._line_replace.text(), cs, wo)
+        editor_widget.clear_extra_selections("find")
 
 
 '''
@@ -430,6 +491,8 @@ class ReplaceWidget(QWidget):
                                  selection=selected)
 
 '''
+
+
 class TextLine(QLineEdit):
     """ Special Line Edit component for handle searches """
 

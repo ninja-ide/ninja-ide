@@ -59,6 +59,10 @@ class _MainContainer(QWidget):
     currentEditorChanged = pyqtSignal("QString")
     fileOpened = pyqtSignal("QString")
     fileSaved = pyqtSignal("QString")
+    runFile = pyqtSignal("QString")
+    showFileInExplorer = pyqtSignal("QString")
+    addToProject = pyqtSignal("QString")
+    allFilesClosed = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -110,6 +114,8 @@ class _MainContainer(QWidget):
         esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
         esc_sort.activated.connect(self._set_focus_to_editor)
 
+        fhandler_short = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Tab), self)
+        fhandler_short.activated.connect(self.show_files_handler)
         # Added for set language
         # self._setter_language = set_language.SetLanguageFile()
 
@@ -119,6 +125,7 @@ class _MainContainer(QWidget):
 
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.combo_area.allFilesClosed.connect(self._files_closed)
+        self.combo_area.allFilesClosed.connect(lambda: self.allFilesClosed.emit())
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
         # self.current_widget = self.combo_area
@@ -127,6 +134,15 @@ class _MainContainer(QWidget):
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
         self.fileSaved.connect(self._show_message_about_saved)
+
+    def run_file(self, filepath):
+        self.runFile.emit(filepath)
+
+    def _show_file_in_explorer(self, filepath):
+        self.showFileInExplorer.emit(filepath)
+
+    def _add_to_project(self, filepath):
+        self.addToProject.emit(filepath)
 
     def _show_message_about_saved(self, message):
         if settings.NOTIFICATION_ON_SAVE:
@@ -177,7 +193,7 @@ class _MainContainer(QWidget):
         elif status_bar.isVisible():
             status_bar.hide_status_bar()
         if editor_widget is not None:
-            editor_widget.clear_extra_selections('searchs')
+            editor_widget.clear_extra_selections('find')
 
     def split_assistance(self):
         split_widget = split_orientation.SplitOrientation(self)
