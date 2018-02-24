@@ -127,15 +127,18 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #    app.installTranslator(qtTranslator)
 
     # Loading Syntax
-    splash.showMessage("Loading Syntax", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    splash.showMessage("Loading Syntax...",
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
     json_manager.load_syntax()
 
     # Read Settings
-    splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
-                       Qt.black)
+    splash.showMessage("Loading Settings...",
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
     # Loading Schemes
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
     all_schemes = json_manager.load_editor_schemes()
     scheme = qsettings.value("editor/general/scheme", "")
     if not scheme:
@@ -151,20 +154,16 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #        resources.CUSTOM_SCHEME = json_manager.parse(open(scheme))
 
     # Loading Shortcuts
+    app.processEvents()
     resources.load_shortcuts()
     # Loading GUI
-    splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
+    splash.showMessage("Loading GUI...", Qt.AlignRight | Qt.AlignTop, Qt.black)
     ninjaide = ide.IDE(start_server)
 
-    # Showing GUI
-    ninjaide.show()
-    # OSX workaround for ninja window not in front
-    try:
-        ninjaide.raise_()
-    except Exception:
-        pass  # I really dont mind if this fails in any form
     # Loading Session Files
-    splash.showMessage("Loading Files and Projects",
+    app.processEvents()
+    splash.showMessage("Loading Files and Projects..",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
 
     # First check if we need to load last session files
@@ -189,6 +188,15 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         ninjaide.load_session_files_projects(
             files, projects, current_file, []
         )
+
+    # Showing GUI
+    ninjaide.show()
+    # OSX workaround for ninja window not in front
+    try:
+        ninjaide.raise_()
+    except Exception:
+        pass  # I really dont mind if this fails in any form
+
     # Load external plugins
     # if extra_plugins:
     #     ninjaide.load_external_plugins(extra_plugins)

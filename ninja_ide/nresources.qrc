@@ -35,6 +35,7 @@
         <file alias="break-left">images/break-left.png</file>
         <file alias="book-right">images/book-right.png</file>
         <file alias="book-left">images/book-left.png</file>
+        <file alias="splash">images/splash.jpg</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">images/help/help_locator.png</file>
