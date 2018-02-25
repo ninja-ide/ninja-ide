@@ -304,11 +304,11 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.setCurrentBlockState(new_state)
 
         # For indentation guides
-        if text.strip():
-            leading_ws = text[:len(text) - len(text.lstrip())]
-            user_data = self.current_block_user_data()
-            # user_data.indentation = len(leading_ws)
-            user_data["indentation"] = len(leading_ws)
+        # if text.strip():
+        #     leading_ws = text[:len(text) - len(text.lstrip())]
+        #     user_data = self.current_block_user_data()
+        #     # user_data.indentation = len(leading_ws)
+        #     user_data["indentation"] = len(leading_ws)
 
 
 def _create_context():

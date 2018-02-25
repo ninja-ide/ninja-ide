@@ -209,7 +209,7 @@ COLOR_SCHEME = {
         "color": "#98c378",
     },
     "EditorBackground": {
-        "color": "#282c34",
+        "color": "#2e2f30",
     },
     "EditorSelectionColor": {
         "color": "#c5c8c6",
