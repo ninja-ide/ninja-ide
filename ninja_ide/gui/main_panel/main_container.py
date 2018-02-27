@@ -350,7 +350,10 @@ class _MainContainer(QWidget):
                     editor_widget.file_path)
                 if extension != 'py':
                     filters = "(*.%s);;(*.py);;(*.*)" % extension
-            save_folder = self._get_save_folder(editor_widget.file_path)
+                save_folder = self._get_save_folder(editor_widget.file_path)
+            else:
+                save_folder = settings.WORKSPACE
+
             filename = QFileDialog.getSaveFileName(
                 self, "Save File", save_folder, filters
             )[0]
