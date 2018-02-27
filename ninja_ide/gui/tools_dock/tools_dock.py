@@ -57,6 +57,8 @@ class _ToolsDock(QWidget):
 
     # Signals
     executeFile = pyqtSignal()
+    executeProject = pyqtSignal()
+    executeSelection = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -104,7 +106,6 @@ class _ToolsDock(QWidget):
             self.hide()
         else:
             self._show(index)
-            # self.set_current_index(index)
 
     def _load_ui(self):
         ninjaide = IDE.get_service("ide")
@@ -177,6 +178,18 @@ class _ToolsDock(QWidget):
         index = self.get_widget_index_by_instance(run_widget)
         self._show(index)
         self.executeFile.emit()
+
+    def execute_project(self):
+        run_widget = IDE.get_service("run_widget")
+        index = self.get_widget_index_by_instance(run_widget)
+        self._show(index)
+        self.executeProject.emit()
+
+    def execute_selection(self):
+        run_widget = IDE.get_service("run_widget")
+        index = self.get_widget_index_by_instance(run_widget)
+        self._show(index)
+        self.executeSelection.emit()
 
     def add_widget(self, display_name, obj):
         self._stack_widgets.addWidget(obj)
@@ -259,112 +272,6 @@ class ToggleButton(QToolButton):
         style.drawPrimitive(QStyle.PE_IndicatorArrowUp, opt, painter, self)
         opt.rect.translate(0, 6)
         style.drawPrimitive(QStyle.PE_IndicatorArrowDown, opt, painter, self)
-
-# class _ToolsDock(QWidget):
-
-#     projectExecuted = pyqtSignal("QString")
-
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-#         # Register signals connections
-#         connections = (
-#            {
-#                "target": "main_container",
-#                "signal_name": "runFile",
-#                "slot": self.execute_file
-#            },
-#         )
-#         # Buttons Widget
-#         self._buttons_widget = QWidget()
-#         self._buttons_widget.setObjectName("tools_dock")
-#         self._buttons_widget.setFixedHeight(26)
-#         self._buttons_widget.setLayout(QHBoxLayout())
-#         self._buttons_widget.layout().setContentsMargins(2, 2, 0, 2)
-#         self._buttons_widget.layout().setSpacing(10)
-
-#         IDE.register_signals("tols_dock", connections)
-#         IDE.register_service('tools_dock', self)
-
-#     def execute_file(self):
-#         """Execute the current file"""
-
-#         main_container = IDE.get_service("main_container")
-#         editor_widget = main_container.get_current_editor()
-#         if editor_widget is not None and (editor_widget.is_modified or
-#                                           editor_widget.file_path):
-#             main_container.save_file(editor_widget)
-#             # FIXME: Emit a signal for plugin!
-#             # self.fileExecuted.emit(editor_widget.file_path)
-#             file_path = editor_widget.file_path
-#             extension = file_manager.get_file_extension(file_path)
-#             # TODO: Remove the IF statment and use Handlers
-#             if extension == "py":
-#                 self._run_application(file_path)
-
-#     def execute_selection(self):
-#         """Execute selected text or current line if not have a selection"""
-
-#         main_container = IDE.get_service("main_container")
-#         editor_widget = main_container.get_current_editor()
-#         if editor_widget is not None:
-#             text = editor_widget.selected_text().splitlines()
-#             if not text:
-#                 # Execute current line
-#                 text = [editor_widget.line_text()]
-#             code = []
-#             for line_text in text:
-#                 # Get part before firs '#'
-#                 code.append(line_text.split("#", 1)[0])
-#             # Join to execute with python -c command
-#             final_code = ";".join([line.strip() for line in code if line])
-#             # Highlight code to be executed
-#             editor_widget.show_run_cursor()
-#             # Ok run!
-#             self._run_application(
-#                 filename=editor_widget.file_path, text=final_code)
-
-#     def execute_project(self):
-#         """Execute the project marked as Main Project."""
-#         projects_explorer = IDE.get_service("projects_explorer")
-#         if projects_explorer is None:
-#             return
-#         nproject = projects_explorer.current_project
-#         if nproject:
-#             main_file = nproject.main_file
-#             if not main_file:
-#                 # Open project properties to specify the main file
-#                 projects_explorer.current_tree.open_project_properties()
-#             else:
-#                 # Save project files
-#                 projects_explorer.save_project()
-#                 # Emit a signal for plugin!
-#                 self.projectExecuted.emit(nproject.path)
-
-#                 main_file = file_manager.create_path(
-#                     nproject.path, nproject.main_file)
-#                 self._run_application(
-#                     filename=main_file,
-#                     python_exec=nproject.python_exec,
-#                     pre_exec_script=nproject.pre_exec_script,
-#                     post_exec_script=nproject.post_exec_script,
-#                     program_params=nproject.program_params
-#                 )
-
-#     def _run_application(self, filename='', text='', python_exec=False,
-#                          pre_exec_script="", post_exec_script="",
-#                          program_params=""):
-#         """Execute the process to run the application"""
-
-#         self._show(0)  # Show widget in index = 0
-#         self._run_widget.start_process(
-#             filename=filename,
-#             code=text,
-#             python_exec=python_exec,
-#             pre_script=pre_exec_script,
-#             post_script=post_exec_script,
-#             params=program_params
-#         )
-#         # self._run_widget.input.setFocus()
 
 
 class StackedWidget(QStackedWidget):

@@ -227,6 +227,7 @@ class Program(QObject):
 class RunWidget(QWidget):
 
     allTabsClosed = pyqtSignal()
+    projectExecuted = pyqtSignal("QString")
 
     def __init__(self):
         QWidget.__init__(self)
@@ -242,6 +243,16 @@ class RunWidget(QWidget):
                 "signal_name": "executeFile",
                 "slot": self.execute_file
             },
+            {
+                "target": "tools_dock",
+                "signal_name": "executeProject",
+                "slot": self.execute_project
+            },
+            {
+                "target": "tools_dock",
+                "signal_name": "executeSelection",
+                "slot": self.execute_selection
+            }
         )
         IDE.register_signals("tools_dock", connections)
 
@@ -316,6 +327,56 @@ class RunWidget(QWidget):
             if extension == "py":
                 self.start_process(filename=file_path)
 
+    def execute_selection(self):
+        """Execute selected text or current line if not have a selection"""
+
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        if editor_widget is not None:
+            text = editor_widget.selected_text().splitlines()
+            if not text:
+                # Execute current line
+                text = [editor_widget.line_text()]
+            code = []
+            for line_text in text:
+                # Get part before firs '#'
+                code.append(line_text.split("#", 1)[0])
+            # Join to execute with python -c command
+            final_code = ";".join([line.strip() for line in code if line])
+            # Highlight code to be executed
+            editor_widget.show_run_cursor()
+            # Ok run!
+            self.start_process(
+                filename=editor_widget.file_path, code=final_code)
+
+    def execute_project(self):
+        """Execute the project marked as Main Project."""
+
+        projects_explorer = IDE.get_service("projects_explorer")
+        if projects_explorer is None:
+            return
+        nproject = projects_explorer.current_project
+        if nproject:
+            main_file = nproject.main_file
+            if not main_file:
+                # Open project properties to specify the main file
+                projects_explorer.current_tree.open_project_properties()
+            else:
+                # Save project files
+                projects_explorer.save_project()
+                # Emit a signal for plugin!
+                self.projectExecuted.emit(nproject.path)
+
+                main_file = file_manager.create_path(
+                    nproject.path, nproject.main_file)
+                self.start_process(
+                    filename=main_file,
+                    python_exec=nproject.python_exec,
+                    pre_exec_script=nproject.pre_exec_script,
+                    post_exec_script=nproject.post_exec_script,
+                    program_params=nproject.program_params
+                )
+
     def start_process(self, **kwargs):
         # First look if we can reuse a tab
         fname = kwargs.get("filename")
@@ -344,12 +405,6 @@ class RunWidget(QWidget):
     def add_tab(self, outputw, tab_text):
         inserted_index = self._tabs.addTab(outputw, tab_text)
         self._tabs.setCurrentIndex(inserted_index)
-
-    # def display_name(self):
-    #     return translations.TR_OUTPUT
-
-    # def button_widgets(self):
-    #     return []
 
 
 class OutputWidget(QPlainTextEdit):
