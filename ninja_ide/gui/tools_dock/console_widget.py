@@ -27,8 +27,13 @@ from PyQt5.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.tools import console
+from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import highlighter
+from ninja_ide.gui.tools_dock.tools_dock import _ToolsDock
+
+
+logger = NinjaLogger(__name__)
 
 
 class Highlighter(highlighter.SyntaxHighlighter):
@@ -75,6 +80,11 @@ class ConsoleWidget(QPlainTextEdit):
             Qt.Key_Down: self.__down_pressed
         }
 
+        _ToolsDock.register_widget("Interpreter", self)
+
+    def install_widget(self):
+        logger.debug("Installing {}".format(self.__class__.__name__))
+
     def apply_editor_style(self):
         palette = self.palette()
         palette.setColor(
@@ -83,8 +93,8 @@ class ConsoleWidget(QPlainTextEdit):
             palette.Text, QColor(resources.get_color('Default')))
         self.setPalette(palette)
 
-    def display_name(self):
-        return 'Interpreter'
+    # def display_name(self):
+    #     return 'Interpreter'
 
     def __manage_left(self, event):
         return self._cursor_position == 0
@@ -210,5 +220,8 @@ class ConsoleWidget(QPlainTextEdit):
     def _cursor_position(self):
         return self.textCursor().columnNumber() - len(self.prompt)
 
-    def button_widgets(self):
-        return []
+    # def button_widgets(self):
+    #     return []
+
+
+ConsoleWidget()

@@ -36,8 +36,13 @@ logger = NinjaLogger(__name__)
 # Register Components:
 # lint:disable
 import ninja_ide.gui.main_panel.main_container  # noqa
-import ninja_ide.gui.tools_dock.errors_tree  # noqa
+# Tools Dock
 import ninja_ide.gui.tools_dock.tools_dock  # noqa
+import ninja_ide.gui.tools_dock.console_widget  # noqa
+import ninja_ide.gui.tools_dock.run_widget  # noqa
+import ninja_ide.gui.tools_dock.find_in_files  # noqa
+# import ninja_ide.gui.tools_dock.errors_tree  # noqa
+# import ninja_ide.gui.tools_dock.tools_dock  # noqa
 import ninja_ide.gui.central_widget  # noqa
 import ninja_ide.gui.status_bar  # noqa
 import ninja_ide.gui.menus.menubar  # noqa

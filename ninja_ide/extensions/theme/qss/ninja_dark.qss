@@ -159,6 +159,19 @@ QPushButton#navigation_button:pressed {
     margin-left: 1px;
 }
 
+QToolButton#toggle_button {
+    background-color: palette(base);
+    border: none;
+}
+
+QToolButton#toggle_button:hover {
+    background-color: palette(base);
+}
+
+QToolButton#toggle_button:pressed {
+    background-color: palette(dark);
+}
+
 QScrollBar {
     background: palette(base);
     border-top-right-radius: 4px;

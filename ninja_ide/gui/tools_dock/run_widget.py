@@ -42,6 +42,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.tools_dock.tools_dock import _ToolsDock
 
 
 # FIXME: tool buttons (clear, stop, re-start, etc)
@@ -235,6 +236,15 @@ class RunWidget(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
+        connections = (
+            {
+                "target": "tools_dock",
+                "signal_name": "executeFile",
+                "slot": self.execute_file
+            },
+        )
+        IDE.register_signals("tools_dock", connections)
+
         self._tabs = QTabWidget()
         self._tabs.setTabsClosable(True)
         self._tabs.setMovable(True)
@@ -245,6 +255,12 @@ class RunWidget(QWidget):
         self._tabs.tabBar().customContextMenuRequested.connect(
             self._menu_for_tabbar)
         self._tabs.tabCloseRequested.connect(self.close_tab)
+
+        IDE.register_service("run_widget", self)
+        _ToolsDock.register_widget(translations.TR_OUTPUT, self)
+
+    def install(self):
+        pass
 
     def _menu_for_tabbar(self, position):
         menu = QMenu()
@@ -285,6 +301,21 @@ class RunWidget(QWidget):
             if self._tabs.count() > 1:
                 self.close_tab(1)
 
+    def execute_file(self):
+        """Execute the current file"""
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        if editor_widget is not None and (editor_widget.is_modified or
+                                          editor_widget.file_path):
+            main_container.save_file(editor_widget)
+            # FIXME: Emit a signal for plugin!
+            # self.fileExecuted.emit(editor_widget.file_path)
+            file_path = editor_widget.file_path
+            extension = file_manager.get_file_extension(file_path)
+            # TODO: Remove the IF statment and use Handlers
+            if extension == "py":
+                self.start_process(filename=file_path)
+
     def start_process(self, **kwargs):
         # First look if we can reuse a tab
         fname = kwargs.get("filename")
@@ -314,11 +345,11 @@ class RunWidget(QWidget):
         inserted_index = self._tabs.addTab(outputw, tab_text)
         self._tabs.setCurrentIndex(inserted_index)
 
-    def display_name(self):
-        return translations.TR_OUTPUT
+    # def display_name(self):
+    #     return translations.TR_OUTPUT
 
-    def button_widgets(self):
-        return []
+    # def button_widgets(self):
+    #     return []
 
 
 class OutputWidget(QPlainTextEdit):
@@ -477,3 +508,6 @@ class OutputWidget(QPlainTextEdit):
         cursor.movePosition(QTextCursor.End)
         cursor.setCharFormat(end_format)
         cursor.insertBlock(QTextBlockFormat())
+
+
+RunWidget()
