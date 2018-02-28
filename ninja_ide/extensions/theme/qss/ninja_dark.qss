@@ -256,7 +256,7 @@ QLineEdit {
     border: 2px solid palette(shadow);
     padding: 0 8px;
     background: palette(base);
-    selection-background-color: darkgray;
+    selection-background-color: palette(highlight);
 }
 
 QLineEdit:!focus {
