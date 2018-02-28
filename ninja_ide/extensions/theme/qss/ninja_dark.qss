@@ -253,12 +253,16 @@ QGroupBox::indicator:indeterminate:disabled {
 }
 
 QLineEdit {
-    background-color: palette(base);
+    border: 2px solid palette(shadow);
+    padding: 0 8px;
+    background: palette(base);
+    selection-background-color: darkgray;
 }
 
-QLineEdit:focus {
-    border: 1px solid black;
+QLineEdit:!focus {
+    border: 2px solid palette(dark);
 }
+
 
 QSplitter::handle {
     background: palette(dark);

@@ -18,8 +18,8 @@
         "ButtonTextDisabled": "#7f7f7f",
         "BrightText": "#ff0000",
         "Link": "#2a82da",
-        "Highlight": "#ff1a1a",
-        "HighlightInactive": "#ff1a1a",
+        "Highlight": "#F44336",
+        "HighlightInactive": "#F44336",
         "HighlightDisabled": "#505050",
         "HighlightedText": "#ffffff",
         "HighlightedTextDisabled": "#7f7f7f"
@@ -51,6 +51,8 @@
         "SplitAssistantBackground": "#444444",
         "SplitAssistantRect": "#232729",
         "SplitAssistantHighlight": "#777",
-        "SplitAssistantText": "#ccc"
+        "SplitAssistantText": "#ccc",
+
+        "RectangleBorder": "#141414"
     }
 }

@@ -129,8 +129,8 @@ Rectangle {
             top: parent.top
             margins: 5
         }
-        border.color: "black"
-        border.width: 1
+        border.color: theme.RectangleBorder
+        border.width: 2
 
         TextInput {
             id: input
