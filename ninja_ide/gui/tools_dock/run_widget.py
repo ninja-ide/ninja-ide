@@ -113,8 +113,10 @@ class Program(QObject):
 
     def __main_execution(self):
         self.__current_process = self.main_process
-        file_directory = file_manager.get_folder(self.filename)
-        self.main_process.setWorkingDirectory(file_directory)
+        if not self.only_text:
+            # In case a text is executed and not a file or project
+            file_directory = file_manager.get_folder(self.filename)
+            self.main_process.setWorkingDirectory(file_directory)
         self.main_process.setProgram(self.python_exec)
         self.main_process.setArguments(self.arguments)
         environment = QProcessEnvironment()
@@ -201,7 +203,14 @@ class Program(QObject):
             self.outputw.append_text(line_text, frmt)
 
     def display_name(self):
-        return file_manager.get_basename(self.filename)
+        name = "New document"
+        if not self.only_text:
+            name = file_manager.get_basename(self.filename)
+        return name
+
+    @property
+    def only_text(self):
+        return self.filename is None
 
     @property
     def python_exec(self):
