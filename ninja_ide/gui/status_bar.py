@@ -15,47 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QCheckBox
 
-import re
-import sre_constants
-
-from PyQt5.QtWidgets import (
-    QLabel,
-    # QFileSystemModel,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLineEdit,
-    QPushButton,
-    # QStyleOptionFrame,
-    QToolButton,
-    # QStyle,
-#    QShortcut,
-    QCheckBox,
-
-)
-# from PyQt4.QtGui import QCompleter
-from PyQt5.QtGui import QTextDocument
-#    QPainter,
-#    QKeySequence,
-#    QColor,
-#    QPalette,
-#    QIcon,
-# )
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtCore import QTimer
 
-# from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
-# from ninja_ide.tools.locator import locator_widget
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
-# from ninja_ide.gui.editor import extra_selection
 
 logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
@@ -148,11 +124,9 @@ class SearchWidget(QWidget):
         self._line_search = TextLine(self)
         self._line_search.setPlaceholderText(translations.TR_LINE_FIND)
         hbox.addWidget(self._line_search)
-        self._btn_find_previous = QToolButton(self)
-        self._btn_find_previous.setText("Find Previous")
+        self._btn_find_previous = QPushButton(translations.TR_FIND_PREVIOUS)
         hbox.addWidget(self._btn_find_previous)
-        self._btn_find_next = QToolButton(self)
-        self._btn_find_next.setText("Find Next")
+        self._btn_find_next = QPushButton(translations.TR_FIND_NEXT)
         hbox.addWidget(self._btn_find_next)
 
         self._check_sensitive = QCheckBox(
@@ -222,11 +196,12 @@ class ReplaceWidget(QWidget):
         self._line_replace.setPlaceholderText(translations.TR_LINE_REPLACE)
         self._line_replace._mode = _STATUSBAR_STATE_REPLACE
         hbox.addWidget(self._line_replace)
-        self._btn_replace = QPushButton("Replace")
+        self._btn_replace = QPushButton(translations.TR_LINE_REPLACE)
         hbox.addWidget(self._btn_replace)
-        self._btn_replace_all = QPushButton("Replace All")
+        self._btn_replace_all = QPushButton(translations.TR_REPLACE_ALL)
         hbox.addWidget(self._btn_replace_all)
-        self._btn_replace_selection = QPushButton("In Selection")
+        self._btn_replace_selection = QPushButton(
+            translations.TR_REPLACE_SELECTION)
         hbox.addWidget(self._btn_replace_selection)
 
         self._btn_replace.clicked.connect(self._replace)
