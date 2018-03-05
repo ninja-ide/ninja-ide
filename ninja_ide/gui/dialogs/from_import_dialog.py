@@ -16,20 +16,19 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
-from __future__ import absolute_import
-
 from sys import builtin_module_names
+
 from pkgutil import iter_modules
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QSpinBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QSpinBox
+
+from PyQt5.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide.tools import introspection
@@ -42,15 +41,12 @@ LIST_OF_PY_CHECKERS_COMMENTS = (
 
 
 def simple_python_completion():
-    """Return tuple of strings containing Python words for simple completion."""
+    """Return tuple of strings containing Python words for simple completion"""
     python_completion = []
     python_completion += builtin_module_names
     python_completion += tuple(dir(__builtins__))
     python_completion += [module_name[1] for module_name in iter_modules()]
-    try:
-        python_completion += tuple(__builtins__.__dict__.keys())
-    except:
-        pass  # is Python2
+    python_completion += tuple(__builtins__.keys())
     python_completion = tuple(sorted(set(python_completion)))
     return python_completion
 
@@ -59,11 +55,11 @@ class FromImportDialog(QDialog):
     """From Import dialog class."""
 
     def __init__(self, editorWidget, parent=None):
-        QDialog.__init__(self, parent, Qt.Dialog)
+        QDialog.__init__(self, parent, Qt.Dialog | Qt.FramelessWindowHint)
         self.setWindowTitle('from ... import ...')
         self._editorWidget = editorWidget
 
-        source = self._editorWidget.text()
+        source = self._editorWidget.text
         source = source.encode(self._editorWidget.encoding)
         self._imports = introspection.obtain_imports(source)
 
@@ -80,7 +76,8 @@ class FromImportDialog(QDialog):
         self._lineFrom.setCompleter(self._completer)
         self._lineFrom.setPlaceholderText("module")
         self._insertAt.setRange(0, 999)
-        self._insertAt.setValue(self._editorWidget.getCursorPosition()[0])
+        line, _ = self._editorWidget.cursor_position
+        self._insertAt.setValue(line)
         hbox.addWidget(self._lineFrom, 0, 1)
         hbox.addWidget(QLabel('import'), 0, 2)
         self._lineImport, self._asImport = QLineEdit(self), QLineEdit(self)
@@ -101,25 +98,27 @@ class FromImportDialog(QDialog):
         self._btnAdd = QPushButton(translations.TR_ADD, self)
         hbox.addWidget(self._btnAdd, 1, 5)
 
-        self.connect(self._lineImport, SIGNAL("returnPressed()"),
-                     self._add_import)
-        self.connect(self._btnAdd, SIGNAL("clicked()"),
-                     self._add_import)
+        self._lineImport.returnPressed.connect(self._add_import)
+        self._btnAdd.clicked.connect(self._add_import)
 
     def _add_import(self):
         """Get From item and Import item and add the import on the code."""
         fromItem = self._lineFrom.text().strip()  # from FOO
         importItem = self._lineImport.text().strip()  # import BAR
         asItem = self._asImport.text().strip()  # as FOO_BAR
-        importComment = self._lineComment.text().strip()  # lint:ok or something
+        importComment = self._lineComment.text().strip()
         if fromItem:
-            importLine = '\nfrom {0} import {1}'.format(fromItem, importItem)
+            importLine = 'from {0} import {1}'.format(fromItem, importItem)
         else:
-            importLine = '\nimport {0}'.format(importItem)
+            importLine = 'import {0}'.format(importItem)
         if asItem:
             importLine += " as " + asItem
         if importComment:
             importLine += "  # " + importComment
-        self._editorWidget.insertAt(
-            importLine, abs(self._insertAt.value() - 2), 0)
+
+        cursor = self._editorWidget.textCursor()
+        cursor.movePosition(cursor.Start)
+        cursor.movePosition(cursor.Down,
+                            cursor.MoveAnchor, self._insertAt.value() - 1)
+        cursor.insertText(importLine + "\n")
         self.close()

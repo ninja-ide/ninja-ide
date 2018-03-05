@@ -38,6 +38,7 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import start_page
+from ninja_ide.gui.dialogs import from_import_dialog
 # from ninja_ide.gui.main_panel import set_language
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import files_handler
@@ -154,6 +155,14 @@ class _MainContainer(QWidget):
 
     def hide_files_handler(self):
         self._files_handler.hide()
+
+    def import_from_everywhere(self):
+        """Insert an import line from any place in the editor."""
+
+        editorWidget = self.get_current_editor()
+        if editorWidget:
+            dialog = from_import_dialog.FromImportDialog(editorWidget, self)
+            dialog.show()
 
     def navigate_code_history(self, operation, forward):
         self.__operations[operation](forward)
