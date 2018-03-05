@@ -169,6 +169,7 @@ QPushButton:pressed {
     background: palette(light);
     border-bottom: 0;
     margin-top: 2px;
+    outline: none;
 }
 
 QToolButton#toggle_button {
