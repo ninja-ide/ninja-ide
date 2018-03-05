@@ -30,29 +30,6 @@ from ninja_ide.core import ipc
 from ninja_ide.tools import json_manager
 from ninja_ide.gui import ide
 
-# Syntax
-from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
-# Explorer Container
-import ninja_ide.gui.explorer.explorer_container  # noqa
-from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
-from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
-# from ninja_ide.gui.explorer.tabs import web_inspector
-# Checkers
-from ninja_ide.gui.editor.checkers import errors_checker  # noqa
-from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
-# from ninja_ide.gui.editor.checkers import migration_2to3
-# Preferences
-from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
-# from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
-from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
-# from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
-# from ninja_ide.gui.dialogs.preferences import preferences_plugins
-# from ninja_ide.gui.dialogs.preferences import preferences_theme
 # Templates
 from ninja_ide.core.template_registry import ntemplate_registry  # noqa
 from ninja_ide.core.template_registry import bundled_project_types  # noqa
@@ -139,6 +116,30 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     import ninja_ide.gui.central_widget  # noqa
     import ninja_ide.gui.status_bar  # noqa
     import ninja_ide.gui.menus.menubar  # noqa
+
+    # Syntax
+    from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
+    # Explorer Container
+    import ninja_ide.gui.explorer.explorer_container  # noqa
+    from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
+    from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
+    # from ninja_ide.gui.explorer.tabs import web_inspector
+    # Checkers
+    from ninja_ide.gui.editor.checkers import errors_checker  # noqa
+    from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
+    # from ninja_ide.gui.editor.checkers import migration_2to3
+    # Preferences
+    from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
+    from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
+    # from ninja_ide.gui.dialogs.preferences import preferences_plugins
+    # from ninja_ide.gui.dialogs.preferences import preferences_theme
 
     # Loading Shortcuts
     app.processEvents()
