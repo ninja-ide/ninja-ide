@@ -28,6 +28,9 @@
     "Number": {
       "color": "#F8A008"
     },
+    "Constant": {
+      "color": "#ee8859"
+    },
     "Definition": {
       "color": "#fdff74"
     },
@@ -35,7 +38,7 @@
       "color": "#6EC7D7"
     },
     "Function": {
-      "color": "#ff8080"
+      "color": "#d5d8d6"
     },
     "ProperObject": {
       "color": "#6EC7D7",

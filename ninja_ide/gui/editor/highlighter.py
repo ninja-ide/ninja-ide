@@ -328,7 +328,8 @@ def _create_context():
         "syntax_docstring": resources.get_color_scheme('Docstring'),
         "syntax_operators": resources.get_color_scheme('Operators'),
         "syntax_definitionname": resources.get_color_scheme('DefinitionName'),
-        "syntax_function": resources.get_color_scheme('Function')
+        "syntax_function": resources.get_color_scheme('Function'),
+        "syntax_constant": resources.get_color_scheme("Constant")
 
     }
     return context

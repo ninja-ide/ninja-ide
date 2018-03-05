@@ -24,7 +24,8 @@ syntax = {
         'docstring': '%(syntax_docstring)s',
         'operators': '%(syntax_operators)s',
         'definitionname': '%(syntax_definitionname)s',
-        'function': '%(syntax_function)s'
+        'function': '%(syntax_function)s',
+        'constant': '%(syntax_constant)s'
     },
     'partitions': [
         ('comment', "#", '\n'),
@@ -38,6 +39,7 @@ syntax = {
     'scanner': {
         # FIXME: Underscores in numeric literals
         None: [
+            ('constant', "\\b_*[A-Z][_\d]*[A-Z][A-Z\d]*(_\w*)?\\b"),
             ('function', "\w+(?=\ *?\()"),
             ('hexnumber', '0[xX]\d+'),
             ('octnumber', '0[oO](_?[0-7])+'),
