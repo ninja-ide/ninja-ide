@@ -18,6 +18,8 @@
         "ButtonTextDisabled": "#7f7f7f",
         "BrightText": "#ff0000",
         "Link": "#2a82da",
+        "Light": "#444",
+        "Mid": "#303030",
         "Highlight": "#F44336",
         "HighlightInactive": "#F44336",
         "HighlightDisabled": "#505050",

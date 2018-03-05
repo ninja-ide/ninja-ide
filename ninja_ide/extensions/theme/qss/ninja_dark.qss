@@ -128,7 +128,6 @@ QFrame#actionbar {
 }
 
 QPushButton#navigation_button {
-    border-radius: 3px;
     border: 1px solid gray;
     background: none;
     margin-left: 5px;
@@ -152,11 +151,24 @@ QPushButton#close_button_combo {
     padding: 2px 0 3px 0;
 }
 
-QPushButton#close_button_combo:pressed,
-QPushButton#close_split:pressed,
-QPushButton#navigation_button:pressed {
-    margin-top: 1px;
-    margin-left: 1px;
+QPushButton {
+    background: palette(dark);
+    border-radius: 3px;
+    padding: 7px 10px 7px 10px;
+}
+
+QPushButton:only-one {
+    padding: 4px 15px;
+}
+
+QPushButton:hover {
+    background: palette(mid);
+}
+
+QPushButton:pressed {
+    background: palette(light);
+    border-bottom: 0;
+    margin-top: 2px;
 }
 
 QToolButton#toggle_button {
