@@ -15,17 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import (
-    QDialog,
-    QVBoxLayout,
-    QListWidget,
-    QListWidgetItem,
-    QDialogButtonBox,
-    QLabel
-)
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtWidgets import QDialogButtonBox
+from PyQt5.QtWidgets import QLabel
+
 from PyQt5.QtCore import Qt
+
 from ninja_ide import translations
 from ninja_ide.tools.logger import NinjaLogger
+
 logger = NinjaLogger(__name__)
 
 
@@ -42,14 +43,23 @@ class UnsavedFilesDialog(QDialog):
         vbox.addWidget(QLabel(translations.TR_IDE_CONFIRM_EXIT_BODY))
         vbox.addWidget(self._unsave_files_list)
         button_box = QDialogButtonBox(self)
-        button_box.addButton(
+
+        standard_icon = self.style().standardIcon
+
+        btn = button_box.addButton(
             translations.TR_CANCEL, QDialogButtonBox.RejectRole)
+        btn.setIcon(standard_icon(self.style().SP_DialogCloseButton))
         self._btn_save_selected = button_box.addButton(
             translations.TR_SAVE_SELECTED, QDialogButtonBox.AcceptRole)
+        self._btn_save_selected.setIcon(
+            standard_icon(self.style().SP_DialogSaveButton))
         btn_save_all = button_box.addButton(
             translations.TR_SAVE_ALL, QDialogButtonBox.AcceptRole)
+        btn_save_all.setIcon(standard_icon(self.style().SP_DialogApplyButton))
         btn_donot_save = button_box.addButton(
             translations.TR_DONOT_SAVE, QDialogButtonBox.DestructiveRole)
+        btn_donot_save.setIcon(standard_icon(self.style().SP_DialogNoButton))
+
         vbox.addWidget(button_box)
 
         for nfile in unsaved_files:
