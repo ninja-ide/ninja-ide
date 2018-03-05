@@ -18,35 +18,18 @@
 import sys
 
 from PyQt5.QtWidgets import QSplashScreen
-from PyQt5.QtGui import (
-    QIcon,
-    QPixmap
-)
-from PyQt5.QtCore import (
-    Qt,
-    QCoreApplication
-)
+
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QIcon
+
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import ipc
 from ninja_ide.tools import json_manager
-from ninja_ide.tools.logger import NinjaLogger
-# from ninja_ide.gui import ninja_style
-logger = NinjaLogger(__name__)
-# Register Components:
-# lint:disable
-import ninja_ide.gui.main_panel.main_container  # noqa
-# Tools Dock
-import ninja_ide.gui.tools_dock.tools_dock  # noqa
-import ninja_ide.gui.tools_dock.console_widget  # noqa
-import ninja_ide.gui.tools_dock.run_widget  # noqa
-import ninja_ide.gui.tools_dock.find_in_files  # noqa
-# import ninja_ide.gui.tools_dock.errors_tree  # noqa
-# import ninja_ide.gui.tools_dock.tools_dock  # noqa
-import ninja_ide.gui.central_widget  # noqa
-import ninja_ide.gui.status_bar  # noqa
-import ninja_ide.gui.menus.menubar  # noqa
-# from ninja_ide.tools.completion import completion_daemon
+from ninja_ide.gui import ide
+
 # Syntax
 from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
 # Explorer Container
@@ -78,8 +61,6 @@ from ninja_ide.core.template_registry import bundled_project_types  # noqa
 ###########################################################################
 # from ninja_ide.core.encapsulated_env import nenvironment
 
-from ninja_ide.gui import ide  # noqa
-
 
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     """Load all the settings necessary before loading the UI, and start IDE."""
@@ -106,9 +87,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash.setMask(splash_pix.mask())
     splash.show()
     app.processEvents()
-
-    # Set the codec for strings (QString)
-    # QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     qsettings = ide.IDE.ninja_settings()
     data_qsettings = ide.IDE.data_settings()
@@ -149,14 +127,18 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     if not scheme:
         scheme = "Ninja Dark"
     resources.COLOR_SCHEME = all_schemes[scheme]
-    # if scheme:
-    #    color_scheme = all_schemes[scheme]
-    #    resources.CUSTOM_SCHEME = color_scheme
-    # if scheme != 'default':
-    #    scheme = file_manager.create_path(resources.EDITOR_SKINS,
-    #                                      scheme + '.color')
-    #    if file_manager.file_exists(scheme):
-    #        resources.CUSTOM_SCHEME = json_manager.parse(open(scheme))
+
+    # Register tools dock service after load some settings
+    # FIXME: Find a better way to do this
+    import ninja_ide.gui.tools_dock.tools_dock  # noqa
+    import ninja_ide.gui.tools_dock.console_widget  # noqa
+    import ninja_ide.gui.tools_dock.run_widget  # noqa
+    import ninja_ide.gui.tools_dock.find_in_files  # noqa
+
+    import ninja_ide.gui.main_panel.main_container  # noqa
+    import ninja_ide.gui.central_widget  # noqa
+    import ninja_ide.gui.status_bar  # noqa
+    import ninja_ide.gui.menus.menubar  # noqa
 
     # Loading Shortcuts
     app.processEvents()
