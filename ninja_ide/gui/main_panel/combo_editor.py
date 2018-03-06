@@ -19,40 +19,32 @@
 
 import bisect
 
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMessageBox,
-    # QDialog,
-    QSpacerItem,
-    QWidget,
-    QMenu,
-    QFrame,
-    QStyledItemDelegate,
-    QVBoxLayout,
-    QHBoxLayout,
-    QStackedLayout,
-    QStyle,
-    QLabel,
-    QComboBox,
-    QSizePolicy,
-    QPushButton,
-    QToolButton
-)
-from PyQt5.QtGui import (
-    QCursor,
-    QClipboard,
-    QColor,
-    QIcon,
-    QPalette
-)
-from PyQt5.QtCore import (
-    # QSize,
-    Qt,
-    pyqtSignal,
-    pyqtSlot,
-    QModelIndex,
-    QAbstractItemModel
-)
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QStyledItemDelegate
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QPushButton
+
+from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QClipboard
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPalette
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import QModelIndex
+from PyQt5.QtCore import QAbstractItemModel
 
 from ninja_ide import translations
 from ninja_ide.extensions import handlers
@@ -167,9 +159,9 @@ class ComboEditor(QWidget):
             if self.__original:
                 editor = neditable.editor
             else:
-                editor = neditable.editor.clone()
-                # editor = self._main_container.create_editor_from_editable(
-                #    neditable)
+                # editor = neditable.editor.clone()
+                editor = self._main_container.create_editor_from_editable(
+                   neditable)
             current_index = self.stacked.currentIndex()
             new_index = self.stacked.addWidget(editor)
             self.stacked.setCurrentIndex(new_index)
@@ -248,15 +240,6 @@ class ComboEditor(QWidget):
     def split_editor(self, orientation):
         new_combo = self.clone()
         self.splitEditor.emit(self, new_combo, orientation)
-        # new_widget = ComboEditor()
-        # for neditable in self.bar.get_editables():
-        #    new_widget.add_editor(neditable)
-        # self.splitEditor.emit(self, new_widget, orientation_vertical)
-        # for neditable in self.bar.get_editables():
-        #    new_widget.add_editor(neditable)
-        # self.splitEditor.emit(self, new_widget, orientationVertical)
-        # self.emit(SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-        #          self, new_widget, orientationVertical)
 
     def undock_editor(self):
         new_combo = ComboEditor()
@@ -501,21 +484,21 @@ class ActionBar(QFrame):
         self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
-        hbox.setSpacing(0)
+        hbox.setSpacing(1)
 
         # self.lbl_checks = QLabel('')
         # self.lbl_checks.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         # self.lbl_checks.setFixedWidth(48)
         # self.lbl_checks.setVisible(False)
         # hbox.addWidget(self.lbl_checks)
+
         self.combo_files = ComboFiles()
         self.combo_files.setObjectName("combotab")
-        # self.combo_files = QComboBox()
         self.combo_files.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.combo_files.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
-        self.combo_files.setMaximumWidth(300)
+        self.combo_files.setMaximumWidth(400)
         self.combo_files.currentIndexChanged[int].connect(self.current_changed)
         self.combo_files.needUpdateFocus.connect(lambda: self.needUpdateFocus.emit())
         self.combo_files.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
@@ -553,7 +536,6 @@ class ActionBar(QFrame):
         self.lbl_position.setContentsMargins(margin, 0, margin, 0)
         self.lbl_position.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.lbl_position)
-
         self.btn_close = QPushButton()
         self.btn_close.setIcon(
             self.style().standardIcon(QStyle.SP_DialogCloseButton))
@@ -565,7 +547,7 @@ class ActionBar(QFrame):
         else:
             self.btn_close.setObjectName('close_split')
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
-            self.btn_close.clicked.connect(self.close_split)
+            self.btn_close.clicked.connect(lambda: self.closeSplit.emit())
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.btn_close)
 

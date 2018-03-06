@@ -16,16 +16,20 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5.QtWidgets import QSplitter
+
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+
 from ninja_ide.gui.main_panel import combo_editor
 
 
 class DynamicSplitter(QSplitter):
 
+    closeDynamicSplit = pyqtSignal("PyQt_PyObject", "PyQt_PyObject")
+
     def __init__(self, orientation=Qt.Horizontal):
         super().__init__(orientation)
-        self.setHandleWidth(1)
-        self.setOpaqueResize(True)
+        self.setOpaqueResize(False)
 
     def add_widget(self, widget, top=False):
         if top:
@@ -36,32 +40,55 @@ class DynamicSplitter(QSplitter):
             widget.splitEditor.connect(self.split)
             widget.closeSplit.connect(self.close_split)
 
+    def insert_widget(self, index, widget):
+        self.insertWidget(index, widget)
+        if isinstance(widget, combo_editor.ComboEditor):
+            widget.splitEditor.connect(self.split)
+            widget.closeSplit.connect(self.close_split)
+
     def split(self, current, widget, orientation):
         index = self.indexOf(current)
         if index == -1:
             return
         if self.count() == 1:
-            self.setOrientation(orientation)
             self.add_widget(widget)
+            self.setOrientation(orientation)
         else:
-            new_splitter = DynamicSplitter()
-            new_splitter.setOrientation(orientation)
-            new_splitter.add_widget(current)
-            new_splitter.add_widget(widget)
-            self.insertWidget(index, new_splitter)
-            new_splitter.setSizes([1 for _ in range(self.count())])
-            self.setSizes([1 for _ in range(self.count())])
+            sizes = self._get_sizes(current, orientation)
+            splitter = DynamicSplitter(orientation)
+            splitter.closeDynamicSplit.connect(self.close_dynamic_split)
+            splitter.add_widget(current)
+            splitter.add_widget(widget)
+            self.insertWidget(index, splitter)
+            splitter.setSizes(sizes)
+
+        self.setSizes([1 for _ in range(self.count())])
         widget.setFocus()
 
-    def close_split(self, combo):
-        index = self.indexOf(combo)
+    def close_dynamic_split(self, split, widget):
+        index = self.indexOf(split)
+        self.insert_widget(index, widget)
+        split.deleteLater()
+
+    def _get_sizes(self, widget, orientation):
+        sizes = [1, 1]
+        if orientation == Qt.Vertical:
+            height = widget.height() / 2
+            sizes = [height, height]
+        else:
+            width = widget.width()
+            sizes = [width, width]
+        return sizes
+
+    def close_split(self, widget):
+        index = self.indexOf(widget)
         if index == -1:
             return
-        new_index = 0
-        if index == 0:
-            new_index = 1
-        if self.count() == 2:
-            combo.deleteLater()
-            self.widget(new_index).setFocus()
-        else:
+
+        combo = self.widget(int(index == 0))
+        if combo is None:
             self.deleteLater()
+        else:
+            widget.deleteLater()
+            self.closeDynamicSplit.emit(self, combo)
+            combo.setFocus()
