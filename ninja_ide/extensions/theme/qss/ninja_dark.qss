@@ -277,7 +277,7 @@ QLineEdit:focus {
 }
 
 QSplitter::handle {
-    background: palette(base);
+    background-color: palette(window);
     border: 0px solid transparent;
     height: 3px;
 }
