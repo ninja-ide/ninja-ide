@@ -1,7 +1,6 @@
 QMenuBar {
     /*background-color:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0 palette(base),stop:1 rgba(53,53,53,75));*/
     background-color: palette(base);
-    border-bottom:2px solid rgba(25,25,25,75);
 }
 QMenuBar::item {
     spacing: 2px;
@@ -267,22 +266,22 @@ QGroupBox::indicator:indeterminate:disabled {
 }
 
 QLineEdit {
-    border: 2px solid palette(shadow);
-    padding: 5px 0 3px 5px;
+    border-radius: 3px;
+    padding: 6px 10px 6px 10px;
     background: palette(base);
     selection-background-color: palette(highlight);
 }
 
-QLineEdit:!focus {
-    border: 2px solid palette(dark);
+QLineEdit:focus {
+    background: palette(midlight);
 }
 
-
 QSplitter::handle {
-    background: palette(dark);
-    border: 1px solid transparent;
+    background: palette(base);
+    border: 0px solid transparent;
+    height: 3px;
 }
 
 QSplitter:handle:hover {
-    background: palette(shadow);
+    background: gray;
 }

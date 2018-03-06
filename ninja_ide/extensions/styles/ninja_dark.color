@@ -54,7 +54,7 @@
       "color": "#86d986"
     },
     "EditorBackground": {
-      "color": "#2e2f30"
+      "color": "#1d1f21"
     },
     "EditorSelectionColor": {
       "color": "#bec0c2"
@@ -63,7 +63,7 @@
       "color": "#1d545c"
     },
     "SidebarBackground": {
-      "color": "#2e2f30"
+      "color": "#1d1f21"
     },
     "SidebarForeground": {
       "color": "#595959"
