@@ -205,8 +205,10 @@ class _MainContainer(QWidget):
             editor_widget.reset_selections()
 
     def split_assistance(self):
-        split_widget = split_orientation.SplitOrientation(self)
-        split_widget.show()
+        editor_widget = self.get_current_editor()
+        if editor_widget is not None:
+            split_widget = split_orientation.SplitOrientation(self)
+            split_widget.show()
 
     def show_dialog(self, widget):
         self.add_widget(widget)
