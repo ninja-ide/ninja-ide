@@ -138,10 +138,9 @@ class NEditor(base_editor.BaseEditor):
         self._last_line_position = 0
         # List of word separators
         # Can be used by code completion and the link emulator
-        self.word_separators = [",", ".", "[", "]", "(", ")", "{", "}"]
+        self.word_separators = [",", ".", ":", "[", "]", "(", ")", "{", "}"]
         # Extra Selections
         self._extra_selections = OrderedDict()
-        # self.__occurrences = []
         self.__link_cursor = QTextCursor()
         # Load indenter based on language
         self._indenter = indenter.load_indenter(self, neditable.language())
@@ -174,11 +173,11 @@ class NEditor(base_editor.BaseEditor):
         self.__autocomplete_quotes = self.register_extension(
             quotes.AutocompleteQuotes)
         self.autocomplete_quotes(settings.AUTOCOMPLETE_QUOTES)
-        # Mark occurrences timer
-        # FIXME
+        # Highlight word under cursor
+        self.__word_occurrences = []
         self._highlight_word_timer = QTimer()
         self._highlight_word_timer.setSingleShot(True)
-        self._highlight_word_timer.setInterval(800)
+        self._highlight_word_timer.setInterval(1000)
         self._highlight_word_timer.timeout.connect(
             self.highlight_selected_word)
         # Install custom scrollbar
@@ -279,9 +278,8 @@ class NEditor(base_editor.BaseEditor):
 
         self._scrollbar.remove_marker('current_line')
         if self._scrollbar.maximum() > 0:
-            Marker = scrollbar.marker
-            marker = Marker(current_line, 'white', priority=2)
-            self._scrollbar.add_marker('current_line', marker)
+            self._scrollbar.add_marker(
+                "current_line", current_line, "white", priority=2)
 
     def is_comment(self, block):
         """Check if the block is a inline comment"""
@@ -295,35 +293,67 @@ class NEditor(base_editor.BaseEditor):
     def show_text_changes(self, value):
         self._text_change_widget.setVisible(value)
 
-    def highlight_selected_word(self, word_find=None, results=None, cs=True):
-        # FIXME: maybe improve performance
-        if results is None:
-            word = self._text_under_cursor()
-            if word_find is not None:
-                word = word_find
-            results = self._get_find_index_results(word, cs=cs, wo=True)[1]
+    def highlight_selected_word(self):
+        """Highlight word under cursor"""
 
+        # Clear previous selections
+        self.__word_occurrences.clear()
+        self.clear_extra_selections("occurrences")
+
+        if self.extra_selections("find"):
+            # No re-highlight occurrences when have "find" extra selections
+            return
+
+        word = self.word_under_cursor().selectedText()
+        if not word:
+            return
+
+        results = self._get_find_index_results(word, cs=False, wo=True)[1]
         selections = []
+        append = selections.append
         # On very big files where a lots of occurrences can be found,
         # this freeze the editor during a few seconds. So, we can limit of 500
         # and make sure the editor will always remain responsive
+        for start_pos, end_pos in results[:500]:
+            selection = extra_selection.ExtraSelection(
+                self.textCursor(),
+                start_pos=start_pos,
+                end_pos=end_pos
+            )
+            color = resources.get_color("Occurrences")
+            selection.set_background(color)
+            append(selection)
+            # TODO: highlight results in scrollbar
+            # FIXME: from settings
+            # line = selection.cursor.blockNumber()
+            # Marker = scrollbar.marker
+            # marker = Marker(line, resources.get_color("SearchResult"), 0)
+            # self._scrollbar.add_marker("find", marker)
+        self.add_extra_selections("occurrences", selections)
+
+    def highlight_found_results(self, text, cs=False, wo=False):
+        """Highlight all found results from find/replace widget"""
+
+        self._scrollbar.remove_marker("find")
+
+        index, results = self._get_find_index_results(text, cs=cs, wo=wo)
+
+        selections = []
         append = selections.append
-        results = results[:500]
         for start, end in results:
             selection = extra_selection.ExtraSelection(
                 self.textCursor(),
                 start_pos=start,
                 end_pos=end
             )
-            selection.set_full_width()
-            selection.set_background(resources.get_color('SearchResult'))
+            color = resources.get_color("SearchResult")
+            selection.set_background(color)
             append(selection)
-            # TODO: highlight results in scrollbar
-            # line = selection.cursor.blockNumber()
-            # Marker = scrollbar.marker
-            # marker = Marker(line, resources.get_color("SearchResult"), 0)
-            # self._scrollbar.add_marker("find", marker)
+            line = selection.cursor.blockNumber()
+            self._scrollbar.add_marker("find", line, color)
         self.add_extra_selections("find", selections)
+
+        return index, len(results)
 
     def _highlight_checkers(self, neditable):
         """Add checker selections to the Editor"""
@@ -339,9 +369,7 @@ class NEditor(base_editor.BaseEditor):
             lines = checker.checks.keys()
             for line in lines:
                 # Scrollbar marker
-                Marker = scrollbar.marker
-                marker = Marker(line, color, priority=1)
-                self._scrollbar.add_marker("checker", marker)
+                self._scrollbar.add_marker("checker", line, color, priority=1)
                 # Extra selection
                 msg, col = checker.checks[line]
                 selection = extra_selection.ExtraSelection(
@@ -353,6 +381,10 @@ class NEditor(base_editor.BaseEditor):
                 selections.append(selection)
 
         self.add_extra_selections('checker', selections)
+
+    def reset_selections(self):
+        self.clear_extra_selections("find")
+        self._scrollbar.remove_marker("find")
 
     def extra_selections(self, selection_key):
         return self._extra_selections.get(selection_key, [])

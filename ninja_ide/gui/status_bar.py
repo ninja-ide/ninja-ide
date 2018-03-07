@@ -96,8 +96,10 @@ class _StatusBar(QWidget):
         self.show()
         main_container = IDE.get_service("main_container")
         editor = main_container.get_current_editor()
-        if editor is not None and editor.has_selection():
+        if editor is not None:
             text = editor.selected_text()
+            if not text:
+                text = editor.word_under_cursor().selectedText()
             self._search_widget._line_search.setText(text)
             self._search_widget.find()
         self._search_widget._line_search.setFocus()
@@ -173,16 +175,15 @@ class SearchWidget(QWidget):
         if editor is None:
             return
         cs, wo = self.search_flags
-        index, matches = 0, []
+        index, matches = 0, 0
         found = editor.find_match(self.search_text, cs, wo, backward, forward)
         if found:
-            index, matches = editor._get_find_index_results(
+            index, matches = editor.highlight_found_results(
                 self.search_text, cs, wo)
-            editor.highlight_selected_word(results=matches)
         else:
             editor.clear_extra_selections("find")
         self._line_search.counter.update_count(
-            index, len(matches), len(self.search_text) > 0)
+            index, matches, len(self.search_text) > 0)
 
 
 class ReplaceWidget(QWidget):

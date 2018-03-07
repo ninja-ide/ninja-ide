@@ -86,6 +86,9 @@
     "SearchResult": {
       "color": "#8a402c"
     },
+    "Occurrences": {
+      "color": "#494949"
+    },
     "CurrentLineNumber": {
       "color": "#d6c540"
     },
