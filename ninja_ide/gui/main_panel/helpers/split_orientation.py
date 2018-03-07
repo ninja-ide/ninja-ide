@@ -20,17 +20,15 @@ class SplitOrientation(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent, Qt.Dialog | Qt.FramelessWindowHint)
-            # parent,
-            # Qt.Dialog | Qt.FramelessWindowHint
-        # )
         self._operations = {'row': False, 'col': True}
         self.setModal(True)
-        # self.setAttribute(Qt.WA_TranslucentBackground)
-        # self.setStyleSheet("background:transparent;")
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setStyleSheet("background:transparent;")
         self.setFixedHeight(150)
-        self.setFixedWidth(300)
+        self.setFixedWidth(290)
         # Create the QML user interface.
         view = QQuickWidget()
+        view.setClearColor(Qt.transparent)
         view.rootContext().setContextProperty("theme", resources.QML_COLORS)
         view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("SplitOrientation.qml"))

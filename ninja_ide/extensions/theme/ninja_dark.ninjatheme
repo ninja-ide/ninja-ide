@@ -51,10 +51,9 @@
         "FileFolderText": "#ffffff",
         "FileFolderLineEdit": "#232729",
 
-        "SplitAssistantBackground": "#444444",
-        "SplitAssistantRect": "#232729",
-        "SplitAssistantHighlight": "#777",
-        "SplitAssistantText": "#ccc",
+        "SplitAssistantBackground": "#000000",
+        "SplitAssistantHighlight": "#303538",
+        "SplitAssistantText": "#ffffff",
 
         "RectangleBorder": "#141414"
     }
