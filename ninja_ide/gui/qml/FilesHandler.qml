@@ -5,6 +5,7 @@ Rectangle {
 
     color: theme.FilesHandlerBackground
     focus: true
+    property bool simple: false
     PropertyAnimation {
         id: showAnim
         target: root
@@ -18,6 +19,10 @@ Rectangle {
     signal close(string path, string tempFile)
     signal hide
     signal fuzzySearch(string search)
+
+    function setMode(mode) {
+        root.simple = mode;
+    }
 
     function activateInput() {
         input.text = "";
@@ -199,7 +204,7 @@ Rectangle {
             id: item
             visible: itemVisible
             width: parent.width
-            property int defaultValues: checkers ? 70 : 60
+            property int defaultValues: checkers && (!root.simple)? 70 : 40
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
             color: item.current ? theme.FilesHandlerCurrentItem : theme.FilesHandlerListView
@@ -282,10 +287,10 @@ Rectangle {
                         left: parent.left
                         right: parent.right
                     }
+                    visible: !root.simple
                     color: item.current ? theme.FilesHandlerText : theme.FilesHandlerAlternativeText
                     elide: Text.ElideLeft
                     text: path
-
                 }
             }
             Row {
@@ -294,6 +299,7 @@ Rectangle {
                     top: col.bottom
                     margins: 3
                 }
+                visible: !root.simple
                 spacing: 10
                 Repeater {
                     model: checkers
