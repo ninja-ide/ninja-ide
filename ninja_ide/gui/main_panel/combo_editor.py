@@ -162,6 +162,8 @@ class ComboEditor(QWidget):
                 # editor = neditable.editor.clone()
                 editor = self._main_container.create_editor_from_editable(
                    neditable)
+                neditable.editor.link(editor)
+
             current_index = self.stacked.currentIndex()
             new_index = self.stacked.addWidget(editor)
             self.stacked.setCurrentIndex(new_index)

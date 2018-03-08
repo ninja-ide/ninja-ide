@@ -273,6 +273,9 @@ class NEditor(base_editor.BaseEditor):
         self._highlight_word_timer.stop()
         self._highlight_word_timer.start()
 
+    def scrollbar(self):
+        return self._scrollbar
+
     def update_current_line_in_scrollbar(self, current_line):
         """Update current line highlight in scrollbar"""
 
@@ -837,6 +840,16 @@ class NEditor(base_editor.BaseEditor):
             self.zoomChanged.emit(100)
         # Update all side widgets
         self.side_widgets.update_viewport()
+
+    def link(self, clone):
+        """Links the clone with its original"""
+        # TODO: errro en compute indent
+        clone.cursor_position = self.cursor_position
+        for k, v in self._extra_selections.items():
+            clone.add_extra_selections(k, v)
+        clone.setDocument(self.document())
+        clone.scrollbar().link(self._scrollbar)
+        # clone.scrollbar.clone(self.scrollbar.markers())
 
 
 def create_editor(neditable=None):

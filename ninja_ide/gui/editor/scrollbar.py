@@ -174,3 +174,9 @@ class NScrollBar(QScrollBar):
         marker = Marker(lineno, color, priority)
         self._overlay.markers[category].append(marker)
         self._overlay.schedule_update()
+
+    def link(self, scrollbar):
+        self._overlay.markers.update(scrollbar.markers().copy())
+
+    def markers(self):
+        return self._overlay.markers
