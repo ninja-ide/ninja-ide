@@ -436,7 +436,7 @@ class _MainContainer(QWidget):
         # Emit a signal about the file open
         self.fileOpened.emit(filename)
 
-        if not keep_index:
+        if keep_index:
             self.combo_area.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
