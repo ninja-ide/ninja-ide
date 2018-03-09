@@ -8,6 +8,7 @@ from PyQt5.QtGui import QTextBlock
 from PyQt5.QtCore import QSize
 from PyQt5.QtCore import QRect
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
 
 from ninja_ide.gui.editor import side_area
 
@@ -92,6 +93,10 @@ class CodeFoldingWidget(side_area.SideWidget):
         self.code_folding = PythonCodeFolding()
         self.setMouseTracking(True)
         self.__mouse_over = None
+        self.__timer = QTimer(self)
+        self.__timer.setSingleShot(True)
+        self.__timer.setInterval(100)
+        self.__timer.timeout.connect(self.update)
 
     def register(self, neditor):
         super().register(neditor)
@@ -141,8 +146,10 @@ class CodeFoldingWidget(side_area.SideWidget):
         block = self.__block_under_mouse(event)
         if block is not None and self.code_folding.is_foldable(block):
             self.setCursor(Qt.PointingHandCursor)
+            self.__timer.start()
         else:
             self.setCursor(Qt.ArrowCursor)
+            self.__timer.stop()
         self.__mouse_over = block
         self.update()
 
@@ -174,7 +181,7 @@ class CodeFoldingWidget(side_area.SideWidget):
             self.style().drawPrimitive(QStyle.PE_IndicatorBranch, opt,
                                        painter, self)
             # Draw folded region background
-            if block == self.__mouse_over:
+            if block == self.__mouse_over and not self.__timer.isActive():
                 fm_height = self._neditor.fontMetrics().height()
                 rect_height = 0
                 color = self.palette().highlight().color()
