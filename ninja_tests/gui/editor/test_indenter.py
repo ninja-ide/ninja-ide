@@ -163,3 +163,108 @@ def test_19():
     editor_ref._indenter.indent_block(editor_ref.textCursor())
     expected = "d = [\n    'one', 'two']"
     assert editor_ref.text == expected
+
+
+def test_20():
+    """
+    {
+        {
+        },
+        | <-- cursor
+    }
+    """
+    a_text = "{\n    {\n    },\n}"
+    editor_ref = create_editor("python")
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 2, 6
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = '{\n    {\n    },\n    \n}'
+    assert editor_ref.text == expected
+    assert editor_ref.cursor_position == (3, 4)
+
+
+def test_21():
+    """
+    x = [0, 1, 2,
+         [3, 4, 5,
+          6, 7, 8],
+         9, 10, 11]
+    """
+
+    a_text = "x = [0, 1, 2,"
+    editor_ref = create_editor("python")
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 1, 13
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "x = [0, 1, 2,\n     "
+    assert editor_ref.text == expected
+
+
+def test_22():
+    """
+    x = [0, 1, 2,
+         [3, 4, 5,
+          6, 7, 8],
+         9, 10, 11]
+    """
+
+    a_text = "x = [0, 1, 2,\n     [3, 4, 5,"
+    editor_ref = create_editor("python")
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 2, 14
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "x = [0, 1, 2,\n     [3, 4, 5,\n      "
+    assert editor_ref.text == expected
+
+
+def test_23():
+    """
+    x = [0, 1, 2,
+         [3, 4, 5,
+          6, 7, 8],
+         9, 10, 11]
+    """
+
+    a_text = "x = [0, 1, 2,\n     [3, 4, 5,\n      6, 7, 8],"
+    editor_ref = create_editor("python")
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 3, 15
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "x = [0, 1, 2,\n     [3, 4, 5,\n      6, 7, 8],\n     "
+    assert editor_ref.text == expected
+
+
+def test_24():
+    """
+    x = [
+        0, 1, 2, [3, 4, 5,
+                  6, 7, 8],
+        9, 10, 11
+    ]
+    """
+
+    a_text = "x = [\n    0, 1, 2, [3, 4, 5,"
+    editor_ref = create_editor("python")
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 1, 22
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "x = [\n    0, 1, 2, [3, 4, 5,\n              "
+    assert editor_ref.text == expected
+
+
+def test_25():
+    """
+    x = [
+        0, 1, 2, [3, 4, 5,
+                  6, 7, 8],
+        9, 10, 11
+    ]
+    """
+
+    a_text = "x = [\n    0, 1, 2, [3, 4, 5,\n              6, 7, 8],"
+    editor_ref = create_editor("python")
+    editor_ref.text = a_text
+    editor_ref.cursor_position = 2, 23
+    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    expected = "x = [\n    0, 1, 2, [3, 4, 5,\n              6, 7, 8],\n    "
+    assert editor_ref.text == expected

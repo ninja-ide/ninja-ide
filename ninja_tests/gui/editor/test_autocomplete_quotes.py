@@ -99,11 +99,10 @@ def test_autocomplete_triple_double_quotes3(qtbot):
 
 def test_last(qtbot):
     editor_ref = create_editor()
-    editor_ref.text = "class NINJA(object):"
+    editor_ref.text = "class NINJA(object):\n    "
     cur = editor_ref.textCursor()
     cur.movePosition(cur.End)
     editor_ref.setTextCursor(cur)
-    qtbot.keyPress(editor_ref, Qt.Key_Return)
     qtbot.keyPress(editor_ref, Qt.Key_QuoteDbl)
     qtbot.keyPress(editor_ref, Qt.Key_QuoteDbl)
     qtbot.keyPress(editor_ref, Qt.Key_QuoteDbl)
