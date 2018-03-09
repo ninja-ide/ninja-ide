@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import (
     QColor,
     QPainter,
@@ -36,6 +35,7 @@ class LineNumberWidget(side_area.SideWidget):
 
     def __init__(self):
         side_area.SideWidget.__init__(self)
+        self.__selecting = False
         self._color_unselected = QColor(
             resources.get_color('SidebarForeground'))
         self._color_selected = QColor(resources.get_color('CurrentLineNumber'))
@@ -76,3 +76,19 @@ class LineNumberWidget(side_area.SideWidget):
             self._neditor.document().defaultFont()).width('9')
 
         return self.LEFT_MARGIN + fmetrics_width * digits + self.RIGHT_MARGIN
+
+    def mousePressEvent(self, event):
+        self.__selecting = True
+        self.__selection_start_pos = event.pos().y()
+        start = end = self._neditor.line_from_position(
+            self.__selection_start_pos)
+        self.__selection_start_line = start
+        self._neditor.select_lines(start, end)
+
+    def mouseMoveEvent(self, event):
+        if self.__selecting:
+            end_pos = event.pos().y()
+            end_line = self._neditor.line_from_position(end_pos)
+            if end_line == -1:
+                return
+            self._neditor.select_lines(self.__selection_start_line, end_line)

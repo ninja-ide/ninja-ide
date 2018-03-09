@@ -312,6 +312,33 @@ class BaseEditor(QPlainTextEdit):
         indentation = len(text) - len(text.lstrip())
         return indentation
 
+    def select_lines(self, start=0, end=0):
+        """Selects enteri lines between start and end line numbers"""
+
+        if end == -1:
+            end = self.line_count() - 1
+        if start < 0:
+            start = 0
+        cursor = self.textCursor()
+        block = self.document().findBlockByNumber(start)
+        cursor.setPosition(block.position())
+
+        if end > start:
+            cursor.movePosition(QTextCursor.Down,
+                                QTextCursor.KeepAnchor, end - start)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+
+        elif end < start:
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.Up,
+                                QTextCursor.KeepAnchor, start - end)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                                QTextCursor.KeepAnchor)
+        else:
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+
+        self.setTextCursor(cursor)
+
     def line_from_position(self, position):
         height = self.fontMetrics().height()
         for top, line, block in self.__visible_blocks:
