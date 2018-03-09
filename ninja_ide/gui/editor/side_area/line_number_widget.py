@@ -92,3 +92,6 @@ class LineNumberWidget(side_area.SideWidget):
             if end_line == -1:
                 return
             self._neditor.select_lines(self.__selection_start_line, end_line)
+
+    def wheelEvent(self, event):
+        self._neditor.wheelEvent(event)
