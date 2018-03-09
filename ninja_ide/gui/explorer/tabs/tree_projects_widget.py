@@ -69,11 +69,12 @@ DEBUG = logger.debug
 
 class ProjectTreeColumn(QDialog):
 
-    # Signals
+    # Signalsnproject =
     dockWidget = pyqtSignal('PyQt_PyObject')
     undockWidget = pyqtSignal()
     changeTitle = pyqtSignal('PyQt_PyObject', 'QString')
     updateLocator = pyqtSignal()
+    activeProjectChanged = pyqtSignal()
 
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent)
@@ -100,8 +101,6 @@ class ProjectTreeColumn(QDialog):
 
         self.projects = []
 
-        self._combo_project.currentIndexChanged[int].connect(
-            self._change_current_project)
         self._combo_project.customContextMenuRequested[
             'const QPoint&'].connect(self.context_menu_for_root)
 
@@ -255,6 +254,11 @@ class ProjectTreeColumn(QDialog):
             self._projects_area.setCurrentIndex(current_index - 1)
             self._combo_project.setCurrentIndex(current_index - 1)
 
+        # FIXME: improve?
+        if len(self.projects) == 1:
+            self._combo_project.currentIndexChanged[int].connect(
+                self._change_current_project)
+
     def _close_project(self, widget):
         """Close the project related to the tree widget."""
         index = self._projects_area.currentIndex()
@@ -276,6 +280,7 @@ class ProjectTreeColumn(QDialog):
 
     def _change_current_project(self, index):
         nproject = self._combo_project.itemData(index)
+
         ninjaide = IDE.get_service("ide")
         projects = ninjaide.get_projects()
         for project in projects.values():
@@ -284,6 +289,7 @@ class ProjectTreeColumn(QDialog):
             else:
                 project.is_current = False
         self._projects_area.setCurrentIndex(index)
+        self.activeProjectChanged.emit()
 
     def close_opened_projects(self):
         for project in reversed(self.projects):

@@ -223,6 +223,11 @@ class IDE(QMainWindow):
                 "target": "main_container",
                 "signal_name": "allFilesClosed",
                 "slot": self.change_window_title
+            },
+            {
+                "target": "projects_explorer",
+                "signal_name": "activeProjectChanged",
+                "slot": self.change_window_title
             }
         )
         self.register_signals('ide', connections)
@@ -598,9 +603,8 @@ class IDE(QMainWindow):
             title.append(text)
         if self._session is None:
             if self.get_current_project() is not None:
-                # No project
                 project_name = self.get_current_project().name
-                title.append(project_name)
+                title.append("[" + project_name + "]")
         else:
             title.append(
                 translations.TR_SESSION_IDE_HEADER.format(self._session))
