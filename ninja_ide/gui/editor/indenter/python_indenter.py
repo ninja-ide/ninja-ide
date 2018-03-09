@@ -34,7 +34,6 @@ class PythonIndenter(base.BaseIndenter):
         text = self._neditor.text[:cursor.position()]
         current_indent = self.block_indent(block.previous())
 
-        indent = None
         # Parse text
         results = self.__parse_text(text)
         # Get result of parsed text
@@ -94,8 +93,6 @@ class PythonIndenter(base.BaseIndenter):
         else:
             indent_col = last_open_bracket[1] + 1
         return indent_col * " "
-
-        # return indent
 
     def __parse_text(self, text):
         # [line, column] pairs describing where open brackets are
