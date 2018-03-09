@@ -552,8 +552,10 @@ class NEditor(base_editor.BaseEditor):
         start_pos = end_pos = cursor.position()
         while not cursor.atStart():
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
-            char = cursor.selectedText()[0]
             selected_text = cursor.selectedText()
+            if not selected_text:
+                break
+            char = selected_text[0]
             if (selected_text in self.word_separators and (
                     selected_text != "n" and selected_text != "t") or
                     char.isspace()):
@@ -563,8 +565,10 @@ class NEditor(base_editor.BaseEditor):
         cursor.setPosition(end_pos)
         while not cursor.atEnd():
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            char = cursor.selectedText()[0]
             selected_text = cursor.selectedText()
+            if not selected_text:
+                break
+            char = selected_text[0]
             if (selected_text in self.word_separators and (
                     selected_text != "n" and selected_text != "t") or
                     char.isspace()):
