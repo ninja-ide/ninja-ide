@@ -24,7 +24,9 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QCheckBox
 
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -209,6 +211,8 @@ class ReplaceWidget(QWidget):
         self._btn_replace_all.clicked.connect(self._replace_all)
         self._btn_replace_selection.clicked.connect(self._replace_selection)
         self._line_replace.returnPressed.connect(self._replace)
+
+        IDE.register_service("status_replace", self)
 
     def _replace(self):
         """Replace one occurrence of the word"""
@@ -476,6 +480,16 @@ class TextLine(QLineEdit):
         QLineEdit.__init__(self, parent)
         self.counter = ui_tools.LineEditCount(self)
         self._mode = _STATUSBAR_STATE_SEARCH
+        self.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress:
+            if self._mode == _STATUSBAR_STATE_SEARCH:
+                status_replace = IDE.get_service("status_replace")
+                if event.key() == Qt.Key_Tab and status_replace.isVisible():
+                    status_replace._line_replace.setFocus()
+                    return True
+        return super().eventFilter(obj, event)
 
     """
     def keyPressEvent(self, event):
