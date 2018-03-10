@@ -26,6 +26,7 @@ from ninja_ide.gui.main_panel import combo_editor
 class DynamicSplitter(QSplitter):
 
     closeDynamicSplit = pyqtSignal("PyQt_PyObject", "PyQt_PyObject")
+    needUpdateSizes = pyqtSignal()
 
     def __init__(self, orientation=Qt.Horizontal):
         super().__init__(orientation)
@@ -46,29 +47,31 @@ class DynamicSplitter(QSplitter):
             widget.splitEditor.connect(self.split)
             widget.closeSplit.connect(self.close_split)
 
-    def split(self, current, widget, orientation):
+    def split(self, current, new_widget, orientation):
         index = self.indexOf(current)
         if index == -1:
             return
+        sizes = self._get_sizes(current, orientation)
         if self.count() == 1:
-            self.add_widget(widget)
+            self.add_widget(new_widget)
             self.setOrientation(orientation)
         else:
             sizes = self._get_sizes(current, orientation)
             splitter = DynamicSplitter(orientation)
             splitter.closeDynamicSplit.connect(self.close_dynamic_split)
             splitter.add_widget(current)
-            splitter.add_widget(widget)
+            splitter.add_widget(new_widget)
             self.insertWidget(index, splitter)
+            sizes = [size * 2 for size in sizes]
             splitter.setSizes(sizes)
-
-        self.setSizes([1 for _ in range(self.count())])
-        widget.setFocus()
+        self.setSizes(sizes)
+        new_widget.setFocus()
 
     def close_dynamic_split(self, split, widget):
         index = self.indexOf(split)
         self.insert_widget(index, widget)
         split.deleteLater()
+        self.setSizes([1, 1])
 
     def _get_sizes(self, widget, orientation):
         sizes = [1, 1]
@@ -84,11 +87,13 @@ class DynamicSplitter(QSplitter):
         index = self.indexOf(widget)
         if index == -1:
             return
-
-        combo = self.widget(int(index == 0))
-        if combo is None:
+        new_index = int(index == 0)
+        widget.deleteLater()
+        combo_widget = self.widget(new_index)
+        if combo_widget is None:
+            w = self.widget(0)
+            self.insert_widget(0, w)
             self.deleteLater()
         else:
-            widget.deleteLater()
-            self.closeDynamicSplit.emit(self, combo)
-            combo.setFocus()
+            combo_widget.setFocus()
+            self.closeDynamicSplit.emit(self, combo_widget)
