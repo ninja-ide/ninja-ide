@@ -156,7 +156,7 @@ class FilesHandler(QWidget):
         self._add_model()
         editor_widget = self._main_container.get_current_editor()
         simple = False
-        if editor_widget.height() < 400 or editor_widget.width() < 550:
+        if editor_widget.height() < 400 or editor_widget.width() < 350:
             width = editor_widget.width()
             height = self._main_container.height() / 3
             simple = True

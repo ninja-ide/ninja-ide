@@ -204,7 +204,7 @@ Rectangle {
             id: item
             visible: itemVisible
             width: parent.width
-            property int defaultValues: checkers && (!root.simple)? 70 : 40
+            property int defaultValues: checkers && (!root.simple) ? 70 : (listFuzzyFiles.visible && root.simple) ? 40: 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
             color: item.current ? theme.FilesHandlerCurrentItem : theme.FilesHandlerListView
@@ -326,7 +326,7 @@ Rectangle {
         }
         spacing: 2
 
-        //focus: true
+        clip: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200
@@ -338,13 +338,13 @@ Rectangle {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-            top: fuzzyText.bottom
+            top: inputArea.bottom
             margins: 5
         }
         visible: !listFiles.visible
         spacing: 2
 
-        //focus: true
+        clip: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200
