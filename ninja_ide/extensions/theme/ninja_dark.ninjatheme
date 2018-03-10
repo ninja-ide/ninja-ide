@@ -2,7 +2,7 @@
     "name": "Dark",
     "stylesheet": "ninja_dark",
     "palette": {
-        "Window": "#161719",
+        "Window": "#141517",
         "WindowText": "#ffffff",
         "WindowTextDisabled": "#7f7f7f",
         "Base": "#161719",
@@ -13,7 +13,7 @@
         "TextDisabled": "#7f7f7f",
         "Dark": "#252526",
         "Shadow": "#141414",
-        "Button": "#2b2e31",
+        "Button": "#2e3135",
         "ButtonText": "#ffffff",
         "ButtonTextDisabled": "#7f7f7f",
         "BrightText": "#ff0000",

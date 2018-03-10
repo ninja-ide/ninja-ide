@@ -274,7 +274,7 @@ QGroupBox::indicator:indeterminate:disabled {
 QLineEdit {
     border-radius: 3px;
     padding: 6px 10px 6px 10px;
-    background: palette(base);
+    background: palette(dark);
     selection-background-color: palette(highlight);
 }
 
