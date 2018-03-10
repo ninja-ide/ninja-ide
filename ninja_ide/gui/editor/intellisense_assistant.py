@@ -19,7 +19,6 @@ import time
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtCore import Qt
 
 from ninja_ide.gui.editor import proposal_widget
 from ninja_ide.gui.ide import IDE
@@ -45,9 +44,33 @@ class IntelliSenseAssistant(QObject):
 
         self._operations = {
             "completions": self._handle_completions,
-            "definitions": self._handle_definitions
+            "definitions": self._handle_definitions,
+            "signatures": self._handle_signatures
         }
         self._intellisense = IDE.get_service("intellisense")
+
+    def _handle_signatures(self, signatures):
+        if not signatures:
+            return
+        if not signatures["signature.params"]:
+            return
+        calltip = "<p style='white-space:pre'>{0}(".format(
+            signatures.get("signature.name"))
+        params = signatures.get("signature.params")
+        for i, param in enumerate(params):
+            if i == signatures.get("signature.index"):
+                calltip += "<b><u>"
+            calltip += param
+            if i == signatures.get("signature.index"):
+                calltip += "</u></b>"
+            if i < len(params) - 1:
+                calltip += ", "
+        calltip += ")"
+        crect = self._editor.cursorRect()
+        crect.setX(crect.x() + self._editor.viewport().x())
+        crect.setY(crect.y() + self._editor.fontMetrics().height() - 10)
+        position = self._editor.mapToGlobal(crect.topLeft())
+        self._editor.show_tooltip(calltip, position)
 
     def _handle_completions(self, completions):
         if not completions:
@@ -79,51 +102,24 @@ class IntelliSenseAssistant(QObject):
         # Disconnect
         self._intellisense.resultAvailable.disconnect(self._on_finished)
 
-    def _get_code_info(self):
-        # TODO: move to IntelliSense Service, this is a common code
-        # FIXME: we do the same in the editor, is it okay?
-        word = self.__word_before_cursor(ignore=("(", ")", "."))
-        if not word:
-            return {}
-        line, col = self._editor.cursor_position
-        request_data = {
-            "source": self._editor.text,
-            "line": line + 1,
-            "column": col,
-            "path": self._editor.file_path,
-        }
-        return request_data
-
-    def _process_completions(self):
-        request_data = self._get_code_info()
-        if not request_data:
-            return
-        if self._view is not None:
-            self._view.abort()
-
-        self._intellisense.get(
-            "completions", request_data, self._editor)
-
-    def _process_definitions(self):
-        request_data = self._get_code_info()
-        self._intellisense.get("definitions", request_data, self._editor)
-
     def process(self, kind):
         self._intellisense.resultAvailable.connect(self._on_finished)
-        handle = getattr(self, "_process_" + kind)
-        handle()
+        if kind == "completions":
+            if self._view is not None:
+                self._view.abort()
+        self._intellisense.get(kind, self._editor)
 
     def _create_view(self, completions):
         self._view = proposal_widget.ProposalWidget(self._editor)
         self._view.destroyed.connect(self.finalize)
-        self._view.proposalItemActivated.connect(self.process_proposal_item)
+        self._view.proposalItemActivated.connect(self._process_proposal_item)
 
         model = proposal_widget.ProposalModel(self._view)
         model.set_items(completions)
         self._view.set_model(model)
         self._view.show_proposal()
 
-    def process_proposal_item(self, item):
+    def _process_proposal_item(self, item):
         """Handle proposal item from completions/snippets"""
         prefix = self.__word_before_cursor()
         to_insert = item.text[len(prefix):]

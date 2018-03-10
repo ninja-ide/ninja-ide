@@ -19,6 +19,7 @@ import os
 import sys
 
 from ninja_ide.intellisensei import intellisense_registry
+from ninja_ide.tools.logger import NinjaLogger
 
 jedi_path = os.path.join(os.path.dirname(__file__))
 sys.path.insert(0, jedi_path)
@@ -28,7 +29,6 @@ except ImportError:
     jedi = None
 finally:
     sys.path.remove(jedi_path)
-from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger(__name__)
 DEBUG = logger.debug
@@ -36,7 +36,8 @@ DEBUG = logger.debug
 
 class JediService(intellisense_registry.IntelliSenseService):
 
-    def __get_script(self, info):
+    def __get_script(self):
+        info = self._code_info
         try:
             script = jedi.Script(
                 source=info.get("source"),
@@ -49,8 +50,8 @@ class JediService(intellisense_registry.IntelliSenseService):
             DEBUG("Jedi error: '%s'" % reason)
         return script
 
-    def get_completions(self, request):
-        script = self.__get_script(request)
+    def get_completions(self):
+        script = self.__get_script()
         completions = []
         for completion in script.completions():
             completions.append({
@@ -60,6 +61,32 @@ class JediService(intellisense_registry.IntelliSenseService):
             })
 
         return completions
+
+    def get_signatures(self):
+        script = self.__get_script()
+        signatures = script.call_signatures()
+        results = {}
+        for signature in signatures:
+            name = signature.name
+            if not name:
+                continue
+            results["signature.name"] = name
+            results["signature.params"] = self._get_params(signature.params)
+            results["signature.index"] = signature.index
+        return results
+
+    def _get_params(self, params):
+        params_list = []
+        for pos, param in enumerate(params):
+            name = param.full_name
+            if not name:
+                continue
+            if name == "self" and pos == 0:
+                continue
+            if not name.startswith("..."):
+                name = name.split(".")[-1]
+            params_list.append(name)
+        return params_list
 
     def get_definitions(self, request):
         script = self.__get_script(request)

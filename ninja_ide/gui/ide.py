@@ -189,7 +189,6 @@ class IDE(QMainWindow):
         IDE.register_bar_category(translations.TR_MENU_ABOUT, 160)
         # Register General Menu Items
         ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
-
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
         self.register_service('filesystem', self.filesystem)

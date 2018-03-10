@@ -22,7 +22,6 @@ from collections import Callable
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QRunnable
-from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import pyqtSlot
 
@@ -30,9 +29,6 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger(__name__)
-DEBUG = logger.debug
-
-# FIXME: sacar LANGUAGE MAP de settings??
 
 
 class Signals(QObject):
@@ -56,7 +52,7 @@ class Worker(QRunnable):
         try:
             result = self.__runnable(*self.__args, **self.__kwargs)
         except Exception as reason:
-            DEBUG("Error occurred: '%s'" % str(reason))
+            logger.error("Error occurred: '%s'" % str(reason))
             self.signals.error.emit(reason)
         else:
             self.signals.ready.emit(result)
@@ -72,37 +68,58 @@ class IntelliSense(QObject):
         QObject.__init__(self)
         self.__services = {}
         self.__thread = QThreadPool()
+        self._main_container = IDE.get_service("main_container")
 
         IDE.register_service("intellisense", self)
 
     def services(self):
         return self.__services.keys()
 
-    def get(self, operation, info, editor):
+    def _code_info(self, editor):
+        word = editor.word_under_cursor(ignore=("(", ")", ".")).selectedText()
+        if not word:
+            return {}
+        line, col = editor.cursor_position
+        return {
+            "source": editor.text,
+            "line": line + 1,
+            "column": col,
+            "path": editor.file_path,
+        }
+
+    def get(self, operation, editor):
         """Handle request"""
-        self._start_time = time.time()
         func_name = "get_" + operation
-        service = self.__services.get(editor.neditable.language())
+        language = editor.neditable.language()
+        service = self.__services.get(language)
+        if service is None:
+            logger.warning("No IntelliSense service for '{}'".format(language))
+            return
+        code_info = self._code_info(editor)
+        setattr(service, "_code_info", code_info)
+        self._start_time = time.time()
         func = getattr(service, func_name, None)
         if isinstance(func, Callable):
-            worker = Worker(func, info)
-            worker.signals.ready.connect(lambda r: self._on_ready(r, operation))
+            worker = Worker(func)
+            worker.signals.ready.connect(
+                lambda r: self._on_ready(r, operation))
             worker.signals.error.connect(self._on_error)
             worker.signals.finished.connect(self._on_finished)
             self.__thread.start(worker)
 
     @pyqtSlot()
     def _on_finished(self):
-        DEBUG("Worker finished")
+        logger.debug("Worker finished")
 
     @pyqtSlot("PyQt_PyObject", "QString")
     def _on_ready(self, result, operation):
-        DEBUG("Finalize in %.1f" % (time.time() - self._start_time))
+        logger.debug("Worker finalize in %.1f" % (
+            time.time() - self._start_time))
         self.resultAvailable.emit(result, operation)
 
     @pyqtSlot("PyQt_PyObject")
     def _on_error(self, error):
-        print("Error", error)
+        logger.error("Error ocurred '{}'".format(error))
 
     def register_service(self, service):
         self.__services[service.language] = service()
@@ -129,8 +146,22 @@ class IntelliSenseService(QObject):
     def get_definitions(self):
         """
         Here we expect you to return a list of dicts.
+        {
+            "text": definition name,
+            "filename": definition path,
+            "line": line number,
+            "column": column number
+        }
         """
-        pass
+
+    def get_signatures(self):
+        """Here we expect you to return a list of dicts.
+        {
+            "signature.name": name,
+            "signature.params": list of signature params,
+            "signature.index": index
+        }
+        """
 
     def get_completions(self):
         """
@@ -139,7 +170,8 @@ class IntelliSenseService(QObject):
         The dict must have the following structure:
         {
             "text": completion_name,
-            "type": completion_type
+            "type": completion_type,
+            "detail": detail, description of completion
         }
         >>> completions = []
         >>> c1 = {"text": "capitalize", "type": "function"}
@@ -148,7 +180,7 @@ class IntelliSenseService(QObject):
         >>> completions.append(c2)
 
         """
-        raise NotImplementedError
+        raise NotImplementedError("You should implement this")
 
 
 # Register service

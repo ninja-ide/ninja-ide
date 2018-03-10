@@ -48,6 +48,7 @@ from ninja_ide.gui.editor.extensions import margin_line
 from ninja_ide.gui.editor.extensions import indentation_guides
 from ninja_ide.gui.editor.extensions import braces
 from ninja_ide.gui.editor.extensions import quotes
+from ninja_ide.gui.editor.extensions import calltip
 # Side
 from ninja_ide.gui.editor.side_area import manager
 from ninja_ide.gui.editor.side_area import line_number_widget
@@ -61,6 +62,7 @@ class NEditor(base_editor.BaseEditor):
     goToDefRequested = pyqtSignal("PyQt_PyObject")
     painted = pyqtSignal("PyQt_PyObject")
     keyPressed = pyqtSignal("PyQt_PyObject")
+    keyReleased = pyqtSignal("PyQt_PyObject")
     postKeyPressed = pyqtSignal("PyQt_PyObject")
     addBackItemNavigation = pyqtSignal()
     editorFocusObtained = pyqtSignal()
@@ -115,6 +117,8 @@ class NEditor(base_editor.BaseEditor):
         self.__autocomplete_quotes = self.register_extension(
             quotes.AutocompleteQuotes)
         self.autocomplete_quotes(settings.AUTOCOMPLETE_QUOTES)
+        # Calltips
+        self.register_extension(calltip.CallTips)
         # Highlight word under cursor
         self.__word_occurrences = []
         self._highlight_word_timer = QTimer()
@@ -541,6 +545,7 @@ class NEditor(base_editor.BaseEditor):
         return False
 
     def keyReleaseEvent(self, event):
+        self.keyReleased.emit(event)
         if event.key() == Qt.Key_Control:
             self.clear_link()
         #    if self.__link_selection is not None:
@@ -548,6 +553,9 @@ class NEditor(base_editor.BaseEditor):
         #        self.__link_selection = None
         #        self.viewport().setCursor(Qt.IBeamCursor)
         super().keyReleaseEvent(event)
+
+    def show_tooltip(self, text, position, duration=1000 * 60):
+        QToolTip.showText(position, text, self, self.rect(), duration)
 
     def current_color(self, cursor=None):
         if cursor is None:
