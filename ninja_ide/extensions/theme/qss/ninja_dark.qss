@@ -89,10 +89,16 @@ QComboBox#combo_symbols {
 QPushButton#close_button_combo:hover,
 QPushButton#navigation_button:hover,
 QComboBox#combo_projects:hover,
-QComboBox#combotab:hover,
 QComboBox#combo_symbols:hover {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 #808080, stop: 1.0 #474747);
+}
+
+QComboBox#combotab:hover {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #808080, stop: 1.0 #474747);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 QComboBox#combo_projects::drop-down,
