@@ -193,7 +193,7 @@ class NEditor(base_editor.BaseEditor):
             else:
                 self._neditable.set_editor(self)
             self._neditable.checkersUpdated.connect(self._highlight_checkers)
-        self.register_syntax_for(language=neditable.language())
+        # self.register_syntax_for(language=neditable.language())
         # Widgets on side area
         self.side_widgets = manager.SideWidgetManager(self)
         # Mark text changes
@@ -851,9 +851,8 @@ class NEditor(base_editor.BaseEditor):
         clone.cursor_position = self.cursor_position
         for k, v in self._extra_selections.items():
             clone.add_extra_selections(k, v)
-        clone.setDocument(self.document())
+        # clone.setDocument(self.document())
         clone.scrollbar().link(self._scrollbar)
-        # clone.scrollbar.clone(self.scrollbar.markers())
 
 
 def create_editor(neditable=None):
