@@ -444,7 +444,8 @@ class OutputWidget(QPlainTextEdit):
         # Formats
         plain_format = QTextCharFormat()
         normal_format = QTextCharFormat()
-        normal_format.setForeground(QColor(resources.get_color("Default")))
+        normal_format.setForeground(
+            QColor(resources.COLOR_SCHEME.get("editor.foreground")))
         error_format = QTextCharFormat()
         error_format.setForeground(QColor('#ff6c6c'))
         error_format2 = QTextCharFormat()
@@ -466,7 +467,8 @@ class OutputWidget(QPlainTextEdit):
         # Style
         palette = self.palette()
         palette.setColor(
-            palette.Base, QColor(resources.get_color('EditorBackground')))
+            palette.Base,
+            QColor(resources.COLOR_SCHEME.get('editor.background')))
         self.setPalette(palette)
 
     def mousePressEvent(self, event):

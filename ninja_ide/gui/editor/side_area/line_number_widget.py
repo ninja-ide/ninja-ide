@@ -37,8 +37,9 @@ class LineNumberWidget(side_area.SideWidget):
         side_area.SideWidget.__init__(self)
         self.__selecting = False
         self._color_unselected = QColor(
-            resources.get_color('SidebarForeground'))
-        self._color_selected = QColor(resources.get_color('CurrentLineNumber'))
+            resources.COLOR_SCHEME.get('editor.sidebar.foreground'))
+        self._color_selected = QColor(
+            resources.COLOR_SCHEME.get("editor.line"))
 
     def sizeHint(self):
         return QSize(self.__calculate_width(), 0)

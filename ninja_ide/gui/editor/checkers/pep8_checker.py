@@ -47,8 +47,7 @@ class Pep8Checker(QThread):
         self._encoding = ''
         self.checks = {}
 
-        self.checker_icon = ui_tools.colored_icon(
-            ":img/warning", resources.get_color('Pep8Underline'))
+        self.checker_icon = None
 
         # ninjaide = IDE.get_service('ide')
         # self.connect(ninjaide,
@@ -130,13 +129,13 @@ class CustomChecker(pycodestyle.Checker):
 
 def remove_pep8_checker():
     checker = (Pep8Checker,
-               resources.get_color('Pep8Underline'), 2)
+               resources.COLOR_SCHEME.get("editor.pep8"), 2)
     remove_checker(checker)
 
 
 if settings.CHECK_STYLE:
     register_checker(
         checker=Pep8Checker,
-        color=resources.get_color('Pep8Underline'),
+        color=resources.COLOR_SCHEME.get("editor.pep8"),
         priority=2
     )

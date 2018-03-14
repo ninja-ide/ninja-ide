@@ -100,10 +100,11 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
     app.processEvents()
     all_schemes = json_manager.load_editor_schemes()
-    scheme = qsettings.value("editor/general/scheme", "")
-    if not scheme:
-        scheme = "Ninja Dark"
-    resources.COLOR_SCHEME = all_schemes[scheme]
+    resources.COLOR_SCHEME = all_schemes["Ninja Dark"]
+    # scheme = qsettings.value("editor/general/scheme", "")
+    # if not scheme:
+    #     scheme = "Ninja Dark"
+    # resources.COLOR_SCHEME = all_schemes[scheme]
 
     # Register tools dock service after load some settings
     # FIXME: Find a better way to do this

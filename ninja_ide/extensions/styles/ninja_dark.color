@@ -1,99 +1,51 @@
 {
-  "name": "Ninja Dark",
-  "colors": {
-    "Default": {
-      "color": "#d5d8d6"
-    },
-    "Keyword": {
-      "color": "#83c1fb"
-    },
-    "Operators": {
-      "color": "#FFFFFF"
-    },
-    "ErrorUnderline": {
-      "color": "#f33c42"
-    },
-    "Pep8Underline": {
-      "color": "#feaf41"
-    },
-    "Builtin": {
-      "color": "#ee8859"
-    },
-    "Comment": {
-      "color": "#7c7c7c"
-    },
-    "Decorator": {
-      "color": "#fdb269"
-    },
-    "Number": {
-      "color": "#F8A008"
-    },
-    "Constant": {
-      "color": "#ee8859"
-    },
-    "Definition": {
-      "color": "#fdff74"
-    },
-    "DefinitionName": {
-      "color": "#6EC7D7"
-    },
-    "Function": {
-      "color": "#d5d8d6"
-    },
-    "ProperObject": {
-      "color": "#6EC7D7",
-      "italic": true
-    },
-    "String": {
-      "color": "#d07cd3"
-    },
-    "RawString": {
-      "color": "#98c378"
-    },
-    "Docstring": {
-      "color": "#86d986"
-    },
-    "EditorBackground": {
-      "color": "#1d1f21"
-    },
-    "EditorSelectionColor": {
-      "color": "#bec0c2"
-    },
-    "EditorSelectionBackground": {
-      "color": "#1d545c"
-    },
-    "SidebarBackground": {
-      "color": "#1d1f21"
-    },
-    "SidebarForeground": {
-      "color": "#595959"
-    },
-    "CurrentLine": {
-      "color": "#434343"
-    },
-    "ModifiedColor": {
-      "color": "#e2ae5f"
-    },
-    "SavedColor": {
-      "color": "#4ac975"
-    },
-    "BraceMatched": {
-      "color": "#d6c540"
-    },
-    "BraceUnmatched": {
-      "color": "#d65645"
-    },
-    "SearchResult": {
-      "color": "#8a402c"
-    },
-    "Occurrences": {
-      "color": "#494949"
-    },
-    "CurrentLineNumber": {
-      "color": "#d6c540"
-    },
-    "LinkNavigate": {
-    "color": "#ff9800"
-    }
-  }
+    "name": "Ninja Dark",
+    "editor.background": "#1d1f21",
+    "editor.foreground": "#d5d8d6",
+    "editor.selection.background": "#1d545c",
+    "editor.selection.foreground": "#bec0c2",
+    "editor.sidebar.background": "#1d1f21",
+    "editor.sidebar.foreground": "#595959",
+    "colors": [
+        {
+            "scope": "keyword",
+            "color": "#83c1fb"
+        },
+        {
+            "scope": "number",
+            "color": "#f8a008"
+        },
+        {
+            "scope": "builtin",
+            "color": "#ee8859"
+        },
+        {
+            "scope": "comment",
+            "color": "#7c7c7c"
+        },
+        {
+            "scope": "decorator",
+            "color": "#fdb269"
+        },
+        {
+            "scope": "single.quoted.string",
+            "color": "#d07cd3"
+        },
+        {
+            "scope": "double.quoted.string",
+            "color": "#d07cd3"
+        },
+        {
+            "scope": "triple.single.quoted.string",
+            "color": "#86d986"
+        },
+        {
+            "scope": "triple.double.quoted.string",
+            "color": "#86d986"
+        },
+        {
+            "scope": "self",
+            "color": "#6ec7d7"
+        }
+    ]
 }

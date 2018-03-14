@@ -58,7 +58,7 @@ class CurrentLineHighlighter(base.Extension):
 
     def __init__(self):
         super().__init__()
-        self.__background = QColor(resources.get_color('CurrentLine'))
+        self.__background = QColor(resources.COLOR_SCHEME.get('editor.line'))
         self.__mode = settings.HIGHLIGHT_CURRENT_LINE_MODE
 
     def install(self):

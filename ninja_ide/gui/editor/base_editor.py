@@ -100,13 +100,17 @@ class BaseEditor(QPlainTextEdit):
 
     def __init_style(self):
         self._background_color = QColor(
-            resources.get_color('EditorBackground'))
+            resources.COLOR_SCHEME.get("editor.background"))
+        #     resources.get_color('editor.background'))
         self._foreground_color = QColor(
-            resources.get_color('Default'))
+            resources.COLOR_SCHEME.get("editor.foreground"))
+        #     resources.get_color('editor.foreground'))
         self._selection_color = QColor(
-            resources.get_color('EditorSelectionColor'))
+            resources.COLOR_SCHEME.get("editor.selection.foreground"))
+        #     resources.get_color('EditorSelectionColor'))
         self._selection_background_color = QColor(
-            resources.get_color('EditorSelectionBackground'))
+            resources.COLOR_SCHEME.get("editor.selection.background"))
+        #     resources.get_color('EditorSelectionBackground'))
 
     def __apply_style(self):
         palette = self.palette()

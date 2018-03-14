@@ -62,9 +62,9 @@ class SymbolHighlighter(base.Extension):
     def __init__(self):
         super().__init__()
         self.__matched_background = QColor(
-            resources.get_color('BraceMatched'))
+            resources.COLOR_SCHEME.get("editor.brace.matched"))
         self.__unmatched_background = QColor(
-            resources.get_color('BraceUnmatched'))
+            resources.COLOR_SCHEME.get('editor.brace.unmatched'))
 
     def install(self):
         self._neditor.painted.connect(self._highlight)

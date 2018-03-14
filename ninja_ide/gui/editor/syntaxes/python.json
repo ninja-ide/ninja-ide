@@ -1,0 +1,110 @@
+{
+    "extension": ["py"],
+    "comment": ["# "],
+    "partitions": [
+        {
+            "name": "comment",
+            "start": "#",
+            "end": "\n"
+        },
+        {
+            "name": "string_quoted_triple",
+            "start": "'''",
+            "end": "'''",
+            "is_multiline": true
+        },
+        {
+            "name": "string_quoted_triple",
+            "start": "\"\"\"",
+            "end": "\"\"\"",
+            "is_multiline": true
+        },
+        {
+            "name": "string_quoted_single",
+            "start": "[buBU]?'",
+            "end": "'"
+        },
+        {
+            "name": "string_quoted_double",
+            "start": "[buBU]?\"",
+            "end": "\""
+        }
+    ],
+    "scanner": [
+        {
+            "partition_name": "comment",
+            "tokens": [
+                {
+                    "name": "text_todo",
+                    "pattern": "(?<!\\w)@?(TODO|FIXME|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG|QUESTION|COMBAK|TEMP|DEBUG|OPTIMIZE|WARNING)\\b"
+                }
+            ]
+        },
+        {
+            "partition_name": null,
+            "tokens": [
+                {
+                    "name": "keyword",
+                    "pattern": [
+                        "as", "assert", "break", "await", "continue",
+                        "del", "except", "finally", "for",
+                        "from", "global", "import", "is", "lambda",
+                        "nonlocal", "pass", "raise", "try",
+                        "while", "with", "yield", "async"
+                    ],
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "keyword_control",
+                    "pattern": ["if", "else", "elif"],
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "keyword_operator",
+                    "pattern": ["and", "or", "in", "not"],
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "constant",
+                    "pattern": "[A-Z][A-Z0-9_]*(?=\\s*\\.\\s*[a-zA-Z_][a-zA-Z0-9_]*)"
+                },
+                {
+                    "name": "constant_numeric",
+                    "pattern": "(?<!\\w)(\\.?)(_?\\d+)+(\\.\\d*)?[lL]?"
+                },
+                {
+                    "name": "constant_language",
+                    "pattern": "None|True|False|Ellipsis|NotImplemented",
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "entity_name",
+                    "pattern": [
+                        "(?<=def)\\ +?\\w+(?=\\ *?\\()",
+                        "(?<=class)\\ +?\\w+(?=\\ *?\\()"
+                    ]
+                },
+                {
+                    "name": "storage_type",
+                    "pattern": "class|def",
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "variable",
+                    "pattern": ["self", "cls"],
+                    "prefix": "(^|[^\\.\\w])??(?<!\\w|\\.)",
+                    "suffix": "[\\x08\\W]+?"
+                },
+                {
+                    "name": "support",
+                    "pattern": "@\\w+(\\.\\w+)?"
+                }
+            ]
+        }
+    ]
+}

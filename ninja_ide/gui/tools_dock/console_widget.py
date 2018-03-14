@@ -134,8 +134,9 @@ class ConsoleWidget(base_editor.BaseEditor):
         self._console = console.Console()
         self.setFont(settings.FONT)
         # Set highlighter and indenter for Python
-        syntax = highlighter.build_highlighter(language='python')
-        self._highlighter = Highlighter(self.document(), syntax)
+        # syntax = highlighter.build_highlighter(language='python')
+        # if syntax is not None:
+        #     self._highlighter = Highlighter(self.document(), syntax)
         self._indenter = indenter.load_indenter(self, lang="python")
         # Sidebar
         self.sidebar = ConsoleSideBar(self)

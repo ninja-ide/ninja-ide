@@ -323,7 +323,7 @@ class NEditor(base_editor.BaseEditor):
                 start_pos=start_pos,
                 end_pos=end_pos
             )
-            color = resources.get_color("Occurrences")
+            color = resources.COLOR_SCHEME.get("editor.occurrence")
             selection.set_background(color)
             append(selection)
             # TODO: highlight results in scrollbar
@@ -349,8 +349,8 @@ class NEditor(base_editor.BaseEditor):
                 start_pos=start,
                 end_pos=end
             )
-            color = resources.get_color("SearchResult")
-            selection.set_background(color)
+            color = resources.COLOR_SCHEME.get("editor.search.result")
+            selection.set_outline(color)
             append(selection)
             line = selection.cursor.blockNumber()
             self._scrollbar.add_marker("find", line, color)
@@ -435,10 +435,14 @@ class NEditor(base_editor.BaseEditor):
             self._marker_area.previous_bookmark()
 
     def register_syntax_for(self, language="python", force=False):
-        syntax = highlighter.build_highlighter(language, force=force)
+        syntax = highlighter.build_highlighter(language)
         if syntax is not None:
             self._highlighter = highlighter.SyntaxHighlighter(
-                self.document(), syntax)
+                self.document(),
+                syntax.partition_scanner,
+                syntax.scanners,
+                syntax.context
+            )
 
     def set_font(self, font):
         """Set font and update tab stop width"""
@@ -594,7 +598,7 @@ class NEditor(base_editor.BaseEditor):
                 start_pos=start,
                 end_pos=end
             )
-            link_color = resources.get_color("LinkNavigate")
+            link_color = resources.COLOR_SCHEME.get("editor.link.navigate")
             selection.set_underline(link_color)
             selection.set_foreground(link_color)
             self.add_extra_selections("link", [selection])

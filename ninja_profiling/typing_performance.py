@@ -34,8 +34,9 @@ from ninja_ide import resources
 from ninja_ide.core.file_handling import nfile
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.editor.editor import NEditor
+from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
 
-
+json_manager.load_syntax()
 themes = json_manager.load_editor_schemes()
 resources.COLOR_SCHEME = themes["Ninja Dark"]
 

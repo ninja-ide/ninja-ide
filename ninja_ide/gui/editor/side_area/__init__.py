@@ -44,7 +44,8 @@ class SideWidget(QWidget):
     def paintEvent(self, event):
         if self.isVisible():
             background_color = QColor(
-                resources.get_color('SidebarBackground'))
+                resources.COLOR_SCHEME.get("editor.sidebar.background"))
+                # resources.get_color('SidebarBackground'))
             painter = QPainter(self)
             painter.fillRect(event.rect(), background_color)
 

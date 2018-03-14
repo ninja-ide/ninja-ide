@@ -46,10 +46,11 @@ class ErrorsChecker(QThread):
         self._path = ''
         self.checks = {}
 
-        self.checker_icon = ui_tools.colored_icon(
-            ":img/bicho",
-            resources.get_color('ErrorUnderline')
-        )
+        # self.checker_icon = ui_tools.colored_icon(
+        #     ":img/bicho",
+        #     resources.get_color('ErrorUnderline')
+        # )
+        self.checker_icon = None
 
     def run_checks(self):
         if not self.isRunning():
@@ -107,7 +108,7 @@ class ErrorsChecker(QThread):
 def remove_error_checker():
     checker = (
         ErrorsChecker,
-        resources.get_color('ErrorUnderline'),
+        resources.COLOR_SCHEME.get('editor.checker'),
         10
     )
     remove_checker(checker)
@@ -116,7 +117,7 @@ def remove_error_checker():
 if settings.FIND_ERRORS:
     register_checker(
         checker=ErrorsChecker,
-        color=resources.get_color('ErrorUnderline'),
+        color=resources.COLOR_SCHEME.get("editor.checker"),
         priority=10
     )
 
@@ -125,7 +126,7 @@ import _ast
 import re
 
 from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import SIGN            #    resources.get_color('Pep8Underline'), 2)AL
 
 from ninja_ide import resources
 from ninja_ide import translations

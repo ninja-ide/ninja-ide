@@ -65,7 +65,7 @@ DATA_SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'data_settings.ini')
 
 EXTENSIONS_PATH = os.path.join(HOME_NINJA_PATH, "extensions")
 
-SYNTAX_FILES = os.path.join(PRJ_PATH, "extensions", "syntax")
+SYNTAX_FILES = os.path.join(PRJ_PATH, "gui", "editor", "syntaxes")
 
 PLUGINS = os.path.join(HOME_NINJA_PATH, "extensions", "plugins")
 
@@ -114,57 +114,12 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/api/community'
 # COLOR SCHEMES
 ###############################################################################
 
-"""
-COLOR_SCHEME = {
-    "Default": "#d4d4d4",
-    "Keyword": "#83c1fb",
-    "Operator": "#FFFFFF",
-    "Brace": "#FFFFFF",
-    "Caret": "#FFFFFF",
-    "FunctionMethodName": "#fdff74",
-    "ClassName": "#fdff74",
-    "Identifier": "#c5c8c6",
-    "DoubleQuotedString": "#d07cd3",
-    "SingleQuotedString": "#d07cd3",
-    "TripleDoubleQuotedString": "#86d986",
-    "TripleSingleQuotedString": "#86d986",
-    "Comment": "#7c7c7c",
-    "CommentBlock": "#7c7c7c",
-    "SelfReference": "#6EC7D7",
-    "HighlightedIdentifier": "#6EC7D7",
-    "Number": "#F8A008",
-    "Decorator": "#fdb269",
-    "EditorBackground": "#1e1e1e",
-    "EditorSelectionColor": "#f44336",
-    "EditorSelectionBackground": "#aaaaaa",
-    "CurrentLine": "#313233",
-    "MinimapVisibleArea": "#e20000",
-    "SelectedWord": "#a8ff60",
-    "Pending": "#FF0000",
-    "SelectedWordBackground": "#009B00",
-    "FoldArea": "#292c2f",
-    "FoldArrowExpanded": "#696c6e",
-    "FoldArrowCollapsed": "#FFFFFF",
-    "LinkNavigate": "005aff",
-    "BraceBackground": "#5BC85B",
-    "BraceForeground": "#FF0000",
-    "ErrorUnderline": "#0000ff",
-    # "Pep8Underline": "#00ffff",
-    "Pep8Underline": "#ffa500",
-    "SidebarBackground": "#292c2f",
-    "SidebarSelectedBackground": "#46484b",
-    "SidebarForeground": "#868989",
-    "SidebarSelectedForeground": "#c5c8c6",
-    "MigrationUnderline": "#ff0000",
-    "MarginLine": '#7c7c7c',
-}
-"""
 COLOR_SCHEME = {}
 CUSTOM_SCHEME = {}
 QML_COLORS = {}
 
 
-def get_color(key):
+def _get_color(key):
     if key in COLOR_SCHEME:
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME[key])['color']
     return None

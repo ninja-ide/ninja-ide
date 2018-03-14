@@ -1,0 +1,112 @@
+{
+    "name": "Ninja Dark",
+    "editor.background": "#1d1f21",
+    "editor.foreground": "#c5c8c6",
+    "editor.selection.background": "#1d545c",
+    "editor.selection.foreground": "#bec0c2",
+    "editor.sidebar.background": "#1d1f21",
+    "editor.sidebar.foreground": "#595959",
+    "editor.markarea.modified": "#e2c08d",
+    "editor.markarea.saved": "lightgreen",
+    "editor.pep8": "yellow",
+    "editor.checker": "red",
+    "editor.brace.matched": "green",
+    "editor.brace.unmatched": "red",
+    "editor.line": "#444",
+    "editor.link.navigate": "red",
+    "editor.occurrence": "#434343",
+    "editor.search.result": "#73c990",
+    "colors": [
+        {
+            "scope": "keyword",
+            "settings": {
+                "color": "#96CBFE"
+            }
+        },
+        {
+            "scope": "keyword_control",
+            "settings": {
+                "color": "#96CBFE"
+            }
+        },
+        {
+            "scope": "keyword_operator",
+            "settings": {
+                "color": "#EDEDED"
+            }
+        },
+        {
+            "scope": "constant",
+            "settings": {
+                "color": "#99CC99"
+            }
+        },
+        {
+            "scope": "constant_numeric",
+            "settings": {
+                "color": "#f8a008"
+            }
+        },
+        {
+            "scope": "constant_language",
+            "settings": {
+                "color": "#FFD2A7"
+            }
+        },
+        {
+            "scope": "comment",
+            "settings": {
+                "color": "#7C7C7C"
+            }
+        },
+        {
+            "scope": "entity_name",
+            "settings": {
+                "color": "#fdff74"
+            }
+        },
+        {
+            "scope": "storage_type",
+            "settings": {
+                "color": "#6EC7D7"
+            }
+        },
+        {
+            "scope": "variable",
+            "settings": {
+                "color": "#C6C5FE"
+            }
+        },
+        {
+            "scope": "string_quoted_single",
+            "settings": {
+                "color": "#d07cd3"
+            }
+        },
+        {
+            "scope": "string_quoted_double",
+            "settings": {
+                "color": "#d07cd3"
+            }
+        },
+        {
+            "scope": "string_quoted_triple",
+            "settings": {
+                "color": "#86d986"
+            }
+        },
+        {
+            "scope": "support",
+            "settings": {
+                "color": "#ffd2a7"
+            }
+        },
+        {
+            "scope": "text_todo",
+            "settings": {
+                "color": "#96cbfe",
+                "bold": true
+            }
+        }
+    ]
+}

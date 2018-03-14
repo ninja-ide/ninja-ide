@@ -1,0 +1,65 @@
+{
+    "partitions": [
+        {
+            "name": "comment",
+            "start": "<!--",
+            "end": "-->",
+            "is_multiline": true
+        },
+        {
+            "name": "tag",
+            "start": "<",
+            "end": ">",
+            "is_multiline": true
+        },
+        {
+            "name": "variable",
+            "start": "{{",
+            "end": "}}",
+            "is_multiline": true
+        },
+        {
+            "name": "block",
+            "start": "{%",
+            "end": "%}"
+        }
+    ],
+    "scanner": [
+        {
+            "partition_name": "tag",
+            "tokens": [
+                {
+                    "name": "tagid",
+                    "pattern": ["li", "ul", "div"]
+                },
+                {
+                    "name": "attr",
+                    "pattern": "[A-Za-z_]\\w*"
+                },
+                {
+                    "name": "equals",
+                    "pattern": "="
+                },
+                {
+                    "name": "value",
+                    "pattern": "\"[^\"]*\""
+                }
+            ]
+        },
+        {
+            "partition_name": "block",
+            "tokens": [
+                {
+                    "name": "key",
+                    "pattern": "\\b(autoescape|endautoescape|block|endblock|trans|blocktrans|endblocktrans|plural|debug|extends|filter|firstof|for|endfor|if|include|else|elif|endif|ifchanged|endifchanged|ifequal|endifequal|ifnotequal|endifnotequal|load|now|regroup|ssi|spaceless|templatetag|widthratio|with|endwith)\\b",
+                    "prefix": "(^|[\b\\W])",
+                    "suffix": "[\b\\W]"
+                },
+                {
+                    "name": "str",
+                    "pattern": "\\w+(\\/\\w+\\.)?"
+                }
+            ]
+        }
+    ]
+}
