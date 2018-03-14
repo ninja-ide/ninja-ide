@@ -292,10 +292,13 @@ class ComboEditor(QWidget):
         # if self._main_container.current_widget is not self:
         self._main_container.combo_area = self
         editor = self.current_editor()
-        self._main_container.current_editor_changed(
-            editor.neditable.file_path)
-        self._load_symbols(editor.neditable)
-        editor.neditable.update_checkers_display()
+        # FIXME: maybe improve this in ComboFiles.needUpdateFocus
+        # see issue #2027
+        if editor is not None:
+            self._main_container.current_editor_changed(
+                editor.neditable.file_path)
+            self._load_symbols(editor.neditable)
+            editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
         val = QMessageBox.No
