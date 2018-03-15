@@ -450,15 +450,19 @@ class LineEditCount(QObject):
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         self.counter = QLabel(lineEdit)
+        self.counter.setStyleSheet("background: #6a6ea9;")
         hbox.addWidget(self.counter)
-        lineEdit.setStyleSheet("padding-right: 2px;")
+        lineEdit.setStyleSheet("padding-right: 2px; padding-left: 2px;")
 
     def update_count(self, index, total, hasSearch=False):
         """Update the values displayed in the line edit counter."""
 
         message = "%s / %s" % (index, total)
         self.counter.setText(message)
-        self.counter.setStyleSheet("background: none")
+        if total > 0:
+            self.counter.setStyleSheet("background: #73c990;")
+        else:
+            self.counter.setStyleSheet("background: #6a6ea9;")
         if index == 0 and total == 0 and hasSearch:
             self.counter.setStyleSheet("background: #e73e3e;color: white;")
 
