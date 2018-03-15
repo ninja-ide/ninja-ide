@@ -38,6 +38,9 @@ from ninja_ide.core.template_registry import bundled_project_types  # noqa
 ###########################################################################
 # from ninja_ide.core.encapsulated_env import nenvironment
 
+# Syntax
+from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
+
 
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     """Load all the settings necessary before loading the UI, and start IDE."""
@@ -118,8 +121,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     import ninja_ide.gui.status_bar  # noqa
     import ninja_ide.gui.menus.menubar  # noqa
 
-    # Syntax
-    from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
     # Explorer Container
     import ninja_ide.gui.explorer.explorer_container  # noqa
     from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa

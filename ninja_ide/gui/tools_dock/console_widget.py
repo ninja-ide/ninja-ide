@@ -67,13 +67,15 @@ class ConsoleSideBar(QWidget):
         self._console_widget = console_widget
         self.setFixedHeight(self._console_widget.height())
         self.user_data = console_widget.user_data
+        self._background_color = QColor(
+            resources.COLOR_SCHEME.get("editor.background"))
         console_widget.updateRequest.connect(self.update)
 
     def paintEvent(self, event):
         painter = QPainter(self)
         rect = event.rect()
         rect.setWidth(self.__width())
-        painter.fillRect(rect, QColor(resources.get_color("EditorBackground")))
+        painter.fillRect(rect, self._background_color)
         painter.setPen(Qt.white)
 
         font = self._console_widget.font()
@@ -134,8 +136,14 @@ class ConsoleWidget(base_editor.BaseEditor):
         self._console = console.Console()
         self.setFont(settings.FONT)
         # Set highlighter and indenter for Python
-        # syntax = highlighter.build_highlighter(language='python')
-        # if syntax is not None:
+        syntax = highlighter.build_highlighter(language='python')
+        if syntax is not None:
+            self._highlighter = Highlighter(
+                self.document(),
+                syntax.partition_scanner,
+                syntax.scanners,
+                syntax.context
+            )
         #     self._highlighter = Highlighter(self.document(), syntax)
         self._indenter = indenter.load_indenter(self, lang="python")
         # Sidebar
