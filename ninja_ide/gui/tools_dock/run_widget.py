@@ -192,7 +192,9 @@ class Program(QObject):
 
     def _refresh_output(self):
         data = self.__current_process.readAllStandardOutput().data().decode()
-        self.outputw.append_text(data, text_format=OutputWidget.Format.NORMAL)
+        for line in data.splitlines():
+            self.outputw.append_text(
+                line, text_format=OutputWidget.Format.NORMAL)
 
     def _refresh_error(self):
         data = self.__current_process.readAllStandardError().data().decode()
