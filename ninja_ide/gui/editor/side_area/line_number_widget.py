@@ -21,7 +21,7 @@ from PyQt5.QtGui import (
     QPen,
     QFontMetrics
 )
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QRect
 from ninja_ide.gui.editor import side_area
 from ninja_ide import resources
 
@@ -53,7 +53,6 @@ class LineNumberWidget(side_area.SideWidget):
         font_bold = self._neditor.font()
         font_bold.setBold(True)
         pen = QPen(self._color_unselected)
-        pen_selected = QPen(self._color_selected)
         painter.setFont(font)
         sel_start, sel_end = self._neditor.selection_range()
         has_sel = sel_start != sel_end
@@ -63,8 +62,7 @@ class LineNumberWidget(side_area.SideWidget):
             # Set bold to current line and selected lines
             if ((has_sel and sel_start <= line <= sel_end) or
                     (not has_sel and current_line == line)):
-                painter.setPen(pen_selected)
-                painter.setFont(font_bold)
+                painter.fillRect(QRect(0, top, self.width(), height), self._color_selected)
             else:
                 painter.setPen(pen)
                 painter.setFont(font)
