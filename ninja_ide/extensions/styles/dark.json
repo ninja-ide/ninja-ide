@@ -30,6 +30,12 @@
             }
         },
         {
+            "scope": "keyword_control_statement",
+            "settings": {
+                "color": "#96CBFE"
+            }
+        },
+        {
             "scope": "keyword_operator",
             "settings": {
                 "color": "#EDEDED"
@@ -54,7 +60,19 @@
             }
         },
         {
-            "scope": "comment",
+            "scope": "comment_line",
+            "settings": {
+                "color": "#7C7C7C"
+            }
+        },
+        {
+            "scope": "comment_line_django",
+            "settings": {
+                "color": "#7C7C7C"
+            }
+        },
+        {
+            "scope": "comment_block_django",
             "settings": {
                 "color": "#7C7C7C"
             }
@@ -62,7 +80,7 @@
         {
             "scope": "entity_name",
             "settings": {
-                "color": "#fdff74"
+                "color": "#feffa6"
             }
         },
         {
@@ -75,6 +93,12 @@
             "scope": "variable",
             "settings": {
                 "color": "#C6C5FE"
+            }
+        },
+        {
+            "scope": "variable_django",
+            "settings": {
+                "color": "#d33c78"
             }
         },
         {
@@ -102,10 +126,88 @@
             }
         },
         {
+            "scope": "support_function_builtin",
+            "settings": {
+                "color": "#ffd182"
+            }
+        },
+        {
+            "scope": "support_type_exception",
+            "settings": {
+                "color": "#49c9b0"
+            }
+        },
+        {
             "scope": "text_todo",
             "settings": {
                 "color": "#96cbfe",
                 "bold": true
+            }
+        },
+        {
+            "scope": "docstring_prompt",
+            "settings": {
+                "color": "#96cbfe"
+            }
+        },
+        {
+            "scope": "constant_character_escape",
+            "settings": {
+                "color": "#00a0a0"
+            }
+        },
+        {
+            "scope": "comment_typehint",
+            "settings": {
+                "color": "#a3a3a3"
+            }
+        },
+        {
+            "scope": "comment_typehint_type",
+            "settings": {
+                "color": "#44727b"
+            }
+        },
+        {
+            "scope": "comment_typehint_punctuation",
+            "settings": {
+                "color": "#44727b"
+            }
+        },
+        {
+            "scope": "entity_name_tag",
+            "settings": {
+                "color": "white"
+            }
+        },
+        {
+            "scope": "entity_other_attributename",
+            "settings": {
+                "color": "#ffd182"
+            }
+        },
+        {
+            "scope": "meta_attribute_with_value",
+            "settings": {
+                "color": "#86d986"
+            }
+        },
+        {
+            "scope": "entity_other_django_tagbrace",
+            "settings": {
+                "color": "red"
+            }
+        },
+        {
+            "scope": "keyword_control_django",
+            "settings": {
+                "color": "#96CBFE"
+            }
+        },
+        {
+            "scope": "keyword_operator_django",
+            "settings": {
+                "color": "#96CBFE"
             }
         }
     ]
