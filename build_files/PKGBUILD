@@ -2,24 +2,23 @@
 # Maintainer: Federico Cinelli <cinelli.federico@gmail.com>
 
 pkgname=ninja-ide-git
-pkgver=20130206
+pkgver=20180310
 pkgrel=1
-pkgdesc="Ninja Is Not Just Another Integrated Development Environment - Latest git pull"
+pkgdesc="Cross-platform IDE focused on Python application development - latest git pull"
 arch=('any')
 url="http://ninja-ide.org"
 license=('GPL')
-depends=('python2' 'python2-distribute' 'python2-pyqt' 'git' 'python2-pyinotify')
-install=$pkgname.install
-provides=('ninja-ide-git')
+depends=('python' 'python-pyqt5' 'qt5-declarative')
 conflicts=('ninja-ide')
-replaces=('ninja-ide')
 source=(ninja-ide-git.desktop)
-md5sums=('384b13743f204b17ed3b87cc7d8df456')
+md5sums=('ac8287a7d40e2584f3191c5784fb7216')
 
-_gitroot="git://github.com/ninja-ide/ninja-ide.git"
+_gitroot="https://github.com/ninja-ide/ninja-ide.git"
 _gitname="ninja-ide"
 
-build() {
+
+prepare() {
+  cd $startdir
   msg "Connecting to GIT server...."
 
   if  [ -d $_gitname ] ; then
@@ -30,19 +29,15 @@ build() {
   fi
 
   msg "GIT checkout done or server timeout"
-
-  rm -rf "$srcdir/$_gitname-build"
-  cp -r "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-
-  cd "$srcdir/$_gitname-build"
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  install -Dm644 "$startdir/$pkgname.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
+  install -Dm644 "$startdir/ninja-ide/ninja_ide/img/ninja_icon.png" "$pkgdir/usr/share/icons/hicolor/128x128/apps/$pkgname.png"
 
-  install -Dm644 "$srcdir/$pkgname.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
-  install -Dm644 "ninja_ide/img/ninja_icon.png" "$pkgdir/usr/share/icons/hicolor/256x256/apps/$pkgname.png"
+  mkdir -p "$pkgdir/usr/lib/python3.6/site-packages"
+  cp -a "$startdir/ninja-ide/ninja_ide" "$pkgdir/usr/lib/python3.6/site-packages"
 
-  sed -i 's|#!/usr/bin/env python|#!/usr/bin/env python2|' ninja-ide.py
-  python2 setup.py install --root=$pkgdir/ --optimize=1
+  mkdir -p "$pkgdir/usr/bin"
+  cp -a "$startdir/ninja-ide/ninja-ide.py" "$pkgdir/usr/bin/$pkgname"
 }
