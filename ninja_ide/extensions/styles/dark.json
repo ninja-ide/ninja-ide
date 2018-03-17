@@ -132,6 +132,12 @@
             }
         },
         {
+            "scope": "support_function_magic",
+            "settings": {
+                "color": "#ffd182"
+            }
+        },
+        {
             "scope": "support_type_exception",
             "settings": {
                 "color": "#49c9b0"

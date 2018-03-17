@@ -181,6 +181,10 @@
                     "name": "support_type_exception",
                     "pattern":  "(\n\t\t\t\t(\n\t\t\t\t\tArithmetic|Assertion|Attribute|BlockingIO|BrokenPipe|Buffer|ChildProcess|\n\t\t\t\t\tConnection(Aborted|Refused|Reset)?|EOF|Environment|FileExists|\n\t\t\t\t\tFileNotFound|FloatingPoint|Interrupted|IO|IsADirectoryError|\n\t\t\t\t\tImport|Indentation|Index|Key|Lookup|Memory|Name|NotADirectory|\n\t\t\t\t\tNotImplemented|OS|Overflow|Permission|ProcessLookup|Recursion|Reference|\n\t\t\t\t\tRuntime|Standard|Syntax|System|Tab|Timeout|Type|UnboundLocal|\n\t\t\t\t\tUnicode(Encode|Decode|Translate)?|Value|VMS|Windows|ZeroDivision\n\t\t\t\t)Error|\n\t\t\t\t((Pending)?Deprecation|Runtime|Syntax|User|Future|Import|Unicode|Bytes)?Warning|\n\t\t\t\t(Base)?Exception|\n\t\t\t\tSystemExit|StopAsyncIteration|StopIteration|NotImplemented|KeyboardInterrupt|GeneratorExit\n\t\t\t)",
                     "prefix": "(?x)\\b"
+                },
+                {
+                    "name": "support_function_magic",
+                    "pattern": "(?x)\\b(__(?:all | bases | builtins | class | code | debug | defaults | dict| doc | file | func | kwdefaults | members| metaclass | methods | module | mro | name| qualname | self | signature | slots | subclasses| version | weakref | wrapped | annotations | classcell| spec | path | package | future | traceback)__)\\b"
                 }
             ]
         }
