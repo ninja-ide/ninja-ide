@@ -24,7 +24,7 @@
             }
         },
         {
-            "scope": "keyword_control",
+            "scope": "keyword_control_flow",
             "settings": {
                 "color": "#96CBFE"
             }
@@ -74,7 +74,13 @@
         {
             "scope": "variable",
             "settings": {
-                "color": "#C6C5FE"
+                "color": "#bbb9fe"
+            }
+        },
+        {
+            "scope": "variable_self",
+            "settings": {
+                "color": "#bbb9fe"
             }
         },
         {

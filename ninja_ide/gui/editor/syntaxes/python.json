@@ -56,10 +56,15 @@
                     "suffix": "[\\x08\\W]"
                 },
                 {
-                    "name": "keyword_control",
-                    "pattern": ["if", "else", "elif"],
-                    "prefix": "(^|[\\x08\\W])",
-                    "suffix": "[\\x08\\W]"
+                    "name": "keyword_control_flow",
+                    "pattern": [
+                        "as", "async", "continue", "del", "assert",
+                        "break", "finally", "for", "from", "elif", "else",
+                        "if", "except", "pass", "raise", "return", "try",
+                        "while", "with"
+                    ],
+                    "prefix": "\\b",
+                    "suffix": "\\b"
                 },
                 {
                     "name": "keyword_operator",
@@ -95,10 +100,8 @@
                     "suffix": "[\\x08\\W]"
                 },
                 {
-                    "name": "variable",
-                    "pattern": ["self", "cls"],
-                    "prefix": "(^|[^\\.\\w])??(?<!\\w|\\.)",
-                    "suffix": "[\\x08\\W]+?"
+                    "name": "variable_self",
+                    "pattern": "\\b(self|cls)\\b"
                 },
                 {
                     "name": "support",
