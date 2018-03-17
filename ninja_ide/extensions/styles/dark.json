@@ -102,6 +102,24 @@
             }
         },
         {
+            "scope": "support_function_builtin",
+            "settings": {
+                "color": "#ffd182"
+            }
+        },
+        {
+            "scope": "support_function_magic",
+            "settings": {
+                "color": "#ffd182"
+            }
+        },
+        {
+            "scope": "support_type_exception",
+            "settings": {
+                "color": "#49c9b0"
+            }
+        },
+        {
             "scope": "text_todo",
             "settings": {
                 "color": "#96cbfe",

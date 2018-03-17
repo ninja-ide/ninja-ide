@@ -103,6 +103,38 @@
                 {
                     "name": "support",
                     "pattern": "@\\w+(\\.\\w+)?"
+                },
+                {
+                    "name": "support_function_builtin",
+                    "pattern": [
+                        "__import__", "abs", "all", "any", "ascii",
+                        "bin", "bool", "bytearray", "bytes", "callable",
+                        "chr", "classmethod", "compile", "complex",
+                        "delattr", "dict", "dir", "divmod", "enumerate",
+                        "eval", "exec", "filter", "float", "format",
+                        "frozenset", "getattr", "globals", "hasattr",
+                        "hash", "help", "hex", "id", "input", "int",
+                        "isinstance", "issubclass", "iter", "len", "list",
+                        "locals", "map", "max", "memoryview", "min", "next",
+                        "object", "oct", "open", "ord", "pow", "print",
+                        "property", "range", "repr", "reversed", "round",
+                        "set", "setattr", "slice", "sorted", "staticmethod",
+                        "str", "sum", "super", "tuple", "type", "vars", "zip",
+                        "file", "long", "raw_input", "reduce", "reload",
+                        "unichr", "unicode", "xrange", "apply", "buffer",
+                        "coerce", "intern", "execfile"
+                    ],
+                    "prefix": "(?x)\\b",
+                    "suffix": "\\b"
+                },
+                {
+                    "name": "support_type_exception",
+                    "pattern":  "(\n\t\t\t\t(\n\t\t\t\t\tArithmetic|Assertion|Attribute|BlockingIO|BrokenPipe|Buffer|ChildProcess|\n\t\t\t\t\tConnection(Aborted|Refused|Reset)?|EOF|Environment|FileExists|\n\t\t\t\t\tFileNotFound|FloatingPoint|Interrupted|IO|IsADirectoryError|\n\t\t\t\t\tImport|Indentation|Index|Key|Lookup|Memory|Name|NotADirectory|\n\t\t\t\t\tNotImplemented|OS|Overflow|Permission|ProcessLookup|Recursion|Reference|\n\t\t\t\t\tRuntime|Standard|Syntax|System|Tab|Timeout|Type|UnboundLocal|\n\t\t\t\t\tUnicode(Encode|Decode|Translate)?|Value|VMS|Windows|ZeroDivision\n\t\t\t\t)Error|\n\t\t\t\t((Pending)?Deprecation|Runtime|Syntax|User|Future|Import|Unicode|Bytes)?Warning|\n\t\t\t\t(Base)?Exception|\n\t\t\t\tSystemExit|StopAsyncIteration|StopIteration|NotImplemented|KeyboardInterrupt|GeneratorExit\n\t\t\t)",
+                    "prefix": "(?x)\\b"
+                },
+                {
+                    "name": "support_function_magic",
+                    "pattern": "(?x)\\b(__(?:all | bases | builtins | class | code | debug | defaults | dict| doc | file | func | kwdefaults | members| metaclass | methods | module | mro | name| qualname | self | signature | slots | subclasses| version | weakref | wrapped | annotations | classcell| spec | path | package | future | traceback)__)\\b"
                 }
             ]
         }
