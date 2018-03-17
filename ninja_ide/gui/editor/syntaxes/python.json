@@ -145,10 +145,8 @@
                     "suffix": "[\\x08\\W]"
                 },
                 {
-                    "name": "variable",
-                    "pattern": ["self", "cls"],
-                    "prefix": "(^|[^\\.\\w])??(?<!\\w|\\.)",
-                    "suffix": "[\\x08\\W]+?"
+                    "name": "variable_self",
+                    "pattern": "\\b(self|cls)\\b"
                 },
                 {
                     "name": "support",

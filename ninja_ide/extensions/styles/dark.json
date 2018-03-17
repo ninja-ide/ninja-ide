@@ -92,7 +92,13 @@
         {
             "scope": "variable",
             "settings": {
-                "color": "#C6C5FE"
+                "color": "#bbb9fe"
+            }
+        },
+        {
+            "scope": "variable_self",
+            "settings": {
+                "color": "#bbb9fe"
             }
         },
         {
