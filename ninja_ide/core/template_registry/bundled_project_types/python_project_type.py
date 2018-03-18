@@ -79,7 +79,7 @@ class PythonProject(BaseProjectType):
         project["name"] = self.name
         project["project-type"] = self.category
         project["mainFile"] = "main.py"
-        project["description"] = wizard.filed("description")
+        project["description"] = wizard.field("description")
         json_manager.create_ninja_project(project_path, self.name, project)
         # Open project in Explorer
         self._open_project(project_path)
