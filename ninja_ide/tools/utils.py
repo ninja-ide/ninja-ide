@@ -40,7 +40,7 @@ def get_python():
             home_dir = get_home_dir()
             # search these first for the executable itself without recursive
             for search_path in ("C:/", home_dir, 'C:/ProgramData/Anaconda2',
-                'C:/ProgramData/Anaconda3', 'C:/ProgramData/Anaconda4'):
+                    'C:/ProgramData/Anaconda3', 'C:/ProgramData/Anaconda4'):
                 path = search_folder('^python.exe$', "C:/")
 
                 if path != '':
@@ -49,7 +49,7 @@ def get_python():
             if found == []:
                 # search these places for a folder to carry the search on
                 for search_path in ("C:/", "C:/Program Files",
-                    'C:/Program Files (x86)', "C:/ProgramData"):
+                        'C:/Program Files (x86)', "C:/ProgramData"):
                     path = search_for_folder('^python.exe$', search_path)
 
                     if path != '':
@@ -61,8 +61,8 @@ def get_python():
             for search_path in ('/usr/bin', '/usr/local/bin'):
                 files = os.listdir(search_path)
                 for fname in files:
-                    if fname.startswith('python') and \
-                        not fname.count('config') and not fname.endswith("m"):
+                    if fname.startswith('python') and not fname.count('config')\
+                             and not fname.endswith("m"):
                         found.append(os.path.join(search_path, fname))
     return found
 
