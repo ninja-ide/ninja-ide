@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import re
 from PyQt5.QtCore import (
     QObject,
     QTimer
@@ -25,13 +26,65 @@ def get_home_dir():
 
 def get_python():
     found = []
-    for search_path in ('/usr/bin', '/usr/local/bin'):
-        files = os.listdir(search_path)
-        for fname in files:
-            if fname.startswith('python') and not fname.count('config') \
-                    and not fname.endswith("m"):
-                found.append(os.path.join(search_path, fname))
+    cwd = os.getcwd()
+
+    # search current folder first
+    path = search_folder('^python.exe$', cwd)
+
+    if path != '':
+        found.append(path)
+
+    else:
+        if sys.platform == 'win32':
+
+            home_dir = get_home_dir()
+            # search these first for the executable itself without recursive
+            for search_path in ("C:/", home_dir, 'C:/ProgramData/Anaconda2',
+            'C:/ProgramData/Anaconda3', 'C:/ProgramData/Anaconda4'):
+                path = search_folder('^python.exe$', "C:/")
+
+                if path != '':
+                    found.append(path)
+
+            if found == []:
+                # search these places for a folder to carry the search on
+                for search_path in ("C:/", "C:/Program Files",
+                'C:/Program Files (x86)', "C:/ProgramData"):
+                    path = search_for_folder('^python.exe$', search_path)
+
+                    if path != '':
+                        # Search now for the executable in this folder
+                        path = search_folder('^python.exe$', path)
+                        found.append(path)
+        else:
+
+            for search_path in ('/usr/bin', '/usr/local/bin'):
+                files = os.listdir(search_path)
+                for fname in files:
+                    if fname.startswith('python') and \
+                    not fname.count('config') and not fname.endswith("m"):
+                        found.append(os.path.join(search_path, fname))
     return found
+
+
+def search_folder(regex, path):
+
+    # This works for same folder will do the recursive soon
+    file_list = os.listdir(path)
+    for file in file_list:
+        if re.findall(regex, file):
+            return path
+    return ''
+
+
+def search_for_folder(regex, path):
+    found = ''
+    file_list = os.listdir(path)
+    for file in file_list:
+        if re.findall(regex, file):
+            found = os.path.join(path, file)
+            return found
+    return ''
 
 
 class SignalFlowControl(QObject):
