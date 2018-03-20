@@ -7,6 +7,7 @@ from PyQt5.QtCore import (
     QTimer
 )
 from ninja_ide import resources
+from ninja_ide.code.settings import IS_WINDOWS
 
 
 IS_PY_34 = False
@@ -31,20 +32,20 @@ def get_python():
     # search current folder first
     path = search_folder('^python.exe$', cwd)
 
-    if path != '':
+    if path:
         found.append(path)
 
     else:
-        if sys.platform == 'win32':
+        if IS_WINDOWS:
 
             home_dir = get_home_dir()
-            # search these first for the executable itself without recursive
+            # search these first for the executable
             for search_path in ("C:/", home_dir, 'C:/ProgramData/Anaconda2',
                                                  'C:/ProgramData/Anaconda3',
                                                  'C:/ProgramData/Anaconda4'):
                 path = search_folder('^python.exe$', "C:/")
 
-                if path != '':
+                if path:
                     found.append(path)
 
             if found == []:
@@ -54,7 +55,7 @@ def get_python():
                                            "C:/ProgramData"):
                     path = search_for_folder('^python.exe$', search_path)
 
-                    if path != '':
+                    if path:
                         # Search now for the executable in this folder
                         path = search_folder('^python.exe$', path)
                         found.append(path)
@@ -70,8 +71,6 @@ def get_python():
 
 
 def search_folder(regex, path):
-
-    # This works for same folder will do the recursive soon
     file_list = os.listdir(path)
     for file in file_list:
         if re.findall(regex, file):
