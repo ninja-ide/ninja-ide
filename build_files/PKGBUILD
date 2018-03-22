@@ -1,14 +1,15 @@
-# Submitted:  Federico Cinelli <cinelli.federico@gmail.com>
-# Maintainer: Federico Cinelli <cinelli.federico@gmail.com>
+# Maintainer Severin Glöckner <severin dot gloeckner at stud dot htwk minus leipzig dot de>
+# Contributor: Federico Cinelli <cinelli.federico@gmail.com>
 
 pkgname=ninja-ide-git
-pkgver=20180317
+pkgver=20180322
 pkgrel=1
 pkgdesc="Cross-platform IDE focused on Python application development - latest git pull"
 arch=('any')
 url="http://ninja-ide.org"
 license=('GPL')
 depends=('python' 'python-pyqt5' 'qt5-declarative')
+provides=('ninja-ide')
 conflicts=('ninja-ide')
 source=(ninja-ide-git.desktop)
 md5sums=('ac8287a7d40e2584f3191c5784fb7216')
@@ -18,21 +19,21 @@ _gitname="ninja-ide"
 
 
 prepare() {
-  cd $startdir
+  cd "$startdir"
   msg "Connecting to GIT server...."
 
-  if  [ -d $_gitname ] ; then
-    cd $_gitname && git pull origin
+  if  [ -d "$_gitname" ] ; then
+    cd "$_gitname" && git pull origin
     msg "The local files are updated."
   else
-    git clone $_gitroot $_gitname
+    git clone "$_gitroot" "$_gitname"
   fi
 
   msg "GIT checkout done or server timeout"
 }
 
 pkgver() {
-  cd $startdir/$_gitname
+  cd "$startdir/$_gitname"
   git log -1 --date=short --pretty=format:%ad | sed 's/-//g'
 }
 
