@@ -288,11 +288,13 @@ class StackedWidget(QStackedWidget):
         QStackedWidget.setCurrentIndex(self, index)
 
 
-class ToolButton(QToolButton):
+class ToolButton(QPushButton):
 
     def __init__(self, number, text, parent=None):
         super().__init__(parent)
-        self.setAutoRaise(True)
+        self.setObjectName("button_tooldock")
+        # self.setAutoRaise(True)
+        self.setFlat(True)
         self.setCheckable(True)
         self._number = str(number)
         self._text = text
