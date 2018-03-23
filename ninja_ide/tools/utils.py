@@ -7,7 +7,7 @@ from PyQt5.QtCore import (
     QTimer
 )
 from ninja_ide import resources
-from ninja_ide.code.settings import IS_WINDOWS
+from ninja_ide.core.settings import IS_WINDOWS
 
 
 IS_PY_34 = False
