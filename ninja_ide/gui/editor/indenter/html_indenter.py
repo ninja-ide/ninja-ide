@@ -18,13 +18,13 @@
 import re
 from ninja_ide.gui.editor.indenter import base
 from ninja_ide.tools.logger import NinjaLogger
+from ninja_ide.core.settings import INDENT
 # Logger
 logger = NinjaLogger(__name__)
 
 class HtmlIndenter(base.BaseIndenter):
     """indenter for Html5"""
     LANG = 'html'
-    width = 4
     hang = False
     exempted_set = ('<!doctype html>', '<html>', '<!doctype>')
     
@@ -34,7 +34,7 @@ class HtmlIndenter(base.BaseIndenter):
         # Source code at current position
         text = self._neditor.text[:cursor.position()]
         current_indent = self.block_indent(block.previous())
-        self.width = len(current_indent)
+        indent_level = len(current_indent)
         
         # get last line
         text_splits = text.split('\n')
@@ -44,17 +44,17 @@ class HtmlIndenter(base.BaseIndenter):
         
         #if indent depth should increase
         if self.hang:
-            self.width += 4
-            indent = ' ' * self.width
+            indent_level += self.width
+            indent = ' ' * indent_level
             
             # reset this so unindent and indent using tab will work properly
-            self.width = 4
+            self.width = INDENT
             return indent
         else:
             indent = ' ' * self.width
             
             # reset this so unindent and indent using tab will work properly
-            self.width = 4
+            self.width = INDENT
             return indent
     
     
