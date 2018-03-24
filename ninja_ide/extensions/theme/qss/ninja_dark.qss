@@ -191,6 +191,19 @@ QToolButton#toggle_button:pressed {
     background-color: palette(dark);
 }
 
+QPushButton#button_tooldock {
+    border-radius: 0px;
+    background-color: none;
+}
+
+QPushButton#button_tooldock:hover {
+    background-color: palette(light);
+}
+
+QPushButton#button_tooldock:checked {
+    background-color: palette(shadow);
+}
+
 QScrollBar {
     background: #1d1f21;
     border-top-right-radius: 4px;
