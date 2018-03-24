@@ -22,12 +22,13 @@ from ninja_ide.core.settings import INDENT
 # Logger
 logger = NinjaLogger(__name__)
 
+
 class HtmlIndenter(base.BaseIndenter):
     """indenter for Html5"""
     LANG = 'html'
     hang = False
     exempted_set = ('<!doctype html>', '<html>', '<!doctype>')
-    
+ 
     def _compute_indent(self, cursor):
         block = cursor.block()
         line, _ = self._neditor.cursor_position
@@ -35,29 +36,29 @@ class HtmlIndenter(base.BaseIndenter):
         text = self._neditor.text[:cursor.position()]
         current_indent = self.block_indent(block.previous())
         indent_level = len(current_indent)
-        
+
         # get last line
         text_splits = text.split('\n')
         last_line = text_splits[-2]
-        
+
         self._parse_text(last_line)
-        
-        #if indent depth should increase
+
+        # if indent depth should increase
         if self.hang:
             indent_level += self.width
             indent = ' ' * indent_level
-            
+
             # reset this so unindent and indent using tab will work properly
             self.width = INDENT
             return indent
         else:
             indent = ' ' * self.width
-            
+
             # reset this so unindent and indent using tab will work properly
             self.width = INDENT
             return indent
-    
-    
+
+
     def _parse_text(self, last_line):
         # if it is a closing tag or a php
         if re.findall('[/|?]', last_line):
@@ -66,11 +67,10 @@ class HtmlIndenter(base.BaseIndenter):
             # If it's not a closing tag or an exempted element.
             # this is normacy
             self.hang = True
-        
+
         # if it is an exempted ele
         for ele in self.exempted_set:
             if re.findall(last_line, ele, 2):
                 self.width = 0
                 self.hang = False
-        
-        
+
