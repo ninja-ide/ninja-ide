@@ -24,7 +24,7 @@
             }
         },
         {
-            "scope": "keyword_control",
+            "scope": "keyword_control_flow",
             "settings": {
                 "color": "#96CBFE"
             }
