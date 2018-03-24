@@ -3,12 +3,7 @@
     "comment": ["# "],
     "partitions": [
         {
-            "name": "comment_typehint",
-            "start": "#\\s*type: ",
-            "end": "\n"
-        },
-        {
-            "name": "comment_line",
+            "name": "comment",
             "start": "#",
             "end": "\n"
         },
@@ -37,50 +32,11 @@
     ],
     "scanner": [
         {
-            "partition_name": "string_quoted_double",
-            "tokens": [
-                {
-                    "name": "constant_character_escape",
-                    "pattern": "({)\\w*(\\W?\\w+)(})"
-                }
-            ]
-        },
-        {
-            "partition_name": "comment_typehint",
-            "tokens": [
-                {
-                    "name": "comment_typehint_type",
-                    "pattern": "\\b(bool | bytes | float | int | object | str| List | Dict | Iterable | Sequence | Set| FrozenSet | Callable | Union | Tuple| Any | None)\\b"
-                },
-                {
-                    "name": "comment_typehint_punctuation",
-                    "pattern": "(\\w+_?)\\w*"
-                }
-            ]
-        },
-        {
-            "partition_name": "comment_line",
+            "partition_name": "comment",
             "tokens": [
                 {
                     "name": "text_todo",
                     "pattern": "(?<!\\w)@?(TODO|FIXME|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG|QUESTION|COMBAK|TEMP|DEBUG|OPTIMIZE|WARNING)\\b"
-                }
-            ]
-        },
-        {
-            "partition_name": "string_quoted_triple",
-            "tokens": [
-                {
-                    "name": "text_todo",
-                    "pattern": "(?<!\\w)@?(TODO|FIXME|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG|QUESTION|COMBAK|TEMP|DEBUG|OPTIMIZE|WARNING)\\b"
-                },
-                {
-                    "name": "docstring_prompt",
-                    "pattern": "(>>>|\\.\\.\\.\\s) (?=\\s*\\S)"
-                },
-                {
-                    "name": "constant_character_escape",
-                    "pattern": "(?<!\\w)@?(\\\\[nabfnrtv])\\b"
                 }
             ]
         },
@@ -100,22 +56,21 @@
                     "suffix": "[\\x08\\W]"
                 },
                 {
-                    "name": "keyword_control",
-                    "pattern": ["pija", "mechilegusta"],
-                    "prefix": "(^|[\\x08\\W])",
-                    "suffix": "[\\x08\\W]"
+                    "name": "keyword_control_flow",
+                    "pattern": [
+                        "as", "async", "continue", "del", "assert",
+                        "break", "finally", "for", "from", "elif", "else",
+                        "if", "except", "pass", "raise", "return", "try",
+                        "while", "with"
+                    ],
+                    "prefix": "\\b",
+                    "suffix": "\\b"
                 },
                 {
                     "name": "keyword_operator",
                     "pattern": ["and", "or", "in", "not"],
                     "prefix": "(^|[\\x08\\W])",
                     "suffix": "[\\x08\\W]"
-                },
-                {
-                    "name": "keyword_control_statement",
-                    "pattern": "(with|break|continue|pass|return|yield(\\s+from)?|await)",
-                    "prefix": "\\b",
-                    "suffix": "\\b"
                 },
                 {
                     "name": "constant",
