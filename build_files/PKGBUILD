@@ -2,7 +2,7 @@
 # Contributor: Federico Cinelli <cinelli.federico@gmail.com>
 
 pkgname=ninja-ide-git
-pkgver=20180322
+pkgver=20180310
 pkgrel=1
 pkgdesc="Cross-platform IDE focused on Python application development - latest git pull"
 arch=('any')
@@ -30,11 +30,6 @@ prepare() {
   fi
 
   msg "GIT checkout done or server timeout"
-}
-
-pkgver() {
-  cd "$startdir/$_gitname"
-  git log -1 --date=short --pretty=format:%ad | sed 's/-//g'
 }
 
 package() {

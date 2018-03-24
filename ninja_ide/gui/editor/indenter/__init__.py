@@ -17,11 +17,13 @@
 
 from ninja_ide.gui.editor.indenter import (
     python_indenter,
+    html_indenter,
     base
 )
 
 INDENTER_MAP = {
-    'python': python_indenter.PythonIndenter
+    'python': python_indenter.PythonIndenter,
+    'html': html_indenter.HtmlIndenter
 }
 
 
