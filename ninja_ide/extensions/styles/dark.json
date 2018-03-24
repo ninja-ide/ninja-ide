@@ -36,6 +36,12 @@
             }
         },
         {
+            "scope": "keyword_control_statement",
+            "settings": {
+                "color": "#96CBFE"
+            }
+        },
+        {
             "scope": "keyword_operator",
             "settings": {
                 "color": "#EDEDED"
