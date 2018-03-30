@@ -129,14 +129,14 @@ ACTIONS_GENERAL = (
         },
         "connect": "show_schemes"
     },
-    #{
-    #    "action": {
-    #        "text": translations.TR_LANGUAGE_MANAGER,
-    #        "section": (translations.TR_MENU_EXTENSIONS, None),
-    #        "weight": 120
-    #    },
-    #    "connect": "show_languages"
-    #},
+    {
+        "action": {
+            "text": translations.TR_LANGUAGE_MANAGER,
+            "section": (translations.TR_MENU_EXTENSIONS, None),
+            "weight": 120
+        },
+        "connect": "show_languages"
+    },
     {
         "action": {
             "text": translations.TR_ABOUT_NINJA,

@@ -126,12 +126,13 @@ class NComboBox(QComboBox):
 class CheckableHeaderTable(QTableWidget):
     """ QTableWidget subclassed with QCheckBox on Header to select all items """
 
+    stateChanged=pyqtSignal(int, name="stateChanged")
+
     def __init__(self, parent=None, *args):
         """ init CheckableHeaderTable and add custom widgets and connections """
         super(QTableWidget, self).__init__(parent, *args)
         self.chkbox = QCheckBox(self.horizontalHeader())
-        self.connect(self.chkbox, SIGNAL("stateChanged(int)"),
-                     self.change_items_selection)
+        self.chkbox.stateChanged.connect(self.change_items_selection)
 
     def change_items_selection(self, state):
         """ de/select all items iterating over all table rows at column 0 """
@@ -198,8 +199,9 @@ class LoadingItem(QLabel):
 # Thread with Callback
 ###############################################################################
 
-
 class ThreadExecution(QThread):
+
+    executionFinished = pyqtSignal(object,name="executionFinished")
 
     def __init__(self, functionInit=None, args=None, kwargs=None):
         super(ThreadExecution, self).__init__()
@@ -214,8 +216,7 @@ class ThreadExecution(QThread):
     def run(self):
         if self.execute:
             self.result = self.execute(*self.args, **self.kwargs)
-        self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
-            self.signal_return)
+        self.executionFinished.emit(self.signal_return)
         self.signal_return = None
 
 
