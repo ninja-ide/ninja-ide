@@ -11,12 +11,6 @@ ListModel {
     }
 
     ListElement {
-        language: "French"
-        country: "France"
-        status: "set as Default"
-    }
-
-    ListElement {
         language: "German"
         country: "Germany"
         status: "Default"

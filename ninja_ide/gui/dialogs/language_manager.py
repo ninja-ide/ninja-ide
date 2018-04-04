@@ -116,6 +116,7 @@ class LanguagesManagerWidget(QDialog):
 
         self.language = ''
         self.country = ''
+        self.language_url = ''
 
         """/*
         self._tabs = QTabWidget()
@@ -211,13 +212,11 @@ class LanguagesManagerWidget(QDialog):
         return replace2
 
     def downloading_lang(self):
-        language_url = resources.LANGUAGES_URL + '/' \
-        + self.language + "_translations.py"
         try:
-            req = urlopen('http://localhost/translations/German_translations.py')
+            req = urlopen(self.language_url)
             resp = req.read()
             data = resp.decode('utf-8')
-            
+
             if data:
                 self.downloading.emit(100)
                 self.finishUp(data)
@@ -239,7 +238,8 @@ class LanguagesManagerWidget(QDialog):
         with open(available_file, mode='r', encoding='utf-8') as avail:
             read = avail.read()
         print('avaial gotten')
-        avai1 = old_avail_lang_text.replace('LANGUAGE NAME HERE', self.language)
+        avai1 = old_avail_lang_text.replace('LANGUAGE NAME HERE',
+                                             self.language)
         avail_lang_text = avai1.replace('COUNTRY NAME HERE', self.country)
         fixed = read.replace(avail_lang_text, '')
         print('fixed up')
@@ -266,9 +266,10 @@ class LanguagesManagerWidget(QDialog):
 
     @pyqtSlot(str, str)
     def start_download(self, lang, cc):
-        print('start_download')
         self.language = lang
         self.country = cc
+        self.language_url = resources.LANGUAGES_URL + '/' \
+        + self.language + "_translations.py"
         download_thread = threading.Thread(target=self.pinging)
         download_thread.start()
 
@@ -279,10 +280,11 @@ class LanguagesManagerWidget(QDialog):
 
         # open
         try:
-            req = urlopen('http://localhost/translations/German_translations.py')
-            status_comment = "Connected to http://www.ninja-ide.org..."
-            self.status.emit(status_comment)
-            self.downloading_lang()
+            req = urlopen(self.language_url)
+            if req:
+                status_comment = "Connected to http://www.ninja-ide.org..."
+                self.status.emit(status_comment)
+                self.downloading_lang()
         except:
             pass
 
