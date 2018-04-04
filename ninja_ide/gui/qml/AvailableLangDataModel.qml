@@ -12,15 +12,7 @@ ListModel {
         country: "Spain"
     }
 
-    ListElement {
-        language: "Italian"
-        country: "Italy"
-    }
-
-    ListElement {
-        language: "German"
-        country: "Germany"
-    }
+    
 
     ListElement {
         language: "Afrikaans"

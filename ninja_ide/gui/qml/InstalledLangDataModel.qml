@@ -1,0 +1,24 @@
+import QtQuick 2.4
+import QtQuick.Controls 1.3
+import QtQuick.Layouts 1.3
+
+ListModel {
+        
+    ListElement {
+        language: "English"
+        country: "US"
+        status: "set as Default"
+    }
+
+    ListElement {
+        language: "French"
+        country: "France"
+        status: "set as Default"
+    }
+
+    ListElement {
+        language: "German"
+        country: "Germany"
+        status: "Default"
+    }
+}
