@@ -773,7 +773,7 @@ class NEditor(base_editor.BaseEditor):
 
         def find_all_iter(string, sub):
             try:
-                reobj = re.compile(sub)
+                reobj = re.compile(re.escape(sub))
             except sre_constants.error:
                 return
             for match in reobj.finditer(string):
