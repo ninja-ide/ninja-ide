@@ -22,7 +22,6 @@ from PyQt5.QtCore import (
 )
 
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core.file_handling import nswapfile
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
 from ninja_ide.core import settings
@@ -37,7 +36,7 @@ class NEditable(QObject):
     @fileSaved(PyQt_PyObject)
     """
     fileSaved = pyqtSignal('PyQt_PyObject')
-    fileLoaded = pyqtSignal('PyQt_PyObject')
+    fileLoaded = pyqtSignal(['PyQt_PyObject'], [str])
     canBeRecovered = pyqtSignal('PyQt_PyObject')
     fileRemoved = pyqtSignal('PyQt_PyObject')
     fileChanged = pyqtSignal('PyQt_PyObject')
@@ -54,8 +53,9 @@ class NEditable(QObject):
         self.__language = None
         self.text_modified = False
         self.ignore_checkers = False
-        # Swap File
-        self._swap_file = None
+        # Hot exit and autosave feature
+        from ninja_ide.core.file_handling import nswapfile
+        self._swap_file = nswapfile.NSwapFile(self)
         # Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
@@ -111,7 +111,7 @@ class NEditable(QObject):
             self._nfile.start_watching()
             self.__editor.text = content
             self.__editor.document().setModified(False)
-            self.create_swap_file()
+            # self.create_swap_file()
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
             if not self.ignore_checkers:
@@ -124,12 +124,7 @@ class NEditable(QObject):
             helpers.insert_coding_line(self.__editor)
 
         self.fileLoaded.emit(self)
-
-    def create_swap_file(self):
-        if settings.SWAP_FILE:
-            self._swap_file = nswapfile.NSwapFile(self)
-            self._swap_file.canBeRecovered.connect(
-                lambda: self.canBeRecovered.emit(self))
+        self.fileLoaded[str].emit(self.file_path)
 
     def reload_file(self):
         if self._nfile:
@@ -143,6 +138,12 @@ class NEditable(QObject):
                 self.run_checkers(content)
             else:
                 self.ignore_checkers = False
+
+    def discard(self):
+        self._swap_file.discard()
+
+    def recover(self):
+        self._swap_file.recover()
 
     @property
     def file_path(self):
@@ -172,10 +173,6 @@ class NEditable(QObject):
         return self.__editor
 
     @property
-    def swap_file(self):
-        return self._swap_file
-
-    @property
     def nfile(self):
         return self._nfile
 
@@ -197,8 +194,8 @@ class NEditable(QObject):
     def save_content(self, path=None, force=False):
         """Save the content of the UI to a file."""
 
-        if self._swap_file is None:
-            self.create_swap_file()
+        # if self._swap_file is None:
+        #     self.create_swap_file()
         if self.__editor.is_modified or force:
             content = self.__editor.text
             nfile = self._nfile.save(content, path)

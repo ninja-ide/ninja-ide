@@ -284,7 +284,7 @@ TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
 TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "File has been modified")
 TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
-    "The file has been modified outside the application.")
+    "The <b>%s</b> file has been modified outside the application.")
 # "Do you want to reload it?")
 
 # Project wizard

@@ -263,9 +263,10 @@ class _MainContainer(QWidget):
                         editor_widget.file_path)
             filenames = QFileDialog.getOpenFileNames(
                 self,
-                "Open File",  # FIXME: translations
+                translations.TR_OPEN_A_FILE,
                 directory,
-                settings.get_supported_extensions_filter()
+                settings.get_supported_extensions_filter(),
+                initialFilter="Python script (*.py *.pyx *.wsgi)"
             )[0]
         else:
             logger.debug("Has filename")
@@ -415,9 +416,6 @@ class _MainContainer(QWidget):
     def add_editor(self, filename=None):
         ninjaide = IDE.get_service("ide")
         editable = ninjaide.get_or_create_editable(filename)
-
-        editable.canBeRecovered.connect(
-            lambda: self.combo_area.info_bar.show_message(msg_type="recovery"))
 
         if editable.editor:
             # If already open

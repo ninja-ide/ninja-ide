@@ -77,9 +77,9 @@ class ComboEditor(QWidget):
         vbox.addWidget(self.bar)
 
         # Info bar
-        self.info_bar = InfoBar(self)
-        self.info_bar.setVisible(False)
-        vbox.addWidget(self.info_bar)
+        # self.info_bar = InfoBar(self)
+        # self.info_bar.setVisible(False)
+        # vbox.addWidget(self.info_bar)
 
         self.stacked = QStackedLayout()
         vbox.addLayout(self.stacked)
@@ -178,18 +178,13 @@ class ComboEditor(QWidget):
             neditable.fileClosing.connect(self._close_file)
             editor.editorFocusObtained.connect(self._editor_with_focus)
             editor.modificationChanged.connect(self._editor_modified)
+            if neditable._swap_file.dirty:
+                self._editor_modified(True, sender=editor)
             neditable.checkersUpdated.connect(self._show_notification_icon)
             # Connect file system signals only in the original
             if self.__original:
                 neditable.askForSaveFileClosing.connect(self._ask_for_save)
                 neditable.fileChanged.connect(self._file_has_been_modified)
-
-                self.info_bar.reloadClicked.connect(neditable.reload_file)
-                if neditable.swap_file:
-                    self.info_bar.discardClicked.connect(
-                        neditable.swap_file.discard)
-                    self.info_bar.recoverClicked.connect(
-                        neditable.swap_file.recover)
             # Editor Signals
             editor.cursor_position_changed[int, int].connect(
                 self._update_cursor_position)
@@ -316,12 +311,27 @@ class ComboEditor(QWidget):
             self._main_container.save_file(neditable.editor)
             neditable.nfile.close()
 
+    @pyqtSlot("PyQt_PyObject")
+    def _recovery(self, neditable):
+        print("lalalal")
+
     def _file_has_been_modified(self, neditable):
-        # FIXME: use constant or enum
-        if settings.RELOAD_FILE == 0:
-            self.info_bar.show_message(msg_type="reload")
-        elif settings.RELOAD_FILE == 1:
+        index = self.bar.combo_files.findData(neditable)
+        self.stacked.setCurrentIndex(index)
+        self.bar.combo_files.setCurrentIndex(index)
+
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg_box.setDefaultButton(QMessageBox.Yes)
+        msg_box.setWindowTitle(translations.TR_FILE_HAS_BEEN_MODIFIED)
+        msg_box.setText(
+            translations.TR_FILE_MODIFIED_OUTSIDE % neditable.display_name)
+
+        result = msg_box.exec_()
+        if result == QMessageBox.Yes:
             neditable.reload_file()
+        return
 
     def _run_file(self, path):
         self._main_container.run_file(path)
@@ -391,9 +401,10 @@ class ComboEditor(QWidget):
                 index -= 1
             self.bar.set_current_symbol(index)
 
-    def _editor_modified(self, value):
-        obj = self.sender()
-        neditable = obj.neditable
+    def _editor_modified(self, value, sender=None):
+        if sender is None:
+            sender = self.sender()
+        neditable = sender.neditable
         if value:
             text = "\u2022 %s" % neditable.display_name
             self.bar.update_item_text(neditable, text)
@@ -966,10 +977,10 @@ class CodeNavigator(QWidget):
 
 class InfoBar(QFrame):
 
-    reloadClicked = pyqtSignal()
-    cancelClicked = pyqtSignal()
-    recoverClicked = pyqtSignal()
-    discardClicked = pyqtSignal()
+    # reloadClicked = pyqtSignal()
+    # cancelClicked = pyqtSignal()
+    # recoverClicked = pyqtSignal()
+    # discardClicked = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -984,47 +995,57 @@ class InfoBar(QFrame):
         self._layout = QHBoxLayout(self)
         self._message = QLabel("")
         self._layout.addWidget(self._message)
-        # Reload buttons
-        btn_reload = QPushButton("Reload")
-        btn_cancel_reload = QPushButton("Cancel")
-        # Recovery buttons
-        btn_discard = QPushButton("Discard")
-        btn_recover = QPushButton("Recover")
-
-        self._buttons = {
-            "reload": [btn_reload, btn_cancel_reload],
-            "recovery": [btn_recover, btn_discard]
-        }
-        for buttons in self._buttons.values():
-            for button in buttons:
-                button.clicked.connect(self.on_clicked)
-
-    def on_clicked(self):
-        signal_name = "%sClicked" % self.sender().text().lower()
-        signal = getattr(self, signal_name)
-        signal.emit()
-        self.hide()
-
-    def init(self, type_):
-        buttons = self._buttons.get(type_)
-        if self._state != type_:
-            for btn in self._buttons.get(self._state):
-                self._layout.removeWidget(btn)
-
         self._layout.addStretch(1)
-        for btn in buttons:
-            self._layout.addWidget(btn)
+        # # Reload buttons
+        # btn_reload = QPushButton("Reload")
+        # btn_cancel_reload = QPushButton("Cancel")
+        # # Recovery buttons
+        # btn_discard = QPushButton("Discard")
+        # btn_recover = QPushButton("Recover")
 
-    def show_message(self, msg_type="recovery"):
-        self.init(msg_type)
-        if msg_type == "reload":
-            text = translations.TR_FILE_MODIFIED_OUTSIDE
-        else:
-            text = "The file was not closed properly"
-        self._message.setText(text)
-        if not self.isVisible():
-            self.show()
-        self._state = msg_type
+        # self._buttons = {
+        #     "reload": [btn_reload, btn_cancel_reload],
+        #     "recovery": [btn_recover, btn_discard]
+        # }
+        # for buttons in self._buttons.values():
+        #     for button in buttons:
+        #         button.clicked.connect(self.on_clicked)
+
+    def set_message(self, msg):
+        self._message.setText(msg)
+
+    def add_button(self, text, slot=None):
+        btn = QPushButton(text)
+        self._layout.addWidget(btn)
+        if slot is not None:
+            btn.clicked.connect(slot)
+        return btn
+    # def on_clicked(self):
+    #     signal_name = "%sClicked" % self.sender().text().lower()
+    #     signal = getattr(self, signal_name)
+    #     signal.emit()
+    #     self.hide()
+
+    # def init(self, type_):
+    #     buttons = self._buttons.get(type_)
+    #     if self._state != type_:
+    #         for btn in self._buttons.get(self._state):
+    #             self._layout.removeWidget(btn)
+
+    #     self._layout.addStretch(1)
+    #     for btn in buttons:
+    #         self._layout.addWidget(btn)
+
+    # def show_message(self, msg_type="recovery"):
+    #     self.init(msg_type)
+    #     if msg_type == "reload":
+    #         text = translations.TR_FILE_MODIFIED_OUTSIDE
+    #     else:
+    #         text = "The file was not closed properly"
+    #     self._message.setText(text)
+    #     if not self.isVisible():
+    #         self.show()
+    #     self._state = msg_type
 
 
 class Model(QAbstractItemModel):

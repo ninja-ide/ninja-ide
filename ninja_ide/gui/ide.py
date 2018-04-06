@@ -688,10 +688,10 @@ class IDE(QMainWindow):
         data_settings = IDE.data_settings()
         ninja_settings = IDE.ninja_settings()
         # Remove swap files
-        for editable in self.__neditables.values():
-            if editable.swap_file is not None:
-                # A new file does not have a swap file
-                editable.swap_file._file_closed()
+        # for editable in self.__neditables.values():
+        #     if editable.swap_file is not None:
+        #         # A new file does not have a swap file
+        #         editable.swap_file._file_closed()
 
         if data_settings.value("ide/loadFiles", True):
             # Get opened files
@@ -809,14 +809,14 @@ class IDE(QMainWindow):
         """Saves some global settings before closing."""
         # if self.s_listener:
         #    self.s_listener.close()
-        _unsaved_files = self._get_unsaved_files()
-        if settings.CONFIRM_EXIT and _unsaved_files:
-            dialog = unsaved_files.UnsavedFilesDialog(_unsaved_files, self)
-            if dialog.exec_() == QDialog.Rejected:
-                event.ignore()
-                return
-        else:
-            self._save_unsaved_files(_unsaved_files)
+        # _unsaved_files = self._get_unsaved_files()
+        # if settings.CONFIRM_EXIT and _unsaved_files:
+        #     dialog = unsaved_files.UnsavedFilesDialog(_unsaved_files, self)
+        #     if dialog.exec_() == QDialog.Rejected:
+        #         event.ignore()
+        #         return
+        # else:
+        #     self._save_unsaved_files(_unsaved_files)
         self.save_settings()
         self.goingDown.emit()
         # close python documentation server (if running)

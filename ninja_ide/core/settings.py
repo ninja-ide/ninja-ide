@@ -19,13 +19,14 @@
 import os
 import sys
 import datetime
+import enum
 
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import (
-    QSettings,
-    QDir,
-    QFileInfo
-)
+from PyQt5.QtGui import QImageReader
+from PyQt5.QtCore import QMimeDatabase
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFileInfo
 
 from ninja_ide import resources
 # from ninja_ide.dependencies import pycodestyle
@@ -88,11 +89,14 @@ def detect_python_path():
 HDPI = False
 CUSTOM_SCREEN_RESOLUTION = ""
 # Swap File
+
+AUTOSAVE = True
+AUTOSAVE_DELAY = 1500
 # 0: Disable
 # 1: Enable
 # 2: Alternative Dir
-SWAP_FILE = 1
-SWAP_FILE_INTERVAL = 15  # seconds
+# SWAP_FILE = 1
+# SWAP_FILE_INTERVAL = 15  # seconds
 
 MAX_OPACITY = TOOLBAR_AREA = 1
 # MIN_OPACITY = 0.3
@@ -243,6 +247,21 @@ RELOAD_FILE = 0
 # FILE MANAGER
 ###############################################################################
 
+# Mime types
+IMAGE_MIMETYPES = [f.data().decode()
+                   for f in QImageReader.supportedMimeTypes()][1:]
+IMAGE_FORMATS = [f.data().decode()
+                 for f in QImageReader.supportedImageFormats()]
+
+SUPPORTED_MIMETYPES = [
+    "text/x-python",
+    "text/x-qml",
+    "text/html",
+    "application/javascript"
+]
+
+ALL_MIMETYPES = IMAGE_MIMETYPES + SUPPORTED_MIMETYPES
+
 SUPPORTED_EXTENSIONS = {
     "python": ["py", "pyw"],
     "html": ["html"],
@@ -323,14 +342,22 @@ WORKSPACE = ""
 
 
 def get_supported_extensions():
-    return [ext for ext in SUPPORTED_EXTENSIONS.values() for ext in ext]
+    pass
 
 
 def get_supported_extensions_filter():
-    _filter = [ftype.title() + " Files (*.{})".format(
-               " *.".join(SUPPORTED_EXTENSIONS[ftype]))
-               for ftype in SUPPORTED_EXTENSIONS.keys()]
-    return ";;".join(_filter) + ";;All Files (*)"
+    mimetypes = [QMimeDatabase().mimeTypeForName(m).filterString()
+                 for m in ALL_MIMETYPES]
+    if IS_WINDOWS:
+        all_filter = "All Files (*.*)"
+    else:
+        all_filter = "All Files (*)"
+    mimetypes.append(all_filter)
+    return ";;".join(sorted(mimetypes))
+
+
+# def get_supported_extensions():
+#     return [ext for ext in SUPPORTED_EXTENSIONS.values() for ext in ext]
 
 
 # def set_project_type_handler(project_type, project_type_handler):
@@ -460,8 +487,8 @@ def load_settings():
     # global UI_LAYOUT
     global PYTHON_EXEC
     global EXECUTION_OPTIONS
-    global SWAP_FILE
-    global SWAP_FILE_INTERVAL
+    # global SWAP_FILE
+    # global SWAP_FILE_INTERVAL
     # global PYTHON_EXEC_CONFIGURED_BY_USER
     # global SESSIONS
     global NINJA_SKIN
@@ -543,8 +570,8 @@ def load_settings():
                                   sys.executable, type='QString')
     # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
-    SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)
-    SWAP_FILE_INTERVAL = qsettings.value("ide/swapFileInterval", 15, type=int)
+    # SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)
+    # SWAP_FILE_INTERVAL = qsettings.value("ide/swapFileInterval", 15, type=int)
 
     NINJA_SKIN = qsettings.value("ide/interface/skin", "Dark", type=str)
     # sessionDict = dict(data_qsettings.value('ide/sessions', {}))

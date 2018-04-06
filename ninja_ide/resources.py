@@ -69,6 +69,8 @@ SYNTAX_FILES = os.path.join(PRJ_PATH, "gui", "editor", "syntaxes")
 
 PLUGINS = os.path.join(HOME_NINJA_PATH, "extensions", "plugins")
 
+BACKUP_FILES = os.path.join(HOME_NINJA_PATH, "backups")
+
 PLUGINS_DESCRIPTOR = os.path.join(EXTENSIONS_PATH,
                                   "plugins", "descriptor.json")
 
@@ -263,7 +265,8 @@ def create_home_dir_structure():
     Create the necesary directories structure for NINJA-IDE
     """
     for directory in (HOME_NINJA_PATH, EXTENSIONS_PATH, PLUGINS, EDITOR_SKINS,
-                      LANGS, NINJA_THEMES_DOWNLOAD, NINJA_KNOWLEDGE_PATH):
+                      LANGS, NINJA_THEMES_DOWNLOAD, NINJA_KNOWLEDGE_PATH,
+                      BACKUP_FILES):
         if not os.path.isdir(directory):
             os.mkdir(directory)
 
