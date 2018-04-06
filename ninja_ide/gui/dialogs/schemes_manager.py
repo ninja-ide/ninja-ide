@@ -25,16 +25,16 @@ except ImportError:
     from urllib2 import URLError
 #lint:enable
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QDialog
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QObject
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -69,10 +69,13 @@ class SchemesManagerWidget(QDialog):
         self.downloadItems = []
 
         #Load Themes with Thread
-        self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
+        #self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
+        btnReload.clicked.connect(self._reload_themes)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
-        self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
-        self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        #self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
+        self._thread.finished.connect(self.load_skins_data)
+        #self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        btn_close.clicked.connect(self.close)
         self._reload_themes()
 
     def _reload_themes(self):
@@ -151,7 +154,8 @@ class SchemeWidget(QWidget):
         self._table.setColumnWidth(0, 200)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
-        self.connect(btnUninstall, SIGNAL("clicked()"), self._download_scheme)
+        #self.connect(btnUninstall, SIGNAL("clicked()"), self._download_scheme)
+        btnUninstall.clicked.connect(self._download_scheme)
 
     def _download_scheme(self):
         schemes = ui_tools.remove_get_selected_items(self._table, self._schemes)
