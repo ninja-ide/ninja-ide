@@ -154,7 +154,7 @@ Rectangle {
                     font.family: "monospace"
                 }
                 Text {
-                    text: "• Locates anything in the project with <%1>".arg(shortcuts.locator)
+                    text: "• Locates anything in the (djafsdjfa) project with <%1>".arg(shortcuts.locator)
                     color: theme.StartPageText
                     renderType: Text.NativeRendering
                     font.family: "monospace"

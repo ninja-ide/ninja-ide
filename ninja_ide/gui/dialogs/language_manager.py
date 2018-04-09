@@ -24,6 +24,7 @@ except ImportError:
     from urllib2 import urlopen
     from urllib2 import URLError
 #lint:enable
+import threading
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QVBoxLayout
@@ -33,14 +34,71 @@ from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtWidgets import QTabWidget
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QDialog
+from PyQt5.QtQuickWidgets import QQuickWidget
 from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 
+
+# Every space of this block is important, edit with care
+old_default_lang_text = 'ListElement {\
+\n        index: INDEX HERE\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n        status: "Default"\
+\n    }'
+
+old_curr_langs_text = 'ListElement {\
+\n        index: INDEX HERE\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n        status: "set as Default"\
+\n    }'
+
+repl_old_default_lang_text = 'ListElement {\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n        status: "set as Default"\
+\n    }'
+
+repl_old_curr_langs_text = 'ListElement {\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n        status: "Default"\
+\n    }'
+
+# Available lang replacement
+new_avail_lang_text = '\n\
+\n    ListElement {\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n    }'
+
+# Available lang replacement
+old_avail_lang_text = 'ListElement {\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n    }'
+
+# Adding to Installed Lang replacement
+installed_lang_text = '    }\
+\n\
+\n    ListElement {\
+\n        index: INDEX HERE\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n        status: "set as Default"\
+\n    }\
+\n}'
+
+
+# install to replace
+installed_to_find = '    }\
+\n}'
 
 class LanguagesManagerWidget(QDialog):
 
@@ -49,7 +107,30 @@ class LanguagesManagerWidget(QDialog):
         self.setWindowTitle(self.tr("Language Manager"))
         self.resize(700, 500)
 
-        vbox = QVBoxLayout(self)
+        self.vbox = QVBoxLayout(self)
+        self.q = QQuickWidget()
+
+        self.q.rootContext().setContextProperty(
+            "theme", resources.QML_COLORS)
+        self.q.rootContext().setContextProperty(
+            "resources", resources)
+        self.q.rootContext().setContextProperty(
+            "parentClass", self)
+        self.q.setMinimumWidth(400)
+        self.q.setResizeMode(QQuickWidget.SizeRootObjectToView)
+        self.q.setSource(ui_tools.get_qml_resource("LanguageManager.qml"))
+        self.root = self.q.rootObject()
+        self.overlay = ui_tools.Overlay(self)
+
+        self.vbox.addWidget(self.q)
+
+        self.language = ''
+        self.country = ''
+        self.language_url = ''
+        self.index = 0
+        self.new_id = 0
+
+        """/*
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
         # Footer
@@ -73,6 +154,158 @@ class LanguagesManagerWidget(QDialog):
         self._thread.finished.connect(self.load_languages_data)
         btn_close.clicked.connect(self.close)
         self._reload_languages()
+        */"""
+    status = pyqtSignal(str, arguments=["pinging"])
+    downloading = pyqtSignal(int, arguments=["downloading_lang"])
+    downloadFinish = pyqtSignal(str, arguments=["finishUp"])
+
+    @pyqtSlot(str, str, str, str, str, str)
+    def set_as_default(self, c_id, c_language, c_lang_coun, index, language, lang_coun):
+        self.c_id = c_id
+        self.new_id = index
+
+        # get current language
+        curr_lang_filename = c_language + "_translations.py"
+        curr_lang_path = os.path.join(resources.LANGS, curr_lang_filename)
+
+        # set current language as default
+        lang_filename = language + "_translations.py"
+        old_path = os.path.join(resources.LANGS,  lang_filename)
+        translation_default = "translations.py"
+        new_path = os.path.join(resources.LANGS,  translation_default)
+        os.rename(old_path, new_path)
+        c_tr_file = os.path.join(resources.PRJ_PATH, 'translations.py')
+        # copy back to languages folder
+        os.rename(c_tr_file, curr_lang_path)
+        # now copy the users preferred language here instead
+        os.rename(new_path, c_tr_file)
+        self._rebuild_model(c_language, c_lang_coun, language, lang_coun)
+
+
+    def _rebuild_model(self, c_language, c_lang_coun, language, lang_coun):
+        # get statements
+        variables = self._replace_langs(c_language, c_lang_coun, language,
+                                        lang_coun)
+
+        old_def, repl_old_def, new_lang, new_def = variables
+
+        model = os.path.join(resources.QML_FILES, "InstalledLangDataModel.qml")
+
+        # read the file
+        with open(model, encoding='utf-8', mode='r') as model_file:
+            data = model_file.read()
+
+        final = self._replaces(data, old_def, repl_old_def, new_lang, new_def)
+
+        # Now re write the file
+        with open(model, encoding='utf-8', mode='w') as model_file:
+            model_file.write(final)
+
+    def _replace_langs(self, old_default, old_default_cc, new_default,
+                        new_default_cc) :
+        # Here we are replacing the sort of vars with thw translation langs.
+        fixed00 = old_default_lang_text.replace("INDEX HERE", self.c_id)
+        fixed0 = fixed00.replace('LANGUAGE NAME HERE',
+                                                old_default )
+        fixed01 = fixed0.replace('COUNTRY NAME HERE', old_default_cc)
+        
+        fixed22 = old_curr_langs_text.replace("INDEX HERE", self.c_id)
+        fixed2 = fixed22.replace('COUNTRY NAME HERE',
+                                                     old_default_cc )
+        fixed21 = fixed2.replace('LANGUAGE NAME HERE', old_default)
+
+        fixed33 = old_curr_langs_text.replace("INDEX HERE", self.new_id)
+        fixed3 = fixed33.replace('LANGUAGE NAME HERE', new_default)
+        fixed31 = fixed3.replace('COUNTRY NAME HERE', new_default_cc)
+
+        fixed44 = old_default_lang_text.replace("INDEX HERE", self.new_id)
+        fixed4 = fixed44.replace('COUNTRY NAME HERE',
+                                                  new_default_cc)
+        fixed41 = fixed4.replace('LANGUAGE NAME HERE', new_default)
+        return fixed01, fixed21, fixed31, fixed41
+
+    def _replaces(self, data, old_def, repl_old_def, new_lang, new_def):
+        replace1 = data.replace(old_def, repl_old_def)
+        replace2 = replace1.replace(new_lang, new_def)
+        return replace2
+
+    def downloading_lang(self):
+        try:
+            req = urlopen(self.language_url)
+            resp = req.read()
+            data = resp.decode('utf-8')
+
+        except:
+            print('Exception one')
+
+        if data:
+            self.downloading.emit(100)
+            self.finishUp(data)
+        
+
+    def finishUp(self, data):
+        local_lang_file = self.language + "_translations.py"
+        local_path = os.path.join(resources.LANGS, local_lang_file)
+
+        # Save the Translation.py
+        with open(local_path, mode='w') as file:
+            file.write(data)
+
+        # replace old available langs
+        available_file = os.path.join(resources.QML_FILES,
+                                      'AvailableLangDataModel.qml')
+        with open(available_file, mode='r', encoding='utf-8') as avail:
+            read = avail.read()
+
+        avai1 = new_avail_lang_text.replace('LANGUAGE NAME HERE',
+                                             self.language)
+        avail_lang_text = avai1.replace('COUNTRY NAME HERE', self.country)
+        fixed = read.replace(avail_lang_text, '')
+
+        with open(available_file, mode='w', encoding='utf-8') as available:
+            available.write(fixed)
+
+        # replace install langs
+        installed_file = os.path.join(resources.QML_FILES,
+                                      'InstalledLangDataModel.qml')
+        with open(installed_file, mode='r', encoding='utf-8') as inst:
+            install_read = inst.read()
+
+        ins01 = installed_lang_text.replace("INDEX HERE", str(self.index))
+        ins1 = ins01.replace('LANGUAGE NAME HERE', self.language)
+        inst_lang_text = ins1.replace('COUNTRY NAME HERE', self.country)
+        # There was a problem here
+        fixed1 = install_read.replace(installed_to_find, inst_lang_text)
+        with open(installed_file, mode='w', encoding='utf-8') as installed:
+            installed.write(fixed1)
+
+        values_to_send = str(self.index) + "+" + self.language + "+" + self.country
+        self.downloadFinish.emit(values_to_send)
+
+    @pyqtSlot(int, str, str)
+    def start_download(self, index, lang, cc):
+        self.index = index
+        self.language = lang
+        self.country = cc
+        self.language_url = 'http://localhost/translations/Espanyol_translations.py'
+        #self.language_url = resources.LANGUAGES_URL + '/' \
+        #+ self.language + "_translations.py"
+        download_thread = threading.Thread(target=self.pinging)
+        download_thread.start()
+
+    def pinging(self):
+        status_comment = "Connecting to http://www.ninja-ide.org..."
+        self.status.emit(status_comment)
+
+        # open
+        try:
+            req = urlopen(self.language_url)
+            if req:
+                status_comment = "Connected to http://www.ninja-ide.org..."
+                self.status.emit(status_comment)
+                self.downloading_lang()
+        except:
+            pass
 
     def _reload_languages(self):
         self.overlay.show()

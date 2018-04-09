@@ -24,7 +24,13 @@
             }
         },
         {
-            "scope": "keyword_control_flow",
+            "scope": "keyword_control",
+            "settings": {
+                "color": "#96CBFE"
+            }
+        },
+        {
+            "scope": "keyword_control_statement",
             "settings": {
                 "color": "#96CBFE"
             }

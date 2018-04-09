@@ -17,7 +17,8 @@ Button {
                 color: (button.checked || button.pressed)
                        ? "#6a6ea9": (button.hovered ? "#434345": "#323232")
                 border.width: 1
-                border.color: "#434345"
+                border.color: "blue"
+                //border.color: "#434345"
 
                 Behavior on color {
                     ColorAnimation { duration: 150 }

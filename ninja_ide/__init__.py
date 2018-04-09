@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # This file is part of NINJA-IDE (http://ninja-ide.org).
 #
 # NINJA-IDE is free software; you can redistribute it and/or modify
@@ -16,6 +14,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+import sys
+import os
 
 
 ###############################################################################
@@ -59,6 +59,21 @@ and more enjoyable.
 
 def setup_and_run():
     """Load the Core module and trigger the execution."""
+
+    if sys.path[0] == '':
+
+        cwd = os.getcwd()
+
+        # replace it with the previous folder
+        # ninja_ide modules aint loaded yet
+        if sys.platform == 'win32':
+            cwd.replace('ninja_ide\\ninja_ide', 'ninja_ide')
+        else:
+            cwd.replace('ninja_ide/ninja_ide', 'ninja_ide')
+
+        # make first path in sys.path
+        sys.path[0] = cwd
+
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core
