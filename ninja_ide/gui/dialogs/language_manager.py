@@ -46,12 +46,14 @@ from ninja_ide.tools import json_manager
 
 # Every space of this block is important, edit with care
 old_default_lang_text = 'ListElement {\
+\n        index: INDEX HERE\
 \n        language: "LANGUAGE NAME HERE"\
 \n        country: "COUNTRY NAME HERE"\
 \n        status: "Default"\
 \n    }'
 
 old_curr_langs_text = 'ListElement {\
+\n        index: INDEX HERE\
 \n        language: "LANGUAGE NAME HERE"\
 \n        country: "COUNTRY NAME HERE"\
 \n        status: "set as Default"\
@@ -70,6 +72,13 @@ repl_old_curr_langs_text = 'ListElement {\
 \n    }'
 
 # Available lang replacement
+new_avail_lang_text = '\n\
+\n    ListElement {\
+\n        language: "LANGUAGE NAME HERE"\
+\n        country: "COUNTRY NAME HERE"\
+\n    }'
+
+# Available lang replacement
 old_avail_lang_text = 'ListElement {\
 \n        language: "LANGUAGE NAME HERE"\
 \n        country: "COUNTRY NAME HERE"\
@@ -79,6 +88,7 @@ old_avail_lang_text = 'ListElement {\
 installed_lang_text = '    }\
 \n\
 \n    ListElement {\
+\n        index: INDEX HERE\
 \n        language: "LANGUAGE NAME HERE"\
 \n        country: "COUNTRY NAME HERE"\
 \n        status: "set as Default"\
@@ -117,6 +127,8 @@ class LanguagesManagerWidget(QDialog):
         self.language = ''
         self.country = ''
         self.language_url = ''
+        self.index = 0
+        self.new_id = 0
 
         """/*
         self._tabs = QTabWidget()
@@ -147,10 +159,10 @@ class LanguagesManagerWidget(QDialog):
     downloading = pyqtSignal(int, arguments=["downloading_lang"])
     downloadFinish = pyqtSignal(str, arguments=["finishUp"])
 
-    @pyqtSlot(str, str, str, str)
-    def set_as_default(self, c_language, c_lang_coun, language, lang_coun):
-
-        print(c_language, c_lang_coun, language, lang_coun)
+    @pyqtSlot(str, str, str, str, str, str)
+    def set_as_default(self, c_id, c_language, c_lang_coun, index, language, lang_coun):
+        self.c_id = c_id
+        self.new_id = index
 
         # get current language
         curr_lang_filename = c_language + "_translations.py"
@@ -192,16 +204,22 @@ class LanguagesManagerWidget(QDialog):
     def _replace_langs(self, old_default, old_default_cc, new_default,
                         new_default_cc) :
         # Here we are replacing the sort of vars with thw translation langs.
-        fixed0 = old_default_lang_text.replace('LANGUAGE NAME HERE',
+        fixed00 = old_default_lang_text.replace("INDEX HERE", self.c_id)
+        fixed0 = fixed00.replace('LANGUAGE NAME HERE',
                                                 old_default )
         fixed01 = fixed0.replace('COUNTRY NAME HERE', old_default_cc)
-        fixed2 = repl_old_default_lang_text.replace('COUNTRY NAME HERE',
+        
+        fixed22 = old_curr_langs_text.replace("INDEX HERE", self.c_id)
+        fixed2 = fixed22.replace('COUNTRY NAME HERE',
                                                      old_default_cc )
         fixed21 = fixed2.replace('LANGUAGE NAME HERE', old_default)
 
-        fixed3 = old_curr_langs_text.replace('LANGUAGE NAME HERE', new_default)
+        fixed33 = old_curr_langs_text.replace("INDEX HERE", self.new_id)
+        fixed3 = fixed33.replace('LANGUAGE NAME HERE', new_default)
         fixed31 = fixed3.replace('COUNTRY NAME HERE', new_default_cc)
-        fixed4 = repl_old_curr_langs_text.replace('COUNTRY NAME HERE',
+
+        fixed44 = old_default_lang_text.replace("INDEX HERE", self.new_id)
+        fixed4 = fixed44.replace('COUNTRY NAME HERE',
                                                   new_default_cc)
         fixed41 = fixed4.replace('LANGUAGE NAME HERE', new_default)
         return fixed01, fixed21, fixed31, fixed41
@@ -217,64 +235,65 @@ class LanguagesManagerWidget(QDialog):
             resp = req.read()
             data = resp.decode('utf-8')
 
-            if data:
-                self.downloading.emit(100)
-                self.finishUp(data)
         except:
             print('Exception one')
 
+        if data:
+            self.downloading.emit(100)
+            self.finishUp(data)
+        
+
     def finishUp(self, data):
-        print('finish UP')
         local_lang_file = self.language + "_translations.py"
         local_path = os.path.join(resources.LANGS, local_lang_file)
 
         # Save the Translation.py
         with open(local_path, mode='w') as file:
             file.write(data)
-        print('data up')
+
         # replace old available langs
         available_file = os.path.join(resources.QML_FILES,
                                       'AvailableLangDataModel.qml')
         with open(available_file, mode='r', encoding='utf-8') as avail:
             read = avail.read()
-        print('avaial gotten')
-        avai1 = old_avail_lang_text.replace('LANGUAGE NAME HERE',
+
+        avai1 = new_avail_lang_text.replace('LANGUAGE NAME HERE',
                                              self.language)
         avail_lang_text = avai1.replace('COUNTRY NAME HERE', self.country)
         fixed = read.replace(avail_lang_text, '')
-        print('fixed up')
+
         with open(available_file, mode='w', encoding='utf-8') as available:
             available.write(fixed)
 
-        print('avail written')
         # replace install langs
         installed_file = os.path.join(resources.QML_FILES,
                                       'InstalledLangDataModel.qml')
         with open(installed_file, mode='r', encoding='utf-8') as inst:
             install_read = inst.read()
-        print('inst read')
-        ins1 = installed_lang_text.replace('LANGUAGE NAME HERE', self.language)
-        print(ins1)
+
+        ins01 = installed_lang_text.replace("INDEX HERE", str(self.index))
+        ins1 = ins01.replace('LANGUAGE NAME HERE', self.language)
         inst_lang_text = ins1.replace('COUNTRY NAME HERE', self.country)
         # There was a problem here
         fixed1 = install_read.replace(installed_to_find, inst_lang_text)
         with open(installed_file, mode='w', encoding='utf-8') as installed:
             installed.write(fixed1)
-        print('inst write')
 
-        self.downloadFinish.emit('Success')
+        values_to_send = str(self.index) + "+" + self.language + "+" + self.country
+        self.downloadFinish.emit(values_to_send)
 
-    @pyqtSlot(str, str)
-    def start_download(self, lang, cc):
+    @pyqtSlot(int, str, str)
+    def start_download(self, index, lang, cc):
+        self.index = index
         self.language = lang
         self.country = cc
-        self.language_url = resources.LANGUAGES_URL + '/' \
-        + self.language + "_translations.py"
+        self.language_url = 'http://localhost/translations/Espanyol_translations.py'
+        #self.language_url = resources.LANGUAGES_URL + '/' \
+        #+ self.language + "_translations.py"
         download_thread = threading.Thread(target=self.pinging)
         download_thread.start()
 
     def pinging(self):
-        print('pinging')
         status_comment = "Connecting to http://www.ninja-ide.org..."
         self.status.emit(status_comment)
 

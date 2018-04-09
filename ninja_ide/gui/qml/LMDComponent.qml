@@ -215,7 +215,7 @@ Rectangle {
                                         onPressed: {
                                             deleRect.border.color = "#c1c1c1"
                                             stack.languageName = language
-                                            parentClass.start_download(language, country)
+                                            parentClass.start_download(stack.model, language, country)
                                             stack.push(downloadPage)
                                         }
 

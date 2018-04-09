@@ -5,14 +5,16 @@ import QtQuick.Layouts 1.3
 ListModel {
         
     ListElement {
+        index: 0
         language: "English"
         country: "US"
-        status: "set as Default"
+        status: "Default"
     }
 
     ListElement {
+        index: 1
         language: "German"
         country: "Germany"
-        status: "Default"
+        status: "set as Default"
     }
 }

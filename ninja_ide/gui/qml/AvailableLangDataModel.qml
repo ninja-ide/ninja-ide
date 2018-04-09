@@ -8,13 +8,13 @@ ListModel {
     }
 
     ListElement {
-        language: "Espanyol"
-        country: "Spain"
+        language: "Italian"
+        country: "Italy"
     }
 
     ListElement {
-        language: "Italian"
-        country: "Italy"
+        language: "Espanyol"
+        country: "Spain"
     }
 
     ListElement {

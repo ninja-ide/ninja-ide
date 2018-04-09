@@ -15,6 +15,16 @@ Rectangle {
     property int downloaded: 0
     property int progressMeter: 2
     property string percentString: ""
+    signal setLogs(string cc, string lang, int id)
+
+    onSetLogs: {
+        stack.curr_lang_cc = cc
+        stack.curr_lang = lang
+        stack.curr_id = id
+        // this is maybe the only way to get this variable in here
+        stack.model = stack.listModel.count
+        return "true";
+    }
 
     StackView {
         width: parent.width
@@ -24,7 +34,9 @@ Rectangle {
         property string languageName: ""
         property string curr_lang: "Undefined"
         property string curr_lang_cc: "Undefined"
-
+        property int curr_id: 7000000
+        property QtObject listModel: InstalledLangDataModel {}
+        property int model: 0
         Component {
             id: selectLang
 
@@ -95,10 +107,18 @@ Rectangle {
 
                                     onPressed: {
                                         if(status !== 'Default') {
-                                            console.log(stack.curr_lang, stack.curr_lang_cc,
-                                                        language, country);
-                                            parentClass.set_as_default(stack.curr_lang, stack.curr_lang_cc,
-                                                                       language, country)
+                                            parentClass.set_as_default(stack.curr_id, stack.curr_lang, stack.curr_lang_cc,
+                                                                       index, language, country)
+                                            var modelCount = listView.model.count
+                                            for(var x=0; x < modelCount; x++ ) {
+                                                if(index == x) {
+                                                    listView.model.setProperty(index, "status", "Default")
+                                                } else {
+                                                    listView.model.setProperty(x, "status", "set as Default")
+                                                }
+                                            }
+
+
                                         }
                                     }
 
@@ -130,11 +150,15 @@ Rectangle {
                                         padding: 8
                                         font.weight: Font.ExtraLight
                                         font.family: "Segoe UI"
+                                        // Had problems settings these variables so they have been set these way.
+                                        textFormat: {
+                                            if ( status == 'Default' && (setLogs(country, language, index)) ) {
+                                                Text.RichText
+                                            }
+                                        }
                                         text: status
                                         color: {
-                                            if(status == 'Default' &&
-                                                    (stack.curr_lang = language) &&
-                                                    (stack.curr_lang_cc = country)) {
+                                            if(status == 'Default' ) {
                                                 'dodgerblue'
                                             } else {
                                                 "#3a3a3a"
@@ -147,7 +171,7 @@ Rectangle {
                             }
                         }
 
-                        model: InstalledLangDataModel {}
+                        model: stack.listModel
                         header: HeaderItem {}
                         delegate: languageDelegate
                         spacing: 12
@@ -199,11 +223,24 @@ Rectangle {
         }
 
         onDownloadFinish: {
-            statusComment = finishUp
-            console.log(statusComment)
+            var modelString = finishUp
+
+            // Get the separate values from the string
+            var breaks = modelString.split('+')
+            var newid = Number(breaks[0]);
+            var newlang = breaks[1];
+            var newcc = breaks[2];
+
+            // set status Comment
+            statusComment = 'Success'
+
+            // Go to first Component of Stack View
             for(var x=0; x < stack.depth; x++){
                 stack.pop()
             }
+
+            // Append to the model of the ListView
+            stack.listModel.append({"index": newid, "language": newlang, "country": newcc, "status":"set as Default" })
         }
 
     }
