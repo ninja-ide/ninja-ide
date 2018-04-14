@@ -153,7 +153,7 @@ Rectangle {
                 var firstValidItem = -1;
                 for (var i = 0; i < listFiles.model.count; i++) {
                     var item = listFiles.model.get(i);
-                    if (item.name.indexOf(input.text) == -1) {
+                    if (item.name.indexOf(input.text) === -1) {
                         item.itemVisible = false;
                     } else {
                         if (firstValidItem == -1) firstValidItem = i;
@@ -297,7 +297,7 @@ Rectangle {
                 anchors {
                     right: parent.right
                     top: col.bottom
-                    margins: 3
+                    rightMargin: 3
                 }
                 visible: !root.simple
                 spacing: 10
