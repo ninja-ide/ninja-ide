@@ -67,7 +67,8 @@ class NSwapFile(QObject):
 
     @pyqtSlot()
     def _on_file_closing(self):
-        self.__remove()
+        if not self._neditable.new_document:
+            self.__remove()
         self.deleteLater()
 
     @pyqtSlot()
