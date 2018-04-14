@@ -50,7 +50,7 @@ from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
-from ninja_ide.gui import indicator, notification
+# from ninja_ide.gui import notification
 
 logger = NinjaLogger(__name__)
 
@@ -126,7 +126,8 @@ class _MainContainer(QWidget):
 
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.combo_area.allFilesClosed.connect(self._files_closed)
-        self.combo_area.allFilesClosed.connect(lambda: self.allFilesClosed.emit())
+        self.combo_area.allFilesClosed.connect(
+            lambda: self.allFilesClosed.emit())
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
         # self.current_widget = self.combo_area
@@ -134,7 +135,7 @@ class _MainContainer(QWidget):
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
-        self.fileSaved.connect(self._show_message_about_saved)
+        # self.fileSaved.connect(self._show_message_about_saved)
 
     def run_file(self, filepath):
         self.runFile.emit(filepath)
@@ -145,10 +146,10 @@ class _MainContainer(QWidget):
     def _add_to_project(self, filepath):
         self.addToProject.emit(filepath)
 
-    def _show_message_about_saved(self, message):
-        if settings.NOTIFICATION_ON_SAVE:
-            editor_widget = self.get_current_editor()
-            indicator.Indicator.show_text(editor_widget, message)
+    # def _show_message_about_saved(self, message):
+    #     if settings.NOTIFICATION_ON_SAVE:
+    #         editor_widget = self.get_current_editor()
+    #         indicator.Indicator.show_text(editor_widget, message)
 
     def show_files_handler(self):
         self._files_handler.next_item()
@@ -444,8 +445,7 @@ class _MainContainer(QWidget):
 
     def create_editor_from_editable(self, editable):
         neditor = editor.create_editor(editable)
-        neditor.zoomChanged.connect(self._show_zoom_indicator)
-        neditor.destroyed.connect(self.__on_editor_destroyed)
+        # neditor.zoomChanged.connect(self._on_zoom_changed)
         neditor.addBackItemNavigation.connect(self.add_back_item_navigation)
         # editable.fileSaved.connect(self._editor_tab)
         return neditor
@@ -458,14 +458,8 @@ class _MainContainer(QWidget):
                 self.__code_back.append(item)
                 # self.__code_forward.clear()
 
-    def _show_zoom_indicator(self, zoom):
-        neditor = self.get_current_editor()
-        indicator.Indicator.show_text(
-            neditor, "Zoom: {} %".format(str(zoom)))
-
-    @pyqtSlot()
-    def __on_editor_destroyed(self):
-        indicator.Indicator.instance = None
+    def _on_zoom_changed(self, zoom):
+        pass
 
     def add_widget(self, widget):
         self.stack.addWidget(widget)

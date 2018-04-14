@@ -50,7 +50,6 @@ from ninja_ide import translations
 from ninja_ide.extensions import handlers
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui import indicator
 from ninja_ide.tools import ui_tools
 from ninja_ide.core.file_handling import file_manager
 # from ninja_ide.gui.main_panel import set_language
@@ -818,11 +817,6 @@ class ActionBar(QFrame):
 
     def _copy_file_location(self):
         """Copy the path of the current opened file to the clipboard."""
-        # Show message
-        main = IDE.get_service("main_container")
-        editor = main.get_current_editor()
-        indicator.Indicator.show_text(
-            editor, translations.TR_COPIED_TO_CLIPBOARD)
 
         neditable = self.combo_files.itemData(self.combo_files.currentIndex())
         QApplication.clipboard().setText(neditable.file_path,

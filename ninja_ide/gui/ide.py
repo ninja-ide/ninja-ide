@@ -838,8 +838,8 @@ class IDE(QMainWindow):
 
     def show_message(self, message, duration=3000):
         """Show status message."""
-        # self.notification.set_message(message, duration)
-        # self.notification.show()
+        self.notification.set_message(message, duration)
+        self.notification.show()
 
     def show_plugins_store(self):
         """Open the Plugins Manager to install/uninstall plugins."""

@@ -37,7 +37,6 @@ class Notification(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
         self.setAttribute(Qt.WA_ShowWithoutActivating)
-        # self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setFixedHeight(30)
         # Create the QML user interface.
         view = QQuickWidget()
@@ -51,6 +50,7 @@ class Notification(QWidget):
         vbox.addWidget(view)
 
         self._root.close.connect(self.close)
+        self._parent.goingDown.connect(self.close)
 
     def showEvent(self, event):
         """Method takes an event to show the Notification"""
@@ -59,7 +59,7 @@ class Notification(QWidget):
         conditional_vertical = settings.NOTIFICATION_POSITION in (0, 1)
         conditional_horizontal = settings.NOTIFICATION_POSITION in (0, 2)
         x = pgeo.left() if conditional_horizontal else pgeo.right()
-        y = (pgeo.bottom() - self.height()
+        y = (pgeo.bottom() - self.height() + 1
              if conditional_vertical else pgeo.top())
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
