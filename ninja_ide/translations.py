@@ -254,7 +254,7 @@ TR_DISPLAY_LINE_NUMBERS = tr("NINJA-IDE", "Display Line Numbers")
 TR_DISPLAY_TEXT_CHANGES = tr("NINJA-IDE", "Mark Text Changes")
 TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 Violations: ")
 TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint Errors: ")
-
+TR_NOT_IMPORT_CHECKER_TEXT = tr("NINJA-IDE", "Imports don't exist: ")
 
 # Dialogs
 TR_PREFERENCES_TITLE = tr("NINJA-IDE", "NINJA-IDE - Preferences")
