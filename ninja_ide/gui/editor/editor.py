@@ -84,6 +84,7 @@ import sre_constants
 from collections import OrderedDict
 
 from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QToolTip
 
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtGui import QTextDocument
@@ -302,7 +303,6 @@ class NEditor(base_editor.BaseEditor):
         # Clear previous selections
         self.__word_occurrences.clear()
         self.clear_extra_selections("occurrences")
-
         if self.extra_selections("find"):
             # No re-highlight occurrences when have "find" extra selections
             return
@@ -373,16 +373,16 @@ class NEditor(base_editor.BaseEditor):
             for line in lines:
                 # Scrollbar marker
                 self._scrollbar.add_marker("checker", line, color, priority=1)
-                # Extra selection
-                msg, col = checker.checks[line]
-                selection = extra_selection.ExtraSelection(
-                    self.textCursor(),
-                    start_line=line,
-                    offset=col - 1
-                )
-                selection.set_underline(color)
-                selections.append(selection)
-
+                ms = checker.checks[line]
+                for (col_start, col_end), message in ms:
+                    selection = extra_selection.ExtraSelection(
+                        self.textCursor(),
+                        start_line=line,
+                        col_start=col_start,
+                        col_end=col_end
+                    )
+                    selection.set_underline(color)
+                    selections.append(selection)
         self.add_extra_selections('checker', selections)
 
     def reset_selections(self):
@@ -584,6 +584,26 @@ class NEditor(base_editor.BaseEditor):
         return cursor
 
     def mouseMoveEvent(self, event):
+        position = event.pos()
+        cursor = self.cursorForPosition(position)
+        block = cursor.block()
+        line = block.layout().lineForTextPosition(cursor.positionInBlock())
+        # Only handle tool tip for text cursor if mouse is within the
+        # block for the text cursor
+        if position.x() <= self.blockBoundingGeometry(block).left() + \
+                line.naturalTextRect().right():
+            column = cursor.positionInBlock()
+            line = self.line_from_position(position.y())
+            checkers = self._neditable.sorted_checkers
+            for items in checkers:
+                checker, _, _ = items
+                messages_on_this_line = checker.message(line)
+                if messages_on_this_line is not None:
+                    for (start, end), message in messages_on_this_line:
+                        if column >= start and column <= end:
+                            QToolTip.showText(
+                                self.mapToGlobal(position), message, self)
+
         if event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
             cursor = self.word_under_cursor(cursor)

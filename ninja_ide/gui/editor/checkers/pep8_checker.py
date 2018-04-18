@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from collections import defaultdict
+
 from PyQt5.QtCore import (
     QThread,
     QTimer,
@@ -25,13 +27,14 @@ from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.gui.ide import IDE
+# from ninja_ide.gui.ide import IDE
 from ninja_ide.dependencies import pycodestyle
 from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
-from ninja_ide.tools import ui_tools
+from ninja_ide.gui.editor import helpers
+# from ninja_ide.tools import ui_tools
 # from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
 # TODO: limit results for performance
@@ -45,7 +48,7 @@ class Pep8Checker(QThread):
         self._editor = editor
         self._path = ''
         self._encoding = ''
-        self.checks = {}
+        self.checks = defaultdict(list)
 
         self.checker_icon = None
 
@@ -91,12 +94,13 @@ class Pep8Checker(QThread):
             # for lineno, offset, code, text, doc in temp_data:
             for lineno, col, code, text in temp_data:
                 message = '[PEP8] %s: %s' % (code, text)
-                self.checks[lineno - 1] = (message, col)
+                range_ = helpers.get_range(self._editor, lineno - 1, col)
+                self.checks[lineno - 1].append((range_, message))
         self.checkerCompleted.emit()
 
-    def message(self, index):
-        if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
-            return self.checks[index]
+    def message(self, line):
+        if line in self.checks:
+            return self.checks[line]
         return None
 
     def refresh_display(self):

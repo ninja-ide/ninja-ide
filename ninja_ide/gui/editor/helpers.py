@@ -28,6 +28,7 @@ from ninja_ide.tools import introspection
 
 
 patIndent = re.compile('^\s+')
+pat_word = re.compile(r"^[\t ]*$|[^\s]+")
 patSymbol = re.compile(r'[^\w]')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
@@ -46,6 +47,21 @@ def get_leading_spaces(line):
         return space.group()
     return ''
 
+
+def get_range(editor, line, col=-1):
+
+        lineno = line
+        line_text = editor.line_text(lineno)
+        col_end = len(line_text)
+        col_start = col if col > -1 else 0
+        if col > -1:
+            match = pat_word.match(line_text[col:])
+            if match:
+                col_end = col_start + match.end()
+        else:
+            col_start = editor.line_indent(lineno)
+
+        return col_start, col_end
 
 def get_indentation(line, indent=None, useTabs=None):
     if indent is None:

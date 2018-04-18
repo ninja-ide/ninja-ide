@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from collections import defaultdict
+
 from PyQt5.QtCore import (
     QThread,
     QTimer,
@@ -31,6 +33,7 @@ from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
+from ninja_ide.gui.editor import helpers
 # from ninja_ide.tools import ui_tools
 # from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
@@ -45,7 +48,7 @@ class NotImporterChecker(QThread):
         self._editor = editor
         self._path = ''
         self._encoding = ''
-        self.checks = {}
+        self.checks = defaultdict(list)
 
         self.checker_icon = None
 
@@ -94,11 +97,13 @@ class NotImporterChecker(QThread):
                     else:
                         message = '[NOTIMP] {}: Dont exist'.format(
                                 values['mod_name'])
-                    self.checks[values['lineno'] - 1] = (message, 0)
+                    range_ = helpers.get_range(
+                        self._editor, values['lineno'] - 1)
+                    self.checks[values['lineno'] - 1].append((range_, message))
         self.checkerCompleted.emit()
 
     def message(self, index):
-        if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
+        if index in self.checks:
             return self.checks[index]
         return None
 
