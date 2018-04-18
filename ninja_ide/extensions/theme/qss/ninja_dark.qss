@@ -304,3 +304,9 @@ QSplitter::handle {
 QSplitter:handle:hover {
     background: gray;
 }
+
+QToolTip {
+    border: 1px solid lightblue;
+    border-radius: 3px;
+    padding: 1px;
+  }
