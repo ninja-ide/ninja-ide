@@ -247,60 +247,22 @@ RELOAD_FILE = 0
 # FILE MANAGER
 ###############################################################################
 
+# File types supported by Ninja-IDE
+FILE_TYPES = [
+    ("Python files", (".py", ".pyw")),
+    ("QML files", (".qml",)),
+    ("HTML document", (".html", ".htm")),
+    ("JavaScript program", (".js", ".jsm")),
+    ("Ninja project", (".nja",))
+]
 # Mime types
-IMAGE_MIMETYPES = [f.data().decode()
+imaga_mimetypes = [f.data().decode()
                    for f in QImageReader.supportedMimeTypes()][1:]
-IMAGE_FORMATS = [f.data().decode()
-                 for f in QImageReader.supportedImageFormats()]
 
-SUPPORTED_MIMETYPES = [
-    "text/x-python",
-    "text/x-qml",
-    "text/html",
-    "application/javascript"
-]
-
-ALL_MIMETYPES = IMAGE_MIMETYPES + SUPPORTED_MIMETYPES
-
-SUPPORTED_EXTENSIONS = {
-    "python": ["py", "pyw"],
-    "html": ["html"],
-    "qml": ["qml"],
-    "javascript": ["js"],
-    "ninja project": ["nja"]
-}
-
-_SUPPORTED_EXTENSIONS = [
-    '.color',  # Similar to JSON, Ninja own Themes for example
-    '.css',
-    '.csv',  # plain text with commas
-    '.editorconfig'  # Its an .INI file, same syntax
-    '.html',
-    '.ini',
-    '.jpeg',  # JPG too
-    '.jpg',
-    '.js',
-    '.json',
-    '.md',  # plain text MarkDown
-    '.png',
-    '.py',
-    '.pyw',  # Python for Window that never show up Console
-    '.qss',  # CSS for Qt, almost same syntax
-    '.rst',  # plain text ReStructuredText
-    '.svg',  # similar to XML, technically its an XML
-    '.txt',  # plain text
-    '.ui',
-    '.xml'  # similar to HTML
-
-
-    # TODO: What we need to enable this ?
-    # '.scss',  # SASS that can contain CSS mixed, almost same syntax plus vars
-    # '.coffee',  # similar to JS, can contain plain JS mixed up
-    # '.qml',  # Similar to CSS, can contain plain JS mixed up
-    # '.sh',  # Bash
-    # '.bat',  # Windows Batch
-    # '.cmd',  # Windows Batch
-]
+db = QMimeDatabase()
+for mt in imaga_mimetypes:
+    mimetype = db.mimeTypeForName(mt)
+    FILE_TYPES.append((mimetype.comment(), mimetype.suffixes()))
 
 LANGUAGE_MAP = {
     "py": "python",
@@ -342,22 +304,19 @@ WORKSPACE = ""
 
 
 def get_supported_extensions():
-    pass
+    return [" *".join(extensions) for _, extensions in FILE_TYPES]
 
 
 def get_supported_extensions_filter():
-    mimetypes = [QMimeDatabase().mimeTypeForName(m).filterString()
-                 for m in ALL_MIMETYPES]
+    filters = []
+    for title, extensions in FILE_TYPES:
+        filters.append("%s (*%s)" % (title, " *".join(extensions)))
     if IS_WINDOWS:
         all_filter = "All Files (*.*)"
     else:
         all_filter = "All Files (*)"
-    mimetypes.append(all_filter)
-    return ";;".join(sorted(mimetypes))
-
-
-# def get_supported_extensions():
-#     return [ext for ext in SUPPORTED_EXTENSIONS.values() for ext in ext]
+    filters.append(all_filter)
+    return ";;".join(sorted(filters))
 
 
 # def set_project_type_handler(project_type, project_type_handler):

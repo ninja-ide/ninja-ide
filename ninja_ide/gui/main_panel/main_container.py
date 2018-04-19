@@ -267,7 +267,7 @@ class _MainContainer(QWidget):
                 translations.TR_OPEN_A_FILE,
                 directory,
                 settings.get_supported_extensions_filter(),
-                initialFilter="Python script (*.py *.pyx *.wsgi)"
+                initialFilter="Python files (*.py *.pyw)"
             )[0]
         else:
             logger.debug("Has filename")
