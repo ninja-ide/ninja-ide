@@ -121,6 +121,7 @@ from ninja_ide.gui.editor.side_area import marker_widget
 class NEditor(base_editor.BaseEditor):
 
     zoomChanged = pyqtSignal(int)
+    goToDefRequested = pyqtSignal("PyQt_PyObject")
     painted = pyqtSignal("PyQt_PyObject")
     keyPressed = pyqtSignal("PyQt_PyObject")
     postKeyPressed = pyqtSignal("PyQt_PyObject")
@@ -142,7 +143,6 @@ class NEditor(base_editor.BaseEditor):
         self.word_separators = [",", ".", ":", "[", "]", "(", ")", "{", "}"]
         # Extra Selections
         self._extra_selections = OrderedDict()
-        self.__link_cursor = QTextCursor()
         # Load indenter based on language
         self._indenter = indenter.load_indenter(self, neditable.language())
         # Set editor font before build lexer
@@ -494,7 +494,6 @@ class NEditor(base_editor.BaseEditor):
     def clear_link(self):
         self.clear_extra_selections("link")
         self.viewport().setCursor(Qt.IBeamCursor)
-        self.__link_cursor = QTextCursor()
 
     def __smart_backspace(self):
         accepted = False
@@ -583,6 +582,23 @@ class NEditor(base_editor.BaseEditor):
         cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
         return cursor
 
+    def is_keyword(self, text):
+        import keyword
+        return text in keyword.kwlist
+
+    def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
+        if event.modifiers() == Qt.ControlModifier:
+            if event.button() == Qt.LeftButton:
+                cursor = self.cursorForPosition(event.pos())
+                self._go_to_definition_requested(cursor)
+
+    def _go_to_definition_requested(self, cursor):
+        # TODO: check if the cursor is inside comment or string
+        text = self.word_under_cursor(cursor).selectedText()
+        if text:
+            self.goToDefRequested.emit(cursor)
+
     def mouseMoveEvent(self, event):
         position = event.pos()
         cursor = self.cursorForPosition(position)
@@ -604,25 +620,24 @@ class NEditor(base_editor.BaseEditor):
                             QToolTip.showText(
                                 self.mapToGlobal(position), message, self)
 
+        # Go to def link emulation
         if event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
-            cursor = self.word_under_cursor(cursor)
-            if self.__link_cursor == cursor:
-                return
-            if not cursor.selectedText():
-                return
-            self.__link_cursor = cursor
-            start, end = cursor.selectionStart(), cursor.selectionEnd()
-            selection = extra_selection.ExtraSelection(
-                cursor,
-                start_pos=start,
-                end_pos=end
-            )
-            link_color = resources.COLOR_SCHEME.get("editor.link.navigate")
-            selection.set_underline(link_color)
-            selection.set_foreground(link_color)
-            self.add_extra_selections("link", [selection])
-            self.viewport().setCursor(Qt.PointingHandCursor)
+            text = self.word_under_cursor(cursor).selectedText()
+            block = cursor.block()
+            if text and not self.is_keyword(text) and \
+                    not self.is_comment(block):
+                start, end = cursor.selectionStart(), cursor.selectionEnd()
+                selection = extra_selection.ExtraSelection(
+                    cursor,
+                    start_pos=start,
+                    end_pos=end
+                )
+                link_color = resources.COLOR_SCHEME.get("editor.link.navigate")
+                selection.set_underline(link_color, style=1)
+                selection.set_foreground(link_color)
+                self.add_extra_selections("link", [selection])
+                self.viewport().setCursor(Qt.PointingHandCursor)
         else:
             self.clear_link()
         # Restore mouse cursor if settings say hide while typing
@@ -649,6 +664,13 @@ class NEditor(base_editor.BaseEditor):
                 self.viewport().setCursor(Qt.PointingHandCursor)'''
         super(NEditor, self).mouseMoveEvent(event)
 
+    def is_modifier(self, key_event):
+        key = key_event.key()
+        modifiers = (Qt.Key_Shift, Qt.Key_Control, Qt.Key_Meta, Qt.Key_Alt)
+        if key in modifiers:
+            return True
+        return False
+
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
             self.clear_link()
@@ -659,7 +681,7 @@ class NEditor(base_editor.BaseEditor):
         super().keyReleaseEvent(event)
 
     def keyPressEvent(self, event):
-        if settings.HIDE_MOUSE_CURSOR:
+        if not self.is_modifier(event) and settings.HIDE_MOUSE_CURSOR:
             self.viewport().setCursor(Qt.BlankCursor)
         if self.isReadOnly():
             return
