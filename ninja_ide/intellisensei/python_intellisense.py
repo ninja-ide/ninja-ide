@@ -48,9 +48,10 @@ class JediService(intellisense_registry.IntelliSenseService):
         for completion in script.completions():
             completions.append({
                 "text": completion.name,
-                "type": completion.type
+                "type": completion.type,
+                "detail": completion.docstring()
             })
-        print(completions)
+
         return completions
 
     def get_definitions(self, request):
