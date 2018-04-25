@@ -216,6 +216,9 @@ class NEditor(base_editor.BaseEditor):
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.blockCountChanged.connect(self.update)
 
+        from ninja_ide.gui.editor import intellisense_assistant
+        self._intellisense = intellisense_assistant.IntelliSenseAssistant(self)
+
     @property
     def nfile(self):
         return self._neditable.nfile
@@ -597,7 +600,8 @@ class NEditor(base_editor.BaseEditor):
         # TODO: check if the cursor is inside comment or string
         text = self.word_under_cursor(cursor).selectedText()
         if text:
-            self.goToDefRequested.emit(cursor)
+            # self.goToDefRequested.emit(cursor)
+            self._intellisense.process("definitions")
 
     def mouseMoveEvent(self, event):
         position = event.pos()
@@ -699,6 +703,10 @@ class NEditor(base_editor.BaseEditor):
                 self._indenter.indent_selection()
             else:
                 self._indenter.indent()
+            event.accept()
+        elif event.key() == Qt.Key_Period:
+            self.textCursor().insertText(event.text())
+            self._intellisense.process("completions")
             event.accept()
         elif event.key() == Qt.Key_Backspace:
             if not event.isAccepted():

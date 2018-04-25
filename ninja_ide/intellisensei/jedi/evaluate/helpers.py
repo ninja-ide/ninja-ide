@@ -1,8 +1,26 @@
 import copy
+import sys
+import re
+import os
 from itertools import chain
 from contextlib import contextmanager
 
-from jedi.parser.python import tree
+from parso.python import tree
+
+from jedi._compatibility import unicode
+from jedi.parser_utils import get_parent_scope
+from jedi.evaluate.compiled import CompiledObject
+
+
+def is_stdlib_path(path):
+    # Python standard library paths look like this:
+    # /usr/lib/python3.5/...
+    # TODO The implementation below is probably incorrect and not complete.
+    if 'dist-packages' in path or 'site-packages' in path:
+        return False
+
+    base_path = os.path.join(sys.prefix, 'lib', 'python')
+    return bool(re.match(re.escape(base_path) + '\d.\d', path))
 
 
 def deep_ast_copy(obj):
@@ -40,8 +58,11 @@ def evaluate_call_of_leaf(context, leaf, cut_own_trailer=False):
 
     If you're using the leaf, e.g. the bracket `)` it will return ``list([])``.
 
-    # TODO remove cut_own_trailer option, since its always used with it. Just
-    #      ignore it, It's not what we want anyway. Or document it better?
+    We use this function for two purposes. Given an expression ``bar.foo``,
+    we may want to
+      - infer the type of ``foo`` to offer completions after foo
+      - infer the type of ``bar`` to be able to jump to the definition of foo
+    The option ``cut_own_trailer`` must be set to true for the second purpose.
     """
     trailer = leaf.parent
     # The leaf may not be the last or first child, because there exist three
@@ -71,9 +92,14 @@ def evaluate_call_of_leaf(context, leaf, cut_own_trailer=False):
         base = power.children[0]
         trailers = power.children[1:cut]
 
+    if base == 'await':
+        base = trailers[0]
+        trailers = trailers[1:]
+
     values = context.eval_node(base)
+    from jedi.evaluate.syntax_tree import eval_trailer
     for trailer in trailers:
-        values = context.eval_trailer(values, trailer)
+        values = eval_trailer(context, values, trailer)
     return values
 
 
@@ -137,43 +163,52 @@ def get_module_names(module, all_scopes):
     Returns a dictionary with name parts as keys and their call paths as
     values.
     """
-    names = chain.from_iterable(module.used_names.values())
+    names = chain.from_iterable(module.get_used_names().values())
     if not all_scopes:
         # We have to filter all the names that don't have the module as a
         # parent_scope. There's None as a parent, because nodes in the module
         # node have the parent module and not suite as all the others.
         # Therefore it's important to catch that case.
-        names = [n for n in names if n.get_parent_scope().parent in (module, None)]
+        names = [n for n in names if get_parent_scope(n).parent in (module, None)]
     return names
-
-
-class FakeName(tree.Name):
-    def __init__(self, name_str, parent=None, start_pos=(0, 0), is_definition=None):
-        """
-        In case is_definition is defined (not None), that bool value will be
-        returned.
-        """
-        super(FakeName, self).__init__(name_str, start_pos)
-        self.parent = parent
-        self._is_definition = is_definition
-
-    def get_definition(self):
-        return self.parent
-
-    def is_definition(self):
-        if self._is_definition is None:
-            return super(FakeName, self).is_definition()
-        else:
-            return self._is_definition
 
 
 @contextmanager
 def predefine_names(context, flow_scope, dct):
     predefined = context.predefined_names
-    if flow_scope in predefined:
-        raise NotImplementedError('Why does this happen?')
     predefined[flow_scope] = dct
     try:
         yield
     finally:
         del predefined[flow_scope]
+
+
+def is_compiled(context):
+    return isinstance(context, CompiledObject)
+
+
+def is_string(context):
+    if context.evaluator.environment.version_info.major == 2:
+        str_classes = (unicode, bytes)
+    else:
+        str_classes = (unicode,)
+    return is_compiled(context) and isinstance(context.get_safe_value(default=None), str_classes)
+
+
+def is_literal(context):
+    return is_number(context) or is_string(context)
+
+
+def _get_safe_value_or_none(context, accept):
+    if is_compiled(context):
+        value = context.get_safe_value(default=None)
+        if isinstance(value, accept):
+            return value
+
+
+def get_int_or_none(context):
+    return _get_safe_value_or_none(context, int)
+
+
+def is_number(context):
+    return _get_safe_value_or_none(context, (int, float)) is not None
