@@ -50,6 +50,7 @@ class IntelliSenseAssistant(QObject):
         for completion in completions:
             item = proposal_widget.ProposalItem(completion["text"])
             item.type = completion["type"]
+            item.detail = completion["detail"]
             append(item)
         self._create_view(_completions)
         print("VIEW: %.1f" % (time.time() - t0))

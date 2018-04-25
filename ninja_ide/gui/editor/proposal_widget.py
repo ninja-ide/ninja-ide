@@ -18,14 +18,22 @@
 from PyQt5.QtWidgets import QFrame
 from PyQt5.QtWidgets import QListView
 from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QAbstractItemView
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QStylePainter
+from PyQt5.QtWidgets import QStyleOptionFrame
+from PyQt5.QtWidgets import QSizePolicy
 
 from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPalette
 
 from PyQt5.QtCore import QAbstractListModel
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QPoint
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QSize
 
@@ -33,11 +41,12 @@ from ninja_ide.core import settings
 
 
 class ProposalItem(object):
-    __slots__ = ("text", "type")
+    __slots__ = ("text", "type", "detail")
 
     def __init__(self, text):
         self.text = text
         self.type = None
+        self.detail = None
 
     @property
     def lower_text(self):
@@ -65,6 +74,8 @@ class ProposalModel(QAbstractListModel):
         elif role == Qt.DecorationRole:
             return QIcon(
                 ":img/%s" % self.__current_proposals[index.row()].type)
+        elif role == Qt.WhatsThisRole:
+            return self.__current_proposals[index.row()].detail
         return None
 
     def item(self, index):
@@ -113,6 +124,13 @@ class ProposalView(QListView):
     def is_last_selected(self):
         return self.row_selected() == self.model().rowCount() - 1
 
+    def info_frame_position(self):
+        r = self.rectForIndex(self.currentIndex())
+        point = QPoint((self.parentWidget().mapToGlobal(
+            self.parentWidget().rect().topRight()
+        )).x() + 3, self.mapToGlobal(r.topRight()).y() - self.verticalOffset())
+        return point
+
     def calculate_size(self):
         """Determine size by calculating the space of the visible items"""
 
@@ -132,6 +150,65 @@ class ProposalView(QListView):
         return size_hint
 
 
+class InfoFrame(QFrame):
+
+    def __init__(self, parent):
+        super().__init__(parent, Qt.ToolTip | Qt.WindowStaysOnTopHint)
+        self.setFocusPolicy(Qt.NoFocus)
+        self.setAttribute(Qt.WA_DeleteOnClose)
+
+        self._label = QLabel()
+        # self._label.setTextFormat(Qt.RichText)
+        # self._label.setForegroundRole(QPalette.ToolTipText)
+        # self._label.setBackgroundRole(QPalette.ToolTipBase)
+        # p = self.palette()
+        # self.setAutoFillBackground(True)
+        # toolTipTextColor = p.color(QPalette.Inactive, QPalette.ToolTipText)
+        # p.setColor(QPalette.Active, QPalette.ToolTipText, toolTipTextColor)
+        # p.setColor(QPalette.Active, QPalette.ToolTipBase, toolTipTextColor)
+        # self.setPalette(p)
+
+        font = parent.font()
+        font.setPointSize(font.pointSize() * 0.9)
+        self._label.setFont(font)
+        self._label.setSizePolicy(
+            QSizePolicy.Fixed, self._label.sizePolicy().verticalPolicy())
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(3, 3, 3, 3)
+        # layout.setSpacing()
+        layout.addWidget(self._label)
+
+    def set_text(self, text):
+        self._label.setText(text)
+
+    def paintEvent(self, event):
+        p = QStylePainter(self)
+        opt = QStyleOptionFrame()
+        opt.initFrom(self)
+        p.drawPrimitive(QStyle.PE_PanelTipLabel, opt)
+        p.end()
+
+    def calculate_width(self):
+        # const QDesktopWidget *desktopWidget = QApplication::desktop();
+        # const int desktopWidth = desktopWidget->isVirtualDesktop()
+        #         ? desktopWidget->width()
+        #         : desktopWidget->availableGeometry(desktopWidget->primaryScreen()).width();
+        # const QMargins widgetMargins = contentsMargins();
+        # const QMargins layoutMargins = layout()->contentsMargins();
+        # const int margins = widgetMargins.left() + widgetMargins.right()
+        #         + layoutMargins.left() + layoutMargins.right();
+        # m_label->setMaximumWidth(desktopWidth - this->pos().x() - margins);
+        desk = QApplication.desktop()
+        desk_width = desk.availableGeometry(desk.primaryScreen()).width()
+        if desk.isVirtualDesktop():
+            desk_width = desk.width()
+        widget_margins = self.contentsMargins()
+        layout_margins = self.layout().contentsMargins()
+        margins = widget_margins.left() + widget_margins.right() + \
+            layout_margins.left() + layout_margins.right()
+        self._label.setMaximumWidth(desk_width - self.pos().x() - margins)
+
+
 class ProposalWidget(QFrame):
     """
     Proposal Widget for display completions and snippets
@@ -146,17 +223,41 @@ class ProposalWidget(QFrame):
         self._editor = parent
         self._model = None
         self._prefix = None
+        self._info_frame = None
+        self._info_timer = QTimer(self)
+        self._info_timer.setSingleShot(True)
+        self._info_timer.timeout.connect(self.show_info)
+
         self.setFrameStyle(QFrame.NoFrame)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self._proposal_view = ProposalView()
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)
-
         self._proposal_view.verticalScrollBar().valueChanged.connect(
             self.update_size_and_position)
 
         self.hide()
+
+    def show_info(self):
+        current = self._proposal_view.currentIndex()
+        if not current.isValid():
+            return
+        info = current.data(Qt.WhatsThisRole)
+        if not info:
+            if self._info_frame is not None:
+                self._info_frame.close()
+                self._info_frame = None
+            return
+        if self._info_frame is None:
+            self._info_frame = InfoFrame(self._proposal_view)
+        self._info_frame.move(self._proposal_view.info_frame_position())
+        self._info_frame.set_text(info)
+        self._info_frame.calculate_width()
+        self._info_frame.show()
+        self._info_frame.adjustSize()
+        self._info_frame.raise_()
+        self._info_timer.setInterval(200)
 
     def set_model(self, model):
         if self._model is not None:
@@ -165,6 +266,8 @@ class ProposalWidget(QFrame):
             self._model = None
         self._model = model
         self._proposal_view.setModel(self._model)
+        self._proposal_view.selectionModel().currentChanged.connect(
+            self._info_timer.start)
 
     def show_proposal(self, prefix=None):
         self._proposal_view.select_first()
@@ -194,6 +297,8 @@ class ProposalWidget(QFrame):
     def eventFilter(self, obj, event):
         if event.type() == QEvent.FocusOut:
             self.abort()
+            if self._info_frame is not None:
+                self._info_frame.close()
             return True
         if event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Escape:
