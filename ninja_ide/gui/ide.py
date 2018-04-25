@@ -117,7 +117,6 @@ class IDE(QMainWindow):
         # Load the size and the position of the main window
         self.load_window_geometry()
         # self.__project_to_open = 0
-
         # Editables
         self.__neditables = {}
         # Filesystem

@@ -16,15 +16,172 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5.QtWidgets import QPlainTextEdit
+# from PyQt5.QtWidgets import QApplication
+# from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QAbstractSlider
+# from PyQt5.QtWidgets import QListView
+# from PyQt5.QtWidgets import QFrame
 
 from PyQt5.QtGui import QTextBlockUserData
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QTextCursor
 
 from PyQt5.QtCore import QPoint
+# from PyQt5.QtCore import QModelIndex
+# from PyQt5.QtCore import QEvent
+# from PyQt5.QtCore import QAbstractListModel
+# from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import QSize
 
 from ninja_ide import resources
+# from ninja_ide.core import settings
+
+
+# class CompletionListView(QListView):
+
+#     MAX_VISIBLE_ITEMS = 10
+
+#     def __init__(self, parent=None):
+#         super().__init__(parent)
+#         self.setVerticalScrollMode(self.ScrollPerItem)
+#         self.setFont(settings.FONT)
+
+#     def calculate_size(self):
+#         """Determine size by calculating the space of the visible items"""
+
+#         visible_items = min(self.model().rowCount(), self.MAX_VISIBLE_ITEMS)
+#         first_visible_row = self.verticalScrollBar().value()
+#         option = self.viewOptions()
+#         size_hint = QSize()
+#         for i in range(visible_items):
+#             tmp = self.itemDelegate().sizeHint(
+#                 option, self.model().index(i + first_visible_row, 0))
+#             if size_hint.width() < tmp.width():
+#                 size_hint = tmp
+
+#         height = size_hint.height()
+#         height *= visible_items
+#         size_hint.setHeight(height)
+#         return size_hint
+
+
+# class CompletionModel(QAbstractListModel):
+
+#     def __init__(self, completion_list, parent=None):
+#         super().__init__(parent)
+#         self.__completion_list = completion_list
+
+#     def rowCount(self, index=QModelIndex()):
+#         return len(self.__completion_list)
+
+#     def data(self, index, role):
+
+#         if not index.isValid() or index.row() >= len(self.__completion_list):
+#             return None
+#         if role == Qt.DisplayRole:
+#             return self.__completion_list[index.row()]
+#         return None
+
+#     def item(self, row):
+#         return self.__completion_list[row]
+
+
+# class ProposalWidget(QFrame):
+
+#     def __init__(self, editor):
+#         super().__init__(editor)
+#         self._editor = editor
+
+#         self._completion_view = CompletionListView(self)
+#         self._completion_view.setFrameStyle(QFrame.NoFrame)
+#         self._completion_view.setUniformItemSizes(True)
+#         self._completion_view.installEventFilter(self)
+#         self._completion_view.verticalScrollBar().valueChanged.connect(
+#             self.update_position_and_size)
+
+#         self._model = None
+#         self.hide()
+
+#         layout = QVBoxLayout(self)
+#         layout.setContentsMargins(0, 0, 0, 0)
+#         layout.addWidget(self._completion_view)
+
+#     def eventFilter(self, obj, event):
+#         if event.type() == QEvent.FocusOut:
+#             self.abort()
+#             return True
+#         elif event.type() == QEvent.KeyPress:
+#             key = event.key()
+#             if key == Qt.Key_Escape:
+#                 self.abort()
+#                 event.accept()
+#                 return True
+#             elif key in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Tab):
+#                 self.abort()
+#                 self.select_item()
+#                 event.accept()
+#                 return True
+#             elif key in (Qt.Key_Right, Qt.Key_Left, Qt.Key_Home,
+#                          Qt.Key_End, Qt.Key_Backspace):
+#                 # We want these navigation keys to work in the editor.
+#                 pass
+#             else:
+#                 # event.ignore()
+#                 # if self.isVisible():
+#                 #    prefix = self._editor.word_under_cursor().selectedText()
+#                 #     print(prefix)
+#                 # return True
+#                 # if event.text() and not (event == QKeySequence.Paste):
+#                 #     print("hola")
+#                 #     return True
+#                 pass
+#         return False
+
+#     def select_item(self):
+#         row = self._completion_view.currentIndex().row()
+#         item = self._model.item(row)
+#         self._editor.textCursor().insertText(item)
+
+#     def abort(self):
+#         if self.isVisible():
+#             self.close()
+#         self._editor.setFocus()
+
+#     def set_model(self, model):
+#         if self._model is not None:
+#             self._model.deleteLater()
+#             self._model = None
+#         self._model = model
+#         self._completion_view.setModel(self._model)
+
+#     def show_proposal(self, prefix):
+#         self.ensurePolished()
+#         self._completion_view.setCurrentIndex(self._model.index(0, 0))
+#         self.update_position_and_size()
+#         self._completion_view.setFocus()
+#         self.show()
+
+#     def update_position_and_size(self):
+#         s = self._completion_view.calculate_size()
+#         fw = self.frameWidth()
+#         w = s.width() + fw * 2 + 30
+#         h = s.height() + fw * 2
+
+#         desktop = QApplication.instance().desktop()
+#         screen = desktop.availableGeometry(self._editor)
+#         cr = self._editor.cursorRect()
+#         pos = cr.bottomLeft()
+#         rx = pos.x() + 60
+#         pos.setX(rx)
+#         # pos.rx() -= 16 + fw
+#         if pos.y() + h > screen.bottom():
+#             print("SI")
+#             pos.setY(max(0, cr.top() - h))
+#         if pos.x() + w > screen.right():
+#             print("NO")
+#             pos.setX(max(0, screen.y() - w))
+#         self.setGeometry(pos.x(), pos.y(), min(w, screen.width()),
+#                          min(h, screen.height()))
 
 
 class BaseEditor(QPlainTextEdit):
@@ -406,4 +563,3 @@ class BlockUserData(QTextBlockUserData):
 
     def __setitem__(self, name, value):
         self.attrs[name] = value
-

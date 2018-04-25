@@ -3,19 +3,18 @@ The :mod:`jedi.api.classes` module contains the return classes of the API.
 These classes are the much bigger part of the whole API, because they contain
 the interesting information about completion and goto operations.
 """
-import warnings
 import re
 
-from jedi._compatibility import u
+from parso.python.tree import search_ancestor
+
 from jedi import settings
-from jedi import common
-from jedi.parser.cache import parser_cache
+from jedi.evaluate.utils import ignored, unite
 from jedi.cache import memoize_method
-from jedi.evaluate import representation as er
-from jedi.evaluate import instance
 from jedi.evaluate import imports
 from jedi.evaluate import compiled
-from jedi.evaluate.filters import ParamName
+from jedi.evaluate.imports import ImportName
+from jedi.evaluate.context import instance
+from jedi.evaluate.context import ClassContext, FunctionContext, FunctionExecutionContext
 from jedi.api.keywords import KeywordName
 
 
@@ -59,7 +58,7 @@ class BaseDefinition(object):
         self._evaluator = evaluator
         self._name = name
         """
-        An instance of :class:`jedi.parser.reprsentation.Name` subclass.
+        An instance of :class:`parso.reprsentation.Name` subclass.
         """
         self.is_keyword = isinstance(self._name, KeywordName)
 
@@ -123,13 +122,14 @@ class BaseDefinition(object):
 
         Finally, here is what you can get from :attr:`type`:
 
-        >>> defs[0].type
+        >>> defs = [str(d.type) for d in defs]  # It's unicode and in Py2 has u before it.
+        >>> defs[0]
         'module'
-        >>> defs[1].type
+        >>> defs[1]
         'class'
-        >>> defs[2].type
+        >>> defs[2]
         'instance'
-        >>> defs[3].type
+        >>> defs[3]
         'function'
 
         """
@@ -138,8 +138,8 @@ class BaseDefinition(object):
         if tree_name is not None:
             # TODO move this to their respective names.
             definition = tree_name.get_definition()
-            if definition.type == 'import_from' and \
-                    tree_name in definition.get_defined_names():
+            if definition is not None and definition.type == 'import_from' and \
+                    tree_name.is_definition():
                 resolve = True
 
         if isinstance(self._name, imports.SubModuleName) or resolve:
@@ -157,10 +157,18 @@ class BaseDefinition(object):
                 except IndexError:
                     pass
 
-            if name.api_type == 'module':
-                module_context, = name.infer()
-                for n in reversed(module_context.py__name__().split('.')):
-                    yield n
+            if name.api_type in 'module':
+                module_contexts = name.infer()
+                if module_contexts:
+                    module_context, = module_contexts
+                    for n in reversed(module_context.py__name__().split('.')):
+                        yield n
+                else:
+                    # We don't really know anything about the path here. This
+                    # module is just an import that would lead in an
+                    # ImportError. So simply return the name.
+                    yield name.string_name
+                    return
             else:
                 yield name.string_name
 
@@ -244,35 +252,12 @@ class BaseDefinition(object):
             the ``foo.docstring(fast=False)`` on every object, because it
             parses all libraries starting with ``a``.
         """
-        if raw:
-            return _Help(self._name).raw(fast=fast)
-        else:
-            return _Help(self._name).full(fast=fast)
-
-    @property
-    def doc(self):
-        """
-        .. deprecated:: 0.8.0
-           Use :meth:`.docstring` instead.
-        .. todo:: Remove!
-        """
-        warnings.warn("Use docstring() instead.", DeprecationWarning)
-        return self.docstring()
-
-    @property
-    def raw_doc(self):
-        """
-        .. deprecated:: 0.8.0
-           Use :meth:`.docstring` instead.
-        .. todo:: Remove!
-        """
-        warnings.warn("Use docstring() instead.", DeprecationWarning)
-        return self.docstring(raw=True)
+        return _Help(self._name).docstring(fast=fast, raw=raw)
 
     @property
     def description(self):
         """A textual description of the object."""
-        return u(self._name.string_name)
+        return self._name.string_name
 
     @property
     def full_name(self):
@@ -303,7 +288,7 @@ class BaseDefinition(object):
         if not path:
             return None  # for keywords the path is empty
 
-        with common.ignored(KeyError):
+        with ignored(KeyError):
             path[0] = self._mapping[path[0]]
         for key, repl in self._tuple_mapping.items():
             if tuple(path[:len(key)]) == key:
@@ -335,11 +320,11 @@ class BaseDefinition(object):
                 param_names = list(context.get_param_names())
                 if isinstance(context, instance.BoundMethod):
                     param_names = param_names[1:]
-            elif isinstance(context, (instance.AbstractInstanceContext, er.ClassContext)):
-                if isinstance(context, er.ClassContext):
-                    search = '__init__'
+            elif isinstance(context, (instance.AbstractInstanceContext, ClassContext)):
+                if isinstance(context, ClassContext):
+                    search = u'__init__'
                 else:
-                    search = '__call__'
+                    search = u'__call__'
                 names = context.get_function_slot_names(search)
                 if not names:
                     return []
@@ -348,7 +333,7 @@ class BaseDefinition(object):
                 # there's no better solution.
                 inferred = names[0].infer()
                 param_names = get_param_names(next(iter(inferred)))
-                if isinstance(context, er.ClassContext):
+                if isinstance(context, ClassContext):
                     param_names = param_names[1:]
                 return param_names
             elif isinstance(context, compiled.CompiledObject):
@@ -360,17 +345,17 @@ class BaseDefinition(object):
             raise AttributeError()
         context = followed[0]  # only check the first one.
 
-        return [_Param(self._evaluator, n) for n in get_param_names(context)]
+        return [Definition(self._evaluator, n) for n in get_param_names(context)]
 
     def parent(self):
         context = self._name.parent_context
         if context is None:
             return None
 
-        if isinstance(context, er.FunctionExecutionContext):
+        if isinstance(context, FunctionExecutionContext):
             # TODO the function context should be a part of the function
             # execution context.
-            context = er.FunctionContext(
+            context = FunctionContext(
                 self._evaluator, context.parent_context, context.tree_node)
         return Definition(self._evaluator, context.name)
 
@@ -390,12 +375,11 @@ class BaseDefinition(object):
         if self.in_builtin_module():
             return ''
 
-        path = self._name.get_root_context().py__file__()
-        lines = parser_cache[path].lines
+        lines = self._name.get_root_context().code_lines
 
-        line_nr = self._name.start_pos[0]
-        start_line_nr = line_nr - before
-        return ''.join(lines[start_line_nr:line_nr + after + 1])
+        index = self._name.start_pos[0] - 1
+        start_index = max(index - before, 0)
+        return ''.join(lines[start_index:index + after + 1])
 
 
 class Completion(BaseDefinition):
@@ -419,8 +403,8 @@ class Completion(BaseDefinition):
                 and self.type == 'Function':
             append = '('
 
-        if isinstance(self._name, ParamName) and self._stack is not None:
-            node_names = list(self._stack.get_node_names(self._evaluator.grammar))
+        if self._name.api_type == 'param' and self._stack is not None:
+            node_names = list(self._stack.get_node_names(self._evaluator.grammar._pgen_grammar))
             if 'trailer' in node_names and 'argument' not in node_names:
                 append += '='
 
@@ -471,7 +455,7 @@ class Completion(BaseDefinition):
             # In this case we can just resolve the like name, because we
             # wouldn't load like > 100 Python modules anymore.
             fast = False
-        return super(Completion, self,).docstring(raw, fast)
+        return super(Completion, self).docstring(raw=raw, fast=fast)
 
     @property
     def description(self):
@@ -538,11 +522,15 @@ class Definition(BaseDefinition):
             if typ == 'function':
                 # For the description we want a short and a pythonic way.
                 typ = 'def'
-            return typ + ' ' + u(self._name.string_name)
+            return typ + ' ' + self._name.string_name
         elif typ == 'param':
-            return typ + ' ' + tree_name.get_definition().get_description()
+            code = search_ancestor(tree_name, 'param').get_code(
+                include_prefix=False,
+                include_comma=False
+            )
+            return typ + ' ' + code
 
-        definition = tree_name.get_definition()
+        definition = tree_name.get_definition() or tree_name
         # Remove the prefix, because that's not what we want for get_code
         # here.
         txt = definition.get_code(include_prefix=False)
@@ -563,7 +551,7 @@ class Definition(BaseDefinition):
         .. todo:: Add full path. This function is should return a
             `module.class.function` path.
         """
-        position = '' if self.in_builtin_module else '@%s' % (self.line)
+        position = '' if self.in_builtin_module else '@%s' % self.line
         return "%s:%s%s" % (self.module_name, self.description, position)
 
     @memoize_method
@@ -575,7 +563,7 @@ class Definition(BaseDefinition):
         """
         defs = self._name.infer()
         return sorted(
-            common.unite(defined_names(self._evaluator, d) for d in defs),
+            unite(defined_names(self._evaluator, d) for d in defs),
             key=lambda s: s._name.start_pos or (0, 0)
         )
 
@@ -627,7 +615,7 @@ class CallSignature(Definition):
             if self.params:
                 param_name = self.params[-1]._name
                 if param_name.tree_name is not None:
-                    if param_name.tree_name.get_definition().stars == 2:
+                    if param_name.tree_name.get_definition().star_count == 2:
                         return i
             return None
 
@@ -636,7 +624,7 @@ class CallSignature(Definition):
                 tree_name = param._name.tree_name
                 if tree_name is not None:
                     # *args case
-                    if tree_name.get_definition().stars == 1:
+                    if tree_name.get_definition().star_count == 1:
                         return i
             return None
         return self._index
@@ -649,46 +637,9 @@ class CallSignature(Definition):
         """
         return self._bracket_start_pos
 
-    @property
-    def call_name(self):
-        """
-        .. deprecated:: 0.8.0
-           Use :attr:`.name` instead.
-        .. todo:: Remove!
-
-        The name (e.g. 'isinstance') as a string.
-        """
-        warnings.warn("Use name instead.", DeprecationWarning)
-        return self.name
-
-    @property
-    def module(self):
-        """
-        .. deprecated:: 0.8.0
-           Use :attr:`.module_name` for the module name.
-        .. todo:: Remove!
-        """
-        return self._executable.get_root_node()
-
     def __repr__(self):
         return '<%s: %s index %s>' % \
             (type(self).__name__, self._name.string_name, self.index)
-
-
-class _Param(Definition):
-    """
-    Just here for backwards compatibility.
-    """
-    def get_code(self):
-        """
-        .. deprecated:: 0.8.0
-           Use :attr:`.description` and :attr:`.name` instead.
-        .. todo:: Remove!
-
-        A function to get the whole code of the param.
-        """
-        warnings.warn("Use description instead.", DeprecationWarning)
-        return self.description
 
 
 class _Help(object):
@@ -700,41 +651,24 @@ class _Help(object):
         self._name = definition
 
     @memoize_method
-    def _get_node(self, fast):
-        if isinstance(self._name, (compiled.CompiledContextName, compiled.CompiledName)):
-            followed = self._name.infer()
-            if followed:
-                return next(iter(followed))
-            return None
+    def _get_contexts(self, fast):
+        if isinstance(self._name, ImportName) and fast:
+            return {}
 
-        if self._name.api_type == 'module' and not fast:
-            followed = self._name.infer()
-            if followed:
-                # TODO: Use all of the followed objects as input to Documentation.
-                context = next(iter(followed))
-                return context.tree_node
-        if self._name.tree_name is None:
-            return None
-        return self._name.tree_name.get_definition()
+        if self._name.api_type == 'statement':
+            return {}
 
-    def full(self, fast=True):
-        node = self._get_node(fast)
-        try:
-            return node.doc
-        except AttributeError:
-            return self.raw(fast)
+        return self._name.infer()
 
-    def raw(self, fast=True):
+    def docstring(self, fast=True, raw=True):
         """
-        The raw docstring ``__doc__`` for any object.
+        The docstring ``__doc__`` for any object.
 
         See :attr:`doc` for example.
         """
-        node = self._get_node(fast)
-        if node is None:
-            return ''
+        # TODO: Use all of the followed objects as output. Possibly divinding
+        # them by a few dashes.
+        for context in self._get_contexts(fast=fast):
+            return context.py__doc__(include_call_signature=not raw)
 
-        try:
-            return node.raw_doc
-        except AttributeError:
-            return ''
+        return ''
