@@ -237,7 +237,7 @@ class ProposalWidget(QFrame):
         self._proposal_view.verticalScrollBar().valueChanged.connect(
             self.update_size_and_position)
 
-        self.hide()
+        # self.hide()
 
     def show_info(self):
         current = self._proposal_view.currentIndex()
@@ -293,6 +293,8 @@ class ProposalWidget(QFrame):
             pos.setX(max(0, screen.y() - width))
         self.setGeometry(pos.x(), pos.y(), min(width, screen.width()),
                          min(height, screen.height()))
+        if self._info_frame is not None:
+            self._info_frame.move(self._proposal_view.info_frame_position())
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.FocusOut:
