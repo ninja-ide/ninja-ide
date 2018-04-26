@@ -136,6 +136,11 @@ class ProposalView(QListView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFont(settings.FONT)
+        self.setFrameStyle(QFrame.NoFrame)
+        self.setUniformItemSizes(True)
+        self.setSelectionBehavior(QAbstractItemView.SelectItems)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerItem)
 
     def select_row(self, row):
@@ -190,16 +195,6 @@ class InfoFrame(QFrame):
         self.setAttribute(Qt.WA_DeleteOnClose)
 
         self._label = QLabel()
-        # self._label.setTextFormat(Qt.RichText)
-        # self._label.setForegroundRole(QPalette.ToolTipText)
-        # self._label.setBackgroundRole(QPalette.ToolTipBase)
-        # p = self.palette()
-        # self.setAutoFillBackground(True)
-        # toolTipTextColor = p.color(QPalette.Inactive, QPalette.ToolTipText)
-        # p.setColor(QPalette.Active, QPalette.ToolTipText, toolTipTextColor)
-        # p.setColor(QPalette.Active, QPalette.ToolTipBase, toolTipTextColor)
-        # self.setPalette(p)
-
         font = parent.font()
         font.setPointSize(font.pointSize() * 0.9)
         self._label.setFont(font)
@@ -207,7 +202,6 @@ class InfoFrame(QFrame):
             QSizePolicy.Fixed, self._label.sizePolicy().verticalPolicy())
         layout = QVBoxLayout(self)
         layout.setContentsMargins(3, 3, 3, 3)
-        # layout.setSpacing()
         layout.addWidget(self._label)
 
     def set_text(self, text):
@@ -255,12 +249,18 @@ class ProposalWidget(QFrame):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self._proposal_view = ProposalView()
+
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)
+
         self._proposal_view.verticalScrollBar().valueChanged.connect(
             self.update_size_and_position)
-
+        self._proposal_view.activated.connect(self._handle_view_activation)
         # self.hide()
+
+    def _handle_view_activation(self, index):
+        self.abort()
+        self.insert_proposal(index.row())
 
     def show_info(self):
         current = self._proposal_view.currentIndex()
@@ -360,11 +360,12 @@ class ProposalWidget(QFrame):
 
         return False
 
-    def insert_proposal(self):
-        if self._proposal_view.currentIndex().isValid():
-            row = self._proposal_view.currentIndex().row()
-            item = self._proposal_view.model().item(row)
-            self.proposalItemActivated.emit(item)
+    def insert_proposal(self, row=None):
+        if row is None:
+            if self._proposal_view.currentIndex().isValid():
+                row = self._proposal_view.currentIndex().row()
+        item = self._proposal_view.model().item(row)
+        self.proposalItemActivated.emit(item)
 
     def abort(self):
         if self.isVisible():
