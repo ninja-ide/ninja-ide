@@ -44,9 +44,9 @@ class IntelliSenseAssistant(QObject):
         self._intellisense = IDE.get_service("intellisense")
 
     def _handle_completions(self, completions):
-        t0 = time.time()
         _completions = []
         append = _completions.append
+        t0 = time.time()
         for completion in completions:
             item = proposal_widget.ProposalItem(completion["text"])
             item.type = completion["type"]
@@ -100,10 +100,12 @@ class IntelliSenseAssistant(QObject):
 
     def _create_view(self, completions):
         self._view = proposal_widget.ProposalWidget(self._editor)
-        model = proposal_widget.ProposalModel(completions, self._view)
-        self._view.set_model(model)
         self._view.destroyed.connect(self.finalize)
         self._view.proposalItemActivated.connect(self.process_proposal_item)
+
+        model = proposal_widget.ProposalModel(self._view)
+        model.set_items(completions)
+        self._view.set_model(model)
         self._view.show_proposal()
 
     def process_proposal_item(self, item):

@@ -126,7 +126,6 @@ class IDE(QMainWindow):
         self._session = None
         # Opacity
         self.opacity = settings.MAX_OPACITY
-
         # ToolBar
         self.toolbar = QToolBar(self)
         if settings.IS_MAC_OS:

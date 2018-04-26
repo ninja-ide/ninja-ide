@@ -27,10 +27,10 @@ from PyQt5.QtWidgets import QStyleOptionFrame
 from PyQt5.QtWidgets import QSizePolicy
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtGui import QPalette
 
 from PyQt5.QtCore import QAbstractListModel
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QModelIndex
 from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import QPoint
@@ -52,18 +52,47 @@ class ProposalItem(object):
     def lower_text(self):
         return self.text.lower()
 
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return "<ProposalItem:%s:%s>" % (self.text, self.type)
+
 
 class ProposalModel(QAbstractListModel):
     """
     List model for proposals
     """
 
-    def __init__(self, proposals, parent=None):
+    PROPOSALS_STEP = 20
+
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self.__original_proposals = proposals
-        self.__current_proposals = proposals
+
+    def fetchMore(self, parent):
+        remainder = len(self.__current_proposals) - self.__item_count
+        items_to_fetch = min(self.PROPOSALS_STEP, remainder)
+        self.beginInsertRows(
+            QModelIndex(), self.__item_count,
+            self.__item_count + items_to_fetch - 1)
+        self.__item_count += items_to_fetch
+        self.endInsertRows()
+
+    def canFetchMore(self, parent):
+        if self.__item_count < len(self.__current_proposals):
+            return True
+        return False
+
+    def set_items(self, items):
+        self.beginResetModel()
+        self.__current_proposals = items
+        self.__original_proposals = items
+        self.__item_count = self.PROPOSALS_STEP
+        self.endResetModel()
 
     def rowCount(self, index=None):
+        if len(self.__current_proposals) == len(self.__original_proposals):
+            return self.__item_count
         return len(self.__current_proposals)
 
     def data(self, index, role=Qt.DisplayRole):
@@ -86,12 +115,15 @@ class ProposalModel(QAbstractListModel):
 
     def filter(self, prefix):
         if not prefix:
+            # Reset
+            self.__current_proposals = self.__original_proposals
             return
-        prefix = prefix.lower()
-        new_data = [item for item in self.__original_proposals
-                    if item.lower_text.startswith(prefix)]
-        self.__current_proposals = new_data
-        self.layoutChanged.emit()
+        self.__current_proposals = [item for item in self.__original_proposals
+                                    if item.lower_text.startswith(
+                                        prefix.lower())]
+
+    def is_pre_filtered(self, prefix):
+        return self.__prefix and prefix == self.__prefix
 
 
 class ProposalView(QListView):
@@ -189,15 +221,6 @@ class InfoFrame(QFrame):
         p.end()
 
     def calculate_width(self):
-        # const QDesktopWidget *desktopWidget = QApplication::desktop();
-        # const int desktopWidth = desktopWidget->isVirtualDesktop()
-        #         ? desktopWidget->width()
-        #         : desktopWidget->availableGeometry(desktopWidget->primaryScreen()).width();
-        # const QMargins widgetMargins = contentsMargins();
-        # const QMargins layoutMargins = layout()->contentsMargins();
-        # const int margins = widgetMargins.left() + widgetMargins.right()
-        #         + layoutMargins.left() + layoutMargins.right();
-        # m_label->setMaximumWidth(desktopWidth - this->pos().x() - margins);
         desk = QApplication.desktop()
         desk_width = desk.availableGeometry(desk.primaryScreen()).width()
         if desk.isVirtualDesktop():
@@ -270,9 +293,9 @@ class ProposalWidget(QFrame):
             self._info_timer.start)
 
     def show_proposal(self, prefix=None):
-        self._proposal_view.select_first()
         self.update_size_and_position()
         self.show()
+        self._proposal_view.select_first()
         self._proposal_view.setFocus()
 
     def update_size_and_position(self):
@@ -281,7 +304,6 @@ class ProposalWidget(QFrame):
         width = size_hint.width() + frame_width * 2 + 30
         height = size_hint.height() + frame_width * 2
         desktop = QApplication.instance().desktop()
-        # screen = desktop.availableGeometry(self._editor)
         screen = desktop.screenGeometry(desktop.screenNumber(self._editor))
         cr = self._editor.cursorRect()
         pos = cr.bottomLeft()
@@ -329,9 +351,9 @@ class ProposalWidget(QFrame):
                 pass
             QApplication.sendEvent(self._editor, event)
             if self.isVisible():
-                w = self._editor.word_under_cursor().selectedText()
-                self._proposal_view.model().filter(w)
-                if not self._proposal_view.model().has_proposals():
+                word = self._editor.word_under_cursor().selectedText()
+                self._model.filter(word)
+                if not self._model.has_proposals():
                     self.abort()
                 self.update_size_and_position()
             return True
