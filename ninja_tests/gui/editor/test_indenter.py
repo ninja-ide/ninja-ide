@@ -1,28 +1,55 @@
-from ninja_tests.gui.editor import create_editor
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+import pytest
+
+from ninja_ide.core.file_handling import nfile
+from ninja_ide.gui.editor import editor
+from ninja_ide.gui.editor import neditable
+
+
+def make_editor():
+    editable = neditable.NEditable(nfile.NFile())
+    _editor = editor.create_editor(editable)
+    return _editor
 
 
 def make_indent(text, language=None):
     """Indent last line of text"""
-    editor_ref = create_editor(language)
 
-    editor_ref.text = text
-    cursor = editor_ref.textCursor()
+    editor_bot = make_editor()
+    editor_bot.text = text
+    cursor = editor_bot.textCursor()
     cursor.movePosition(cursor.End)
-    editor_ref.setTextCursor(cursor)
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
-    return editor_ref.text
+    editor_bot.setTextCursor(cursor)
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
+    return editor_bot.text
 
 
 def make_indent_with_tab(text, selection=False, n=1):
-    editor_ref = create_editor()
-    editor_ref.text = text
+    editor_bot = make_editor()
+    editor_bot.text = text
     for i in range(n):
         if selection:
-            editor_ref.selectAll()
-            editor_ref._indenter.indent_selection()
+            editor_bot.selectAll()
+            editor_bot._indenter.indent_selection()
         else:
-            editor_ref._indenter.indent()
-    return editor_ref.text
+            editor_bot._indenter.indent()
+    return editor_bot.text
 
 
 def test_1():
@@ -147,22 +174,22 @@ def test_17():
 
 def test_18():
     a_text = "d = []"
-    editor_ref = create_editor('python')
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 1, 5
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 1, 5
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "d = [\n    \n]"
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
 
 
 def test_19():
     a_text = "d = ['one', 'two']"
-    editor_ref = create_editor('python')
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 1, 5
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 1, 5
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "d = [\n    'one', 'two']"
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
 
 
 def test_20():
@@ -174,13 +201,13 @@ def test_20():
     }
     """
     a_text = "{\n    {\n    },\n}"
-    editor_ref = create_editor("python")
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 2, 6
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 2, 6
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = '{\n    {\n    },\n    \n}'
-    assert editor_ref.text == expected
-    assert editor_ref.cursor_position == (3, 4)
+    assert editor_bot.text == expected
+    assert editor_bot.cursor_position == (3, 4)
 
 
 def test_21():
@@ -192,12 +219,12 @@ def test_21():
     """
 
     a_text = "x = [0, 1, 2,"
-    editor_ref = create_editor("python")
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 1, 13
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 1, 13
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "x = [0, 1, 2,\n     "
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
 
 
 def test_22():
@@ -209,12 +236,12 @@ def test_22():
     """
 
     a_text = "x = [0, 1, 2,\n     [3, 4, 5,"
-    editor_ref = create_editor("python")
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 2, 14
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 2, 14
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "x = [0, 1, 2,\n     [3, 4, 5,\n      "
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
 
 
 def test_23():
@@ -226,12 +253,12 @@ def test_23():
     """
 
     a_text = "x = [0, 1, 2,\n     [3, 4, 5,\n      6, 7, 8],"
-    editor_ref = create_editor("python")
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 3, 15
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 3, 15
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "x = [0, 1, 2,\n     [3, 4, 5,\n      6, 7, 8],\n     "
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
 
 
 def test_24():
@@ -244,12 +271,12 @@ def test_24():
     """
 
     a_text = "x = [\n    0, 1, 2, [3, 4, 5,"
-    editor_ref = create_editor("python")
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 1, 22
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 1, 22
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "x = [\n    0, 1, 2, [3, 4, 5,\n              "
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
 
 
 def test_25():
@@ -262,9 +289,13 @@ def test_25():
     """
 
     a_text = "x = [\n    0, 1, 2, [3, 4, 5,\n              6, 7, 8],"
-    editor_ref = create_editor("python")
-    editor_ref.text = a_text
-    editor_ref.cursor_position = 2, 23
-    editor_ref._indenter.indent_block(editor_ref.textCursor())
+    editor_bot = make_editor()
+    editor_bot.text = a_text
+    editor_bot.cursor_position = 2, 23
+    editor_bot._indenter.indent_block(editor_bot.textCursor())
     expected = "x = [\n    0, 1, 2, [3, 4, 5,\n              6, 7, 8],\n    "
-    assert editor_ref.text == expected
+    assert editor_bot.text == expected
+
+
+if __name__ == "__main__":
+    pytest.main()

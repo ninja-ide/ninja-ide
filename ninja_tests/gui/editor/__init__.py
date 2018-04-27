@@ -1,14 +1,16 @@
-from unittest import mock
-from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import neditable
-from ninja_ide.core.file_handling import nfile
-from ninja_ide.gui.ide import IDE
-
-IDE.register_service("ide", mock.Mock())
-
-
-def create_editor(language=None):
-    nfile_ref = nfile.NFile()
-    neditable_ref = neditable.NEditable(nfile_ref)
-    editor_ref = editor.create_editor(neditable_ref)
-    return editor_ref
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.

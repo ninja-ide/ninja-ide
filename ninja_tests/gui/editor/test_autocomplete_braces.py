@@ -1,97 +1,100 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+import pytest
+
+from ninja_ide.gui.editor import neditable
+from ninja_ide.gui.editor import editor
+from ninja_ide.core.file_handling import nfile
+
 from PyQt5.QtCore import Qt
-from ninja_tests.gui.editor import create_editor
 
 
-def test_1(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_ParenLeft)
-    assert editor_ref.text == '()'
-    _, col = editor_ref.cursor_position
-    assert col == 1
+@pytest.fixture
+def editor_bot(qtbot):
+    editable = neditable.NEditable(nfile.NFile())
+    _editor = editor.create_editor(editable)
+    return _editor
 
 
-def test_2(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_BraceLeft)
-    assert editor_ref.text == '{}'
-    _, col = editor_ref.cursor_position
-    assert col == 1
+@pytest.mark.parametrize(
+    "text, expected_text, column",
+    [
+        ("[", "[]", 1),
+        ("{", "{}", 1),
+        ("(", "()", 1)
+    ])
+def test_close_braces(qtbot, editor_bot, text, expected_text, column):
+    qtbot.keyClicks(editor_bot, text)
+    assert editor_bot.text == expected_text
+    _, col = editor_bot.cursor_position
+    assert col == column
 
 
-def test_3(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_BracketLeft)
-    assert editor_ref.text == '[]'
-    _, col = editor_ref.cursor_position
-    assert col == 1
+@pytest.mark.parametrize(
+    "text, expected_text, column",
+    [
+        ("[]", "[]", 2),
+        ("{}", "{}", 2),
+        ("()", "()", 2)
+    ])
+def test_close_braces2(qtbot, editor_bot, text, expected_text, column):
+    qtbot.keyClicks(editor_bot, text)
+
+    assert editor_bot.text == expected_text
+    _, col = editor_bot.cursor_position
+    assert col == column
 
 
-def test_4(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_BracketLeft)
-    assert editor_ref.text == '[]'
-    qtbot.keyPress(editor_ref, Qt.Key_BracketRight)
-    assert editor_ref.text == '[]'
-    _, col = editor_ref.cursor_position
-    assert col == 2
+@pytest.mark.parametrize(
+    "text, expected_text, column",
+    [
+        ("[[[[[[[[[[", "[[[[[[[[[[]]]]]]]]]]", 10),
+        ("{{{{{{{{{{", "{{{{{{{{{{}}}}}}}}}}", 10),
+        ("((((((((((", "(((((((((())))))))))", 10)
+    ])
+def test_close_braces3(qtbot, editor_bot, text, expected_text, column):
+    qtbot.keyClicks(editor_bot, text)
+
+    assert editor_bot.text == expected_text
+    _, col = editor_bot.cursor_position
+    assert col == column
 
 
-def test_5(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_BraceLeft)
-    assert editor_ref.text == '{}'
-    qtbot.keyPress(editor_ref, Qt.Key_BraceRight)
-    assert editor_ref.text == '{}'
-    _, col = editor_ref.cursor_position
-    assert col == 2
-
-
-def test_6(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_ParenLeft)
-    assert editor_ref.text == '()'
-    qtbot.keyPress(editor_ref, Qt.Key_ParenRight)
-    assert editor_ref.text == '()'
-    _, col = editor_ref.cursor_position
-    assert col == 2
-
-
-def test_7(qtbot):
-    editor_ref = create_editor()
-    qtbot.keyPress(editor_ref, Qt.Key_BracketLeft)
-    qtbot.keyPress(editor_ref, Qt.Key_Backspace)
-    assert editor_ref.text == ''
-
-
-def test_8(qtbot):
-    editor_ref = create_editor()
-    repeat = 10
-    for i in range(repeat):
-        qtbot.keyPress(editor_ref, Qt.Key_BraceLeft)
-    assert editor_ref.text == '{{{{{{{{{{}}}}}}}}}}'
-    for i in range(repeat - 1):
-        qtbot.keyPress(editor_ref, Qt.Key_Backspace)
-    assert editor_ref.text == '{}'
-
-
-def test_9(qtbot):
-    editor_ref = create_editor()
-    editor_ref.text = "test content"
-    cursor = editor_ref.textCursor()
+def test_close_braces4(editor_bot, qtbot):
+    editor_bot.text = "test content"
+    cursor = editor_bot.textCursor()
     cursor.movePosition(cursor.EndOfBlock)
-    editor_ref.setTextCursor(cursor)
+    editor_bot.setTextCursor(cursor)
     # Press '('
-    qtbot.keyPress(editor_ref, Qt.Key_ParenLeft)
-    assert editor_ref.text == "test content()"
+    qtbot.keyPress(editor_bot, Qt.Key_ParenLeft)
+    assert editor_bot.text == "test content()"
 
 
-def test_10(qtbot):
-    editor_ref = create_editor()
-    editor_ref.text = "test content"
-    cursor = editor_ref.textCursor()
+def test_close_braces5(editor_bot, qtbot):
+    editor_bot.text = "test content"
+    cursor = editor_bot.textCursor()
     cursor.movePosition(cursor.EndOfBlock)
     cursor.movePosition(cursor.Left)
-    editor_ref.setTextCursor(cursor)
+    editor_bot.setTextCursor(cursor)
     # Press '('
-    qtbot.keyPress(editor_ref, Qt.Key_ParenLeft)
-    assert editor_ref.text == "test conten(t"
+    qtbot.keyPress(editor_bot, Qt.Key_ParenLeft)
+    assert editor_bot.text == "test conten(t"
+
+
+if __name__ == "__main__":
+    pytest.main()
