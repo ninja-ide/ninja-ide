@@ -72,9 +72,6 @@ class IntelliSense(QObject):
         QObject.__init__(self)
         self.__services = {}
         self.__thread = QThreadPool()
-        self.__timer = QTimer(self)
-        self.waiting = False
-        self.pending = None
 
         IDE.register_service("intellisense", self)
 
@@ -83,13 +80,9 @@ class IntelliSense(QObject):
 
     def get(self, operation, info, editor):
         """Handle request"""
-        if self.waiting:
-            DEBUG("Waiting...")
-            return
         self._start_time = time.time()
         func_name = "get_" + operation
         service = self.__services.get(editor.neditable.language())
-        self.waiting = True
         func = getattr(service, func_name, None)
         if isinstance(func, Callable):
             worker = Worker(func, info)
@@ -97,13 +90,6 @@ class IntelliSense(QObject):
             worker.signals.error.connect(self._on_error)
             worker.signals.finished.connect(self._on_finished)
             self.__thread.start(worker)
-            self.__timer.stop()
-            self.__timer.singleShot(0.25 * 1000, self._handle_timeout)
-
-    @pyqtSlot()
-    def _handle_timeout(self):
-        DEBUG("Time out...")
-        self.waiting = False
 
     @pyqtSlot()
     def _on_finished(self):

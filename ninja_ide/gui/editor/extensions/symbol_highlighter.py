@@ -77,7 +77,7 @@ class SymbolHighlighter(base.Extension):
     def _highlight(self):
         cursor = self._neditor.textCursor()
         current_block = cursor.block()
-        if self._neditor.is_comment(current_block):
+        if self._neditor.inside_string_or_comment(cursor):
             return
         column_index = cursor.positionInBlock()
 

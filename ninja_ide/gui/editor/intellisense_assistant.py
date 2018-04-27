@@ -22,6 +22,10 @@ from PyQt5.QtCore import pyqtSlot
 
 from ninja_ide.gui.editor import proposal_widget
 from ninja_ide.gui.ide import IDE
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger(__name__)
+DEBUG = logger.debug
 
 
 class IntelliSenseAssistant(QObject):
@@ -35,6 +39,7 @@ class IntelliSenseAssistant(QObject):
     def __init__(self, editor):
         super().__init__(editor)
         self._editor = editor
+        # Proposal widget
         self._view = None
 
         self._operations = {
@@ -44,6 +49,8 @@ class IntelliSenseAssistant(QObject):
         self._intellisense = IDE.get_service("intellisense")
 
     def _handle_completions(self, completions):
+        if not completions:
+            return
         _completions = []
         append = _completions.append
         t0 = time.time()
@@ -53,7 +60,7 @@ class IntelliSenseAssistant(QObject):
             item.detail = completion["detail"]
             append(item)
         self._create_view(_completions)
-        print("VIEW: %.1f" % (time.time() - t0))
+        DEBUG("View created in: %.2fs" % (time.time() - t0))
 
     def _handle_definitions(self, definitions):
         main = IDE.get_service("main_container")
