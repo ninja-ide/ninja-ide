@@ -137,6 +137,7 @@ class NEditor(base_editor.BaseEditor):
         self._neditable = neditable
         self.setMouseTracking(True)
         self.__encoding = None
+        self._highlighter = None
         self._last_line_position = 0
         # List of word separators
         # Can be used by code completion and the link emulator
@@ -287,12 +288,6 @@ class NEditor(base_editor.BaseEditor):
         if self._scrollbar.maximum() > 0:
             self._scrollbar.add_marker(
                 "current_line", current_line, "white", priority=2)
-
-    def is_comment(self, block):
-        """Check if the block is a inline comment"""
-
-        text_block = block.text().lstrip()
-        return text_block.startswith('#')  # FIXME: generalize it
 
     def show_line_numbers(self, value):
         self._line_number_widget.setVisible(value)
@@ -630,7 +625,7 @@ class NEditor(base_editor.BaseEditor):
             text = self.word_under_cursor(cursor).selectedText()
             block = cursor.block()
             if text and not self.is_keyword(text) and \
-                    not self.is_comment(block):
+                    not self.inside_string_or_comment(cursor):
                 start, end = cursor.selectionStart(), cursor.selectionEnd()
                 selection = extra_selection.ExtraSelection(
                     cursor,
@@ -684,6 +679,36 @@ class NEditor(base_editor.BaseEditor):
         #        self.viewport().setCursor(Qt.IBeamCursor)
         super().keyReleaseEvent(event)
 
+    def current_color(self, cursor=None):
+        if cursor is None:
+            cursor = self.textCursor()
+        block = cursor.block()
+        layout = block.layout()
+        block_formats = layout.additionalFormats()
+        if block_formats:
+            current_format = block_formats[-1].format
+            if current_format is None:
+                return None
+            color = current_format.foreground().color().name()
+            return color
+        return None
+
+    def inside_string_or_comment(self, cursor=None):
+        """Check if the cursor is inside a comment or string"""
+        if self._highlighter is None:
+            return False
+        if cursor is None:
+            cursor = self.textCursor()
+        current_color = self.current_color(cursor)
+
+        colors = []
+        for k, v in self._highlighter.formats.items():
+            if k.startswith("comment") or k.startswith("string"):
+                colors.append(v.foreground().color().name())
+        if current_color in colors:
+            return True
+        return False
+
     def keyPressEvent(self, event):
         if not self.is_modifier(event) and settings.HIDE_MOUSE_CURSOR:
             self.viewport().setCursor(Qt.BlankCursor)
@@ -705,8 +730,11 @@ class NEditor(base_editor.BaseEditor):
                 self._indenter.indent()
             event.accept()
         elif event.key() == Qt.Key_Period:
+            # FIXME: generalize it with triggers
             self.textCursor().insertText(event.text())
-            self._intellisense.process("completions")
+            # TODO: check if is comment or string
+            if not self.inside_string_or_comment():
+                self._intellisense.process("completions")
             event.accept()
         elif event.key() == Qt.Key_Backspace:
             if not event.isAccepted():
