@@ -77,7 +77,7 @@ class IntelliSenseAssistant(QObject):
     def _get_code_info(self):
         cursor = self._editor.textCursor()
         cursor.setPosition(cursor.position() - 1)
-        word = self.__word_before_cursor(cursor)
+        word = self.__word_before_cursor(cursor, ignore=("(", ")"))
         if not word:
             return
         line, col = self._editor.cursor_position
@@ -139,5 +139,5 @@ class IntelliSenseAssistant(QObject):
         del self._view
         self._view = None
 
-    def __word_before_cursor(self, cursor=None):
-        return self._editor.word_under_cursor(cursor).selectedText()
+    def __word_before_cursor(self, cursor=None, ignore=None):
+        return self._editor.word_under_cursor(cursor, ignore).selectedText()

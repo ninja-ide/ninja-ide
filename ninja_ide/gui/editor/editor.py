@@ -545,11 +545,16 @@ class NEditor(base_editor.BaseEditor):
         if match:
             return match[0]
 
-    def word_under_cursor(self, cursor=None):
+    def word_under_cursor(self, cursor=None, ignore=None):
         """Returns QTextCursor that contains a word under passed cursor
         or actual cursor"""
         if cursor is None:
             cursor = self.textCursor()
+        word_separators = self.word_separators
+        if ignore is not None:
+            word_separators = [w for w in self.word_separators
+                               if w not in ignore]
+
         start_pos = end_pos = cursor.position()
         while not cursor.atStart():
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
@@ -557,7 +562,7 @@ class NEditor(base_editor.BaseEditor):
             if not selected_text:
                 break
             char = selected_text[0]
-            if (selected_text in self.word_separators and (
+            if (selected_text in word_separators and (
                     selected_text != "n" and selected_text != "t") or
                     char.isspace()):
                 break
@@ -570,7 +575,7 @@ class NEditor(base_editor.BaseEditor):
             if not selected_text:
                 break
             char = selected_text[0]
-            if (selected_text in self.word_separators and (
+            if (selected_text in word_separators and (
                     selected_text != "n" and selected_text != "t") or
                     char.isspace()):
                 break

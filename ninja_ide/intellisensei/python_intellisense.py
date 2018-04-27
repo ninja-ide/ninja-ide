@@ -28,18 +28,25 @@ except ImportError:
     jedi = None
 finally:
     sys.path.remove(jedi_path)
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger(__name__)
+DEBUG = logger.debug
 
 
 class JediService(intellisense_registry.IntelliSenseService):
 
     def __get_script(self, info):
-        script = jedi.Script(
-            source=info.get("source"),
-            line=info["line"],
-            column=info["column"],
-            path=info.get("path", ""),
-            sys_path=sys.path
-        )
+        try:
+            script = jedi.Script(
+                source=info.get("source"),
+                line=info["line"],
+                column=info["column"],
+                path=info.get("path", ""),
+                sys_path=sys.path
+            )
+        except Exception as reason:
+            DEBUG("Jedi error: '%s'" % reason)
         return script
 
     def get_completions(self, request):
