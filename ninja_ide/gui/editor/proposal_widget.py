@@ -91,9 +91,10 @@ class ProposalModel(QAbstractListModel):
         self.endResetModel()
 
     def rowCount(self, index=None):
-        if len(self.__current_proposals) == len(self.__original_proposals):
-            return self.__item_count
-        return len(self.__current_proposals)
+        count = self.__item_count
+        if len(self.__current_proposals) < count:
+            count = len(self.__current_proposals)
+        return count
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid() or index.row() >= len(self.__current_proposals):
@@ -258,7 +259,7 @@ class ProposalWidget(QFrame):
         vertical_scrollbar = self._proposal_view.verticalScrollBar()
         vertical_scrollbar.valueChanged.connect(
             self.update_size_and_position)
-        self._proposal_view.activated.connect(self._handle_view_activation)
+        self._proposal_view.clicked.connect(self._handle_view_activation)
         vertical_scrollbar.sliderPressed.connect(self._turn_off_autowidth)
         vertical_scrollbar.sliderReleased.connect(self._turn_on_autowidth)
 
@@ -358,25 +359,26 @@ class ProposalWidget(QFrame):
                     return True
                 return False
             elif event.key() in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Home,
-                                 Qt.Key_Backspace, Qt.Key_End):
-                # We want these navigation keys to work in the editor
+                                 Qt.Key_End):
                 self.abort()
             else:
                 pass
             QApplication.sendEvent(self._editor, event)
             if self.isVisible():
-                word = self._editor.word_under_cursor().selectedText()
-                self._model.filter(word)
-                if not self._model.has_proposals():
-                    self.abort()
-                self._proposal_view.select_first()
-                self.update_size_and_position()
-                if self._info_frame is not None:
-                    self._info_frame.move(
-                        self._proposal_view.info_frame_position())
+                self.update_proposal()
             return True
 
         return False
+
+    def update_proposal(self):
+        word = self._editor.word_under_cursor().selectedText()
+        self._model.filter(word)
+        if not self._model.has_proposals():
+            self.abort()
+        self._proposal_view.select_first()
+        self.update_size_and_position()
+        if self._info_frame is not None:
+            self._info_frame.move(self._proposal_view.info_frame_position())
 
     def insert_proposal(self, row=None):
         if row is None:

@@ -19,6 +19,7 @@ import time
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import Qt
 
 from ninja_ide.gui.editor import proposal_widget
 from ninja_ide.gui.ide import IDE
@@ -79,12 +80,11 @@ class IntelliSenseAssistant(QObject):
         self._intellisense.resultAvailable.disconnect(self._on_finished)
 
     def _get_code_info(self):
-        cursor = self._editor.textCursor()
-        cursor.setPosition(cursor.position() - 1)
+        # TODO: move to IntelliSense Service, this is a common code
         # FIXME: we do the same in the editor, is it okay?
-        word = self.__word_before_cursor(cursor, ignore=("(", ")"))
+        word = self.__word_before_cursor(ignore=("(", ")", "."))
         if not word:
-            return
+            return {}
         line, col = self._editor.cursor_position
         request_data = {
             "source": self._editor.text,
@@ -96,8 +96,11 @@ class IntelliSenseAssistant(QObject):
 
     def _process_completions(self):
         request_data = self._get_code_info()
+        if not request_data:
+            return
         if self._view is not None:
             self._view.abort()
+
         self._intellisense.get(
             "completions", request_data, self._editor)
 

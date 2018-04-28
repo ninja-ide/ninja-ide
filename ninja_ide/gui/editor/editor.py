@@ -732,13 +732,6 @@ class NEditor(base_editor.BaseEditor):
             else:
                 self._indenter.indent()
             event.accept()
-        elif event.key() == Qt.Key_Period:
-            # FIXME: generalize it with triggers
-            self.textCursor().insertText(event.text())
-            # TODO: check if is comment or string
-            if not self.inside_string_or_comment():
-                self._intellisense.process("completions")
-            event.accept()
         elif event.key() == Qt.Key_Backspace:
             if not event.isAccepted():
                 if self.__smart_backspace():
@@ -747,6 +740,13 @@ class NEditor(base_editor.BaseEditor):
             super().keyPressEvent(event)
         # Post key press
         self.postKeyPressed.emit(event)
+        ctrl = event.modifiers() == Qt.ControlModifier
+        # TODO: generalize it with triggers
+        # TODO: shortcut
+        force_completion = ctrl and event.key() == Qt.Key_Space
+        if event.key() == Qt.Key_Period or force_completion:
+            if not self.inside_string_or_comment():
+                self._intellisense.process("completions")
 
     def adjust_scrollbar_ranges(self):
         line_spacing = QFontMetrics(self.font()).lineSpacing()
