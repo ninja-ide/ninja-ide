@@ -244,8 +244,8 @@ class ProposalWidget(QFrame):
         self._info_frame = None
         self._info_timer = QTimer(self)
         self._info_timer.setSingleShot(True)
+        self._info_timer.setInterval(100)
         self._info_timer.timeout.connect(self.show_info)
-
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self._proposal_view = ProposalView()
@@ -281,10 +281,10 @@ class ProposalWidget(QFrame):
         self._info_frame.move(self._proposal_view.info_frame_position())
         self._info_frame.set_text(info)
         self._info_frame.calculate_width()
-        self._info_frame.show()
         self._info_frame.adjustSize()
+        self._info_frame.show()
         self._info_frame.raise_()
-        self._info_timer.setInterval(200)
+        self._info_timer.setInterval(0)
 
     def set_model(self, model):
         if self._model is not None:
@@ -370,6 +370,9 @@ class ProposalWidget(QFrame):
                 if not self._model.has_proposals():
                     self.abort()
                 self.update_size_and_position()
+                if self._info_frame is not None:
+                    self._info_frame.move(
+                        self._proposal_view.info_frame_position())
             return True
 
         return False
