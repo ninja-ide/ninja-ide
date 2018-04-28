@@ -240,6 +240,7 @@ class ProposalWidget(QFrame):
         self._editor = parent
         self._model = None
         self._prefix = None
+        self._auto_width = True
         self._info_frame = None
         self._info_timer = QTimer(self)
         self._info_timer.setSingleShot(True)
@@ -253,10 +254,13 @@ class ProposalWidget(QFrame):
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)
 
-        self._proposal_view.verticalScrollBar().valueChanged.connect(
+        # Connections
+        vertical_scrollbar = self._proposal_view.verticalScrollBar()
+        vertical_scrollbar.valueChanged.connect(
             self.update_size_and_position)
         self._proposal_view.activated.connect(self._handle_view_activation)
-        # self.hide()
+        vertical_scrollbar.sliderPressed.connect(self._turn_off_autowidth)
+        vertical_scrollbar.sliderReleased.connect(self._turn_on_autowidth)
 
     def _handle_view_activation(self, index):
         self.abort()
@@ -298,25 +302,35 @@ class ProposalWidget(QFrame):
         self._proposal_view.select_first()
         self._proposal_view.setFocus()
 
+    def _turn_off_autowidth(self):
+        self._auto_width = False
+
+    def _turn_on_autowidth(self):
+        self._auto_width = True
+        self.update_size_and_position()
+
     def update_size_and_position(self):
+        if not self._auto_width:
+            return
         size_hint = self._proposal_view.calculate_size()
         frame_width = self.frameWidth()
         width = size_hint.width() + frame_width * 2 + 30
         height = size_hint.height() + frame_width * 2
         desktop = QApplication.instance().desktop()
         screen = desktop.screenGeometry(desktop.screenNumber(self._editor))
+        if settings.IS_MAC_OS:
+            screen = desktop.availableGeometry(
+                desktop.screenNumber(self._editor))
         cr = self._editor.cursorRect()
         pos = cr.bottomLeft()
-        rx = pos.x() + 60
+        rx = pos.x() + 60  # FIXME: why 60?
         pos.setX(rx)
         if pos.y() + height > screen.bottom():
             pos.setY(max(0, cr.top() - height))
         if pos.x() + width > screen.right():
-            pos.setX(max(0, screen.y() - width))
+            pos.setX(max(0, screen.right() - width))
         self.setGeometry(pos.x(), pos.y(), min(width, screen.width()),
                          min(height, screen.height()))
-        if self._info_frame is not None:
-            self._info_frame.move(self._proposal_view.info_frame_position())
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.FocusOut:
