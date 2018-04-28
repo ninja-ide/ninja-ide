@@ -360,7 +360,7 @@ class ProposalWidget(QFrame):
             elif event.key() in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Home,
                                  Qt.Key_Backspace, Qt.Key_End):
                 # We want these navigation keys to work in the editor
-                pass
+                self.abort()
             else:
                 pass
             QApplication.sendEvent(self._editor, event)
@@ -369,6 +369,7 @@ class ProposalWidget(QFrame):
                 self._model.filter(word)
                 if not self._model.has_proposals():
                     self.abort()
+                self._proposal_view.select_first()
                 self.update_size_and_position()
                 if self._info_frame is not None:
                     self._info_frame.move(
