@@ -63,10 +63,14 @@ class IntelliSenseAssistant(QObject):
         DEBUG("View created in: %.2fs" % (time.time() - t0))
 
     def _handle_definitions(self, definitions):
-        main = IDE.get_service("main_container")
         result = definitions[0]
-        main.open_file(
-            result["filename"], result["line"] - 1, result["column"])
+        path = result["filename"]
+        if path is None or path == self._editor.file_path:
+            self._editor.go_to_line(result["line"] - 1, result["column"])
+        else:
+            main = IDE.get_service("main_container")
+            main.open_file(
+                path, result["line"] - 1, result["column"])
 
     @pyqtSlot("PyQt_PyObject", "QString")
     def _on_finished(self, result, kind):
@@ -77,6 +81,7 @@ class IntelliSenseAssistant(QObject):
     def _get_code_info(self):
         cursor = self._editor.textCursor()
         cursor.setPosition(cursor.position() - 1)
+        # FIXME: we do the same in the editor, is it okay?
         word = self.__word_before_cursor(cursor, ignore=("(", ")"))
         if not word:
             return

@@ -597,10 +597,8 @@ class NEditor(base_editor.BaseEditor):
                 self._go_to_definition_requested(cursor)
 
     def _go_to_definition_requested(self, cursor):
-        # TODO: check if the cursor is inside comment or string
         text = self.word_under_cursor(cursor).selectedText()
-        if text:
-            # self.goToDefRequested.emit(cursor)
+        if text and not self.inside_string_or_comment(cursor):
             self._intellisense.process("definitions")
 
     def mouseMoveEvent(self, event):
