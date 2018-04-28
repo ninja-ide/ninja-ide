@@ -898,6 +898,11 @@ class NEditor(base_editor.BaseEditor):
             300, lambda: self.clear_extra_selections("run_cursor"))
 
     def wheelEvent(self, event):
+        if not self.hasFocus():
+            # Prevent scroll when the focus has been lost.
+            # e.g. when the Proposal Widget is displayed
+            event.ignore()
+            return
         if event.modifiers() == Qt.ControlModifier:
             if not settings.SCROLL_WHEEL_ZOMMING:
                 return

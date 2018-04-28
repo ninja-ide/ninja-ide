@@ -245,10 +245,10 @@ class ProposalWidget(QFrame):
         self._info_timer.setSingleShot(True)
         self._info_timer.timeout.connect(self.show_info)
 
-        self.setFrameStyle(QFrame.NoFrame)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self._proposal_view = ProposalView()
+        self.setFrameStyle(self._proposal_view.frameStyle())
 
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)
