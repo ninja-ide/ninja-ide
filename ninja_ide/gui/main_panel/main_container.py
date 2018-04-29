@@ -398,6 +398,9 @@ class _MainContainer(QWidget):
         """Save all files in the project path"""
         for neditable in self.combo_area.bar.get_editables():
             file_path = neditable.file_path
+            if file_path is None:
+                # FIXME: New edited files will not be saved, its ok?
+                continue
             if file_manager.belongs_to_folder(project_path, file_path):
                 neditable.save_content()
 
