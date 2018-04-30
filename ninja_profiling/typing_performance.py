@@ -17,6 +17,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+from unittest import mock
 import time
 
 from PyQt5.QtWidgets import QApplication
@@ -35,12 +36,14 @@ from ninja_ide.core.file_handling import nfile
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.editor.editor import NEditor
 from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
+from ninja_ide.gui.ide import IDE
 
 json_manager.load_syntax()
 themes = json_manager.load_editor_schemes()
 resources.COLOR_SCHEME = themes["Ninja Dark"]
 
 qapp = QApplication(sys.argv)
+IDE.register_service("ide", mock.Mock())
 
 ninja_editor = NEditor(neditable=neditable.NEditable(nfile.NFile()))
 ninja_editor.side_widgets.remove("CodeFoldingWidget")
