@@ -111,8 +111,9 @@ class _MainContainer(QWidget):
 
         IDE.register_signals("main_container", connections)
 
-        esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        esc_sort.activated.connect(self._set_focus_to_editor)
+        # FIXME: short usado en el intellisense
+        # esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        # esc_sort.activated.connect(self._set_focus_to_editor)
 
         fhandler_short = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Tab), self)
         fhandler_short.activated.connect(self.show_files_handler)
@@ -169,7 +170,6 @@ class _MainContainer(QWidget):
 
     def _navigate_code_jumps(self, forward=False):
         """Navigate between the jump points"""
-
         node = None
         if not forward and self.__code_back:
             if len(self.__code_back) == 1:

@@ -16,7 +16,11 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5.QtWidgets import QPlainTextEdit
+# from PyQt5.QtWidgets import QApplication
+# from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QAbstractSlider
+# from PyQt5.QtWidgets import QListView
+# from PyQt5.QtWidgets import QFrame
 
 from PyQt5.QtGui import QTextBlockUserData
 from PyQt5.QtGui import QTextDocument
@@ -220,17 +224,24 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
     def __exit__(self, exc_type, exc_value, traceback):
         self.textCursor().endEditBlock()
 
-    def word_under_cursor(self, cursor=None):
+    def word_under_cursor(self, cursor=None, ignore=None):
         """Returns QTextCursor that contains a word under passed cursor
         or actual cursor"""
         if cursor is None:
             cursor = self.textCursor()
+        word_separators = self.word_separators
+        if ignore is not None:
+            word_separators = [w for w in self.word_separators
+                               if w not in ignore]
+
         start_pos = end_pos = cursor.position()
         while not cursor.atStart():
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
-            char = cursor.selectedText()[0]
             selected_text = cursor.selectedText()
-            if (selected_text in self.word_separators and (
+            if not selected_text:
+                break
+            char = selected_text[0]
+            if (selected_text in word_separators and (
                     selected_text != "n" and selected_text != "t") or
                     char.isspace()):
                 break
@@ -239,9 +250,11 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
         cursor.setPosition(end_pos)
         while not cursor.atEnd():
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            char = cursor.selectedText()[0]
             selected_text = cursor.selectedText()
-            if (selected_text in self.word_separators and (
+            if not selected_text:
+                break
+            char = selected_text[0]
+            if (selected_text in word_separators and (
                     selected_text != "n" and selected_text != "t") or
                     char.isspace()):
                 break
@@ -314,6 +327,12 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.End)
             cursor.insertBlock()
+
+    def text_before_cursor(self, text_cursor=None):
+        if text_cursor is None:
+            text_cursor = self.textCursor()
+        text_block = text_cursor.block().text()
+        return text_block[:text_cursor.positionInBlock()]
 
 
 class BlockUserData(QTextBlockUserData):

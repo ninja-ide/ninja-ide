@@ -115,7 +115,6 @@ class _MainContainer(QWidget):
         self.setAcceptDrops(True)
         self._files_handler = files_handler.FilesHandler(self)
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
-
         # documentation browser
         self.docPage = None
         # Code Navigation
@@ -136,7 +135,7 @@ class _MainContainer(QWidget):
         #                    bool].connect(self.locate_function)
 
         IDE.register_service('main_container', self)
-
+        IDE.regis
         # Register signals connections
         connections = (
             {

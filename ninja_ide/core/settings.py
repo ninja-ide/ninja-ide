@@ -270,7 +270,8 @@ LANGUAGE_MAP = {
     "js": "javascript",
     "html": "html",
     "md": "markdown",
-    "yml": "yaml"
+    "yml": "yaml",
+    "qml": "qml"
 }
 
 ###############################################################################

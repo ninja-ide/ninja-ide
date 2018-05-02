@@ -18,7 +18,6 @@
 # import os
 import collections
 
-
 from PyQt5.QtWidgets import (
     QMainWindow,
     QDialog,
@@ -117,7 +116,6 @@ class IDE(QMainWindow):
         # Load the size and the position of the main window
         self.load_window_geometry()
         # self.__project_to_open = 0
-
         # Editables
         self.__neditables = {}
         # Filesystem
@@ -127,7 +125,6 @@ class IDE(QMainWindow):
         self._session = None
         # Opacity
         self.opacity = settings.MAX_OPACITY
-
         # ToolBar
         self.toolbar = QToolBar(self)
         if settings.IS_MAC_OS:
