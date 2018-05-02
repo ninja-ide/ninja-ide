@@ -47,7 +47,6 @@ from ninja_ide.gui import dynamic_splitter
 from ninja_ide import translations
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import helpers
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
 # from ninja_ide.gui import notification
@@ -328,10 +327,10 @@ class _MainContainer(QWidget):
                     return self.save_file_as(editor_widget)
                 # FIXME: beforeFileSaved.emit
                 if settings.REMOVE_TRAILING_SPACES:
-                    helpers.remove_trailing_spaces(editor_widget)
+                    editor_widget.remove_trailing_spaces()
                 # FIXME: new line at end
                 if settings.ADD_NEW_LINE_AT_EOF:
-                    helpers.insert_block_at_end(editor_widget)
+                    editor_widget.insert_block_at_end()
                 # Save content
                 editor_widget.neditable.save_content()
                 # FIXME: encoding
@@ -537,7 +536,7 @@ class _MainContainer(QWidget):
         """Mark the current line or selection as a comment."""
         editor_widget = self.get_current_editor()
         if editor_widget is not None:
-            helpers.comment_or_uncomment(editor_widget)
+            editor_widget.comment_or_uncomment()
 
     def editor_go_to_line(self, line):
         editor_widget = self.get_current_editor()

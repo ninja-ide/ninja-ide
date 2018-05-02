@@ -24,7 +24,6 @@ from PyQt5.QtGui import QTextCursor
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import neditable
 from ninja_ide.core.file_handling import nfile
-from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import json_manager
 
@@ -118,34 +117,34 @@ def test_move_down_selection(editor_bot, qtbot):
 
 def test_simple_comment(editor_bot, qtbot):
     editor_bot.text = "this\nis\na\ntext"
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == "# this\nis\na\ntext"
 
 
 def test_simple_uncomment(editor_bot, qtbot):
     editor_bot.text = "# this\nis\na\ntext"
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == "this\nis\na\ntext"
 
 
 def test_comment_selected_lines(editor_bot, qtbot):
     editor_bot.text = "this\nis\na\ntext"
     editor_bot.selectAll()
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == "# this\n# is\n# a\n# text"
 
 
 def test_uncomment_selected_lines(editor_bot, qtbot):
     editor_bot.text = "# this\n# is\n# a\n# text"
     editor_bot.selectAll()
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == "this\nis\na\ntext"
 
 
 def test_comment(editor_bot, qtbot):
     editor_bot.text = "# This is a comment\ndef foo():\n    # pass\n    pass"
     editor_bot.selectAll()
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == ("# # This is a comment\n# def foo():\n#     "
                                "# pass\n#     pass")
 
@@ -154,7 +153,7 @@ def test_uncomment(editor_bot, qtbot):
     editor_bot.text = ("# # This is a comment\n# def foo():\n#     "
                        "# pass\n#     pass")
     editor_bot.selectAll()
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == ("# This is a comment\ndef foo():\n    "
                                "# pass\n    pass")
 
@@ -162,7 +161,7 @@ def test_uncomment(editor_bot, qtbot):
 def test_uncomment2(editor_bot, qtbot):
     editor_bot.text = "print\n# print"
     editor_bot.selectAll()
-    helpers.comment_or_uncomment(editor_bot)
+    editor_bot.comment_or_uncomment()
     assert editor_bot.text == "# print\n# # print"
 
 

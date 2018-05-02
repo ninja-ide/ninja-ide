@@ -19,18 +19,25 @@ from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtWidgets import QAbstractSlider
 
 from PyQt5.QtGui import QTextBlockUserData
+from PyQt5.QtGui import QTextDocument
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QTextCursor
 
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
+from ninja_ide.core import settings
+from ninja_ide.gui.editor.mixin import EditorMixin
 
 
-class BaseEditor(QPlainTextEdit):
+class BaseEditor(QPlainTextEdit, EditorMixin):
+
+    zoomChanged = pyqtSignal(int)
 
     def __init__(self):
         QPlainTextEdit.__init__(self)
+        EditorMixin.__init__(self)
         # Style
         self.__init_style()
         self.__apply_style()
@@ -39,28 +46,6 @@ class BaseEditor(QPlainTextEdit):
     @property
     def visible_blocks(self):
         return self.__visible_blocks
-
-    @property
-    def cursor_position(self):
-        """Get or set the current cursor position.
-
-        :param position: The position to set.
-        :type position: tuple(line, column).
-        :return: Current cursor position in document.
-        :rtype: tuple(line, colum)."""
-
-        cursor = self.textCursor()
-        return (cursor.blockNumber(), cursor.columnNumber())
-
-    @cursor_position.setter
-    def cursor_position(self, position):
-        line, column = position
-        line = min(line, self.line_count() - 1)
-        column = min(column, len(self.line_text(line)))
-        cursor = QTextCursor(self.document().findBlockByNumber(line))
-        cursor.setPosition(cursor.block().position() + column,
-                           QTextCursor.MoveAnchor)
-        self.setTextCursor(cursor)
 
     @property
     def background_color(self):
@@ -148,6 +133,79 @@ class BaseEditor(QPlainTextEdit):
             bottom = top + self.blockBoundingRect(block).height()
             block_number += 1
 
+    def replace_match(self, word_old, word_new, cs=False, wo=False,
+                      wrap_around=True):
+        """
+        Find if searched text exists and replace it with new one.
+        If there is a selection just do it inside it and exit
+        """
+
+        cursor = self.textCursor()
+        text = cursor.selectedText()
+        if not cs:
+            word_old = word_old.lower()
+            text = text.lower()
+        if text == word_old:
+            cursor.insertText(word_new)
+
+        # Next
+        return self.find_match(word_old, cs, wo, forward=True,
+                               wrap_around=wrap_around)
+
+    def replace_all(self, word_old, word_new, cs=False, wo=False):
+        # Save cursor for restore later
+        cursor = self.textCursor()
+        with self:
+            # Move to beginning of text and replace all
+            self.moveCursor(QTextCursor.Start)
+            found = True
+            while found:
+                found = self.replace_match(word_old, word_new, cs, wo,
+                                           wrap_around=False)
+        # Reset position
+        self.setTextCursor(cursor)
+
+    def find_match(self, search, case_sensitive=False, whole_word=False,
+                   backward=False, forward=False, wrap_around=True):
+
+        if not backward and not forward:
+            self.moveCursor(QTextCursor.StartOfWord)
+
+        flags = QTextDocument.FindFlags()
+        if case_sensitive:
+            flags |= QTextDocument.FindCaseSensitively
+        if whole_word:
+            flags |= QTextDocument.FindWholeWords
+        if backward:
+            flags |= QTextDocument.FindBackward
+
+        cursor = self.textCursor()
+        found = self.document().find(search, cursor, flags)
+        if not found.isNull():
+            self.setTextCursor(found)
+
+        elif wrap_around:
+            if not backward and not forward:
+                cursor.movePosition(QTextCursor.Start)
+            elif forward:
+                cursor.movePosition(QTextCursor.Start)
+            else:
+                cursor.movePosition(QTextCursor.End)
+
+            # Try again
+            found = self.document().find(search, cursor, flags)
+            if not found.isNull():
+                self.setTextCursor(found)
+
+        return not found.isNull()
+
+    def line_from_position(self, position):
+        height = self.fontMetrics().height()
+        for top, line, block in self.__visible_blocks:
+            if top <= position <= top + height:
+                return line
+        return -1
+
     def scroll_step_up(self):
         self.verticalScrollBar().triggerAction(
             QAbstractSlider.SliderSingleStepSub)
@@ -156,199 +214,11 @@ class BaseEditor(QPlainTextEdit):
         self.verticalScrollBar().triggerAction(
             QAbstractSlider.SliderSingleStepAdd)
 
-    def first_visible_block(self):
-        return self.firstVisibleBlock()
-
-    def last_visible_block(self):
-        return self.cursorForPosition(
-            QPoint(0, self.viewport().height())).block()
-
     def __enter__(self):
         self.textCursor().beginEditBlock()
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.textCursor().endEditBlock()
-
-    def selection_range(self):
-        """Returns the start and end number of selected lines"""
-
-        text_cursor = self.textCursor()
-        start = self.document().findBlock(
-            text_cursor.selectionStart()).blockNumber()
-        end = self.document().findBlock(
-            text_cursor.selectionEnd()).blockNumber()
-        if text_cursor.columnNumber() == 0 and start != end:
-            end -= 1
-        return start, end
-
-    def selected_text(self):
-        """Returns the selected text"""
-
-        return self.textCursor().selectedText()
-
-    def has_selection(self):
-        return self.textCursor().hasSelection()
-
-    def get_right_word(self):
-        """Gets the word on the right of the text cursor"""
-
-        cursor = self.textCursor()
-        cursor.movePosition(QTextCursor.WordRight, QTextCursor.KeepAnchor)
-        return cursor.selectedText().strip()
-
-    def get_right_character(self):
-        """Gets the right character on the right of the text cursor"""
-
-        right_word = self.get_right_word()
-        right_char = None
-        if right_word:
-            right_char = right_word[0]
-        return right_char
-
-    def move_up_down(self, up=False):
-        cursor = self.textCursor()
-        move = cursor
-        with self:
-            has_selection = cursor.hasSelection()
-            start, end = cursor.selectionStart(), cursor.selectionEnd()
-            if has_selection:
-                move.setPosition(start)
-                move.movePosition(QTextCursor.StartOfBlock)
-                move.setPosition(end, QTextCursor.KeepAnchor)
-                m = QTextCursor.EndOfBlock
-                if move.atBlockStart():
-                    m = QTextCursor.Left
-                move.movePosition(m, QTextCursor.KeepAnchor)
-            else:
-                move.movePosition(QTextCursor.StartOfBlock)
-                move.movePosition(QTextCursor.EndOfBlock,
-                                  QTextCursor.KeepAnchor)
-
-            text = cursor.selectedText()
-            move.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            move.removeSelectedText()
-
-            if up:
-                move.movePosition(QTextCursor.PreviousBlock)
-                move.insertBlock()
-                move.movePosition(QTextCursor.Left)
-            else:
-                move.movePosition(QTextCursor.EndOfBlock)
-                if move.atBlockStart():
-                    move.movePosition(QTextCursor.NextBlock)
-                    move.insertBlock()
-                    move.movePosition(QTextCursor.Left)
-                else:
-                    move.insertBlock()
-
-            start = move.position()
-            move.clearSelection()
-            move.insertText(text)
-            end = move.position()
-            if has_selection:
-                move.setPosition(end)
-                move.setPosition(start, QTextCursor.KeepAnchor)
-            else:
-                move.setPosition(start)
-            self.setTextCursor(move)
-
-    def duplicate_line(self):
-        cursor = self.textCursor()
-        if cursor.hasSelection():
-            text = cursor.selectedText()
-            start = cursor.selectionStart()
-            end = cursor.selectionEnd()
-            cursor_at_start = cursor.position() == start
-            cursor.setPosition(end)
-            cursor.insertText("\n" + text)
-            cursor.setPosition(end if cursor_at_start else start)
-            cursor.setPosition(start if cursor_at_start else end,
-                               QTextCursor.KeepAnchor)
-        else:
-            position = cursor.position()
-            block = cursor.block()
-            text = block.text() + "\n"
-            cursor.setPosition(block.position())
-            cursor.insertText(text)
-            cursor.setPosition(position)
-        self.setTextCursor(cursor)
-
-    def line_text(self, line=-1):
-        """Returns the text of the specified line.
-
-        :param line: The line number of the text to return.
-        :return: Entire lines text.
-        :rtype: str.
-        """
-        if line == -1:
-            line, _ = self.cursor_position
-        block = self.document().findBlockByNumber(line)
-        return block.text()
-
-    def line_count(self):
-        """Returns the number of lines"""
-
-        return self.document().blockCount()
-
-    @property
-    def text(self):
-        """Get or set the plain text editor's content. The previous contents
-        are removed.
-
-        :param text: Text to set in document.
-        :type text: string.
-        :return: The plain text in document.
-        :rtype: string.
-        """
-
-        return self.toPlainText()
-
-    @text.setter
-    def text(self, text):
-        self.setPlainText(text)
-
-    def line_indent(self, line=-1):
-        """Returns the indentation level of `line`"""
-
-        if line == -1:
-            line, _ = self.cursor_position
-        text = self.document().findBlockByNumber(line).text()
-        indentation = len(text) - len(text.lstrip())
-        return indentation
-
-    def select_lines(self, start=0, end=0):
-        """Selects enteri lines between start and end line numbers"""
-
-        if end == -1:
-            end = self.line_count() - 1
-        if start < 0:
-            start = 0
-        cursor = self.textCursor()
-        block = self.document().findBlockByNumber(start)
-        cursor.setPosition(block.position())
-
-        if end > start:
-            cursor.movePosition(QTextCursor.Down,
-                                QTextCursor.KeepAnchor, end - start)
-            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-
-        elif end < start:
-            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.Up,
-                                QTextCursor.KeepAnchor, start - end)
-            cursor.movePosition(QTextCursor.StartOfLine,
-                                QTextCursor.KeepAnchor)
-        else:
-            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-
-        self.setTextCursor(cursor)
-
-    def line_from_position(self, position):
-        height = self.fontMetrics().height()
-        for top, line, block in self.__visible_blocks:
-            if top <= position <= top + height:
-                return line
-        return -1
 
     def word_under_cursor(self, cursor=None):
         """Returns QTextCursor that contains a word under passed cursor
@@ -390,6 +260,61 @@ class BaseEditor(QPlainTextEdit):
             block.setUserData(user_data)
         return user_data
 
+    def wheelEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:
+            if not settings.SCROLL_WHEEL_ZOMMING:
+                return
+            delta = event.angleDelta().y() / 120.
+            if delta != 0:
+                self.zoom(delta)
+            return
+        super().wheelEvent(event)
+
+    def zoom(self, delta: int):
+        font = self.default_font
+        previous_point_size = font.pointSize()
+        new_point_size = int(max(1, previous_point_size + delta))
+        if new_point_size != previous_point_size:
+            font.setPointSize(new_point_size)
+            self.set_font(font)
+            # Emit signal for indicator
+            default_point_size = settings.FONT.pointSize()
+            percent = new_point_size / default_point_size * 100.0
+            self.zoomChanged.emit(percent)
+        # # Update all side widgets
+        # self.side_widgets.update_viewport()
+
+    def reset_zoom(self):
+        font = self.default_font
+        default_point_size = settings.FONT.pointSize()
+        if font.pointSize() != default_point_size:
+            font.setPointSize(default_point_size)
+            self.set_font(font)
+            # Emit signal for indicator
+            self.zoomChanged.emit(100)
+        # # Update all side widgets
+        # self.side_widgets.update_viewport()
+
+    def remove_trailing_spaces(self):
+        cursor = self.textCursor()
+        block = self.document().findBlockByLineNumber(0)
+        with self:
+            while block.isValid():
+                text = block.text()
+                if text.endswith(' '):
+                    cursor.setPosition(block.position())
+                    cursor.select(QTextCursor.LineUnderCursor)
+                    cursor.insertText(text.rstrip())
+                block = block.next()
+
+    def insert_block_at_end(self):
+        last_line = self.line_count() - 1
+        text = self.line_text(last_line)
+        if text:
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.End)
+            cursor.insertBlock()
+
 
 class BlockUserData(QTextBlockUserData):
     """Representation of the data for a block"""
@@ -406,4 +331,3 @@ class BlockUserData(QTextBlockUserData):
 
     def __setitem__(self, name, value):
         self.attrs[name] = value
-
