@@ -47,6 +47,7 @@ class SideWidgetManager(object):
         del self.__widgets[object_name]
         # widget.hide()
         widget.setParent(None)
+        widget.deleteLater()
 
     def _update(self):
         for widget in self:

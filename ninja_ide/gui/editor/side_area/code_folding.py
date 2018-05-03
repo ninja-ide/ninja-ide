@@ -90,7 +90,7 @@ class CodeFoldingWidget(side_area.SideWidget):
 
     def __init__(self):
         super().__init__()
-        self.code_folding = PythonCodeFolding()
+        self.code_folding = None
         self.setMouseTracking(True)
         self.__mouse_over = None
         self.__timer = QTimer(self)
@@ -99,6 +99,10 @@ class CodeFoldingWidget(side_area.SideWidget):
         self.__timer.timeout.connect(self.update)
 
     def register(self, neditor):
+        self.code_folding = IMPLEMENTATIONS.get(neditor.neditable.language())
+        if self.code_folding is None:
+            neditor.side_widgets.remove(self.object_name)
+            return
         super().register(neditor)
         self.user_data = neditor.user_data
         neditor.painted.connect(self.__draw_collapsed_rect)

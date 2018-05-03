@@ -397,6 +397,7 @@ class NEditor(base_editor.BaseEditor):
     def resizeEvent(self, event):
         super().resizeEvent(event)
         self.side_widgets.resize()
+        self.side_widgets.update_viewport()
         self.adjust_scrollbar_ranges()
 
     def clear_link(self):
