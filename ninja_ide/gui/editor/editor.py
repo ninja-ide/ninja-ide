@@ -577,26 +577,27 @@ class NEditor(base_editor.BaseEditor):
         line_text = self.line_text(line - 1).strip()
         pat_class = re.compile("(\\s)*class.+\\:$")
         if pat_class.match(line_text):
-            source = self.text
-            symbols = introspection.obtain_symbols(source)
+            cursor = self.textCursor()
+            block = cursor.block()
+            init = False
+            while block.isValid():
+                text = block.text().strip()
+                if text and text.startswith("def __init__(self"):
+                    init = True
+                    break
+                block = block.next()
+            if init:
+                return
             class_name = [name for name in
                           re.split("(\\s)*class(\\s)+|:|\(", line_text)
                           if name is not None and name.strip()][0]
-            class_key = [item for item in symbols.get("classes", [])
-                         if item.startswith(class_name)]
-            if class_key:
-                clazz = symbols["classes"][class_key["lineno"]]
-                if [init for init in clazz["members"]["functions"]
-                        if init.startswith("__init__")]:
-                    return
-            lnumber, index = self.cursor_position
 
-            indentation = self.line_indent(lnumber) * " "
-            if self._indenter.use_tabs:
-                indentation = self.line_indent(lnumber) * "\t"
+            line, col = self.cursor_position
+            indentation = self.line_indent(line) * " "
             init_def = "def __init__(self):"
-            definition = "\n%s%s\n%s" % (indentation,
-                                         init_def, indentation * 2)
+            definition = "\n{}{}\n{}".format(
+                indentation, init_def, indentation * 2
+            )
 
             super_include = ""
             if line_text.find("(") != -1:
@@ -605,13 +606,13 @@ class NEditor(base_editor.BaseEditor):
                 if len(classes) > 1:
                     parents += classes[1].split(",")
                 if len(parents) > 0 and "object):" not in parents:
-                    super_include = "super({0}, self).__init__()".format(
+                    super_include = "super({}, self).__init__()".format(
                         class_name)
-                    definition = "\n%s%s\n%s%s\n%s" % (
+                    definition = "\n{}{}\n{}{}\n{}".format(
                         indentation, init_def, indentation * 2,
-                        super_include, indentation * 2)
-
-            self.textCursor().insertText(definition)
+                        super_include, indentation * 2
+                    )
+            self.insert_text(definition)
 
     def keyPressEvent(self, event):
         if not self.is_modifier(event) and settings.HIDE_MOUSE_CURSOR:

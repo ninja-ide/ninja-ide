@@ -21,6 +21,8 @@ import pytest
 
 from PyQt5.QtGui import QTextCursor
 
+from PyQt5.QtCore import Qt
+
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import neditable
 from ninja_ide.core.file_handling import nfile
@@ -29,6 +31,7 @@ from ninja_ide.tools import json_manager
 
 
 IDE.register_service("ide", Mock())
+IDE.register_service("intellisense", Mock())
 json_manager.load_syntax()
 
 
@@ -163,6 +166,53 @@ def test_uncomment2(editor_bot, qtbot):
     editor_bot.selectAll()
     editor_bot.comment_or_uncomment()
     assert editor_bot.text == "# print\n# # print"
+
+
+def test_complete_declaration(editor_bot, qtbot):
+    editor_bot.text = "class Parent(object):"
+    cursor = editor_bot.textCursor()
+    cursor.movePosition(QTextCursor.End)
+    editor_bot.setTextCursor(cursor)
+    qtbot.keyPress(editor_bot, Qt.Key_Enter)
+    assert editor_bot.text == ("class Parent(object):\n    \n"
+                               "    def __init__(self):\n"
+                               "        ")
+
+
+def test_complete_declaration2(editor_bot, qtbot):
+    editor_bot.text = "class Parent(object):"
+    cursor = editor_bot.textCursor()
+    cursor.movePosition(QTextCursor.End)
+    editor_bot.setTextCursor(cursor)
+    qtbot.keyPress(editor_bot, Qt.Key_Enter)
+    assert editor_bot.text == ("class Parent(object):\n    \n"
+                               "    def __init__(self):\n"
+                               "        ")
+    editor_bot.moveCursor(QTextCursor.Start)
+    editor_bot.moveCursor(QTextCursor.EndOfLine)
+    qtbot.keyPress(editor_bot, Qt.Key_Enter)
+    assert editor_bot.text == ("class Parent(object):\n    \n    \n"
+                               "    def __init__(self):\n"
+                               "        ")
+
+
+def test_complete_declaration_with_parent(editor_bot, qtbot):
+    editor_bot.text = ("class Parent(object):\n"
+                       "    pass"
+                       "\n"
+                       "class Child(Parent):")
+
+    cursor = editor_bot.textCursor()
+    cursor.movePosition(QTextCursor.End)
+    editor_bot.setTextCursor(cursor)
+    qtbot.keyPress(editor_bot, Qt.Key_Enter)
+    assert editor_bot.text == ("class Parent(object):\n"
+                               "    pass"
+                               "\n"
+                               "class Child(Parent):\n    \n"
+                               "    def __init__(self):\n"
+                               "        super(Child, self).__init__()\n"
+                               "        ")
 
 
 if __name__ == "__main__":

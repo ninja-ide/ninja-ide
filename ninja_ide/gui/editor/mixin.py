@@ -173,6 +173,10 @@ class EditorMixin(object):
     def text(self, text):
         self.setPlainText(text)
 
+    def insert_text(self, text):
+        if not self.isReadOnly():
+            self.textCursor().insertText(text)
+
     def line_indent(self, line=-1):
         """Returns the indentation level of `line`"""
 
