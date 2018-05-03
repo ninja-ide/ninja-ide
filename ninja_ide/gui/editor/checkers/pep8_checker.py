@@ -70,7 +70,7 @@ class Pep8Checker(QThread):
         if not self.isRunning():
             self._path = self._editor.file_path
             self._encoding = self._editor.encoding
-            QTimer.singleShot(500, self.start)
+            QTimer.singleShot(0, self.start)
 
     def reset(self):
         self.checks.clear()

@@ -58,7 +58,7 @@ class ErrorsChecker(QThread):
     def run_checks(self):
         if not self.isRunning():
             self._path = self._neditor.file_path
-            QTimer.singleShot(50, self.start)
+            QTimer.singleShot(0, self.start)
 
     def reset(self):
         self.checks.clear()
