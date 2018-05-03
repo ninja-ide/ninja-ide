@@ -34,6 +34,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QTimer
 
 from ninja_ide import resources
+from ninja_ide.tools import introspection
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import indenter
 from ninja_ide.gui.editor import highlighter
@@ -568,6 +569,49 @@ class NEditor(base_editor.BaseEditor):
             return True
         return False
 
+    def _complete_declaration(self):
+        if not self.neditable.language() == "python":
+            return
+        line, _ = self.cursor_position
+        line_text = self.line_text(line - 1).strip()
+        pat_class = re.compile("(\\s)*class.+\\:$")
+        if pat_class.match(line_text):
+            source = self.text
+            symbols = introspection.obtain_symbols(source)
+            class_name = [name for name in
+                          re.split("(\\s)*class(\\s)+|:|\(", line_text)
+                          if name is not None and name.strip()][0]
+            class_key = [item for item in symbols.get("classes", [])
+                         if item.startswith(class_name)]
+            if class_key:
+                clazz = symbols["classes"][class_key["lineno"]]
+                if [init for init in clazz["members"]["functions"]
+                        if init.startswith("__init__")]:
+                    return
+            lnumber, index = self.cursor_position
+
+            indentation = self.line_indent(lnumber) * " "
+            if self._indenter.use_tabs:
+                indentation = self.line_indent(lnumber) * "\t"
+            init_def = "def __init__(self):"
+            definition = "\n%s%s\n%s" % (indentation,
+                                         init_def, indentation * 2)
+
+            super_include = ""
+            if line_text.find("(") != -1:
+                classes = line_text.split("(")
+                parents = []
+                if len(classes) > 1:
+                    parents += classes[1].split(",")
+                if len(parents) > 0 and "object):" not in parents:
+                    super_include = "super({0}, self).__init__()".format(
+                        class_name)
+                    definition = "\n%s%s\n%s%s\n%s" % (
+                        indentation, init_def, indentation * 2,
+                        super_include, indentation * 2)
+
+            self.textCursor().insertText(definition)
+
     def keyPressEvent(self, event):
         if not self.is_modifier(event) and settings.HIDE_MOUSE_CURSOR:
             self.viewport().setCursor(Qt.BlankCursor)
@@ -578,6 +622,7 @@ class NEditor(base_editor.BaseEditor):
         self.keyPressed.emit(event)
         if event.matches(QKeySequence.InsertParagraphSeparator):
             self._indenter.indent_block(self.textCursor())
+            self._complete_declaration()
             return
         if event.key() == Qt.Key_Home:
             self.__manage_key_home(event)
