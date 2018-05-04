@@ -83,6 +83,9 @@ class NEditor(base_editor.BaseEditor):
         self._extra_selections = ExtraSelectionManager(self)
         # Load indenter based on language
         self._indenter = indenter.load_indenter(self, neditable.language())
+        # Widgets on side area
+        self.side_widgets = manager.SideWidgetManager(self)
+
         # Set editor font before build lexer
         self.set_font(settings.FONT)
         # Register extensions
@@ -132,8 +135,10 @@ class NEditor(base_editor.BaseEditor):
             else:
                 self._neditable.set_editor(self)
             self._neditable.checkersUpdated.connect(self._highlight_checkers)
-        # Widgets on side area
-        self.side_widgets = manager.SideWidgetManager(self)
+
+        self.cursorPositionChanged.connect(self._on_cursor_position_changed)
+        self.blockCountChanged.connect(self.update)
+
         # Mark text changes
         self._text_change_widget = self.side_widgets.add(
             text_change_widget.TextChangeWidget)
@@ -147,9 +152,6 @@ class NEditor(base_editor.BaseEditor):
         self.show_line_numbers(settings.SHOW_LINE_NUMBERS)
         # Code folding
         self.side_widgets.add(code_folding.CodeFoldingWidget)
-
-        self.cursorPositionChanged.connect(self._on_cursor_position_changed)
-        self.blockCountChanged.connect(self.update)
 
         from ninja_ide.gui.editor import intellisense_assistant
         self._intellisense = intellisense_assistant.IntelliSenseAssistant(self)
@@ -356,7 +358,9 @@ class NEditor(base_editor.BaseEditor):
         """Set font and update tab stop width"""
 
         super().setFont(font)
-        self.font_antialiasing(settings.FONT_ANTIALIASING)
+        # self.font_antialiasing(settings.FONT_ANTIALIASING)
+        self.side_widgets.resize()
+        self.side_widgets.update_viewport()
         self._update_tab_stop_width()
 
     def _update_tab_stop_width(self):
