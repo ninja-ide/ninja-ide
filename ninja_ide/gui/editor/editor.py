@@ -35,6 +35,7 @@ from PyQt5.QtCore import QTimer
 
 from ninja_ide import resources
 from ninja_ide.tools import introspection
+from ninja_ide.tools import utils
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import indenter
 from ninja_ide.gui.editor import highlighter
@@ -195,6 +196,10 @@ class NEditor(base_editor.BaseEditor):
     def indentation_width(self):
         return self._indenter.width
 
+    @property
+    def extra_selections(self):
+        return self._extra_selections
+
     @indentation_width.setter
     def indentation_width(self, width):
         self._indenter.width = width
@@ -284,7 +289,9 @@ class NEditor(base_editor.BaseEditor):
                 end_pos=end
             )
             color = resources.COLOR_SCHEME.get("editor.search.result")
-            selection.set_outline(color)
+            # selection.set_outline(color)
+            selection.set_background(color)
+            selection.set_foreground(utils.get_inverted_color(color))
             append(selection)
             line = selection.cursor.blockNumber()
             self._scrollbar.add_marker("find", line, color)
@@ -673,12 +680,13 @@ class NEditor(base_editor.BaseEditor):
             text = text.lower()
             expr = expr.lower()
 
+        expr = re.escape(expr)
         if wo:
-            expr = r"\b%s\b" % expr
+            expr = r"\b" + re.escape(expr) + r"\b"
 
         def find_all_iter(string, sub):
             try:
-                reobj = re.compile(re.escape(sub))
+                reobj = re.compile(sub)
             except sre_constants.error:
                 return
             for match in reobj.finditer(string):

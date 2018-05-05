@@ -2,6 +2,9 @@
 import sys
 import os
 import re
+
+from PyQt5.QtGui import QColor
+
 from PyQt5.QtCore import (
     QObject,
     QTimer
@@ -86,6 +89,18 @@ def search_for_folder(regex, path):
             found = os.path.join(path, file)
             return found
     return ''
+
+
+def get_inverted_color(color):
+    if isinstance(color, str):
+        color = QColor(color)
+    red = 255 - color.red()
+    green = 255 - color.green()
+    blue = 255 - color.blue()
+    color.setRed(red)
+    color.setGreen(green)
+    color.setBlue(blue)
+    return color
 
 
 class SignalFlowControl(QObject):

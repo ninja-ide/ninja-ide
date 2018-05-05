@@ -21,7 +21,10 @@ from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QShortcut
 from PyQt5.QtWidgets import QCheckBox
+
+from PyQt5.QtGui import QKeySequence
 
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QEvent
@@ -71,8 +74,8 @@ class _StatusBar(QWidget):
         self._replace_widget.hide()
         vbox.addWidget(self._replace_widget)
         # Not configurable shortcuts
-        # short_esc_status = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        # short_esc_status.activated.connect(self.hide_status_bar)
+        short_esc_status = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        short_esc_status.activated.connect(self.hide_status_bar)
 
         IDE.register_service("status_bar", self)
 
@@ -87,8 +90,12 @@ class _StatusBar(QWidget):
         """Hide the Status Bar and its widgets"""
 
         self.hide()
-        # self._search_widget._line_search.clear()
         self._search_widget.setVisible(False)
+        main_container = IDE.get_service("main_container")
+        editor = main_container.get_current_editor()
+        if editor is not None:
+            editor.extra_selections.remove("find")
+            editor.scrollbar().remove_marker("find")
 
     def show_search(self):
         """Show the status bar with search widget"""
@@ -183,7 +190,7 @@ class SearchWidget(QWidget):
             index, matches = editor.highlight_found_results(
                 self.search_text, cs, wo)
         else:
-            editor.clear_extra_selections("find")
+            editor.extra_selections.remove("find")
         self._line_search.counter.update_count(
             index, matches, len(self.search_text) > 0)
 
@@ -237,7 +244,7 @@ class ReplaceWidget(QWidget):
         editor_widget = main_container.get_current_editor()
         editor_widget.replace_all(
             status_search.search_text, self._line_replace.text(), cs, wo)
-        editor_widget.clear_extra_selections("find")
+        editor_widget.extra_selections.remove("find")
 
 
 '''
