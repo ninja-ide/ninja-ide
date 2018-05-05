@@ -234,6 +234,9 @@ class Program(QObject):
             args.append(self.filename)
         return args
 
+    def kill(self):
+        self.main_process.kill()
+
 
 class RunWidget(QWidget):
 
@@ -282,7 +285,12 @@ class RunWidget(QWidget):
         _ToolsDock.register_widget(translations.TR_OUTPUT, self)
 
     def install(self):
-        pass
+        ninjaide = IDE.get_service("ide")
+        ninjaide.goingDown.connect(self._kill_processes)
+
+    def _kill_processes(self):
+        for program in self.__programs:
+            program.kill()
 
     def _menu_for_tabbar(self, position):
         menu = QMenu()
