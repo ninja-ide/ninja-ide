@@ -159,6 +159,8 @@ class Checker(object):
                         exec('import {}'.format(key))
                     else:
                         exec('from {} import {}'.format(key, mod_name))
+                except RuntimeError as e:
+                    pass
                 except ImportError as e:
                     self._import_error_list.setdefault(key,
                                                        {'mod_name': mod_name,
