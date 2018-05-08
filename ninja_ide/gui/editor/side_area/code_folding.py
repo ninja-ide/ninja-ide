@@ -149,17 +149,18 @@ class CodeFoldingWidget(side_area.SideWidget):
 
     def mouseMoveEvent(self, event):
         block = self.__block_under_mouse(event)
-        if block is not None and self.code_folding.is_foldable(block):
+        if block is None:
+            return
+        self.__mouse_over = block
+        if self.code_folding.is_foldable(block):
             if self.__current_line_number == block.blockNumber():
                 return
             self.setCursor(Qt.PointingHandCursor)
             self.__timer.start()
         else:
-            # self.__current_line_number =
             self.setCursor(Qt.ArrowCursor)
             self.__timer.stop()
         self.__current_line_number = block.blockNumber()
-        self.__mouse_over = block
         self.update()
 
     def mousePressEvent(self, event):
