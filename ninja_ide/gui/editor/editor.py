@@ -273,29 +273,29 @@ class NEditor(base_editor.BaseEditor):
             # self._scrollbar.add_marker("find", marker)
         self._extra_selections.add("occurrences", selections)
 
-    def highlight_found_results(self, text, cs=False, wo=False):
+    def highlight_found_results(self, text, cs=False,
+                                wo=False, highlight=True):
         """Highlight all found results from find/replace widget"""
 
         self._scrollbar.remove_marker("find")
 
         index, results = self._get_find_index_results(text, cs=cs, wo=wo)
-
-        selections = []
-        append = selections.append
-        for start, end in results:
-            selection = extra_selection.ExtraSelection(
-                self.textCursor(),
-                start_pos=start,
-                end_pos=end
-            )
+        if highlight:
+            selections = []
+            append = selections.append
             color = resources.COLOR_SCHEME.get("editor.search.result")
-            # selection.set_outline(color)
-            selection.set_background(color)
-            selection.set_foreground(utils.get_inverted_color(color))
-            append(selection)
-            line = selection.cursor.blockNumber()
-            self._scrollbar.add_marker("find", line, color)
-        self._extra_selections.add("find", selections)
+            for start, end in results:
+                selection = extra_selection.ExtraSelection(
+                    self.textCursor(),
+                    start_pos=start,
+                    end_pos=end
+                )
+                selection.set_background(color)
+                selection.set_foreground(utils.get_inverted_color(color))
+                append(selection)
+                line = selection.cursor.blockNumber()
+                self._scrollbar.add_marker("find", line, color)
+            self._extra_selections.add("find", selections)
 
         return index, len(results)
 

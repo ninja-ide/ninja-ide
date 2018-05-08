@@ -146,9 +146,14 @@ class SearchWidget(QWidget):
         self._btn_regex.setToolTip(translations.TR_SEARCH_REGEX)
         self._btn_regex.setCheckable(True)
         self._btn_regex.setObjectName("status")
+        self._btn_highlight = QPushButton("\u25A3")
+        self._btn_highlight.setCheckable(True)
+        self._btn_highlight.setChecked(True)
+        self._btn_highlight.setObjectName("status")
         hbox.addWidget(self._btn_case_sensitive)
         hbox.addWidget(self._btn_whole_word)
         hbox.addWidget(self._btn_regex)
+        hbox.addWidget(self._btn_highlight)
         # Search line
         self._line_search = TextLine(self)
         self._line_search.setPlaceholderText(translations.TR_LINE_FIND)
@@ -164,6 +169,7 @@ class SearchWidget(QWidget):
         self._btn_case_sensitive.toggled.connect(self.find)
         self._btn_whole_word.toggled.connect(self.find)
         self._btn_find_next.clicked.connect(self.find_next)
+        self._btn_highlight.toggled.connect(self.find)
         self._btn_find_previous.clicked.connect(self.find_previous)
 
         IDE.register_service("status_search", self)
@@ -178,7 +184,8 @@ class SearchWidget(QWidget):
     def search_flags(self):
         return (
             self._btn_case_sensitive.isChecked(),
-            self._btn_whole_word.isChecked()
+            self._btn_whole_word.isChecked(),
+            self._btn_highlight.isChecked()
         )
 
     def find_next(self):
@@ -194,12 +201,12 @@ class SearchWidget(QWidget):
         editor = main_container.get_current_editor()
         if editor is None:
             return
-        cs, wo = self.search_flags
+        cs, wo, highlight = self.search_flags
         index, matches = 0, 0
         found = editor.find_match(self.search_text, cs, wo, backward, forward)
         if found:
             index, matches = editor.highlight_found_results(
-                self.search_text, cs, wo)
+                self.search_text, cs, wo, highlight=highlight)
         else:
             editor.extra_selections.remove("find")
         self._line_search.counter.update_count(
