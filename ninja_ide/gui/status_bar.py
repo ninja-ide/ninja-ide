@@ -132,26 +132,37 @@ class SearchWidget(QWidget):
         super().__init__(parent)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(5, 0, 5, 0)
+        # Toggle Buttons
+        self._btn_case_sensitive = QPushButton("Aa")
+        self._btn_case_sensitive.setToolTip(
+            translations.TR_SEARCH_CASE_SENSITIVE)
+        self._btn_case_sensitive.setCheckable(True)
+        self._btn_case_sensitive.setObjectName("status")
+        self._btn_whole_word = QPushButton("WO")
+        self._btn_whole_word.setToolTip(translations.TR_SEARCH_WHOLE_WORDS)
+        self._btn_whole_word.setCheckable(True)
+        self._btn_whole_word.setObjectName("status")
+        self._btn_regex = QPushButton(".*")
+        self._btn_regex.setToolTip(translations.TR_SEARCH_REGEX)
+        self._btn_regex.setCheckable(True)
+        self._btn_regex.setObjectName("status")
+        hbox.addWidget(self._btn_case_sensitive)
+        hbox.addWidget(self._btn_whole_word)
+        hbox.addWidget(self._btn_regex)
+        # Search line
         self._line_search = TextLine(self)
         self._line_search.setPlaceholderText(translations.TR_LINE_FIND)
         hbox.addWidget(self._line_search)
+        # Previous and next search buttons
         self._btn_find_previous = QPushButton(translations.TR_FIND_PREVIOUS)
         hbox.addWidget(self._btn_find_previous)
         self._btn_find_next = QPushButton(translations.TR_FIND_NEXT)
         hbox.addWidget(self._btn_find_next)
-
-        self._check_sensitive = QCheckBox(
-            translations.TR_SEARCH_CASE_SENSITIVE)
-        hbox.addWidget(self._check_sensitive)
-        self._check_whole_word = QCheckBox(
-            translations.TR_SEARCH_WHOLE_WORDS)
-        hbox.addWidget(self._check_whole_word)
-
         # Connections
         self._line_search.textChanged.connect(self.find)
         self._line_search.returnPressed.connect(self.find_next)
-        self._check_sensitive.stateChanged.connect(self.find)
-        self._check_whole_word.stateChanged.connect(self.find)
+        self._btn_case_sensitive.toggled.connect(self.find)
+        self._btn_whole_word.toggled.connect(self.find)
         self._btn_find_next.clicked.connect(self.find_next)
         self._btn_find_previous.clicked.connect(self.find_previous)
 
@@ -166,8 +177,8 @@ class SearchWidget(QWidget):
     @property
     def search_flags(self):
         return (
-            self._check_sensitive.isChecked(),
-            self._check_whole_word.isChecked()
+            self._btn_case_sensitive.isChecked(),
+            self._btn_whole_word.isChecked()
         )
 
     def find_next(self):

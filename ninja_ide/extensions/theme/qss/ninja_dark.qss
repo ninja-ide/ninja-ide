@@ -178,6 +178,15 @@ QPushButton:pressed {
     outline: none;
 }
 
+QPushButton#status {
+    width: 27px;
+    font-weight: bold;
+}
+
+QPushButton#status:checked {
+    color: cyan;
+}
+
 QToolButton#toggle_button {
     background-color: palette(button);
     border: none;
