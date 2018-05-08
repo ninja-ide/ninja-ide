@@ -100,12 +100,12 @@ class _StatusBar(QWidget):
     def show_search(self):
         """Show the status bar with search widget"""
 
-        self.current_status = _STATUSBAR_STATE_SEARCH
-        self._search_widget.setVisible(True)
-        self.show()
         main_container = IDE.get_service("main_container")
         editor = main_container.get_current_editor()
         if editor is not None:
+            self.current_status = _STATUSBAR_STATE_SEARCH
+            self._search_widget.setVisible(True)
+            self.show()
             text = editor.selected_text()
             if not text:
                 text = editor.word_under_cursor().selectedText()
