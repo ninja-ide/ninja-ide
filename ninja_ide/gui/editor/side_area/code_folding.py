@@ -93,6 +93,7 @@ class CodeFoldingWidget(side_area.SideWidget):
         self.code_folding = None
         self.setMouseTracking(True)
         self.__mouse_over = None
+        self.__current_line_number = -1
         self.__timer = QTimer(self)
         self.__timer.setSingleShot(True)
         self.__timer.setInterval(100)
@@ -149,11 +150,15 @@ class CodeFoldingWidget(side_area.SideWidget):
     def mouseMoveEvent(self, event):
         block = self.__block_under_mouse(event)
         if block is not None and self.code_folding.is_foldable(block):
+            if self.__current_line_number == block.blockNumber():
+                return
             self.setCursor(Qt.PointingHandCursor)
             self.__timer.start()
         else:
+            # self.__current_line_number =
             self.setCursor(Qt.ArrowCursor)
             self.__timer.stop()
+        self.__current_line_number = block.blockNumber()
         self.__mouse_over = block
         self.update()
 
