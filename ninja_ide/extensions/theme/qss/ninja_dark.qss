@@ -314,6 +314,7 @@ QSplitter:handle:hover {
     background: gray;
 }
 
+QFrame#custom_tip,
 QToolTip {
     border: 1px solid lightblue;
     border-radius: 3px;

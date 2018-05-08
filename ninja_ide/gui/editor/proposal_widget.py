@@ -192,10 +192,11 @@ class InfoFrame(QFrame):
 
     def __init__(self, parent):
         super().__init__(parent, Qt.ToolTip | Qt.WindowStaysOnTopHint)
+        self.setObjectName("custom_tip")
         self.setFocusPolicy(Qt.NoFocus)
         self.setAttribute(Qt.WA_DeleteOnClose)
-
         self._label = QLabel()
+        self._label.setStyleSheet("border: none")
         font = parent.font()
         font.setPointSize(font.pointSize() * 0.9)
         self._label.setFont(font)
