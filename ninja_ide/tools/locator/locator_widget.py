@@ -88,7 +88,6 @@ class LocatorWidget(QDialog):
             "!": "#ff884d"}
         self._filters_list = [
             ("@", "Filename"),
-            ("+", "RecentFile"),
             ("<", "Class"),
             (">", "Function"),
             ("-", "Attribute"),
