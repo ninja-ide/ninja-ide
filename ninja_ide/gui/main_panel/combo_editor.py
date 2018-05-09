@@ -62,6 +62,7 @@ class ComboEditor(QWidget):
         'PyQt_PyObject', 'PyQt_PyObject', Qt.Orientation)
     allFilesClosed = pyqtSignal()
     about_to_close_combo_editor = pyqtSignal()
+    fileClosed = pyqtSignal("PyQt_PyObject")
 
     def __init__(self, original=False):
         super(ComboEditor, self).__init__(None)
@@ -267,20 +268,21 @@ class ComboEditor(QWidget):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
         # neditable.editor.completer.cc.unload_module()
-        self._add_to_last_opened(neditable.file_path)
+        # self._add_to_last_opened(neditable.file_path)
+        self.fileClosed.emit(neditable.nfile)
         layoutItem.widget().deleteLater()
 
         if self.stacked.isEmpty():
             self.bar.hide()
             self.allFilesClosed.emit()
 
-    def _add_to_last_opened(self, path):
-        if path not in settings.LAST_OPENED_FILES:
-            settings.LAST_OPENED_FILES.append(path)
-            if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_EDITORS:
-                self.__lastOpened = self.__lastOpened[1:]
-            print("RecentTabsModified")
-            # self.emit(SIGNAL("recentTabsModified()"))
+    # def _add_to_last_opened(self, path):
+    #     if path not in settings.LAST_OPENED_FILES:
+    #         settings.LAST_OPENED_FILES.append(path)
+    #         if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_EDITORS:
+    #             self.__lastOpened = self.__lastOpened[1:]
+    #         print("RecentTabsModified")
+    #         # self.emit(SIGNAL("recentTabsModified()"))
 
     def _editor_with_focus(self):
         # if self._main_container.current_widget is not self:

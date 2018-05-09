@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+from collections import OrderedDict
 
 from PyQt5.QtWidgets import (
     QWidget,
@@ -83,6 +84,8 @@ class _MainContainer(QWidget):
             0: self._navigate_code_jumps,
             1: self._navigate_bookmarks
         }
+        # Recent files list
+        self.__last_opened_files = OrderedDict()
         # QML UI
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
@@ -128,6 +131,7 @@ class _MainContainer(QWidget):
         self.combo_area.allFilesClosed.connect(self._files_closed)
         self.combo_area.allFilesClosed.connect(
             lambda: self.allFilesClosed.emit())
+        self.combo_area.fileClosed.connect(self._add_to_last_opened)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
         # self.current_widget = self.combo_area
@@ -243,6 +247,20 @@ class _MainContainer(QWidget):
         if isinstance(current_widget, editor.NEditor):
             return current_widget
         return None
+
+    @property
+    def last_opened_files(self):
+        return self.__last_opened_files.values()
+
+    def _add_to_last_opened(self, nfile):
+        MAX_RECENT_FILES = 10  # FIXME: configuration
+        if nfile.file_path in self.__last_opened_files:
+            del self.__last_opened_files[nfile.file_path]
+        self.__last_opened_files.update({nfile.file_path: nfile})
+        self.__last_opened_files.move_to_end(nfile.file_path, last=False)
+        if len(self.__last_opened_files) > MAX_RECENT_FILES:
+            last = list(self.__last_opened_files)[-1]
+            del self.__last_opened_files[last]
 
     def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
         logger.debug("Will try to open %s" % filename)
