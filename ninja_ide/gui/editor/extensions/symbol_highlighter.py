@@ -62,9 +62,9 @@ class SymbolHighlighter(base.Extension):
     def __init__(self):
         super().__init__()
         self.__matched_background = QColor(
-            resources.get_color('BraceMatched'))
+            resources.COLOR_SCHEME.get("editor.brace.matched"))
         self.__unmatched_background = QColor(
-            resources.get_color('BraceUnmatched'))
+            resources.COLOR_SCHEME.get('editor.brace.unmatched'))
 
     def install(self):
         self._neditor.painted.connect(self._highlight)
@@ -77,7 +77,7 @@ class SymbolHighlighter(base.Extension):
     def _highlight(self):
         cursor = self._neditor.textCursor()
         current_block = cursor.block()
-        if self._neditor.is_comment(current_block):
+        if self._neditor.inside_string_or_comment(cursor):
             return
         column_index = cursor.positionInBlock()
 

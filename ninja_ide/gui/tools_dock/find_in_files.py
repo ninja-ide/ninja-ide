@@ -53,6 +53,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.core import settings
 from ninja_ide import translations
+from ninja_ide.gui.tools_dock.tools_dock import _ToolsDock
 
 
 class FindInFilesWorker(QObject):
@@ -135,13 +136,9 @@ class FindInFilesWidget(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        # Button widgets
-        self._btn_clean = QToolButton()
-        # self._btn_clean.setIcon(
-            # ui_tools.colored_icon(
-                # ':img/clean', theme.get_color('IconBaseColor')))
-        self._btn_clean.clicked.connect(self._clear_results)
+        _ToolsDock.register_widget(translations.TR_FIND_IN_FILES, self)
 
+    def install_widget(self):
         container = QHBoxLayout(self)
         container.setContentsMargins(3, 0, 3, 0)
         self._actions = FindInFilesActions(self)
@@ -196,13 +193,6 @@ class FindInFilesWidget(QWidget):
     def showEvent(self, event):
         self._actions._line_search.setFocus()
         super().showEvent(event)
-
-    def display_name(self):
-        return 'Find in Files'
-
-    def button_widgets(self):
-        # Clear results, expand all, collapse all...
-        return [self._btn_clean]
 
 
 class ResultItem(object):
@@ -430,3 +420,6 @@ class FindInFilesActions(QWidget):
         regex = self._check_re.isChecked()
         wo = self._check_wo.isChecked()
         self.searchRequested.emit(has_search, cs, regex, wo)
+
+
+FindInFilesWidget()

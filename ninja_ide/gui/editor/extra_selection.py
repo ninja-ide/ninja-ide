@@ -28,7 +28,7 @@ from PyQt5.QtGui import (
 class ExtraSelection(QTextEdit.ExtraSelection):
 
     def __init__(self, cursor, start_pos=None,
-                 end_pos=None, start_line=None, offset=0):
+                 end_pos=None, start_line=None, col_start=None, col_end=None):
         super().__init__()
         self.cursor = QTextCursor(cursor)
         # Highest value will appear on top of the lowest values
@@ -38,17 +38,17 @@ class ExtraSelection(QTextEdit.ExtraSelection):
         if end_pos is not None:
             self.cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
         if start_line is not None:
-            # Selection from offset to end of line
             self.cursor.movePosition(QTextCursor.Start,
                                      QTextCursor.MoveAnchor)
             self.cursor.movePosition(QTextCursor.Down,
                                      QTextCursor.MoveAnchor, start_line)
             self.cursor.movePosition(QTextCursor.Right,
-                                     QTextCursor.MoveAnchor, offset)
-            self.cursor.movePosition(QTextCursor.EndOfLine,
-                                     QTextCursor.KeepAnchor)
+                                     QTextCursor.MoveAnchor, col_end - 1)
+            self.cursor.movePosition(QTextCursor.Left,
+                                     QTextCursor.KeepAnchor,
+                                     col_end - col_start)
 
-    def set_underline(self, color, style=QTextCharFormat.SingleUnderline):
+    def set_underline(self, color, style=QTextCharFormat.DashUnderline):
         if isinstance(color, str):
             color = QColor(color)
         self.format.setUnderlineStyle(style)

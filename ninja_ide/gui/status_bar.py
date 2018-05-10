@@ -15,47 +15,28 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtWidgets import QCheckBox
 
-import re
-import sre_constants
+from PyQt5.QtGui import QKeySequence
 
-from PyQt5.QtWidgets import (
-    QLabel,
-    # QFileSystemModel,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLineEdit,
-    QPushButton,
-    # QStyleOptionFrame,
-    QToolButton,
-    # QStyle,
-#    QShortcut,
-    QCheckBox,
-
-)
-# from PyQt4.QtGui import QCompleter
-from PyQt5.QtGui import QTextDocument
-#    QPainter,
-#    QKeySequence,
-#    QColor,
-#    QPalette,
-#    QIcon,
-# )
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt
 
-# from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
-# from ninja_ide.tools.locator import locator_widget
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
-# from ninja_ide.gui.editor import extra_selection
 
 logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
@@ -93,8 +74,8 @@ class _StatusBar(QWidget):
         self._replace_widget.hide()
         vbox.addWidget(self._replace_widget)
         # Not configurable shortcuts
-        # short_esc_status = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        # short_esc_status.activated.connect(self.hide_status_bar)
+        short_esc_status = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        short_esc_status.activated.connect(self.hide_status_bar)
 
         IDE.register_service("status_bar", self)
 
@@ -109,19 +90,25 @@ class _StatusBar(QWidget):
         """Hide the Status Bar and its widgets"""
 
         self.hide()
-        # self._search_widget._line_search.clear()
         self._search_widget.setVisible(False)
+        main_container = IDE.get_service("main_container")
+        editor = main_container.get_current_editor()
+        if editor is not None:
+            editor.extra_selections.remove("find")
+            editor.scrollbar().remove_marker("find")
 
     def show_search(self):
         """Show the status bar with search widget"""
 
-        self.current_status = _STATUSBAR_STATE_SEARCH
-        self._search_widget.setVisible(True)
-        self.show()
         main_container = IDE.get_service("main_container")
         editor = main_container.get_current_editor()
-        if editor is not None and editor.has_selection():
+        if editor is not None:
+            self.current_status = _STATUSBAR_STATE_SEARCH
+            self._search_widget.setVisible(True)
+            self.show()
             text = editor.selected_text()
+            if not text:
+                text = editor.word_under_cursor().selectedText()
             self._search_widget._line_search.setText(text)
             self._search_widget.find()
         self._search_widget._line_search.setFocus()
@@ -145,29 +132,44 @@ class SearchWidget(QWidget):
         super().__init__(parent)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(5, 0, 5, 0)
+        # Toggle Buttons
+        self._btn_case_sensitive = QPushButton("Aa")
+        self._btn_case_sensitive.setToolTip(
+            translations.TR_SEARCH_CASE_SENSITIVE)
+        self._btn_case_sensitive.setCheckable(True)
+        self._btn_case_sensitive.setObjectName("status")
+        self._btn_whole_word = QPushButton("WO")
+        self._btn_whole_word.setToolTip(translations.TR_SEARCH_WHOLE_WORDS)
+        self._btn_whole_word.setCheckable(True)
+        self._btn_whole_word.setObjectName("status")
+        self._btn_regex = QPushButton(".*")
+        self._btn_regex.setToolTip(translations.TR_SEARCH_REGEX)
+        self._btn_regex.setCheckable(True)
+        self._btn_regex.setObjectName("status")
+        self._btn_highlight = QPushButton("\u25A3")
+        self._btn_highlight.setCheckable(True)
+        self._btn_highlight.setChecked(True)
+        self._btn_highlight.setObjectName("status")
+        hbox.addWidget(self._btn_case_sensitive)
+        hbox.addWidget(self._btn_whole_word)
+        hbox.addWidget(self._btn_regex)
+        hbox.addWidget(self._btn_highlight)
+        # Search line
         self._line_search = TextLine(self)
         self._line_search.setPlaceholderText(translations.TR_LINE_FIND)
         hbox.addWidget(self._line_search)
-        self._btn_find_previous = QToolButton(self)
-        self._btn_find_previous.setText("Find Previous")
+        # Previous and next search buttons
+        self._btn_find_previous = QPushButton(translations.TR_FIND_PREVIOUS)
         hbox.addWidget(self._btn_find_previous)
-        self._btn_find_next = QToolButton(self)
-        self._btn_find_next.setText("Find Next")
+        self._btn_find_next = QPushButton(translations.TR_FIND_NEXT)
         hbox.addWidget(self._btn_find_next)
-
-        self._check_sensitive = QCheckBox(
-            translations.TR_SEARCH_CASE_SENSITIVE)
-        hbox.addWidget(self._check_sensitive)
-        self._check_whole_word = QCheckBox(
-            translations.TR_SEARCH_WHOLE_WORDS)
-        hbox.addWidget(self._check_whole_word)
-
         # Connections
         self._line_search.textChanged.connect(self.find)
         self._line_search.returnPressed.connect(self.find_next)
-        self._check_sensitive.stateChanged.connect(self.find)
-        self._check_whole_word.stateChanged.connect(self.find)
+        self._btn_case_sensitive.toggled.connect(self.find)
+        self._btn_whole_word.toggled.connect(self.find)
         self._btn_find_next.clicked.connect(self.find_next)
+        self._btn_highlight.toggled.connect(self.find)
         self._btn_find_previous.clicked.connect(self.find_previous)
 
         IDE.register_service("status_search", self)
@@ -181,8 +183,9 @@ class SearchWidget(QWidget):
     @property
     def search_flags(self):
         return (
-            self._check_sensitive.isChecked(),
-            self._check_whole_word.isChecked()
+            self._btn_case_sensitive.isChecked(),
+            self._btn_whole_word.isChecked(),
+            self._btn_highlight.isChecked()
         )
 
     def find_next(self):
@@ -198,17 +201,16 @@ class SearchWidget(QWidget):
         editor = main_container.get_current_editor()
         if editor is None:
             return
-        cs, wo = self.search_flags
-        index, matches = 0, []
+        cs, wo, highlight = self.search_flags
+        index, matches = 0, 0
         found = editor.find_match(self.search_text, cs, wo, backward, forward)
         if found:
-            index, matches = editor._get_find_index_results(
-                self.search_text, cs, wo)
-            editor.highlight_selected_word(results=matches)
+            index, matches = editor.highlight_found_results(
+                self.search_text, cs, wo, highlight=highlight)
         else:
-            editor.clear_extra_selections("find")
+            editor.extra_selections.remove("find")
         self._line_search.counter.update_count(
-            index, len(matches), len(self.search_text) > 0)
+            index, matches, len(self.search_text) > 0)
 
 
 class ReplaceWidget(QWidget):
@@ -222,17 +224,20 @@ class ReplaceWidget(QWidget):
         self._line_replace.setPlaceholderText(translations.TR_LINE_REPLACE)
         self._line_replace._mode = _STATUSBAR_STATE_REPLACE
         hbox.addWidget(self._line_replace)
-        self._btn_replace = QPushButton("Replace")
+        self._btn_replace = QPushButton(translations.TR_LINE_REPLACE)
         hbox.addWidget(self._btn_replace)
-        self._btn_replace_all = QPushButton("Replace All")
+        self._btn_replace_all = QPushButton(translations.TR_REPLACE_ALL)
         hbox.addWidget(self._btn_replace_all)
-        self._btn_replace_selection = QPushButton("In Selection")
+        self._btn_replace_selection = QPushButton(
+            translations.TR_REPLACE_SELECTION)
         hbox.addWidget(self._btn_replace_selection)
 
         self._btn_replace.clicked.connect(self._replace)
         self._btn_replace_all.clicked.connect(self._replace_all)
         self._btn_replace_selection.clicked.connect(self._replace_selection)
         self._line_replace.returnPressed.connect(self._replace)
+
+        IDE.register_service("status_replace", self)
 
     def _replace(self):
         """Replace one occurrence of the word"""
@@ -257,7 +262,7 @@ class ReplaceWidget(QWidget):
         editor_widget = main_container.get_current_editor()
         editor_widget.replace_all(
             status_search.search_text, self._line_replace.text(), cs, wo)
-        editor_widget.clear_extra_selections("find")
+        editor_widget.extra_selections.remove("find")
 
 
 '''
@@ -500,6 +505,16 @@ class TextLine(QLineEdit):
         QLineEdit.__init__(self, parent)
         self.counter = ui_tools.LineEditCount(self)
         self._mode = _STATUSBAR_STATE_SEARCH
+        self.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress:
+            if self._mode == _STATUSBAR_STATE_SEARCH:
+                status_replace = IDE.get_service("status_replace")
+                if event.key() == Qt.Key_Tab and status_replace.isVisible():
+                    status_replace._line_replace.setFocus()
+                    return True
+        return super().eventFilter(obj, event)
 
     """
     def keyPressEvent(self, event):

@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from collections import defaultdict
+
 from PyQt5.QtCore import (
     QThread,
     QTimer,
@@ -25,13 +27,14 @@ from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.gui.ide import IDE
+# from ninja_ide.gui.ide import IDE
 from ninja_ide.dependencies import pycodestyle
 from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
-from ninja_ide.tools import ui_tools
+from ninja_ide.gui.editor import helpers
+# from ninja_ide.tools import ui_tools
 # from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
 # TODO: limit results for performance
@@ -45,10 +48,9 @@ class Pep8Checker(QThread):
         self._editor = editor
         self._path = ''
         self._encoding = ''
-        self.checks = {}
+        self.checks = defaultdict(list)
 
-        self.checker_icon = ui_tools.colored_icon(
-            ":img/warning", resources.get_color('Pep8Underline'))
+        self.checker_icon = None
 
         # ninjaide = IDE.get_service('ide')
         # self.connect(ninjaide,
@@ -68,7 +70,7 @@ class Pep8Checker(QThread):
         if not self.isRunning():
             self._path = self._editor.file_path
             self._encoding = self._editor.encoding
-            QTimer.singleShot(500, self.start)
+            QTimer.singleShot(0, self.start)
 
     def reset(self):
         self.checks.clear()
@@ -92,12 +94,13 @@ class Pep8Checker(QThread):
             # for lineno, offset, code, text, doc in temp_data:
             for lineno, col, code, text in temp_data:
                 message = '[PEP8] %s: %s' % (code, text)
-                self.checks[lineno - 1] = (message, col)
+                range_ = helpers.get_range(self._editor, lineno - 1, col)
+                self.checks[lineno - 1].append((range_, message))
         self.checkerCompleted.emit()
 
-    def message(self, index):
-        if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
-            return self.checks[index]
+    def message(self, line):
+        if line in self.checks:
+            return self.checks[line]
         return None
 
     def refresh_display(self):
@@ -130,13 +133,13 @@ class CustomChecker(pycodestyle.Checker):
 
 def remove_pep8_checker():
     checker = (Pep8Checker,
-               resources.get_color('Pep8Underline'), 2)
+               resources.COLOR_SCHEME.get("editor.pep8"), 2)
     remove_checker(checker)
 
 
 if settings.CHECK_STYLE:
     register_checker(
         checker=Pep8Checker,
-        color=resources.get_color('Pep8Underline'),
+        color=resources.COLOR_SCHEME.get("editor.pep8"),
         priority=2
     )

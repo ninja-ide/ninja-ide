@@ -5,6 +5,7 @@ Rectangle {
 
     color: theme.FilesHandlerBackground
     focus: true
+    property bool simple: false
     PropertyAnimation {
         id: showAnim
         target: root
@@ -18,6 +19,10 @@ Rectangle {
     signal close(string path, string tempFile)
     signal hide
     signal fuzzySearch(string search)
+
+    function setMode(mode) {
+        root.simple = mode;
+    }
 
     function activateInput() {
         input.text = "";
@@ -129,8 +134,8 @@ Rectangle {
             top: parent.top
             margins: 5
         }
-        border.color: "black"
-        border.width: 1
+        border.color: theme.RectangleBorder
+        border.width: 2
 
         TextInput {
             id: input
@@ -148,7 +153,7 @@ Rectangle {
                 var firstValidItem = -1;
                 for (var i = 0; i < listFiles.model.count; i++) {
                     var item = listFiles.model.get(i);
-                    if (item.name.indexOf(input.text) == -1) {
+                    if (item.name.indexOf(input.text) === -1) {
                         item.itemVisible = false;
                     } else {
                         if (firstValidItem == -1) firstValidItem = i;
@@ -199,7 +204,7 @@ Rectangle {
             id: item
             visible: itemVisible
             width: parent.width
-            property int defaultValues: checkers ? 70 : 60
+            property int defaultValues: checkers && (!root.simple) ? 70 : (listFuzzyFiles.visible && root.simple) ? 40: 60
             height: itemVisible ? defaultValues : 0
             property bool current: ListView.isCurrentItem
             color: item.current ? theme.FilesHandlerCurrentItem : theme.FilesHandlerListView
@@ -282,18 +287,19 @@ Rectangle {
                         left: parent.left
                         right: parent.right
                     }
+                    visible: !root.simple
                     color: item.current ? theme.FilesHandlerText : theme.FilesHandlerAlternativeText
                     elide: Text.ElideLeft
                     text: path
-
                 }
             }
             Row {
                 anchors {
                     right: parent.right
                     top: col.bottom
-                    margins: 3
+                    rightMargin: 3
                 }
+                visible: !root.simple
                 spacing: 10
                 Repeater {
                     model: checkers
@@ -320,7 +326,7 @@ Rectangle {
         }
         spacing: 2
 
-        //focus: true
+        clip: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200
@@ -332,13 +338,13 @@ Rectangle {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-            top: fuzzyText.bottom
+            top: inputArea.bottom
             margins: 5
         }
         visible: !listFiles.visible
         spacing: 2
 
-        //focus: true
+        clip: true
         model: ListModel {}
         delegate: tabDelegate
         highlightMoveDuration: 200

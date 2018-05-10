@@ -1,0 +1,80 @@
+{
+    "extension": [
+        "htm",
+        "html"
+    ],
+    "comment": ["{# ", " #}"],
+    "partitions": [
+        {
+            "name": "comment_line",
+            "start": "<!--",
+            "end": "-->",
+            "is_multiline": true
+        },
+        {
+            "name": "variable_django",
+            "start": "{{",
+            "end": "}}"
+        },
+        {
+            "name": "comment_line_django",
+            "start": "{#",
+            "end": "#}"
+        },
+        {
+            "name": "comment_block_django",
+            "start": "{% comment %}",
+            "end": "{% endcomment %}",
+            "is_multiline": true
+        },
+        {
+            "name": "entity_name_tag",
+            "start": "<",
+            "end": ">",
+            "is_multiline": true
+        },
+        {
+            "name": "entity_other_django_tagbrace",
+            "start": "({%)",
+            "end": "(%})"
+        }
+    ],
+    "scanner": [
+        {
+            "partition_name": "entity_name_tag",
+            "tokens": [
+                {
+                    "name": "entity_other_attributename",
+                    "pattern": "[A-Za-z_]\\w*"
+                },
+                {
+                    "name": "meta_attribute_with_value",
+                    "pattern": "\"[^\"]*\""
+                }
+            ]
+        },
+        {
+            "partition_name": "entity_other_django_tagbrace",
+            "tokens": [
+                {
+                    "name": "keyword_control_django",
+                    "pattern": "\\b(autoescape|endautoescape|block|endblock|trans|blocktrans|endblocktrans|plural|debug|extends|filter|firstof|for|endfor|if|include|else|elif|endif|ifchanged|endifchanged|ifequal|endifequal|ifnotequal|endifnotequal|load|now|regroup|ssi|spaceless|templatetag|widthratio|with|endwith|empty)\\b"
+                },
+                {
+                    "name": "string_quoted_single",
+                    "pattern": "\\w+(/\\w+)?.\\w+",
+                    "prefix": "'",
+                    "suffix": "'"
+                },
+                {
+                    "name": "keyword_operator_django",
+                    "pattern": "and|or|not|in|by|as"
+                },
+                {
+                    "name": "variable",
+                    "pattern": "[a-zA-Z_]+"
+                }
+            ]
+        }
+    ]
+}

@@ -2,24 +2,27 @@
     "name": "Dark",
     "stylesheet": "ninja_dark",
     "palette": {
-        "Window": "#353535",
+        "Window": "#141517",
         "WindowText": "#ffffff",
         "WindowTextDisabled": "#7f7f7f",
-        "Base": "#333",
+        "Base": "#161719",
         "AlternateBase": "#424242",
-        "ToolTipBase": "#353535",
+        "ToolTipBase": "#161719",
         "ToolTipText": "#ffffff",
         "Text": "#ffffff",
         "TextDisabled": "#7f7f7f",
         "Dark": "#252526",
         "Shadow": "#141414",
-        "Button": "#353535",
+        "Button": "#2e3135",
         "ButtonText": "#ffffff",
         "ButtonTextDisabled": "#7f7f7f",
         "BrightText": "#ff0000",
         "Link": "#2a82da",
-        "Highlight": "#ff1a1a",
-        "HighlightInactive": "#ff1a1a",
+        "Light": "#494949",
+        "Midlight": "#353535",
+        "Mid": "#444444",
+        "Highlight": "#F44336",
+        "HighlightInactive": "#F44336",
         "HighlightDisabled": "#505050",
         "HighlightedText": "#ffffff",
         "HighlightedTextDisabled": "#7f7f7f"
@@ -32,7 +35,7 @@
         "LocatorListView": "#232729",
         "LocatorAlternativeText": "#9c9e9e",
 
-        "StartPageBackground": "#252526",
+        "StartPageBackground": "#161719",
         "StartPageText": "#ffffff",
         "StartPageAlternativeText": "#FF5644",
         "StartPageLink": "#FF5644",
@@ -48,9 +51,10 @@
         "FileFolderText": "#ffffff",
         "FileFolderLineEdit": "#232729",
 
-        "SplitAssistantBackground": "#444444",
-        "SplitAssistantRect": "#232729",
-        "SplitAssistantHighlight": "#777",
-        "SplitAssistantText": "#ccc"
+        "SplitAssistantBackground": "#000000",
+        "SplitAssistantHighlight": "#303538",
+        "SplitAssistantText": "#ffffff",
+
+        "RectangleBorder": "#141414"
     }
 }

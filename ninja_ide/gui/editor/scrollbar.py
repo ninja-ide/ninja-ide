@@ -34,7 +34,7 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 
 
-marker = namedtuple('Marker', 'position color priority')
+Marker = namedtuple('Marker', 'position color priority')
 
 
 class ScrollBarOverlay(QWidget):
@@ -170,6 +170,13 @@ class NScrollBar(QScrollBar):
             del self._overlay.markers[category]
             self._overlay.schedule_update()
 
-    def add_marker(self, category, marker):
+    def add_marker(self, category, lineno, color, priority=0):
+        marker = Marker(lineno, color, priority)
         self._overlay.markers[category].append(marker)
         self._overlay.schedule_update()
+
+    def link(self, scrollbar):
+        self._overlay.markers.update(scrollbar.markers().copy())
+
+    def markers(self):
+        return self._overlay.markers

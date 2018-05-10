@@ -65,9 +65,11 @@ DATA_SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'data_settings.ini')
 
 EXTENSIONS_PATH = os.path.join(HOME_NINJA_PATH, "extensions")
 
-SYNTAX_FILES = os.path.join(PRJ_PATH, "extensions", "syntax")
+SYNTAX_FILES = os.path.join(PRJ_PATH, "gui", "editor", "syntaxes")
 
 PLUGINS = os.path.join(HOME_NINJA_PATH, "extensions", "plugins")
+
+BACKUP_FILES = os.path.join(HOME_NINJA_PATH, "backups")
 
 PLUGINS_DESCRIPTOR = os.path.join(EXTENSIONS_PATH,
                                   "plugins", "descriptor.json")
@@ -114,137 +116,12 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/api/community'
 # COLOR SCHEMES
 ###############################################################################
 
-"""
-COLOR_SCHEME = {
-    "Default": "#d4d4d4",
-    "Keyword": "#83c1fb",
-    "Operator": "#FFFFFF",
-    "Brace": "#FFFFFF",
-    "Caret": "#FFFFFF",
-    "FunctionMethodName": "#fdff74",
-    "ClassName": "#fdff74",
-    "Identifier": "#c5c8c6",
-    "DoubleQuotedString": "#d07cd3",
-    "SingleQuotedString": "#d07cd3",
-    "TripleDoubleQuotedString": "#86d986",
-    "TripleSingleQuotedString": "#86d986",
-    "Comment": "#7c7c7c",
-    "CommentBlock": "#7c7c7c",
-    "SelfReference": "#6EC7D7",
-    "HighlightedIdentifier": "#6EC7D7",
-    "Number": "#F8A008",
-    "Decorator": "#fdb269",
-    "EditorBackground": "#1e1e1e",
-    "EditorSelectionColor": "#f44336",
-    "EditorSelectionBackground": "#aaaaaa",
-    "CurrentLine": "#313233",
-    "MinimapVisibleArea": "#e20000",
-    "SelectedWord": "#a8ff60",
-    "Pending": "#FF0000",
-    "SelectedWordBackground": "#009B00",
-    "FoldArea": "#292c2f",
-    "FoldArrowExpanded": "#696c6e",
-    "FoldArrowCollapsed": "#FFFFFF",
-    "LinkNavigate": "005aff",
-    "BraceBackground": "#5BC85B",
-    "BraceForeground": "#FF0000",
-    "ErrorUnderline": "#0000ff",
-    # "Pep8Underline": "#00ffff",
-    "Pep8Underline": "#ffa500",
-    "SidebarBackground": "#292c2f",
-    "SidebarSelectedBackground": "#46484b",
-    "SidebarForeground": "#868989",
-    "SidebarSelectedForeground": "#c5c8c6",
-    "MigrationUnderline": "#ff0000",
-    "MarginLine": '#7c7c7c',
-}
-"""
-COLOR_SCHEME = {
-    "Default": {
-        "color": "#c5c8c6"
-    },
-    "Keyword": {
-        "color": "#83c1fb",
-    },
-    "Operators": {
-        "color": "#FFFFFF",
-    },
-    "ErrorUnderline": {
-        "color": "#ff0000",
-    },
-    "Pep8Underline": {
-        "color": "#ffa500",
-    },
-    "Builtin": {
-        "color": "#ee8859",
-    },
-    "Comment": {
-        "color": "#5c6370",
-    },
-    "Decorator": {
-        "color": "#4EC9B0",
-    },
-    "Number": {
-        "color": "#d19a66",
-    },
-    "Definition": {
-        "color": "#fdff74",
-    },
-    "DefinitionName": {
-        "color": "#6EC7D7",
-    },
-    "Function": {
-        "color": "#d19a66",
-    },
-    "ProperObject": {
-        "color": "#6EC7D7",
-    },
-    "String": {
-        "color": "#98c378",
-    },
-    "RawString": {
-        "color": "#98c378",
-    },
-    "Docstring": {
-        "color": "#98c378",
-    },
-    "EditorBackground": {
-        "color": "#282c34",
-    },
-    "EditorSelectionColor": {
-        "color": "#c5c8c6",
-    },
-    "EditorSelectionBackground": {
-        "color": "#3e4451",
-    },
-    "SidebarBackground": {
-        "color": "#282c34",
-    },
-    "SidebarForeground": {
-        "color": "#595959",
-    },
-    "CurrentLine": {
-        "color": "#383e4a",
-    },
-    "ModifiedColor": {
-        "color": "#BE4F44",
-    },
-    "SavedColor": {
-        "color": "#00f569",
-    },
-    "BraceMatched": {
-        "color": "#808080",
-    },
-    "BraceUnmatched": {
-        "color": "red"
-    }
-}
-
+COLOR_SCHEME = {}
 CUSTOM_SCHEME = {}
 QML_COLORS = {}
 
 
-def get_color(key):
+def _get_color(key):
     if key in COLOR_SCHEME:
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME[key])['color']
     return None
@@ -388,7 +265,8 @@ def create_home_dir_structure():
     Create the necesary directories structure for NINJA-IDE
     """
     for directory in (HOME_NINJA_PATH, EXTENSIONS_PATH, PLUGINS, EDITOR_SKINS,
-                      LANGS, NINJA_THEMES_DOWNLOAD, NINJA_KNOWLEDGE_PATH):
+                      LANGS, NINJA_THEMES_DOWNLOAD, NINJA_KNOWLEDGE_PATH,
+                      BACKUP_FILES):
         if not os.path.isdir(directory):
             os.mkdir(directory)
 

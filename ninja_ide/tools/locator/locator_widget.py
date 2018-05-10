@@ -49,6 +49,7 @@ class LocatorWidget(QDialog):
         super(LocatorWidget, self).__init__(
             parent, Qt.Dialog | Qt.FramelessWindowHint)
         self._parent = parent
+        self._recent_files = []
         self.setModal(True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setStyleSheet("background:transparent;")
@@ -77,6 +78,7 @@ class LocatorWidget(QDialog):
         self.page_items_step = 10
         self._colors = {
             "@": "#5dade2",
+            "+": "#5dade2",
             "<": "#4becc9",
             ">": "#ff555a",
             "-": "#66ff99",
@@ -108,6 +110,7 @@ class LocatorWidget(QDialog):
 
     def reset_values(self):
         self._avoid_refresh = False
+        self._recent_files.clear()
         self.__prefix = ''
         self.__pre_filters = []
         self.__pre_results = []
@@ -157,10 +160,24 @@ class LocatorWidget(QDialog):
         self._root.setFilterComposite(filter_composite)
 
     def _load_items(self, items):
+        if not items:
+            return
+        self._load_recent()
+        # Add recent files at top
+        items[:0] = self._recent_files
         for item in items:
             typeIcon = self._replace_symbol_type.get(item.type, item.type)
             self._root.loadItem(typeIcon, item.name, item.lineno,
                                 item.path, self._colors[item.type])
+
+    def _load_recent(self):
+        """Load recent files from main container"""
+        if self._recent_files:
+            return
+        main_container = IDE.get_service("main_container")
+        for nfile in main_container.last_opened_files:
+            item = locator.ResultItem("+", nfile.display_name, nfile.file_path)
+            self._recent_files.append(item)
 
     def _fetch_more(self):
         locations = self._create_list_items(self.tempLocations)

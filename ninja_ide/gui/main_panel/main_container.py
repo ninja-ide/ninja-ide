@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+from collections import OrderedDict
 
 from PyQt5.QtWidgets import (
     QWidget,
@@ -38,6 +39,7 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import start_page
+from ninja_ide.gui.dialogs import from_import_dialog
 # from ninja_ide.gui.main_panel import set_language
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import files_handler
@@ -46,10 +48,9 @@ from ninja_ide.gui import dynamic_splitter
 from ninja_ide import translations
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import helpers
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
-from ninja_ide.gui import indicator, notification
+# from ninja_ide.gui import notification
 
 logger = NinjaLogger(__name__)
 
@@ -83,6 +84,8 @@ class _MainContainer(QWidget):
             0: self._navigate_code_jumps,
             1: self._navigate_bookmarks
         }
+        # Recent files list
+        self.__last_opened_files = OrderedDict()
         # QML UI
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
@@ -111,8 +114,9 @@ class _MainContainer(QWidget):
 
         IDE.register_signals("main_container", connections)
 
-        esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        esc_sort.activated.connect(self._set_focus_to_editor)
+        # FIXME: short usado en el intellisense
+        # esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        # esc_sort.activated.connect(self._set_focus_to_editor)
 
         fhandler_short = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Tab), self)
         fhandler_short.activated.connect(self.show_files_handler)
@@ -125,7 +129,9 @@ class _MainContainer(QWidget):
 
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.combo_area.allFilesClosed.connect(self._files_closed)
-        self.combo_area.allFilesClosed.connect(lambda: self.allFilesClosed.emit())
+        self.combo_area.allFilesClosed.connect(
+            lambda: self.allFilesClosed.emit())
+        self.combo_area.fileClosed.connect(self._add_to_last_opened)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
         # self.current_widget = self.combo_area
@@ -133,7 +139,7 @@ class _MainContainer(QWidget):
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
-        self.fileSaved.connect(self._show_message_about_saved)
+        # self.fileSaved.connect(self._show_message_about_saved)
 
     def run_file(self, filepath):
         self.runFile.emit(filepath)
@@ -144,10 +150,10 @@ class _MainContainer(QWidget):
     def _add_to_project(self, filepath):
         self.addToProject.emit(filepath)
 
-    def _show_message_about_saved(self, message):
-        if settings.NOTIFICATION_ON_SAVE:
-            editor_widget = self.get_current_editor()
-            indicator.Indicator.show_text(editor_widget, message)
+    # def _show_message_about_saved(self, message):
+    #     if settings.NOTIFICATION_ON_SAVE:
+    #         editor_widget = self.get_current_editor()
+    #         indicator.Indicator.show_text(editor_widget, message)
 
     def show_files_handler(self):
         self._files_handler.next_item()
@@ -155,12 +161,19 @@ class _MainContainer(QWidget):
     def hide_files_handler(self):
         self._files_handler.hide()
 
+    def import_from_everywhere(self):
+        """Insert an import line from any place in the editor."""
+
+        editorWidget = self.get_current_editor()
+        if editorWidget:
+            dialog = from_import_dialog.FromImportDialog(editorWidget, self)
+            dialog.show()
+
     def navigate_code_history(self, operation, forward):
         self.__operations[operation](forward)
 
     def _navigate_code_jumps(self, forward=False):
         """Navigate between the jump points"""
-
         node = None
         if not forward and self.__code_back:
             if len(self.__code_back) == 1:
@@ -193,11 +206,13 @@ class _MainContainer(QWidget):
         elif status_bar.isVisible():
             status_bar.hide_status_bar()
         if editor_widget is not None:
-            editor_widget.clear_extra_selections('find')
+            editor_widget.reset_selections()
 
     def split_assistance(self):
-        split_widget = split_orientation.SplitOrientation(self)
-        split_widget.show()
+        editor_widget = self.get_current_editor()
+        if editor_widget is not None:
+            split_widget = split_orientation.SplitOrientation(self)
+            split_widget.show()
 
     def show_dialog(self, widget):
         self.add_widget(widget)
@@ -233,6 +248,20 @@ class _MainContainer(QWidget):
             return current_widget
         return None
 
+    @property
+    def last_opened_files(self):
+        return self.__last_opened_files.values()
+
+    def _add_to_last_opened(self, nfile):
+        MAX_RECENT_FILES = 10  # FIXME: configuration
+        if nfile.file_path in self.__last_opened_files:
+            del self.__last_opened_files[nfile.file_path]
+        self.__last_opened_files.update({nfile.file_path: nfile})
+        self.__last_opened_files.move_to_end(nfile.file_path, last=False)
+        if len(self.__last_opened_files) > MAX_RECENT_FILES:
+            last = list(self.__last_opened_files)[-1]
+            del self.__last_opened_files[last]
+
     def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
         logger.debug("Will try to open %s" % filename)
         if not filename:
@@ -252,9 +281,10 @@ class _MainContainer(QWidget):
                         editor_widget.file_path)
             filenames = QFileDialog.getOpenFileNames(
                 self,
-                "Open File",  # FIXME: translations
+                translations.TR_OPEN_A_FILE,
                 directory,
-                settings.get_supported_extensions_filter()
+                settings.get_supported_extensions_filter(),
+                initialFilter="Python files (*.py *.pyw)"
             )[0]
         else:
             logger.debug("Has filename")
@@ -315,10 +345,10 @@ class _MainContainer(QWidget):
                     return self.save_file_as(editor_widget)
                 # FIXME: beforeFileSaved.emit
                 if settings.REMOVE_TRAILING_SPACES:
-                    helpers.remove_trailing_spaces(editor_widget)
+                    editor_widget.remove_trailing_spaces()
                 # FIXME: new line at end
                 if settings.ADD_NEW_LINE_AT_EOF:
-                    helpers.insert_block_at_end(editor_widget)
+                    editor_widget.insert_block_at_end()
                 # Save content
                 editor_widget.neditable.save_content()
                 # FIXME: encoding
@@ -350,7 +380,10 @@ class _MainContainer(QWidget):
                     editor_widget.file_path)
                 if extension != 'py':
                     filters = "(*.%s);;(*.py);;(*.*)" % extension
-            save_folder = self._get_save_folder(editor_widget.file_path)
+                save_folder = self._get_save_folder(editor_widget.file_path)
+            else:
+                save_folder = settings.WORKSPACE
+
             filename = QFileDialog.getSaveFileName(
                 self, "Save File", save_folder, filters
             )[0]
@@ -382,6 +415,9 @@ class _MainContainer(QWidget):
         """Save all files in the project path"""
         for neditable in self.combo_area.bar.get_editables():
             file_path = neditable.file_path
+            if file_path is None:
+                # FIXME: New edited files will not be saved, its ok?
+                continue
             if file_manager.belongs_to_folder(project_path, file_path):
                 neditable.save_content()
 
@@ -402,9 +438,6 @@ class _MainContainer(QWidget):
         ninjaide = IDE.get_service("ide")
         editable = ninjaide.get_or_create_editable(filename)
 
-        editable.canBeRecovered.connect(
-            lambda: self.combo_area.info_bar.show_message(msg_type="recovery"))
-
         if editable.editor:
             # If already open
             logger.debug("%s is already open" % filename)
@@ -422,17 +455,17 @@ class _MainContainer(QWidget):
         # Emit a signal about the file open
         self.fileOpened.emit(filename)
 
-        if not keep_index:
+        if keep_index:
             self.combo_area.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
         editor_widget.setFocus()
+        editor_widget.register_syntax_for(editable.language())
         return editor_widget
 
     def create_editor_from_editable(self, editable):
         neditor = editor.create_editor(editable)
-        neditor.zoomChanged.connect(self._show_zoom_indicator)
-        neditor.destroyed.connect(self.__on_editor_destroyed)
+        # neditor.zoomChanged.connect(self._on_zoom_changed)
         neditor.addBackItemNavigation.connect(self.add_back_item_navigation)
         # editable.fileSaved.connect(self._editor_tab)
         return neditor
@@ -445,14 +478,8 @@ class _MainContainer(QWidget):
                 self.__code_back.append(item)
                 # self.__code_forward.clear()
 
-    def _show_zoom_indicator(self, zoom):
-        neditor = self.get_current_editor()
-        indicator.Indicator.show_text(
-            neditor, "Zoom: {} %".format(str(zoom)))
-
-    @pyqtSlot()
-    def __on_editor_destroyed(self):
-        indicator.Indicator.instance = None
+    def _on_zoom_changed(self, zoom):
+        pass
 
     def add_widget(self, widget):
         self.stack.addWidget(widget)
@@ -527,7 +554,7 @@ class _MainContainer(QWidget):
         """Mark the current line or selection as a comment."""
         editor_widget = self.get_current_editor()
         if editor_widget is not None:
-            helpers.comment_or_uncomment(editor_widget)
+            editor_widget.comment_or_uncomment()
 
     def editor_go_to_line(self, line):
         editor_widget = self.get_current_editor()

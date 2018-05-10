@@ -190,6 +190,15 @@ ACTIONS = (
     {
         "shortcut": "navigate-forward",
         "connect": "navigate_forward"
+    },
+    {
+        "shortcut": "import",
+        "action": {
+            "text": translations.TR_INSERT_IMPORT,
+            "section": (translations.TR_MENU_SOURCE, None),
+            "weight": 310
+        },
+        "connect": "import_from_everywhere"
     }
 )
 """

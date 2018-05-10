@@ -1,33 +1,32 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 import re
-from collections import namedtuple
-from PyQt5.QtGui import (
-    QSyntaxHighlighter,
-    QColor,
-    QTextCharFormat,
-    QTextBlockUserData,
-    QFont,
-    QBrush,
-    QTextFormat
-)
+
+from PyQt5.QtGui import QSyntaxHighlighter
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QTextCharFormat
+from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QTextFormat
+
+from ninja_ide.core import settings
 from ninja_ide import resources
-from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor.syntaxes import (
-    python,
-    html,
-    js
-)
-
-
-class BlockUserData(QTextBlockUserData):
-    """Representation of the data for a block"""
-
-    def __init__(self):
-        super().__init__()
-        self.indentation = None
-        self.string_info = []
-
-    def add_string_info(self, start, end):
-        self.string_info.append((start, end - 1))
+from ninja_ide.gui.ide import IDE
 
 
 class TextCharFormat(QTextCharFormat):
@@ -197,9 +196,8 @@ class Scanner(object):
 
 class SyntaxHighlighter(QSyntaxHighlighter):
 
-    # def __init__(self, parent, partition_scanner,
-    #             scanner, formats, default_font=None):
-    def __init__(self, doc, syntax):
+    def __init__(self, parent, partition_scanner,
+                 scanner, formats, default_font=None):
         """
         :param parent: QDocument or QTextEdit/QPlainTextEdit instance
         'partition_scanner:
@@ -213,12 +211,9 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             list of tuples consisting of a name and a format definition
             The name is the name of a partition or token
         """
-        super(SyntaxHighlighter, self).__init__(doc)
-        # if default_font:
-        #    parent.setDefaultFont(default_font)
-        partition_scanner = syntax.partition_scanner
-        scanner = syntax.scanner
-        formats = syntax.formats
+        super(SyntaxHighlighter, self).__init__(parent)
+        if default_font:
+            parent.setDefaultFont(default_font)
 
         if isinstance(partition_scanner, (list, tuple)):
             partition_scanner = PartitionScanner(partition_scanner)
@@ -255,7 +250,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
                 f = Format(**dict(name=fname, **f))
             else:
                 assert isinstance(f, Format), "Format expected, got %r" % f
-            f.tcf.setFontFamily(doc.defaultFont().family())
+            f.tcf.setFontFamily(parent.defaultFont().family())
             self.formats[f.name] = f.tcf
 
         # reduce name look-ups for better speed
@@ -265,13 +260,6 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.get_scanner = scan_inside.get
         self.scan_partitions = partition_scanner.scan
         self.get_format = self.formats.get
-
-    def current_block_user_data(self):
-        user_data = self.currentBlockUserData()
-        if not isinstance(user_data, editor.BlockUserData):
-            user_data = editor.BlockUserData()
-            self.setCurrentBlockUserData(user_data)
-        return user_data
 
     def highlightBlock(self, text):
         """automatically called by Qt"""
@@ -286,9 +274,6 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
         for start, end, partition, new_state, is_inside in \
                 self.scan_partitions(previous_state, text):
-            # if partition is not None and partition == "string":
-            #    user_data = self.current_block_user_data()
-            #    user_data.add_string_info(start, end)
             f = get_format(partition, None)
             if f:
                 set_format(start, end - start, f)
@@ -303,76 +288,37 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
         self.setCurrentBlockState(new_state)
 
-        # For indentation guides
-        if text.strip():
-            leading_ws = text[:len(text) - len(text.lstrip())]
-            user_data = self.current_block_user_data()
-            # user_data.indentation = len(leading_ws)
-            user_data["indentation"] = len(leading_ws)
 
+class Syntax(object):
+    __slots__ = ("partition_scanner", "scanners", "context")
 
-def _create_context():
-    context = {
-        "syntax_builtin": resources.get_color_scheme('Builtin'),
-        "syntax_comment": resources.get_color_scheme('Comment'),
-        "syntax_decorator": resources.get_color_scheme('Decorator'),
-        "syntax_keyword": resources.get_color_scheme('Keyword'),
-        "syntax_number": resources.get_color_scheme('Number'),
-        "syntax_binnumber": resources.get_color_scheme('Number'),
-        "syntax_octnumber": resources.get_color_scheme('Number'),
-        "syntax_hexnumber": resources.get_color_scheme('Number'),
-        "syntax_definition": resources.get_color_scheme('Definition'),
-        "syntax_proper_object": resources.get_color_scheme('ProperObject'),
-        "syntax_string": resources.get_color_scheme('String'),
-        "syntax_rstring": resources.get_color_scheme('RawString'),
-        "syntax_docstring": resources.get_color_scheme('Docstring'),
-        "syntax_operators": resources.get_color_scheme('Operators'),
-        "syntax_definitionname": resources.get_color_scheme('DefinitionName'),
-        "syntax_function": resources.get_color_scheme('Function')
+    def __init__(self, part_scanner, scanners):
+        self.partition_scanner = part_scanner
+        self.scanners = scanners
+        self.context = []
 
-    }
-    return context
-
-
-SYNTAXES = {
-    "python": python.syntax,
-    "html": html.syntax,
-    "javascript": js.syntax
-}
-
-BUILT_SYNTAXES = {}
+    def build_context(self):
+        for color in resources.COLOR_SCHEME.get("colors"):
+            scope = color.get("scope")
+            colors = color.get("settings")
+            self.context.append((scope, colors))
 
 
 def build_highlighter(language, force=False):
-    global BUILT_SYNTAXES
-    syntax = BUILT_SYNTAXES.get(language)
-    if syntax is None or force:
-        _syntax = SYNTAXES.get(language)
-        if _syntax is not None:
-            partition_scanner, scanner, formats = load_syntax(_syntax)
-            syntax = namedtuple("Syntax", "partition_scanner scanner, formats")
-            syntax.partition_scanner = partition_scanner
-            syntax.scanner = scanner
-            syntax.formats = formats
-            BUILT_SYNTAXES[language] = syntax
+    syntax_registry = IDE.get_service("syntax_registry")
+    syntax = syntax_registry.get_syntax_for(language)
+    if syntax is None:
+        syntax_structure = settings.SYNTAX.get(language)
+        if syntax_structure is None:
+            print("Error")
+            return None
+        part_scanner = PartitionScanner(syntax_structure.get("partitions"))
+        scanners = {}
+        for scanner in syntax_structure.get("scanner"):
+            name = scanner.get("partition_name")
+            scanners[name] = Scanner(scanner.get("tokens"))
+        syntax = Syntax(part_scanner, scanners)
+        syntax.build_context()
+        syntax_registry.register_syntax(language, syntax)
+
     return syntax
-
-
-def load_syntax(syntax):
-    context = _create_context()
-    partition_scanner = PartitionScanner(syntax.get("partitions", []))
-
-    scanners = {}
-    for part_name, part_scanner in syntax.get("scanner", {}).items():
-        scanners[part_name] = Scanner(part_scanner)
-
-    formats = []
-    for fname, fstyle in syntax.get("formats", {}).items():
-        if isinstance(fstyle, str):
-            if fstyle.startswith("%(") and fstyle.endswith(")s"):
-                key = fstyle[2:-2]
-                fstyle = context[key]
-            else:
-                fstyle = fstyle % context
-        formats.append((fname, fstyle))
-    return partition_scanner, scanners, formats

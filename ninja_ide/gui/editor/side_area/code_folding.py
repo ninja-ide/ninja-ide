@@ -8,6 +8,7 @@ from PyQt5.QtGui import QTextBlock
 from PyQt5.QtCore import QSize
 from PyQt5.QtCore import QRect
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
 
 from ninja_ide.gui.editor import side_area
 
@@ -89,11 +90,20 @@ class CodeFoldingWidget(side_area.SideWidget):
 
     def __init__(self):
         super().__init__()
-        self.code_folding = PythonCodeFolding()
+        self.code_folding = None
         self.setMouseTracking(True)
         self.__mouse_over = None
+        self.__current_line_number = -1
+        self.__timer = QTimer(self)
+        self.__timer.setSingleShot(True)
+        self.__timer.setInterval(100)
+        self.__timer.timeout.connect(self.update)
 
     def register(self, neditor):
+        self.code_folding = IMPLEMENTATIONS.get(neditor.neditable.language())
+        if self.code_folding is None:
+            neditor.side_widgets.remove(self.object_name)
+            return
         super().register(neditor)
         self.user_data = neditor.user_data
         neditor.painted.connect(self.__draw_collapsed_rect)
@@ -139,11 +149,18 @@ class CodeFoldingWidget(side_area.SideWidget):
 
     def mouseMoveEvent(self, event):
         block = self.__block_under_mouse(event)
-        if block is not None and self.code_folding.is_foldable(block):
+        if block is None:
+            return
+        self.__mouse_over = block
+        if self.code_folding.is_foldable(block):
+            if self.__current_line_number == block.blockNumber():
+                return
             self.setCursor(Qt.PointingHandCursor)
+            self.__timer.start()
         else:
             self.setCursor(Qt.ArrowCursor)
-        self.__mouse_over = block
+            self.__timer.stop()
+        self.__current_line_number = block.blockNumber()
         self.update()
 
     def mousePressEvent(self, event):
@@ -174,7 +191,7 @@ class CodeFoldingWidget(side_area.SideWidget):
             self.style().drawPrimitive(QStyle.PE_IndicatorBranch, opt,
                                        painter, self)
             # Draw folded region background
-            if block == self.__mouse_over:
+            if block == self.__mouse_over and not self.__timer.isActive():
                 fm_height = self._neditor.fontMetrics().height()
                 rect_height = 0
                 color = self.palette().highlight().color()

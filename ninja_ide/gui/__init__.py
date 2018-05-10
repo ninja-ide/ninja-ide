@@ -18,54 +18,18 @@
 import sys
 
 from PyQt5.QtWidgets import QSplashScreen
-from PyQt5.QtGui import (
-    QIcon,
-    QPixmap
-)
-from PyQt5.QtCore import (
-    Qt,
-    QCoreApplication
-)
+
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QIcon
+
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import ipc
 from ninja_ide.tools import json_manager
-from ninja_ide.tools.logger import NinjaLogger
-# from ninja_ide.gui import ninja_style
-logger = NinjaLogger(__name__)
-# Register Components:
-# lint:disable
-import ninja_ide.gui.main_panel.main_container  # noqa
-import ninja_ide.gui.tools_dock.errors_tree  # noqa
-import ninja_ide.gui.tools_dock.tools_dock  # noqa
-import ninja_ide.gui.central_widget  # noqa
-import ninja_ide.gui.status_bar  # noqa
-import ninja_ide.gui.menus.menubar  # noqa
-# from ninja_ide.tools.completion import completion_daemon
-# Syntax
-from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
-# Explorer Container
-import ninja_ide.gui.explorer.explorer_container  # noqa
-from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
-from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
-# from ninja_ide.gui.explorer.tabs import web_inspector
-# Checkers
-from ninja_ide.gui.editor.checkers import errors_lists  # noqa
-from ninja_ide.gui.editor.checkers import errors_checker  # noqa
-from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
-# from ninja_ide.gui.editor.checkers import migration_2to3
-# Preferences
-from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
-# from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
-from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
-from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
-# from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
-# from ninja_ide.gui.dialogs.preferences import preferences_plugins
-# from ninja_ide.gui.dialogs.preferences import preferences_theme
+from ninja_ide.gui import ide
+
 # Templates
 from ninja_ide.core.template_registry import ntemplate_registry  # noqa
 from ninja_ide.core.template_registry import bundled_project_types  # noqa
@@ -74,7 +38,8 @@ from ninja_ide.core.template_registry import bundled_project_types  # noqa
 ###########################################################################
 # from ninja_ide.core.encapsulated_env import nenvironment
 
-from ninja_ide.gui import ide  # noqa
+# Syntax
+from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
 
 
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
@@ -103,9 +68,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash.show()
     app.processEvents()
 
-    # Set the codec for strings (QString)
-    # QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
-
     qsettings = ide.IDE.ninja_settings()
     data_qsettings = ide.IDE.data_settings()
     # FIXME: handle this
@@ -128,44 +90,74 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #    app.installTranslator(qtTranslator)
 
     # Loading Syntax
-    splash.showMessage("Loading Syntax", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    splash.showMessage("Loading Syntax...",
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
     json_manager.load_syntax()
 
     # Read Settings
-    splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
-                       Qt.black)
+    splash.showMessage("Loading Settings...",
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
     # Loading Schemes
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
     all_schemes = json_manager.load_editor_schemes()
-    scheme = qsettings.value("editor/general/scheme", "")
-    if not scheme:
-        scheme = "Ninja Dark"
-    resources.COLOR_SCHEME = all_schemes[scheme]
-    # if scheme:
-    #    color_scheme = all_schemes[scheme]
-    #    resources.CUSTOM_SCHEME = color_scheme
-    # if scheme != 'default':
-    #    scheme = file_manager.create_path(resources.EDITOR_SKINS,
-    #                                      scheme + '.color')
-    #    if file_manager.file_exists(scheme):
-    #        resources.CUSTOM_SCHEME = json_manager.parse(open(scheme))
+    resources.COLOR_SCHEME = all_schemes["Ninja Dark"]
+    # scheme = qsettings.value("editor/general/scheme", "")
+    # if not scheme:
+    #     scheme = "Ninja Dark"
+    # resources.COLOR_SCHEME = all_schemes[scheme]
+
+    # Register tools dock service after load some settings
+    # FIXME: Find a better way to do this
+    import ninja_ide.gui.tools_dock.tools_dock  # noqa
+    import ninja_ide.gui.tools_dock.console_widget  # noqa
+    import ninja_ide.gui.tools_dock.run_widget  # noqa
+    import ninja_ide.gui.tools_dock.find_in_files  # noqa
+
+    import ninja_ide.gui.main_panel.main_container  # noqa
+    import ninja_ide.gui.central_widget  # noqa
+    import ninja_ide.gui.status_bar  # noqa
+    import ninja_ide.gui.menus.menubar  # noqa
+
+    # Explorer Container
+    import ninja_ide.gui.explorer.explorer_container  # noqa
+    from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
+    from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
+    # from ninja_ide.gui.explorer.tabs import web_inspector
+    # Checkers
+    from ninja_ide.gui.editor.checkers import errors_checker  # noqa
+    from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
+    from ninja_ide.gui.editor.checkers import not_import_checker  # noqa
+    # from ninja_ide.gui.editor.checkers import migration_2to3
+    # Preferences
+    from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
+    from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
+    from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
+    from ninja_ide.intellisensei import intellisense_registry  # noqa
+    from ninja_ide.intellisensei import python_intellisense  # noqa
+    # from ninja_ide.gui.dialogs.preferences
+    #                              import preferences_editor_completion
+    # from ninja_ide.gui.dialogs.preferences import preferences_plugins
+    # from ninja_ide.gui.dialogs.preferences import preferences_theme
 
     # Loading Shortcuts
+    app.processEvents()
     resources.load_shortcuts()
     # Loading GUI
-    splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
+    splash.showMessage("Loading GUI...", Qt.AlignRight | Qt.AlignTop, Qt.black)
     ninjaide = ide.IDE(start_server)
 
-    # Showing GUI
-    ninjaide.show()
-    # OSX workaround for ninja window not in front
-    try:
-        ninjaide.raise_()
-    except Exception:
-        pass  # I really dont mind if this fails in any form
     # Loading Session Files
-    splash.showMessage("Loading Files and Projects",
+    app.processEvents()
+    splash.showMessage("Loading Files and Projects..",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
 
     # First check if we need to load last session files
@@ -190,6 +182,14 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         ninjaide.load_session_files_projects(
             files, projects, current_file, []
         )
+
+    # Showing GUI
+    ninjaide.show()
+    # OSX workaround for ninja window not in front
+    try:
+        ninjaide.raise_()
+    except Exception:
+        pass  # I really dont mind if this fails in any form
     # Load external plugins
     # if extra_plugins:
     #     ninjaide.load_external_plugins(extra_plugins)

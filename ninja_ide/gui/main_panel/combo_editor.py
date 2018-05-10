@@ -19,46 +19,37 @@
 
 import bisect
 
-from PyQt5.QtWidgets import (
-    QApplication,
-    QMessageBox,
-    # QDialog,
-    QSpacerItem,
-    QWidget,
-    QMenu,
-    QFrame,
-    QStyledItemDelegate,
-    QVBoxLayout,
-    QHBoxLayout,
-    QStackedLayout,
-    QStyle,
-    QLabel,
-    QComboBox,
-    QSizePolicy,
-    QPushButton,
-    QToolButton
-)
-from PyQt5.QtGui import (
-    QCursor,
-    QClipboard,
-    QColor,
-    QIcon,
-    QPalette
-)
-from PyQt5.QtCore import (
-    # QSize,
-    Qt,
-    pyqtSignal,
-    pyqtSlot,
-    QModelIndex,
-    QAbstractItemModel
-)
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QStyledItemDelegate
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QPushButton
+
+from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QClipboard
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPalette
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import QModelIndex
+from PyQt5.QtCore import QAbstractItemModel
 
 from ninja_ide import translations
 from ninja_ide.extensions import handlers
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui import indicator
 from ninja_ide.tools import ui_tools
 from ninja_ide.core.file_handling import file_manager
 # from ninja_ide.gui.main_panel import set_language
@@ -71,6 +62,7 @@ class ComboEditor(QWidget):
         'PyQt_PyObject', 'PyQt_PyObject', Qt.Orientation)
     allFilesClosed = pyqtSignal()
     about_to_close_combo_editor = pyqtSignal()
+    fileClosed = pyqtSignal("PyQt_PyObject")
 
     def __init__(self, original=False):
         super(ComboEditor, self).__init__(None)
@@ -85,9 +77,9 @@ class ComboEditor(QWidget):
         vbox.addWidget(self.bar)
 
         # Info bar
-        self.info_bar = InfoBar(self)
-        self.info_bar.setVisible(False)
-        vbox.addWidget(self.info_bar)
+        # self.info_bar = InfoBar(self)
+        # self.info_bar.setVisible(False)
+        # vbox.addWidget(self.info_bar)
 
         self.stacked = QStackedLayout()
         vbox.addLayout(self.stacked)
@@ -167,9 +159,11 @@ class ComboEditor(QWidget):
             if self.__original:
                 editor = neditable.editor
             else:
-                editor = neditable.editor.clone()
-                # editor = self._main_container.create_editor_from_editable(
-                #    neditable)
+                # editor = neditable.editor.clone()
+                editor = self._main_container.create_editor_from_editable(
+                   neditable)
+                neditable.editor.link(editor)
+
             current_index = self.stacked.currentIndex()
             new_index = self.stacked.addWidget(editor)
             self.stacked.setCurrentIndex(new_index)
@@ -184,18 +178,13 @@ class ComboEditor(QWidget):
             neditable.fileClosing.connect(self._close_file)
             editor.editorFocusObtained.connect(self._editor_with_focus)
             editor.modificationChanged.connect(self._editor_modified)
+            if neditable._swap_file.dirty:
+                self._editor_modified(True, sender=editor)
             neditable.checkersUpdated.connect(self._show_notification_icon)
             # Connect file system signals only in the original
             if self.__original:
                 neditable.askForSaveFileClosing.connect(self._ask_for_save)
                 neditable.fileChanged.connect(self._file_has_been_modified)
-
-                self.info_bar.reloadClicked.connect(neditable.reload_file)
-                if neditable.swap_file:
-                    self.info_bar.discardClicked.connect(
-                        neditable.swap_file.discard)
-                    self.info_bar.recoverClicked.connect(
-                        neditable.swap_file.recover)
             # Editor Signals
             editor.cursor_position_changed[int, int].connect(
                 self._update_cursor_position)
@@ -248,15 +237,6 @@ class ComboEditor(QWidget):
     def split_editor(self, orientation):
         new_combo = self.clone()
         self.splitEditor.emit(self, new_combo, orientation)
-        # new_widget = ComboEditor()
-        # for neditable in self.bar.get_editables():
-        #    new_widget.add_editor(neditable)
-        # self.splitEditor.emit(self, new_widget, orientation_vertical)
-        # for neditable in self.bar.get_editables():
-        #    new_widget.add_editor(neditable)
-        # self.splitEditor.emit(self, new_widget, orientationVertical)
-        # self.emit(SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-        #          self, new_widget, orientationVertical)
 
     def undock_editor(self):
         new_combo = ComboEditor()
@@ -288,28 +268,33 @@ class ComboEditor(QWidget):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
         # neditable.editor.completer.cc.unload_module()
-        self._add_to_last_opened(neditable.file_path)
+        # self._add_to_last_opened(neditable.file_path)
+        self.fileClosed.emit(neditable.nfile)
         layoutItem.widget().deleteLater()
 
         if self.stacked.isEmpty():
             self.bar.hide()
             self.allFilesClosed.emit()
 
-    def _add_to_last_opened(self, path):
-        if path not in settings.LAST_OPENED_FILES:
-            settings.LAST_OPENED_FILES.append(path)
-            if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_EDITORS:
-                self.__lastOpened = self.__lastOpened[1:]
-            print("RecentTabsModified")
-            # self.emit(SIGNAL("recentTabsModified()"))
+    # def _add_to_last_opened(self, path):
+    #     if path not in settings.LAST_OPENED_FILES:
+    #         settings.LAST_OPENED_FILES.append(path)
+    #         if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_EDITORS:
+    #             self.__lastOpened = self.__lastOpened[1:]
+    #         print("RecentTabsModified")
+    #         # self.emit(SIGNAL("recentTabsModified()"))
 
     def _editor_with_focus(self):
+        # if self._main_container.current_widget is not self:
         self._main_container.combo_area = self
-        # editor = self.current_editor()
-        # self._main_container.current_editor_changed(
-        #     editor.neditable.file_path)
-        # self._load_symbols(editor.neditable)
-        # editor.neditable.update_checkers_display()
+        editor = self.current_editor()
+        # FIXME: maybe improve this in ComboFiles.needUpdateFocus
+        # see issue #2027
+        if editor is not None:
+            self._main_container.current_editor_changed(
+                editor.neditable.file_path)
+            self._load_symbols(editor.neditable)
+            editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
         val = QMessageBox.No
@@ -327,12 +312,27 @@ class ComboEditor(QWidget):
             self._main_container.save_file(neditable.editor)
             neditable.nfile.close()
 
+    @pyqtSlot("PyQt_PyObject")
+    def _recovery(self, neditable):
+        print("lalalal")
+
     def _file_has_been_modified(self, neditable):
-        # FIXME: use constant or enum
-        if settings.RELOAD_FILE == 0:
-            self.info_bar.show_message(msg_type="reload")
-        elif settings.RELOAD_FILE == 1:
+        index = self.bar.combo_files.findData(neditable)
+        self.stacked.setCurrentIndex(index)
+        self.bar.combo_files.setCurrentIndex(index)
+
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Information)
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg_box.setDefaultButton(QMessageBox.Yes)
+        msg_box.setWindowTitle(translations.TR_FILE_HAS_BEEN_MODIFIED)
+        msg_box.setText(
+            translations.TR_FILE_MODIFIED_OUTSIDE % neditable.display_name)
+
+        result = msg_box.exec_()
+        if result == QMessageBox.Yes:
             neditable.reload_file()
+        return
 
     def _run_file(self, path):
         self._main_container.run_file(path)
@@ -402,9 +402,10 @@ class ComboEditor(QWidget):
                 index -= 1
             self.bar.set_current_symbol(index)
 
-    def _editor_modified(self, value):
-        obj = self.sender()
-        neditable = obj.neditable
+    def _editor_modified(self, value, sender=None):
+        if sender is None:
+            sender = self.sender()
+        neditable = sender.neditable
         if value:
             text = "\u2022 %s" % neditable.display_name
             self.bar.update_item_text(neditable, text)
@@ -500,21 +501,21 @@ class ActionBar(QFrame):
         self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
-        hbox.setSpacing(0)
+        hbox.setSpacing(1)
 
         # self.lbl_checks = QLabel('')
         # self.lbl_checks.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         # self.lbl_checks.setFixedWidth(48)
         # self.lbl_checks.setVisible(False)
         # hbox.addWidget(self.lbl_checks)
+
         self.combo_files = ComboFiles()
         self.combo_files.setObjectName("combotab")
-        # self.combo_files = QComboBox()
         self.combo_files.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.combo_files.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
-        self.combo_files.setMaximumWidth(300)
+        self.combo_files.setMaximumWidth(400)
         self.combo_files.currentIndexChanged[int].connect(self.current_changed)
         self.combo_files.needUpdateFocus.connect(lambda: self.needUpdateFocus.emit())
         self.combo_files.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
@@ -552,7 +553,6 @@ class ActionBar(QFrame):
         self.lbl_position.setContentsMargins(margin, 0, margin, 0)
         self.lbl_position.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.lbl_position)
-
         self.btn_close = QPushButton()
         self.btn_close.setIcon(
             self.style().standardIcon(QStyle.SP_DialogCloseButton))
@@ -564,7 +564,7 @@ class ActionBar(QFrame):
         else:
             self.btn_close.setObjectName('close_split')
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
-            self.btn_close.clicked.connect(self.close_split)
+            self.btn_close.clicked.connect(lambda: self.closeSplit.emit())
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox.addWidget(self.btn_close)
 
@@ -603,8 +603,17 @@ class ActionBar(QFrame):
 
     def add_symbols(self, symbols):
         """Add the symbols to the symbols's combo."""
+
         mo = Model(symbols)
         self.symbols_combo.setModel(mo)
+        # self.symbols_combo.clear()
+        # for symbol in symbols:
+        #    data = symbol[1]
+        #    if data[1] == 'f':
+        #        icon = QIcon(":img/function")
+        #    else:
+        #        icon = QIcon(":img/class")
+        #    self.symbols_combo.addItem(icon, data[0])
 
     def set_current_symbol(self, index):
         self.symbols_combo.setCurrentIndex(index + 1)
@@ -625,7 +634,7 @@ class ActionBar(QFrame):
 
     def current_symbol_changed(self, index):
         """Change the current symbol in the combo."""
-        if index <= 0:
+        if index == 0:
             return
         self.goToSymbol.emit(index - 1)
 
@@ -810,11 +819,6 @@ class ActionBar(QFrame):
 
     def _copy_file_location(self):
         """Copy the path of the current opened file to the clipboard."""
-        # Show message
-        main = IDE.get_service("main_container")
-        editor = main.get_current_editor()
-        indicator.Indicator.show_text(
-            editor, translations.TR_COPIED_TO_CLIPBOARD)
 
         neditable = self.combo_files.itemData(self.combo_files.currentIndex())
         QApplication.clipboard().setText(neditable.file_path,
@@ -969,10 +973,10 @@ class CodeNavigator(QWidget):
 
 class InfoBar(QFrame):
 
-    reloadClicked = pyqtSignal()
-    cancelClicked = pyqtSignal()
-    recoverClicked = pyqtSignal()
-    discardClicked = pyqtSignal()
+    # reloadClicked = pyqtSignal()
+    # cancelClicked = pyqtSignal()
+    # recoverClicked = pyqtSignal()
+    # discardClicked = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -987,51 +991,60 @@ class InfoBar(QFrame):
         self._layout = QHBoxLayout(self)
         self._message = QLabel("")
         self._layout.addWidget(self._message)
-        # Reload buttons
-        btn_reload = QPushButton("Reload")
-        btn_cancel_reload = QPushButton("Cancel")
-        # Recovery buttons
-        btn_discard = QPushButton("Discard")
-        btn_recover = QPushButton("Recover")
-
-        self._buttons = {
-            "reload": [btn_reload, btn_cancel_reload],
-            "recovery": [btn_recover, btn_discard]
-        }
-        for buttons in self._buttons.values():
-            for button in buttons:
-                button.clicked.connect(self.on_clicked)
-
-    def on_clicked(self):
-        signal_name = "%sClicked" % self.sender().text().lower()
-        signal = getattr(self, signal_name)
-        signal.emit()
-        self.hide()
-
-    def init(self, type_):
-        buttons = self._buttons.get(type_)
-        if self._state != type_:
-            for btn in self._buttons.get(self._state):
-                self._layout.removeWidget(btn)
-
         self._layout.addStretch(1)
-        for btn in buttons:
-            self._layout.addWidget(btn)
+        # # Reload buttons
+        # btn_reload = QPushButton("Reload")
+        # btn_cancel_reload = QPushButton("Cancel")
+        # # Recovery buttons
+        # btn_discard = QPushButton("Discard")
+        # btn_recover = QPushButton("Recover")
 
-    def show_message(self, msg_type="recovery"):
-        self.init(msg_type)
-        if msg_type == "reload":
-            text = translations.TR_FILE_MODIFIED_OUTSIDE
-        else:
-            text = "The file was not closed properly"
-        self._message.setText(text)
-        if not self.isVisible():
-            self.show()
-        self._state = msg_type
+        # self._buttons = {
+        #     "reload": [btn_reload, btn_cancel_reload],
+        #     "recovery": [btn_recover, btn_discard]
+        # }
+        # for buttons in self._buttons.values():
+        #     for button in buttons:
+        #         button.clicked.connect(self.on_clicked)
+
+    def set_message(self, msg):
+        self._message.setText(msg)
+
+    def add_button(self, text, slot=None):
+        btn = QPushButton(text)
+        self._layout.addWidget(btn)
+        if slot is not None:
+            btn.clicked.connect(slot)
+        return btn
+    # def on_clicked(self):
+    #     signal_name = "%sClicked" % self.sender().text().lower()
+    #     signal = getattr(self, signal_name)
+    #     signal.emit()
+    #     self.hide()
+
+    # def init(self, type_):
+    #     buttons = self._buttons.get(type_)
+    #     if self._state != type_:
+    #         for btn in self._buttons.get(self._state):
+    #             self._layout.removeWidget(btn)
+
+    #     self._layout.addStretch(1)
+    #     for btn in buttons:
+    #         self._layout.addWidget(btn)
+
+    # def show_message(self, msg_type="recovery"):
+    #     self.init(msg_type)
+    #     if msg_type == "reload":
+    #         text = translations.TR_FILE_MODIFIED_OUTSIDE
+    #     else:
+    #         text = "The file was not closed properly"
+    #     self._message.setText(text)
+    #     if not self.isVisible():
+    #         self.show()
+    #     self._state = msg_type
 
 
 class Model(QAbstractItemModel):
-
     def __init__(self, data):
         QAbstractItemModel.__init__(self)
         self.__data = data
@@ -1057,9 +1070,6 @@ class Model(QAbstractItemModel):
                     return '<Select Symbol>'
                 return '<No Symbols>'
             return
-
-        # return self.__data[index.row() - 1]
-
         if role == Qt.DisplayRole:
             return self.__data[index.row() - 1][1][0]
         elif role == Qt.DecorationRole:

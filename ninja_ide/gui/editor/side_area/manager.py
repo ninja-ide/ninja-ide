@@ -42,6 +42,13 @@ class SideWidgetManager(object):
 
         return self.__widgets.get(object_name)
 
+    def remove(self, object_name):
+        widget = self.get(object_name)
+        del self.__widgets[object_name]
+        # widget.hide()
+        widget.setParent(None)
+        widget.deleteLater()
+
     def _update(self):
         for widget in self:
             widget.update()

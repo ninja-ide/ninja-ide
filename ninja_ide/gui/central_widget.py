@@ -63,7 +63,7 @@ class CentralWidget(QWidget):
         hbox.addWidget(self._splitter_base)
         vbox.addLayout(hbox)
         tool = IDE.get_service('tools_dock')
-        vbox.addWidget(tool._buttons_widget)
+        vbox.addWidget(tool.buttons_widget)
         IDE.register_service('central_container', self)
 
     def install(self):

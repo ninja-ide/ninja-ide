@@ -28,22 +28,16 @@ logger = NinjaLogger('ninja_ide.tools.json_manager')
 
 def load_syntax():
     """Load all the syntax files."""
-    empty = dict()
+
     files = os.listdir(resources.SYNTAX_FILES)
-    for f in files:
-        if not f.endswith('.json'):
+    for _file in files:
+        name, file_extension = os.path.splitext(_file)
+        if file_extension != ".json":
             continue
-
-        fname = os.path.join(resources.SYNTAX_FILES, f)
-        structure = read_json(fname)
-        if structure == empty:
-            continue
-
-        name = os.path.splitext(f)[0]
-        settings.SYNTAX[name] = structure
-        for ext in structure.get('extension'):
-            if ext is not None:
-                settings.EXTENSIONS[ext] = name
+        filename = os.path.join(resources.SYNTAX_FILES, _file)
+        structure = read_json(filename)
+        if structure:
+            settings.SYNTAX[name] = structure
 
 
 def parse(descriptor):
@@ -133,7 +127,7 @@ def get_ninja_project_file(path):
 
 def get_ninja_editor_skins_files(path):
     """Return the list of json files inside the directory: path."""
-    extension = '.color'
+    extension = '.json'
     return get_ninja_file(path, extension)
 
 
@@ -164,8 +158,7 @@ def load_editor_schemes():
         file_name = os.path.join(resources.EDITOR_SCHEMES, fname)
         structure = read_json(file_name)
         name = structure['name']
-        colors = structure['colors']
-        skins[name] = colors
+        skins[name] = structure
 
     return skins
 

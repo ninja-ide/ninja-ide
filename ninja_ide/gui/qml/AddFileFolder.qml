@@ -24,8 +24,8 @@ Rectangle {
             id: inputArea
             color: theme.FileFolderLineEdit
             height: 30
-            border.width: 1
-            border.color: "black"
+            border.width: 2
+            border.color: theme.RectangleBorder
             width: parent.width
 
             TextInput {

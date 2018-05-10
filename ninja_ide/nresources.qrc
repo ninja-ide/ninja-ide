@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/img">
         <file alias="warning">images/warning.png</file>
-        <file alias="class">images/class.png</file>
-        <file alias="function">images/function.png</file>
         <file alias="close">images/close.png</file>
         <file alias="icon">images/icon.png</file>
         <file alias="folder">images/folder.png</file>
@@ -10,9 +8,6 @@
         <file alias="new-file">images/document-new.png</file>
         <file alias="open-project">images/open-project.png</file>
         <file alias="selector">images/main_selector.png</file>
-        <file alias="attr">images/attribute.png</file>
-        <file alias="instance">images/instance.png</file>
-        <file alias="statement">images/statement.png</file>
         <file alias="plus">images/plus.png</file>
         <file alias="minus">images/minus.png</file>
         <file alias="previous">images/prev.png</file>
@@ -35,6 +30,13 @@
         <file alias="break-left">images/break-left.png</file>
         <file alias="book-right">images/book-right.png</file>
         <file alias="book-left">images/book-left.png</file>
+        <file alias="splash">images/splash.jpg</file>
+        <file alias="variable">images/variable.png</file>
+        <file alias="module">images/module.png</file>
+        <file alias="function">images/function.png</file>
+        <file alias="class">images/class.png</file>
+        <file alias="instance">images/instance.png</file>
+        <file alias="statement">images/statement.png</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">images/help/help_locator.png</file>

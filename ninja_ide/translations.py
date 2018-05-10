@@ -254,7 +254,7 @@ TR_DISPLAY_LINE_NUMBERS = tr("NINJA-IDE", "Display Line Numbers")
 TR_DISPLAY_TEXT_CHANGES = tr("NINJA-IDE", "Mark Text Changes")
 TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 Violations: ")
 TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint Errors: ")
-
+TR_NOT_IMPORT_CHECKER_TEXT = tr("NINJA-IDE", "Imports don't exist: ")
 
 # Dialogs
 TR_PREFERENCES_TITLE = tr("NINJA-IDE", "NINJA-IDE - Preferences")
@@ -284,7 +284,7 @@ TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
 TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "File has been modified")
 TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
-    "The file has been modified outside the application.")
+    "The <b>%s</b> file has been modified outside the application.")
 # "Do you want to reload it?")
 
 # Project wizard

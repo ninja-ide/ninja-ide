@@ -67,8 +67,10 @@ class TextChangeWidget(SideWidget):
         self.__saved_markers = []
         self.__saved = False
         # Default properties
-        self.__unsaved_color = QColor(resources.get_color('ModifiedColor'))
-        self.__saved_color = QColor(resources.get_color('SavedColor'))
+        self.__unsaved_color = QColor(
+            resources.COLOR_SCHEME.get("editor.markarea.modified"))
+        self.__saved_color = QColor(
+            resources.COLOR_SCHEME.get("editor.markarea.saved"))
         self.__delay = 300
         # Delay Timer
         self._timer = QTimer(self)

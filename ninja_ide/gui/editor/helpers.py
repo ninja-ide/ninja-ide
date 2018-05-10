@@ -28,6 +28,7 @@ from ninja_ide.tools import introspection
 
 
 patIndent = re.compile('^\s+')
+pat_word = re.compile(r"^[\t ]*$|[^\s]+")
 patSymbol = re.compile(r'[^\w]')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
@@ -47,31 +48,20 @@ def get_leading_spaces(line):
     return ''
 
 
-def get_indentation(line, indent=None, useTabs=None):
-    if indent is None:
-        indent = settings.INDENT
-    if useTabs is None:
-        useTabs = settings.USE_TABS
-    global patIndent
-    global endCharsForIndent
-    indentation = ''
-    if len(line) > 0 and line[-1] in endCharsForIndent:
-        if useTabs:
-            indentation = '\t'
+def get_range(editor, line, col=-1):
+
+        lineno = line
+        line_text = editor.line_text(lineno)
+        col_end = len(line_text)
+        col_start = col if col > -1 else 0
+        if col > -1:
+            match = pat_word.match(line_text[col:])
+            if match:
+                col_end = col_start + match.end()
         else:
-            indentation = ' ' * indent
-    elif len(line) > 0 and line[-1] == ',':
-        count = [x for x in endCharsForIndent[1:]
-                 if (line.count(x) - line.count(closeBraces[x])) % 2 != 0]
-        if count:
-            if useTabs:
-                indentation = '\t'
-            else:
-                indentation = ' ' * indent
-    space = patIndent.match(line)
-    if space is not None:
-        return space.group() + indentation
-    return indentation
+            col_start = editor.line_indent(lineno)
+
+        return col_start, col_end
 
 
 def add_line_increment(lines, lineModified, diference, atLineStart=False):
@@ -97,47 +87,6 @@ def add_line_increment_for_dict(data, lineModified, diference,
         return newLine
     list(map(_inner_increment, list(data.keys())))
     return data
-
-
-#def get_first_keyword(line):
-    #word = line.split()[0]
-    #keyword = remove_symbols(word)
-
-    #if keyword in settings.SYNTAX.get('python')['keywords']:
-        #return keyword
-
-    #return word
-
-
-#def remove_symbols(word):
-    #return patSymbol.sub('', word)
-
-
-#def clean_line(editorWidget):
-    #while editorWidget.textCursor().columnNumber() > 0:
-        #editorWidget.textCursor().deletePreviousChar()
-
-
-def remove_trailing_spaces(editor):
-    cursor = editor.textCursor()
-    block = editor.document().findBlockByLineNumber(0)
-    with editor:
-        while block.isValid():
-            text = block.text()
-            if text.endswith(' '):
-                cursor.setPosition(block.position())
-                cursor.select(QTextCursor.LineUnderCursor)
-                cursor.insertText(text.rstrip())
-            block = block.next()
-
-
-def insert_block_at_end(editor):
-    last_line = editor.line_count() - 1
-    text = editor.line_text(last_line)
-    if text:
-        cursor = editor.textCursor()
-        cursor.movePosition(QTextCursor.End)
-        cursor.insertBlock()
 
 
 def insert_horizontal_line(editorWidget):
@@ -231,14 +180,6 @@ def insert_pdb(editorWidget):
                           line, 0)
 
 
-def move_up(editorWidget):
-    editorWidget.SendScintilla(editorWidget.SCI_MOVESELECTEDLINESUP, 1)
-
-
-def move_down(editorWidget):
-    editorWidget.SendScintilla(editorWidget.SCI_MOVESELECTEDLINESDOWN, 1)
-
-
 def remove_line(editorWidget):
     if editorWidget.hasSelectedText():
         lstart, istart, lend, iend = editorWidget.getSelection()
@@ -250,161 +191,6 @@ def remove_line(editorWidget):
         editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
     else:
         editorWidget.SendScintilla(editorWidget.SCI_LINEDELETE, 1)
-
-
-def duplicate(editorWidget):
-    if editorWidget.hasSelectedText():
-        lstart, istart, lend, iend = editorWidget.getSelection()
-        length = editorWidget.lineLength(lend)
-        editorWidget.setSelection(lstart, 0, lend, length)
-        text = editorWidget.selectedText()
-        editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
-        editorWidget.insertAt("%s" % text, lend, length)
-        editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
-    else:
-        editorWidget.SendScintilla(editorWidget.SCI_LINEDUPLICATE, 1)
-
-
-def comment_or_uncomment(editor):
-    cursor = editor.textCursor()
-    doc = editor.document()
-    block_start = doc.findBlock(cursor.selectionStart())
-    block_end = doc.findBlock(cursor.selectionEnd()).next()
-    key = editor.neditable.language()
-    card = settings.SYNTAX[key].get("comment", [])[0]
-    has_selection = editor.has_selection()
-    lines_commented = 0
-    lines_without_comment = 0
-    with editor:
-        # Save blocks for use later
-        temp_start, temp_end = block_start, block_end
-        min_indent = sys.maxsize
-        comment = True
-        card_lenght = len(card)
-        # Get operation (comment/uncomment) and the minimum indent
-        # of selected lines
-        while temp_start != temp_end:
-            block_number = temp_start.blockNumber()
-            indent = editor.line_indent(block_number)
-            block_text = temp_start.text().lstrip()
-            if not block_text:
-                temp_start = temp_start.next()
-                continue
-            min_indent = min(indent, min_indent)
-            if block_text.startswith(card):
-                lines_commented += 1
-                comment = False
-            elif block_text.startswith(card.strip()):
-                lines_commented += 1
-                comment = False
-                card_lenght -= 1
-            else:
-                lines_without_comment += 1
-                comment = True
-            temp_start = temp_start.next()
-
-        total_lines = lines_commented + lines_without_comment
-        if lines_commented > 0 and lines_commented != total_lines:
-            comment = True
-        # Comment/uncomment blocks
-        while block_start != block_end:
-            cursor.setPosition(block_start.position())
-            cursor.movePosition(QTextCursor.StartOfLine)
-            cursor.movePosition(QTextCursor.Right,
-                                QTextCursor.MoveAnchor, min_indent)
-            if block_start.text().lstrip():
-                if comment:
-                    cursor.insertText(card)
-                else:
-                    cursor.movePosition(QTextCursor.Right,
-                                        QTextCursor.KeepAnchor,
-                                        card_lenght)
-                    cursor.removeSelectedText()
-            block_start = block_start.next()
-
-        if not has_selection:
-            cursor.movePosition(QTextCursor.Down)
-            editor.setTextCursor(cursor)
-
-
-def uncomment(editorWidget):
-    lstart, istart, lend, iend = editorWidget.getSelection()
-    lang = file_manager.get_file_extension(editorWidget.file_path)
-    key = settings.EXTENSIONS.get(lang, 'python')
-    same_line = (lstart == lend)
-    comment_line_wildcard = settings.SYNTAX[key].get('comment', [])
-    comment_multi_wildcard = settings.SYNTAX[key].get('multiline_comment', {})
-    comment_wildcard = comment_multi_wildcard
-    if (same_line and comment_line_wildcard):
-        comment_wildcard = comment_line_wildcard
-    elif comment_line_wildcard:
-        comment_wildcard = comment_line_wildcard
-
-    is_multi = comment_wildcard == comment_multi_wildcard
-    if is_multi:
-        wildopen = comment_wildcard["open"]
-        wildclose = comment_wildcard["close"]
-    else:
-        wildopen = comment_wildcard[0]
-
-    if same_line:
-        lstart, _ = editorWidget.getCursorPosition()
-        lines = 1
-    else:
-        lines = (lend - lstart) + 1
-
-    editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
-    for l in range(lines):
-        index = len(get_indentation(editorWidget.text(lstart + l)))
-        editorWidget.setSelection(lstart + l, index, lstart + l,
-                                  index + len(wildopen))
-        if editorWidget.selectedText() == wildopen:
-            editorWidget.removeSelectedText()
-        if is_multi:
-            length = editorWidget.lineLength(lstart + l)
-            editorWidget.setSelection(lstart + l, length,
-                                      lstart + l, index - len(wildclose))
-            if editorWidget.selectedText() == wildopen:
-                editorWidget.removeSelectedText()
-    editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
-
-
-def comment(editorWidget):
-    """ This method comment one or more lines of code """
-    lstart, istart, lend, iend = editorWidget.getSelection()
-    lang = file_manager.get_file_extension(editorWidget.file_path)
-    key = settings.EXTENSIONS.get(lang, 'python')
-    same_line = (lstart == lend)
-    comment_line_wildcard = settings.SYNTAX[key].get('comment', [])
-    comment_multi_wildcard = settings.SYNTAX[key].get('multiline_comment', {})
-    comment_wildcard = comment_multi_wildcard
-
-    if (same_line and comment_line_wildcard):
-        comment_wildcard = comment_line_wildcard
-    elif comment_line_wildcard:
-        comment_wildcard = comment_line_wildcard
-
-    is_multi = comment_wildcard == comment_multi_wildcard
-    if is_multi:
-        wildopen = comment_wildcard["open"]
-        wildclose = comment_wildcard["close"]
-    else:
-        wildopen = comment_wildcard[0]
-
-    if same_line:
-        lstart, _ = editorWidget.getCursorPosition()
-        lines = 1
-    else:
-        lines = (lend - lstart) + 1
-
-    editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
-    for l in range(lines):
-        index = len(get_indentation(editorWidget.text(lstart + l)))
-        editorWidget.insertAt(wildopen, lstart + l, index)
-        if is_multi:
-            length = editorWidget.lineLength(lstart + l)
-            editorWidget.insertAt(wildclose, lstart + l, length)
-    editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
 
 
 def check_for_assistance_completion(editorWidget, line):

@@ -19,13 +19,14 @@
 import os
 import sys
 import datetime
+import enum
 
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import (
-    QSettings,
-    QDir,
-    QFileInfo
-)
+from PyQt5.QtGui import QImageReader
+from PyQt5.QtCore import QMimeDatabase
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFileInfo
 
 from ninja_ide import resources
 # from ninja_ide.dependencies import pycodestyle
@@ -88,11 +89,14 @@ def detect_python_path():
 HDPI = False
 CUSTOM_SCREEN_RESOLUTION = ""
 # Swap File
+
+AUTOSAVE = True
+AUTOSAVE_DELAY = 1500
 # 0: Disable
 # 1: Enable
 # 2: Alternative Dir
-SWAP_FILE = 1
-SWAP_FILE_INTERVAL = 15  # seconds
+# SWAP_FILE = 1
+# SWAP_FILE_INTERVAL = 15  # seconds
 
 MAX_OPACITY = TOOLBAR_AREA = 1
 # MIN_OPACITY = 0.3
@@ -110,7 +114,6 @@ SHOW_START_PAGE = CONFIRM_EXIT = True
 
 HIDE_TOOLBAR = PYTHON_EXEC_CONFIGURED_BY_USER = False
 
-# NOTIFICATION_COLOR = "#000"
 
 PYTHON_EXEC = sys.executable
 
@@ -160,7 +163,8 @@ TOOLBAR_ITEMS_DEFAULT = [
 NINJA_SKIN = 'Dark'
 LAST_OPENED_FILES = []
 
-# NOTIFICATION_POSITION = 0
+NOTIFICATION_POSITION = 0
+NOTIFICATION_COLOR = "#000"
 
 LAST_CLEAN_LOCATOR = None
 
@@ -243,45 +247,22 @@ RELOAD_FILE = 0
 # FILE MANAGER
 ###############################################################################
 
-SUPPORTED_EXTENSIONS = {
-    "python": ["py", "pyw"],
-    "html": ["html"],
-    "qml": ["qml"],
-    "javascript": ["js"],
-    "ninja project": ["nja"]
-}
-
-_SUPPORTED_EXTENSIONS = [
-    '.color',  # Similar to JSON, Ninja own Themes for example
-    '.css',
-    '.csv',  # plain text with commas
-    '.editorconfig'  # Its an .INI file, same syntax
-    '.html',
-    '.ini',
-    '.jpeg',  # JPG too
-    '.jpg',
-    '.js',
-    '.json',
-    '.md',  # plain text MarkDown
-    '.png',
-    '.py',
-    '.pyw',  # Python for Window that never show up Console
-    '.qss',  # CSS for Qt, almost same syntax
-    '.rst',  # plain text ReStructuredText
-    '.svg',  # similar to XML, technically its an XML
-    '.txt',  # plain text
-    '.ui',
-    '.xml'  # similar to HTML
-
-
-    # TODO: What we need to enable this ?
-    # '.scss',  # SASS that can contain CSS mixed, almost same syntax plus vars
-    # '.coffee',  # similar to JS, can contain plain JS mixed up
-    # '.qml',  # Similar to CSS, can contain plain JS mixed up
-    # '.sh',  # Bash
-    # '.bat',  # Windows Batch
-    # '.cmd',  # Windows Batch
+# File types supported by Ninja-IDE
+FILE_TYPES = [
+    ("Python files", (".py", ".pyw")),
+    ("QML files", (".qml",)),
+    ("HTML document", (".html", ".htm")),
+    ("JavaScript program", (".js", ".jsm")),
+    ("Ninja project", (".nja",))
 ]
+# Mime types
+imaga_mimetypes = [f.data().decode()
+                   for f in QImageReader.supportedMimeTypes()][1:]
+
+db = QMimeDatabase()
+for mt in imaga_mimetypes:
+    mimetype = db.mimeTypeForName(mt)
+    FILE_TYPES.append((mimetype.comment(), mimetype.suffixes()))
 
 LANGUAGE_MAP = {
     "py": "python",
@@ -289,7 +270,8 @@ LANGUAGE_MAP = {
     "js": "javascript",
     "html": "html",
     "md": "markdown",
-    "yml": "yaml"
+    "yml": "yaml",
+    "qml": "qml"
 }
 
 ###############################################################################
@@ -323,14 +305,19 @@ WORKSPACE = ""
 
 
 def get_supported_extensions():
-    return [ext for ext in SUPPORTED_EXTENSIONS.values() for ext in ext]
+    return [" *".join(extensions) for _, extensions in FILE_TYPES]
 
 
 def get_supported_extensions_filter():
-    _filter = [ftype.title() + " Files (*.{})".format(
-               " *.".join(SUPPORTED_EXTENSIONS[ftype]))
-               for ftype in SUPPORTED_EXTENSIONS.keys()]
-    return ";;".join(_filter) + ";;All Files (*)"
+    filters = []
+    for title, extensions in FILE_TYPES:
+        filters.append("%s (*%s)" % (title, " *".join(extensions)))
+    if IS_WINDOWS:
+        all_filter = "All Files (*.*)"
+    else:
+        all_filter = "All Files (*)"
+    filters.append(all_filter)
+    return ";;".join(sorted(filters))
 
 
 # def set_project_type_handler(project_type, project_type_handler):
@@ -460,8 +447,8 @@ def load_settings():
     # global UI_LAYOUT
     global PYTHON_EXEC
     global EXECUTION_OPTIONS
-    global SWAP_FILE
-    global SWAP_FILE_INTERVAL
+    # global SWAP_FILE
+    # global SWAP_FILE_INTERVAL
     # global PYTHON_EXEC_CONFIGURED_BY_USER
     # global SESSIONS
     global NINJA_SKIN
@@ -543,8 +530,8 @@ def load_settings():
                                   sys.executable, type='QString')
     # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
-    SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)
-    SWAP_FILE_INTERVAL = qsettings.value("ide/swapFileInterval", 15, type=int)
+    # SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)
+    # SWAP_FILE_INTERVAL = qsettings.value("ide/swapFileInterval", 15, type=int)
 
     NINJA_SKIN = qsettings.value("ide/interface/skin", "Dark", type=str)
     # sessionDict = dict(data_qsettings.value('ide/sessions', {}))

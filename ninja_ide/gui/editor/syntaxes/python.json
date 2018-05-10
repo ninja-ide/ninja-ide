@@ -1,0 +1,195 @@
+{
+    "extension": ["py"],
+    "comment": ["# "],
+    "partitions": [
+        {
+            "name": "comment_typehint",
+            "start": "#\\s*type: ",
+            "end": "\n"
+        },
+        {
+            "name": "comment_line",
+            "start": "#",
+            "end": "\n"
+        },
+        {
+            "name": "string_quoted_triple",
+            "start": "'''",
+            "end": "'''",
+            "is_multiline": true
+        },
+        {
+            "name": "string_quoted_triple",
+            "start": "\"\"\"",
+            "end": "\"\"\"",
+            "is_multiline": true
+        },
+        {
+            "name": "string_quoted_single",
+            "start": "[buBU]?'",
+            "end": "'"
+        },
+        {
+            "name": "string_quoted_double",
+            "start": "[buBU]?\"",
+            "end": "\""
+        }
+    ],
+    "scanner": [
+        {
+            "partition_name": "string_quoted_double",
+            "tokens": [
+                {
+                    "name": "constant_character_escape",
+                    "pattern": "({)\\w*(\\W?\\w+)(})"
+                }
+            ]
+        },
+        {
+            "partition_name": "comment_typehint",
+            "tokens": [
+                {
+                    "name": "comment_typehint_type",
+                    "pattern": "\\b(bool | bytes | float | int | object | str| List | Dict | Iterable | Sequence | Set| FrozenSet | Callable | Union | Tuple| Any | None)\\b"
+                },
+                {
+                    "name": "comment_typehint_punctuation",
+                    "pattern": "(\\w+_?)\\w*"
+                }
+            ]
+        },
+        {
+            "partition_name": "comment_line",
+            "tokens": [
+                {
+                    "name": "text_todo",
+                    "pattern": "(?<!\\w)@?(TODO|FIXME|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG|QUESTION|COMBAK|TEMP|DEBUG|OPTIMIZE|WARNING)\\b"
+                }
+            ]
+        },
+        {
+            "partition_name": "string_quoted_triple",
+            "tokens": [
+                {
+                    "name": "text_todo",
+                    "pattern": "(?<!\\w)@?(TODO|FIXME|CHANGED|XXX|IDEA|HACK|NOTE|REVIEW|NB|BUG|QUESTION|COMBAK|TEMP|DEBUG|OPTIMIZE|WARNING)\\b"
+                },
+                {
+                    "name": "docstring_prompt",
+                    "pattern": "(>>>|\\.\\.\\.\\s) (?=\\s*\\S)"
+                },
+                {
+                    "name": "constant_character_escape",
+                    "pattern": "(?<!\\w)@?(\\\\[nabfnrtv])\\b"
+                }
+            ]
+        },
+        {
+            "partition_name": null,
+            "tokens": [
+                {
+                    "name": "keyword",
+                    "pattern": [
+                        "as", "assert", "break", "await", "continue",
+                        "del", "except", "finally", "for",
+                        "from", "global", "import", "is", "lambda",
+                        "nonlocal", "pass", "raise", "try",
+                        "while", "with", "yield", "async"
+                    ],
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "keyword_control_flow",
+                    "pattern": [
+                        "as", "async", "continue", "del", "assert",
+                        "break", "finally", "for", "from", "elif", "else",
+                        "if", "except", "pass", "raise", "return", "try",
+                        "while", "with"
+                    ],
+                    "prefix": "\\b",
+                    "suffix": "\\b"
+                },
+                {
+                    "name": "keyword_operator",
+                    "pattern": ["and", "or", "in", "not"],
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "keyword_control_statement",
+                    "pattern": "(with|break|continue|pass|return|yield(\\s+from)?|await)",
+                    "prefix": "\\b",
+                    "suffix": "\\b"
+                },
+                {
+                    "name": "constant",
+                    "pattern": "\\b_*[A-Z][_\\d]*[A-Z][A-Z\\d]*(_\\w*)?\\b"
+                },
+                {
+                    "name": "constant_numeric",
+                    "pattern": "(?<!\\w)(\\.?)(_?\\d+)+(\\.\\d*)?[lL]?"
+                },
+                {
+                    "name": "constant_language",
+                    "pattern": "None|True|False|Ellipsis|NotImplemented",
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "entity_name",
+                    "pattern": [
+                        "(?<=def)\\ +?\\w+(?=\\ *?\\()",
+                        "(?<=class)\\ +?\\w+(?=\\ *?\\()"
+                    ]
+                },
+                {
+                    "name": "storage_type",
+                    "pattern": "class|def",
+                    "prefix": "(^|[\\x08\\W])",
+                    "suffix": "[\\x08\\W]"
+                },
+                {
+                    "name": "variable_self",
+                    "pattern": "\\b(self|cls)\\b"
+                },
+                {
+                    "name": "support",
+                    "pattern": "@\\w+(\\.\\w+)?"
+                },
+                {
+                    "name": "support_function_builtin",
+                    "pattern": [
+                        "__import__", "abs", "all", "any", "ascii",
+                        "bin", "bool", "bytearray", "bytes", "callable",
+                        "chr", "classmethod", "compile", "complex",
+                        "delattr", "dict", "dir", "divmod", "enumerate",
+                        "eval", "exec", "filter", "float", "format",
+                        "frozenset", "getattr", "globals", "hasattr",
+                        "hash", "help", "hex", "id", "input", "int",
+                        "isinstance", "issubclass", "iter", "len", "list",
+                        "locals", "map", "max", "memoryview", "min", "next",
+                        "object", "oct", "open", "ord", "pow", "print",
+                        "property", "range", "repr", "reversed", "round",
+                        "set", "setattr", "slice", "sorted", "staticmethod",
+                        "str", "sum", "super", "tuple", "type", "vars", "zip",
+                        "file", "long", "raw_input", "reduce", "reload",
+                        "unichr", "unicode", "xrange", "apply", "buffer",
+                        "coerce", "intern", "execfile"
+                    ],
+                    "prefix": "(?x)\\b",
+                    "suffix": "\\b"
+                },
+                {
+                    "name": "support_type_exception",
+                    "pattern":  "(\n\t\t\t\t(\n\t\t\t\t\tArithmetic|Assertion|Attribute|BlockingIO|BrokenPipe|Buffer|ChildProcess|\n\t\t\t\t\tConnection(Aborted|Refused|Reset)?|EOF|Environment|FileExists|\n\t\t\t\t\tFileNotFound|FloatingPoint|Interrupted|IO|IsADirectoryError|\n\t\t\t\t\tImport|Indentation|Index|Key|Lookup|Memory|Name|NotADirectory|\n\t\t\t\t\tNotImplemented|OS|Overflow|Permission|ProcessLookup|Recursion|Reference|\n\t\t\t\t\tRuntime|Standard|Syntax|System|Tab|Timeout|Type|UnboundLocal|\n\t\t\t\t\tUnicode(Encode|Decode|Translate)?|Value|VMS|Windows|ZeroDivision\n\t\t\t\t)Error|\n\t\t\t\t((Pending)?Deprecation|Runtime|Syntax|User|Future|Import|Unicode|Bytes)?Warning|\n\t\t\t\t(Base)?Exception|\n\t\t\t\tSystemExit|StopAsyncIteration|StopIteration|NotImplemented|KeyboardInterrupt|GeneratorExit\n\t\t\t)",
+                    "prefix": "(?x)\\b"
+                },
+                {
+                    "name": "support_function_magic",
+                    "pattern": "(?x)\\b(__(?:all | bases | builtins | class | code | debug | defaults | dict| doc | file | func | kwdefaults | members| metaclass | methods | module | mro | name| qualname | self | signature | slots | subclasses| version | weakref | wrapped | annotations | classcell| spec | path | package | future | traceback)__)\\b"
+                }
+            ]
+        }
+    ]
+}

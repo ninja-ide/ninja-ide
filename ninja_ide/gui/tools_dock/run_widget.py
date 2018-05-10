@@ -42,6 +42,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.tools_dock.tools_dock import _ToolsDock
 
 
 # FIXME: tool buttons (clear, stop, re-start, etc)
@@ -112,8 +113,10 @@ class Program(QObject):
 
     def __main_execution(self):
         self.__current_process = self.main_process
-        file_directory = file_manager.get_folder(self.filename)
-        self.main_process.setWorkingDirectory(file_directory)
+        if not self.only_text:
+            # In case a text is executed and not a file or project
+            file_directory = file_manager.get_folder(self.filename)
+            self.main_process.setWorkingDirectory(file_directory)
         self.main_process.setProgram(self.python_exec)
         self.main_process.setArguments(self.arguments)
         environment = QProcessEnvironment()
@@ -189,7 +192,9 @@ class Program(QObject):
 
     def _refresh_output(self):
         data = self.__current_process.readAllStandardOutput().data().decode()
-        self.outputw.append_text(data, text_format=OutputWidget.Format.NORMAL)
+        for line in data.splitlines():
+            self.outputw.append_text(
+                line, text_format=OutputWidget.Format.NORMAL)
 
     def _refresh_error(self):
         data = self.__current_process.readAllStandardError().data().decode()
@@ -200,7 +205,14 @@ class Program(QObject):
             self.outputw.append_text(line_text, frmt)
 
     def display_name(self):
-        return file_manager.get_basename(self.filename)
+        name = "New document"
+        if not self.only_text:
+            name = file_manager.get_basename(self.filename)
+        return name
+
+    @property
+    def only_text(self):
+        return self.filename is None
 
     @property
     def python_exec(self):
@@ -222,10 +234,14 @@ class Program(QObject):
             args.append(self.filename)
         return args
 
+    def kill(self):
+        self.main_process.kill()
+
 
 class RunWidget(QWidget):
 
     allTabsClosed = pyqtSignal()
+    projectExecuted = pyqtSignal("QString")
 
     def __init__(self):
         QWidget.__init__(self)
@@ -234,6 +250,25 @@ class RunWidget(QWidget):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
+
+        connections = (
+            {
+                "target": "tools_dock",
+                "signal_name": "executeFile",
+                "slot": self.execute_file
+            },
+            {
+                "target": "tools_dock",
+                "signal_name": "executeProject",
+                "slot": self.execute_project
+            },
+            {
+                "target": "tools_dock",
+                "signal_name": "executeSelection",
+                "slot": self.execute_selection
+            }
+        )
+        IDE.register_signals("tools_dock", connections)
 
         self._tabs = QTabWidget()
         self._tabs.setTabsClosable(True)
@@ -245,6 +280,17 @@ class RunWidget(QWidget):
         self._tabs.tabBar().customContextMenuRequested.connect(
             self._menu_for_tabbar)
         self._tabs.tabCloseRequested.connect(self.close_tab)
+
+        IDE.register_service("run_widget", self)
+        _ToolsDock.register_widget(translations.TR_OUTPUT, self)
+
+    def install(self):
+        ninjaide = IDE.get_service("ide")
+        ninjaide.goingDown.connect(self._kill_processes)
+
+    def _kill_processes(self):
+        for program in self.__programs:
+            program.kill()
 
     def _menu_for_tabbar(self, position):
         menu = QMenu()
@@ -285,6 +331,71 @@ class RunWidget(QWidget):
             if self._tabs.count() > 1:
                 self.close_tab(1)
 
+    def execute_file(self):
+        """Execute the current file"""
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        if editor_widget is not None and (editor_widget.is_modified or
+                                          editor_widget.file_path):
+            main_container.save_file(editor_widget)
+            # FIXME: Emit a signal for plugin!
+            # self.fileExecuted.emit(editor_widget.file_path)
+            file_path = editor_widget.file_path
+            extension = file_manager.get_file_extension(file_path)
+            # TODO: Remove the IF statment and use Handlers
+            if extension == "py":
+                self.start_process(filename=file_path)
+
+    def execute_selection(self):
+        """Execute selected text or current line if not have a selection"""
+
+        main_container = IDE.get_service("main_container")
+        editor_widget = main_container.get_current_editor()
+        if editor_widget is not None:
+            text = editor_widget.selected_text().splitlines()
+            if not text:
+                # Execute current line
+                text = [editor_widget.line_text()]
+            code = []
+            for line_text in text:
+                # Get part before firs '#'
+                code.append(line_text.split("#", 1)[0])
+            # Join to execute with python -c command
+            final_code = ";".join([line.strip() for line in code if line])
+            # Highlight code to be executed
+            editor_widget.show_run_cursor()
+            # Ok run!
+            self.start_process(
+                filename=editor_widget.file_path, code=final_code)
+
+    def execute_project(self):
+        """Execute the project marked as Main Project."""
+
+        projects_explorer = IDE.get_service("projects_explorer")
+        if projects_explorer is None:
+            return
+        nproject = projects_explorer.current_project
+        if nproject:
+            main_file = nproject.main_file
+            if not main_file:
+                # Open project properties to specify the main file
+                projects_explorer.current_tree.open_project_properties()
+            else:
+                # Save project files
+                projects_explorer.save_project()
+                # Emit a signal for plugin!
+                self.projectExecuted.emit(nproject.path)
+
+                main_file = file_manager.create_path(
+                    nproject.path, nproject.main_file)
+                self.start_process(
+                    filename=main_file,
+                    python_exec=nproject.python_exec,
+                    pre_exec_script=nproject.pre_exec_script,
+                    post_exec_script=nproject.post_exec_script,
+                    program_params=nproject.program_params
+                )
+
     def start_process(self, **kwargs):
         # First look if we can reuse a tab
         fname = kwargs.get("filename")
@@ -313,12 +424,6 @@ class RunWidget(QWidget):
     def add_tab(self, outputw, tab_text):
         inserted_index = self._tabs.addTab(outputw, tab_text)
         self._tabs.setCurrentIndex(inserted_index)
-
-    def display_name(self):
-        return translations.TR_OUTPUT
-
-    def button_widgets(self):
-        return []
 
 
 class OutputWidget(QPlainTextEdit):
@@ -349,7 +454,8 @@ class OutputWidget(QPlainTextEdit):
         # Formats
         plain_format = QTextCharFormat()
         normal_format = QTextCharFormat()
-        normal_format.setForeground(QColor(resources.get_color("Default")))
+        normal_format.setForeground(
+            QColor(resources.COLOR_SCHEME.get("editor.foreground")))
         error_format = QTextCharFormat()
         error_format.setForeground(QColor('#ff6c6c'))
         error_format2 = QTextCharFormat()
@@ -371,7 +477,8 @@ class OutputWidget(QPlainTextEdit):
         # Style
         palette = self.palette()
         palette.setColor(
-            palette.Base, QColor(resources.get_color('EditorBackground')))
+            palette.Base,
+            QColor(resources.COLOR_SCHEME.get('editor.background')))
         self.setPalette(palette)
 
     def mousePressEvent(self, event):
@@ -477,3 +584,6 @@ class OutputWidget(QPlainTextEdit):
         cursor.movePosition(QTextCursor.End)
         cursor.setCharFormat(end_format)
         cursor.insertBlock(QTextBlockFormat())
+
+
+RunWidget()

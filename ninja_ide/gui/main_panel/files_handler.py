@@ -39,17 +39,19 @@ logger = NinjaLogger(__name__)
 class FilesHandler(QWidget):
 
     def __init__(self, parent=None):
-        super(FilesHandler, self).__init__(None, Qt.Popup)
+        super(FilesHandler, self).__init__(
+            None, Qt.FramelessWindowHint | Qt.Popup)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setFixedWidth(500)
-        self.setFixedHeight(400)
         self._main_container = parent
         # Create the QML user interface.
+        self.setFixedHeight(300)
+        self.setFixedWidth(400)
         self.view = QQuickWidget()
         self.view.rootContext().setContextProperty(
             "theme", resources.QML_COLORS)
         self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
+        # self.view.setClearColor(Qt.transparent)
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -82,6 +84,7 @@ class FilesHandler(QWidget):
         self.hide()
 
     def _close(self, path, temp):
+        # FIXME: when we have splitters?
         if temp:
             nfile = self._temp_files.get(temp, None)
         else:
@@ -152,22 +155,23 @@ class FilesHandler(QWidget):
     def showEvent(self, event):
         self._add_model()
         editor_widget = self._main_container.get_current_editor()
-        # widget = self._main_container.get_current_editor()
-        # if widget is None:
-        #    widget = self._main_container
-        # if self._main_container.splitter.count() < 2:
-        #    width = max(widget.width() / 2, 400)
-        #     height = max(widget.height() / 2, 300)
-        # else:
-        #    width = widget.width()
-        #    height = widget.height()
-        # self.view.setFixedWidth(width)
-        # self.view.setFixedHeight(height)
+        simple = False
+        if editor_widget.height() < 400 or editor_widget.width() < 350:
+            width = editor_widget.width()
+            height = self._main_container.height() / 3
+            simple = True
+        else:
+            width = max(editor_widget.width() / 3, 550)
+            height = max(editor_widget.height() / 2, 400)
 
+        self.setFixedWidth(width)
+        self.setFixedHeight(height)
+
+        self._root.setMode(simple)
         super(FilesHandler, self).showEvent(event)
         # self._root.show_animation()
         point = editor_widget.mapToGlobal(self.view.pos())
-        self.move(point.x(), point.y())
+        self.move(point)
         # Trick
         QTimer.singleShot(100, self.__set_focus)
 
