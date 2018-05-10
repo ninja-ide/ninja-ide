@@ -177,6 +177,9 @@ class NSwapFile(QObject):
         self.init(tracking=True)
 
     def discard(self):
+        if (self._neditable is None or self._neditable.editor is None):
+            return
+
         self._neditable.editor.setReadOnly(False)
         # Remove swap file
         self.__remove()
