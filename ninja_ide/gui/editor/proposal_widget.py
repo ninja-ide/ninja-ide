@@ -136,20 +136,18 @@ class ProposalDelegate(QStyledItemDelegate):
 
     def paint(self, painter, opt, index):
         self.initStyleOption(opt, index)
+        painter.save()
         widget = opt.widget
         widget.style().drawControl(
             QStyle.CE_ItemViewItem, opt, painter, widget)
         proposal_type = index.data(Qt.UserRole)
-        painter.setRenderHint(painter.Antialiasing, True)
-        painter.save()
         font = painter.font()
         font.setItalic(True)
         font.setPointSize(font.pointSize() * 0.98)
         painter.setFont(font)
+        color = opt.palette.color(opt.palette.Disabled, opt.palette.Text)
         if opt.state & QStyle.State_Selected:
             color = QColor(opt.palette.text())
-        else:
-            color = opt.palette.color(opt.palette.Disabled, opt.palette.Text)
         painter.setPen(color)
         rect = opt.rect
         # Just a margin
