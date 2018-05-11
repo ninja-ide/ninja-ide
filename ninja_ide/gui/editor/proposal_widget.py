@@ -145,10 +145,11 @@ class ProposalDelegate(QStyledItemDelegate):
         font.setItalic(True)
         font.setPointSize(font.pointSize() * 0.98)
         painter.setFont(font)
-        color = opt.palette.color(opt.palette.Disabled, opt.palette.Text)
         if opt.state & QStyle.State_Selected:
-            color = QColor(opt.palette.text())
-        painter.setPen(color)
+            painter.setPen(QColor(opt.palette.text()))
+        else:
+            painter.setPen(
+                opt.palette.color(opt.palette.Disabled, opt.palette.Text))
         rect = opt.rect
         # Just a margin
         rect.setRight(rect.right() - 10)
