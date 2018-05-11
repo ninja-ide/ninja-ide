@@ -120,7 +120,6 @@ class IDE(QMainWindow):
         self.__neditables = {}
         # Filesystem
         self.filesystem = nfilesystem.NVirtualFileSystem()
-
         # Sessions handler
         self._session = None
         # Opacity

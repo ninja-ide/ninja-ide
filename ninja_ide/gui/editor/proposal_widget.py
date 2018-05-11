@@ -25,8 +25,10 @@ from PyQt5.QtWidgets import QStyle
 from PyQt5.QtWidgets import QStylePainter
 from PyQt5.QtWidgets import QStyleOptionFrame
 from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QStyledItemDelegate
 
 from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QColor
 
 from PyQt5.QtCore import QAbstractListModel
 from PyQt5.QtCore import Qt
@@ -99,13 +101,15 @@ class ProposalModel(QAbstractListModel):
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid() or index.row() >= len(self.__current_proposals):
             return None
+        item = self.__current_proposals[index.row()]
         if role == Qt.DisplayRole:
-            return self.__current_proposals[index.row()].text
+            return item.text
         elif role == Qt.DecorationRole:
-            return QIcon(
-                ":img/%s" % self.__current_proposals[index.row()].type)
+            return QIcon(":img/%s" % item.type)
+        elif role == Qt.UserRole:
+            return item.type
         elif role == Qt.WhatsThisRole:
-            return self.__current_proposals[index.row()].detail
+            return item.detail
         return None
 
     def item(self, index):
@@ -125,6 +129,37 @@ class ProposalModel(QAbstractListModel):
 
     def is_pre_filtered(self, prefix):
         return self.__prefix and prefix == self.__prefix
+
+
+class ProposalDelegate(QStyledItemDelegate):
+    """Custom delegate that adds the proposal type"""
+
+    def paint(self, painter, opt, index):
+        self.initStyleOption(opt, index)
+        widget = opt.widget
+        widget.style().drawControl(
+            QStyle.CE_ItemViewItem, opt, painter, widget)
+        proposal_type = index.data(Qt.UserRole)
+        painter.setRenderHint(painter.Antialiasing, True)
+        painter.save()
+        font = painter.font()
+        font.setItalic(True)
+        font.setPointSize(font.pointSize() * 0.98)
+        painter.setFont(font)
+        if opt.state & QStyle.State_Selected:
+            color = QColor(opt.palette.text())
+        else:
+            color = opt.palette.color(opt.palette.Disabled, opt.palette.Text)
+        painter.setPen(color)
+        rect = opt.rect
+        # Just a margin
+        rect.setRight(rect.right() - 10)
+        painter.drawText(rect, Qt.AlignRight, proposal_type)
+        painter.restore()
+
+    def sizeHint(self, opt, index):
+        sh = super().sizeHint(opt, index)
+        return QSize(sh.width() + 130, sh.height())
 
 
 class ProposalView(QListView):
@@ -251,6 +286,7 @@ class ProposalWidget(QFrame):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self._proposal_view = ProposalView()
+        self._proposal_view.setItemDelegate(ProposalDelegate())
         self.setFrameStyle(self._proposal_view.frameStyle())
 
         self._proposal_view.installEventFilter(self)
