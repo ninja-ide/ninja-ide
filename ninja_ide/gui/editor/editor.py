@@ -236,12 +236,15 @@ class NEditor(base_editor.BaseEditor):
     def show_text_changes(self, value):
         self._text_change_widget.setVisible(value)
 
+    def __clear_occurrences(self):
+        self.__word_occurrences.clear()
+        self._extra_selections.remove("occurrences")
+
     def highlight_selected_word(self):
         """Highlight word under cursor"""
 
         # Clear previous selections
-        self.__word_occurrences.clear()
-        self._extra_selections.remove("occurrences")
+        self.__clear_occurrences()
         if self._extra_selections.get("find"):
             # No re-highlight occurrences when have "find" extra selections
             return
@@ -630,6 +633,9 @@ class NEditor(base_editor.BaseEditor):
             self.viewport().setCursor(Qt.BlankCursor)
         if self.isReadOnly():
             return
+        text = event.text()
+        if text:
+            self.__clear_occurrences()
         # Emit a signal then plugins can do something
         event.ignore()
         self.keyPressed.emit(event)
