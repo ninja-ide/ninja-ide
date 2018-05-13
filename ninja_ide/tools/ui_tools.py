@@ -451,7 +451,6 @@ class LineEditCount(QObject):
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         self.counter = QLabel(lineEdit)
-        self.counter.setStyleSheet("background: #6a6ea9;")
         hbox.addWidget(self.counter)
         lineEdit.setStyleSheet("padding-right: 2px; padding-left: 2px;")
 

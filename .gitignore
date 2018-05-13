@@ -17,7 +17,7 @@ Thumbs.db
 *.jsc
 *~
 .directory
-
+.pytest_cache/
 
 # Developer
 .coverage

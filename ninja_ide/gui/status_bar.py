@@ -169,7 +169,7 @@ class SearchWidget(QWidget):
         self._btn_case_sensitive.toggled.connect(self.find)
         self._btn_whole_word.toggled.connect(self.find)
         self._btn_find_next.clicked.connect(self.find_next)
-        self._btn_highlight.toggled.connect(self.find)
+        self._btn_highlight.toggled.connect(self._toggle_highlighting)
         self._btn_find_previous.clicked.connect(self.find_previous)
 
         IDE.register_service("status_search", self)
@@ -189,13 +189,23 @@ class SearchWidget(QWidget):
         )
 
     def find_next(self):
-        self.find(forward=True)
+        self.find(forward=True, rehighlight=False)
 
     def find_previous(self):
-        self.find(backward=True)
+        self.find(backward=True, rehighlight=False)
+
+    def _toggle_highlighting(self, state):
+        main_container = IDE.get_service("main_container")
+        editor = main_container.get_current_editor()
+        if editor is not None:
+            cs, wo, _ = self.search_flags
+            if state:
+                editor.highlight_found_results(self.search_text, cs, wo)
+            else:
+                editor.clear_found_results()
 
     @pyqtSlot()
-    def find(self, backward=False, forward=False):
+    def find(self, backward=False, forward=False, rehighlight=True):
         """Collect flags and execute search in the editor"""
         main_container = IDE.get_service("main_container")
         editor = main_container.get_current_editor()
@@ -205,10 +215,15 @@ class SearchWidget(QWidget):
         index, matches = 0, 0
         found = editor.find_match(self.search_text, cs, wo, backward, forward)
         if found:
-            index, matches = editor.highlight_found_results(
-                self.search_text, cs, wo, highlight=highlight)
+            if rehighlight:
+                index, matches = editor.highlight_found_results(
+                    self.search_text, cs, wo)
         else:
-            editor.extra_selections.remove("find")
+            editor.clear_found_results()
+        if matches == 0 and found:
+            index, matches = editor._get_find_index_results(
+                self.search_text, cs, wo)
+            matches = len(matches)
         self._line_search.counter.update_count(
             index, matches, len(self.search_text) > 0)
 

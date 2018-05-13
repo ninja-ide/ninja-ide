@@ -206,7 +206,8 @@ class _MainContainer(QWidget):
         elif status_bar.isVisible():
             status_bar.hide_status_bar()
         if editor_widget is not None:
-            editor_widget.reset_selections()
+            editor_widget.extra_selections.remove("find")
+            editor_widget.scrollbar().remove_marker("find")
 
     def split_assistance(self):
         editor_widget = self.get_current_editor()

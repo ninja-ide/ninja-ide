@@ -34,7 +34,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QTimer
 
 from ninja_ide import resources
-from ninja_ide.tools import introspection
 from ninja_ide.tools import utils
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import indenter
@@ -276,29 +275,29 @@ class NEditor(base_editor.BaseEditor):
             # self._scrollbar.add_marker("find", marker)
         self._extra_selections.add("occurrences", selections)
 
-    def highlight_found_results(self, text, cs=False,
-                                wo=False, highlight=True):
+    def clear_found_results(self):
+        self._scrollbar.remove_marker("find")
+        self._extra_selections.remove("find")
+
+    def highlight_found_results(self, text, cs=False, wo=False):
         """Highlight all found results from find/replace widget"""
 
-        self._scrollbar.remove_marker("find")
-
         index, results = self._get_find_index_results(text, cs=cs, wo=wo)
-        if highlight:
-            selections = []
-            append = selections.append
-            color = resources.COLOR_SCHEME.get("editor.search.result")
-            for start, end in results:
-                selection = extra_selection.ExtraSelection(
-                    self.textCursor(),
-                    start_pos=start,
-                    end_pos=end
-                )
-                selection.set_background(color)
-                selection.set_foreground(utils.get_inverted_color(color))
-                append(selection)
-                line = selection.cursor.blockNumber()
-                self._scrollbar.add_marker("find", line, color)
-            self._extra_selections.add("find", selections)
+        selections = []
+        append = selections.append
+        color = resources.COLOR_SCHEME.get("editor.search.result")
+        for start, end in results:
+            selection = extra_selection.ExtraSelection(
+                self.textCursor(),
+                start_pos=start,
+                end_pos=end
+            )
+            selection.set_background(color)
+            selection.set_foreground(utils.get_inverted_color(color))
+            append(selection)
+            line = selection.cursor.blockNumber()
+            self._scrollbar.add_marker("find", line, color)
+        self._extra_selections.add("find", selections)
 
         return index, len(results)
 
@@ -328,10 +327,6 @@ class NEditor(base_editor.BaseEditor):
                     selection.set_underline(color)
                     selections.append(selection)
         self._extra_selections.add("checker", selections)
-
-    def reset_selections(self):
-        self._extra_selections.remove("find")
-        self._scrollbar.remove_marker("find")
 
     def show_indentation_guides(self, value):
         self._indentation_guides.actived = value
