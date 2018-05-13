@@ -87,6 +87,8 @@ class IntelliSenseAssistant(QObject):
         DEBUG("View created in: %.2fs" % (time.time() - t0))
 
     def _handle_definitions(self, definitions):
+        if not definitions:
+            return
         result = definitions[0]
         path = result["filename"]
         if path is None or path == self._editor.file_path:

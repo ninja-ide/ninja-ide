@@ -88,8 +88,8 @@ class JediService(intellisense_registry.IntelliSenseService):
             params_list.append(name)
         return params_list
 
-    def get_definitions(self, request):
-        script = self.__get_script(request)
+    def get_definitions(self):
+        script = self.__get_script()
         func = getattr(script, "goto_assignments", None)
         _definitions = []
         if func is not None:
