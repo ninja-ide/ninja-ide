@@ -375,7 +375,7 @@ class ProposalWidget(QFrame):
             if self._info_frame is not None:
                 self._info_frame.close()
             return True
-        if event.type() == QEvent.KeyPress:
+        elif event.type() == QEvent.KeyPress:
             if event.key() == Qt.Key_Escape:
                 self.abort()
                 event.accept()

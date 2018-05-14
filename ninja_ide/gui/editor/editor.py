@@ -78,9 +78,6 @@ class NEditor(base_editor.BaseEditor):
         self.__encoding = None
         self._highlighter = None
         self._last_line_position = 0
-        # List of word separators
-        # Can be used by code completion and the link emulator
-        self.word_separators = [",", ".", ":", "[", "]", "(", ")", "{", "}"]
         # Extra Selections
         self._extra_selections = ExtraSelectionManager(self)
         # Load indenter based on language
@@ -471,6 +468,14 @@ class NEditor(base_editor.BaseEditor):
         text = self.word_under_cursor(cursor).selectedText()
         if text and not self.inside_string_or_comment(cursor):
             self._intellisense.process("definitions")
+
+    def wheelEvent(self, event):
+        # Avoid scrolling the editor when the completions view is displayed
+        if self._intellisense._view is not None:
+            if not self._intellisense._view.isVisible():
+                super().wheelEvent(event)
+        else:
+            super().wheelEvent(event)
 
     def mouseMoveEvent(self, event):
         position = event.pos()

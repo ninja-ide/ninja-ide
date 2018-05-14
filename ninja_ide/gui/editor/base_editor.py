@@ -42,6 +42,9 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
     def __init__(self):
         QPlainTextEdit.__init__(self)
         EditorMixin.__init__(self)
+        # Word separators
+        # Can be used by code completion and the link emulator
+        self.word_separators = "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?"
         # Style
         self.__init_style()
         self.__apply_style()
@@ -233,7 +236,6 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
         if ignore is not None:
             word_separators = [w for w in self.word_separators
                                if w not in ignore]
-
         start_pos = end_pos = cursor.position()
         while not cursor.atStart():
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)

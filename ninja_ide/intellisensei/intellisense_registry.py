@@ -76,10 +76,9 @@ class IntelliSense(QObject):
         return self.__services.keys()
 
     def _code_info(self, editor):
-        word = editor.word_under_cursor(ignore=("(", ")", ".")).selectedText()
-        if not word:
-            return {}
+        # word = editor.word_under_cursor(ignore=("(", ")", ".")).selectedText()
         line, col = editor.cursor_position
+        # if not word:
         return {
             "source": editor.text,
             "line": line + 1,
