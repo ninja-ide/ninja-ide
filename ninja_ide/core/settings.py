@@ -256,13 +256,14 @@ FILE_TYPES = [
     ("Ninja project", (".nja",))
 ]
 # Mime types
-imaga_mimetypes = [f.data().decode()
+image_mimetypes = [f.data().decode()
                    for f in QImageReader.supportedMimeTypes()][1:]
 
 db = QMimeDatabase()
-for mt in imaga_mimetypes:
+for mt in image_mimetypes:
     mimetype = db.mimeTypeForName(mt)
-    FILE_TYPES.append((mimetype.comment(), mimetype.suffixes()))
+    suffixes = [".{}".format(s) for s in mimetype.suffixes()]
+    FILE_TYPES.append((mimetype.comment(), suffixes))
 
 LANGUAGE_MAP = {
     "py": "python",
@@ -306,7 +307,7 @@ WORKSPACE = ""
 
 
 def get_supported_extensions():
-    return [" *".join(extensions) for _, extensions in FILE_TYPES]
+    return [item for _, sub in FILE_TYPES for item in sub]
 
 
 def get_supported_extensions_filter():
