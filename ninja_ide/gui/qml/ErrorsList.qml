@@ -41,7 +41,7 @@ Rectangle {
                 "expanded": false});
         }
 
-        for(var i = 0; i < errorModel.length; i++) {
+        for(i = 0; i < errorModel.length; i++) {
             listFiles.model.append(
                 {"name": errorModel[i][0],
                 "codeLine": errorModel[i][1],
@@ -115,10 +115,14 @@ Rectangle {
                 root.previous_item();
             }
             Keys.onEnterPressed: {
-                root.open_item();
+                listFiles.model.get(listFiles.currentIndex).expanded = false;
+                listFiles.currentIndex = index;
+                listFiles.model.get(listFiles.currentIndex).expanded = true;
             }
             Keys.onReturnPressed: {
-                root.open_item();
+                listFiles.model.get(listFiles.currentIndex).expanded = false;
+                listFiles.currentIndex = index;
+                listFiles.model.get(listFiles.currentIndex).expanded = true;
             }
 
             Image {
