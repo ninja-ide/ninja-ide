@@ -315,7 +315,7 @@ class NEditor(base_editor.BaseEditor):
                 # Scrollbar marker
                 self._scrollbar.add_marker("checker", line, color, priority=1)
                 ms = checker.checks[line]
-                for (col_start, col_end), message in ms:
+                for (col_start, col_end), message, line_content in ms:
                     selection = extra_selection.ExtraSelection(
                         self.textCursor(),
                         start_line=line,
@@ -484,9 +484,9 @@ class NEditor(base_editor.BaseEditor):
             checkers = self._neditable.sorted_checkers
             for items in checkers:
                 checker, _, _ = items
-                messages_on_this_line = checker.message(line)
-                if messages_on_this_line is not None:
-                    for (start, end), message in messages_on_this_line:
+                messages_for_line = checker.message(line)
+                if messages_for_line is not None:
+                    for (start, end), message, content in messages_for_line:
                         if column >= start and column <= end:
                             QToolTip.showText(
                                 self.mapToGlobal(position), message, self)

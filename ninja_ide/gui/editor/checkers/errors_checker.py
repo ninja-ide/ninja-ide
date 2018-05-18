@@ -31,7 +31,7 @@ from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import checker
-# from ninja_ide.tools import ui_tools
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import helpers
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.core.file_handling import file_manager
@@ -49,11 +49,8 @@ class ErrorsChecker(QThread):
         self._path = ''
         self.checks = defaultdict(list)
 
-        # self.checker_icon = ui_tools.colored_icon(
-        #     ":img/bicho",
-        #     resources.get_color('ErrorUnderline')
-        # )
         self.checker_icon = None
+        self.checkerCompleted.connect(self.refresh_display)
 
     def run_checks(self):
         if not self.isRunning():
@@ -80,23 +77,20 @@ class ErrorsChecker(QThread):
                     text = text % reason.args[0]
                     range_ = helpers.get_range(
                         self._neditor, reason.lineno - 1, reason.offset)
-                    self.checks[reason.lineno - 1].append((range_, text))
+                    self.checks[reason.lineno - 1].append((range_, text, ""))
             else:
                 # Okay, now check it
                 lint_checker = checker.Checker(tree, self._path)
                 lint_checker.messages.sort(key=lambda msg: msg.lineno)
+                source_lines = source.split('\n')
                 for message in lint_checker.messages:
                     lineno = message.lineno - 1
-
-                    # if lineno not in self.checks:
-                    #     text = [message.message % message.message_args]
-                    # else:
-                    #     text = self.checks[lineno]
-                    #     text += (message.message % message.message_args,)
                     text = message.message % message.message_args
                     range_ = helpers.get_range(
                         self._neditor, lineno, message.col)
-                    self.checks[lineno].append((range_, text))
+                    self.checks[lineno].append(
+                        (range_, text, source_lines[lineno].strip()))
+
         self.checkerCompleted.emit()
 
     def message(self, lineno):
@@ -111,6 +105,11 @@ class ErrorsChecker(QThread):
     @property
     def dirty_text(self):
         return translations.TR_LINT_DIRTY_TEXT + str(len(self.checks))
+
+    def refresh_display(self):
+        error_list = IDE.get_service('tab_errors')
+        if error_list:
+            error_list.refresh_error_list(self.checks)
 
 
 def remove_error_checker():

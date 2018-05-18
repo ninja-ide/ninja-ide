@@ -99,7 +99,8 @@ class NotImporterChecker(QThread):
                                 values['mod_name'])
                     range_ = helpers.get_range(
                         self._editor, values['lineno'] - 1)
-                    self.checks[values['lineno'] - 1].append((range_, message))
+                    self.checks[values['lineno'] - 1].append(
+                        (range_, message, ""))
         self.checkerCompleted.emit()
 
     def message(self, index):

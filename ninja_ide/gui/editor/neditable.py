@@ -233,6 +233,6 @@ class NEditable(QObject):
     def update_checkers_display(self):
         for items in self.registered_checkers:
             checker, _, _ = items
-            func = getattr(checker, 'refresh_display', None)
-            if isinstance(func, collections.Callable):
-                func()
+            # func = getattr(checker, 'refresh_display', None)
+            # if isinstance(func, collections.Callable):
+            #     func()

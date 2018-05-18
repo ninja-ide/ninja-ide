@@ -27,17 +27,13 @@ from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-# from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.ide import IDE
 from ninja_ide.dependencies import pycodestyle
 from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
 from ninja_ide.gui.editor import helpers
-# from ninja_ide.tools import ui_tools
-# from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
-
-# TODO: limit results for performance
 
 
 class Pep8Checker(QThread):
@@ -52,10 +48,6 @@ class Pep8Checker(QThread):
 
         self.checker_icon = None
 
-        # ninjaide = IDE.get_service('ide')
-        # self.connect(ninjaide,
-        #             SIGNAL("ns_preferences_editor_checkStyle(PyQt_PyObject)"),
-        #             lambda: remove_pep8_checker())
         self.checkerCompleted.connect(self.refresh_display)
 
     @property
@@ -91,11 +83,15 @@ class Pep8Checker(QThread):
                 path,
                 lines=source.splitlines(True)
             )
+
+            source_lines = source.split('\n')
             # for lineno, offset, code, text, doc in temp_data:
             for lineno, col, code, text in temp_data:
-                message = '[PEP8] %s: %s' % (code, text)
+                message = '[PEP8]: %s' % text
                 range_ = helpers.get_range(self._editor, lineno - 1, col)
-                self.checks[lineno - 1].append((range_, message))
+                self.checks[lineno - 1].append(
+                    (range_, message, source_lines[lineno - 1].strip()))
+
         self.checkerCompleted.emit()
 
     def message(self, line):
@@ -104,13 +100,9 @@ class Pep8Checker(QThread):
         return None
 
     def refresh_display(self):
-        # error_list = IDE.get_service('tab_errors')
-        # error_tree = IDE.get_service('errors_tree')
-        # error_tree.refresh(self.checks, self._path)
-        """
+        error_list = IDE.get_service('tab_errors')
         if error_list:
             error_list.refresh_pep8_list(self.checks)
-        """
 
 
 class CustomReport(pycodestyle.StandardReport):
@@ -118,11 +110,9 @@ class CustomReport(pycodestyle.StandardReport):
     def get_file_results(self):
         data = []
         for line_number, offset, code, text, doc in self._deferred_print:
-            # row = self.line_offset + line_number
             col = offset + 1
             data.append((line_number, col, code, text))
         return data
-        # return sorted(self._deferred_print)
 
 
 class CustomChecker(pycodestyle.Checker):
