@@ -146,6 +146,9 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #                              import preferences_editor_completion
     # from ninja_ide.gui.dialogs.preferences import preferences_plugins
     # from ninja_ide.gui.dialogs.preferences import preferences_theme
+    from ninja_ide.gui.editor.checkers import errors_lists
+    from ninja_ide.gui.editor.checkers import errors_checker
+    from ninja_ide.gui.editor.checkers import pep8_checker
 
     # Loading Shortcuts
     app.processEvents()

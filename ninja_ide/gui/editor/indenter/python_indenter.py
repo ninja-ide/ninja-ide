@@ -41,12 +41,20 @@ class PythonIndenter(base.BaseIndenter):
         logger.debug(results)
 
         if should_hang:
-            if block.text():
-                if block.text()[0] in "])}":
-                    cursor.insertBlock()
-                    cursor.insertText(current_indent)
-                    cursor.movePosition(cursor.Up)
-                    self._neditor.setTextCursor(cursor)
+            cursor = self._neditor.textCursor()
+            text = cursor.block().text()
+            next_char = ""
+            if (len(text) > 0):
+                next_char = [0]
+
+            if len(next_char) > 0 and next_char in "}])":
+                cursor.insertBlock()
+                cursor.insertText(current_indent)
+                cursor.movePosition(cursor.Up)
+                self._neditor.setTextCursor(cursor)
+            else:
+                cursor.insertText(current_indent)
+
             cursor.insertText(current_indent + self.text())
             return
 

@@ -106,7 +106,7 @@ class FindInFilesWorker(QObject):
         line = stream.readLine()
         while not self._cancel and not stream.atEnd():
             column = self.search_pattern.indexIn(line)
-            if column != - 1:
+            if column != -1:
                 append((line_index, line))
             # Take the next line
             line = stream.readLine()

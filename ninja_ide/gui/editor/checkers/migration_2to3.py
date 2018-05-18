@@ -98,7 +98,7 @@ class MigrationTo3(QThread):
                     for nro, _ in lines_to_remove:
                         if lineno == -1:
                             lineno = nro
-                        self.checks[nro] = (message, lineno)
+                        self.checks[nro] = (message, lineno, "")
                     parsing_adds = False
                     lines_to_add = []
                     lines_to_remove = []
