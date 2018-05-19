@@ -330,7 +330,7 @@ Rectangle {
                             top: parent.top
                             bottom: parent.bottom
                         }
-                        text: "<font color='" + colorType + "'>" + (type == "+" ? "@" : type) + "</font>"
+                        text: "<font color='" + colorType + "'>" + type + "</font>"
                         font.bold: true
                         font.pixelSize: 30
                         verticalAlignment: Text.AlignVCenter
@@ -375,15 +375,6 @@ Rectangle {
                                 text: "[Line: " + (lineno + 1) + "]"
                                 visible: lineno > -1 ? true : false
                                 color: listItem.current ? theme.LocatorText : theme.LocatorAlternativeText
-                                font.pixelSize: 10
-                                font.bold: true
-                            }
-                            Text {
-                                id: recentlyOpened
-                                anchors.right: parent.right
-                                text: "Recently Opened"
-                                visible: type == "+"
-                                color: "cyan"
                                 font.pixelSize: 10
                                 font.bold: true
                             }
