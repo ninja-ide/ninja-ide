@@ -50,6 +50,7 @@ from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor import editor
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
+from ninja_ide.gui.editor.indicator import FadingIndicator
 # from ninja_ide.gui import notification
 
 logger = NinjaLogger(__name__)
@@ -466,7 +467,7 @@ class _MainContainer(QWidget):
 
     def create_editor_from_editable(self, editable):
         neditor = editor.create_editor(editable)
-        # neditor.zoomChanged.connect(self._on_zoom_changed)
+        neditor.zoomChanged.connect(self._on_zoom_changed)
         neditor.addBackItemNavigation.connect(self.add_back_item_navigation)
         # editable.fileSaved.connect(self._editor_tab)
         return neditor
@@ -480,7 +481,9 @@ class _MainContainer(QWidget):
                 # self.__code_forward.clear()
 
     def _on_zoom_changed(self, zoom):
-        pass
+        editor_widget = self.get_current_editor()
+        text = "Zoom: {}%".format(str(zoom))
+        FadingIndicator.show_text(editor_widget, text)
 
     def add_widget(self, widget):
         self.stack.addWidget(widget)

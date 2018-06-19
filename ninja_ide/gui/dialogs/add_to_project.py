@@ -35,10 +35,10 @@ class AddToProject(QDialog):
 
     def __init__(self, projects, parent=None):
         super(AddToProject, self).__init__(parent)
-        # pathProjects must be a list
+        # projects must be a list
         self._projects = projects
         self.setWindowTitle(translations.TR_ADD_FILE_TO_PROJECT)
-        self.pathSelected = ''
+        self.path_selected = ''
         vbox = QVBoxLayout(self)
 
         hbox = QHBoxLayout()
@@ -47,6 +47,7 @@ class AddToProject(QDialog):
             self._list.addItem(project.name)
         self._list.setCurrentRow(0)
         self._tree = QTreeView()
+        self._tree.setHeaderHidden(True)
         self._tree.setSelectionMode(QTreeView.SingleSelection)
         self._tree.setAnimated(True)
         self.load_tree(self._projects[0])
@@ -55,14 +56,14 @@ class AddToProject(QDialog):
         vbox.addLayout(hbox)
 
         hbox2 = QHBoxLayout()
-        btnAdd = QPushButton(translations.TR_ADD_HERE)
-        btnCancel = QPushButton(translations.TR_CANCEL)
-        hbox2.addWidget(btnCancel)
-        hbox2.addWidget(btnAdd)
+        btn_add = QPushButton(translations.TR_ADD_HERE)
+        btn_cancel = QPushButton(translations.TR_CANCEL)
+        hbox2.addWidget(btn_cancel)
+        hbox2.addWidget(btn_add)
         vbox.addLayout(hbox2)
 
-        btnAdd.clicked.connect(self._select_path)
-        btnCancel.clicked.connect(self.close)
+        btn_add.clicked.connect(self._select_path)
+        btn_cancel.clicked.connect(self.close)
         self._list.currentItemChanged.connect(self._project_changed)
 
     def _project_changed(self, item, previous):
@@ -98,8 +99,8 @@ class AddToProject(QDialog):
         # Please look at the project tree
 
     def _select_path(self):
-        """Set pathSelected to the folder selected in the tree."""
+        """Set path_selected to the folder selected in the tree."""
         path = self._tree.model().filePath(self._tree.currentIndex())
         if path:
-            self.pathSelected = path
+            self.path_selected = path
             self.close()

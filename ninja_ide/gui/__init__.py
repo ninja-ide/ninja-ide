@@ -129,7 +129,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # Checkers
     from ninja_ide.gui.editor.checkers import errors_checker  # noqa
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
-    from ninja_ide.gui.editor.checkers import not_import_checker  # noqa
+    # from ninja_ide.gui.editor.checkers import not_import_checker  # noqa
     # from ninja_ide.gui.editor.checkers import migration_2to3
     # Preferences
     from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa

@@ -688,10 +688,10 @@ TR_COPY_FILE = tr("NINJA-IDE", "Copy File")
 TR_DELETE_FILE = tr("NINJA-IDE", "Delete File")
 TR_DELETE_FOLLOWING_FILE = tr(
     "NINJA-IDE",
-    "Do you want to delete the following file?")
+    "Are you sure you want to delete '{}'?")
 TR_DELETE_FOLLOWING_FOLDER = tr(
     "NINJA-IDE",
-    "Do you want to delete the following folder?")
+    "Are you sure you want to delete '{}' and its contents?")
 TR_EDIT_UI_FILE = tr("NINJA-IDE", "Edit UI file")
 TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter New File Name")
 TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open Project Directory")

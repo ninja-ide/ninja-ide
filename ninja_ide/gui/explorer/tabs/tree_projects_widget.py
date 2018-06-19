@@ -671,9 +671,10 @@ class TreeProjectsWidget(QTreeView):
     def _delete_file(self, path=''):
         if not path:
             path = self.model().filePath(self.currentIndex())
+        name = file_manager.get_basename(path)
         val = QMessageBox.question(
             self, translations.TR_DELETE_FILE,
-            translations.TR_DELETE_FOLLOWING_FILE + path,
+            translations.TR_DELETE_FOLLOWING_FILE.format(name),
             QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
             ninjaide = IDE.get_service("ide")
@@ -693,9 +694,11 @@ class TreeProjectsWidget(QTreeView):
     def _delete_folder(self):
         # FIXME: We need nfilesystem support for this
         path = self.model().filePath(self.currentIndex())
-        val = QMessageBox.question(self, translations.TR_REMOVE_FOLDER,
-                                   translations.TR_DELETE_FOLLOWING_FOLDER +
-                                   path, QMessageBox.Yes, QMessageBox.No)
+        name = file_manager.get_basename(path)
+        val = QMessageBox.question(
+            self, translations.TR_REMOVE_FOLDER,
+            translations.TR_DELETE_FOLLOWING_FOLDER.format(name),
+            QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
             file_manager.delete_folder(path)
 
@@ -722,10 +725,10 @@ class TreeProjectsWidget(QTreeView):
         name = file_manager.get_basename(path)
         global projectsColumn
         pathProjects = [p.project for p in projectsColumn.projects]
-        addToProject = add_to_project.AddToProject(pathProjects, self)
-        addToProject.setWindowTitle(translations.TR_COPY_FILE_TO)
-        addToProject.exec_()
-        if not addToProject.pathSelected:
+        add_to_project_dialog = add_to_project.AddToProject(pathProjects, self)
+        add_to_project_dialog.setWindowTitle(translations.TR_COPY_FILE_TO)
+        add_to_project_dialog.exec_()
+        if not add_to_project_dialog.path_selected:
             return
         name = QInputDialog.getText(self, translations.TR_COPY_FILE,
                                     translations.TR_FILENAME, text=name)[0]
@@ -734,25 +737,27 @@ class TreeProjectsWidget(QTreeView):
                 self, translations.TR_INVALID_FILENAME,
                 translations.TR_INVALID_FILENAME_ENTER_A_FILENAME)
             return
-        new_path = file_manager.create_path(addToProject.pathSelected, name)
-        ide_srv = IDE.get_service("ide")
-        current_nfile = ide_srv.get_or_create_nfile(path)
+        new_path = file_manager.create_path(
+            add_to_project_dialog.pathSelected, name)
+        ninjaide = IDE.get_service("ide")
+        current_nfile = ninjaide.get_or_create_nfile(path)
         # FIXME: Catch willOverWrite and willCopyTo signals
         current_nfile.copy(new_path)
 
     def _move_file(self):
         path = self.model().filePath(self.currentIndex())
         global projectsColumn
-        pathProjects = [p.project for p in projectsColumn.projects]
-        addToProject = add_to_project.AddToProject(pathProjects, self)
-        addToProject.setWindowTitle(translations.TR_COPY_FILE_TO)
-        addToProject.exec_()
-        if not addToProject.pathSelected:
+        path_projects = [p.project for p in projectsColumn.projects]
+        add_to_project_dialog = add_to_project.AddToProject(path_projects)
+        add_to_project_dialog.setWindowTitle(translations.TR_MOVE_FILE)
+        add_to_project_dialog.exec_()
+        if not add_to_project_dialog.path_selected:
             return
         name = file_manager.get_basename(path)
-        new_path = file_manager.create_path(addToProject.pathSelected, name)
-        ide_srv = IDE.get_service("ide")
-        current_nfile = ide_srv.get_or_create_nfile(path)
+        new_path = file_manager.create_path(
+            add_to_project_dialog.path_selected, name)
+        ninjaide = IDE.get_service("ide")
+        current_nfile = ninjaide.get_or_create_nfile(path)
         current_nfile.close()
         # FIXME: Catch willOverWrite and willMove signals
         current_nfile.move(new_path)
