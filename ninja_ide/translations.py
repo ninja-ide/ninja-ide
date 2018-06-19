@@ -236,6 +236,7 @@ TR_SHOW_CONTAINING_FOLDER = tr("NINJA-IDE", "Open Containing Folder")
 TR_COPIED_TO_CLIPBOARD = tr("NINJA-IDE", "Copied to the Clipboard!")
 # Status Bar
 TR_LINE_FIND = tr("NINJA-IDE", "Find")
+TR_SEARCH_FROM_TOP = tr("NINJA-IDE", "Continuing search from top")
 TR_LINE_REPLACE = tr("NINJA-IDE", "Replace")
 TR_REPLACE_ALL = tr("NINJA-IDE", "Replace All")
 TR_REPLACE_SELECTION = tr("NINJA-IDE", "Replace Selection")

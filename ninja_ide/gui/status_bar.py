@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QShortcut
-from PyQt5.QtWidgets import QCheckBox
+# from PyQt5.QtWidgets import QCheckBox
 
 from PyQt5.QtGui import QKeySequence
 
@@ -37,6 +37,7 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
+from ninja_ide.gui.editor.indicator import FadingIndicator
 
 logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
@@ -224,6 +225,9 @@ class SearchWidget(QWidget):
             index, matches = editor._get_find_index_results(
                 self.search_text, cs, wo)
             matches = len(matches)
+            if index == 1:
+                FadingIndicator.show_text(
+                    editor, translations.TR_SEARCH_FROM_TOP, 1500)
         self._line_search.counter.update_count(
             index, matches, len(self.search_text) > 0)
 
