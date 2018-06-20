@@ -18,7 +18,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import collections
-
+from functools import partial
 from PyQt5.QtWidgets import (
     # QSplitter,
     QMenu,
@@ -230,7 +230,7 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
         if self.count() > 1:
             for i in range(1, self.count() + 1):
                 action = self.menuMoveToSplit.addAction("%d" % i)
-                action.triggered.connect(self._move_to_split)
+                action.triggered.connect(partial(self._move_to_split, -1))
 
         self.menu.exec_(bar.mapToGlobal(point))
 
