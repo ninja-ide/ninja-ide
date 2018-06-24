@@ -113,25 +113,20 @@ class FilesHandler(QWidget):
         ninjaide = IDE.get_service("ide")
         files = ninjaide.opened_files
         # Update model
-        old = set(self._model.keys())
-        new = set([nfile.file_path for nfile in files])
-        result = old - new
-        for item in result:
-            del self._model[item]
         current_editor = self._main_container.get_current_editor()
         current_path = None
-        if current_editor:
+        if current_editor is not None:
             current_path = current_editor.file_path
         model = []
         for nfile in files:
-            if (nfile.file_path not in self._model and
-                    nfile.file_path is not None):
+            if nfile.file_path is not None and \
+                    nfile.file_path not in self._model:
                 self._model[nfile.file_path] = 0
             neditable = ninjaide.get_or_create_editable(nfile=nfile)
             checkers = neditable.sorted_checkers
             checks = []
-            for items in checkers:
-                checker, color, _ = items
+            for item in checkers:
+                checker, color, _ = item
                 if checker.dirty:
                     checks.append({
                         "checker_text": checker.dirty_text,
@@ -140,11 +135,12 @@ class FilesHandler(QWidget):
             modified = neditable.editor.is_modified
             temp_file = str(uuid.uuid4()) if nfile.file_path is None else ""
             filepath = nfile.file_path if nfile.file_path is not None else ""
-            model.append([nfile.file_name, filepath, checks, modified,
-                          temp_file])
+            model.append([
+                nfile.file_name, filepath,
+                checks, modified, temp_file])
             if temp_file:
                 self._temp_files[temp_file] = nfile
-        if current_path:
+        if current_path is not None:
             index = self._model[current_path]
             self._max_index = max(self._max_index, index) + 1
             self._model[current_path] = self._max_index

@@ -71,7 +71,8 @@ class NEditable(QObject):
 
     def _on_file_removed_from_disk(self):
         # FIXME: maybe we should ask for save, save as...
-        self._nfile.close()
+        # self._nfile.close()
+        pass
 
     def extension(self):
         # FIXME This sucks, we should have a way to define lang

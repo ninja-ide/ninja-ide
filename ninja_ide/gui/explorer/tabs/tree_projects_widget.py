@@ -487,7 +487,7 @@ class TreeProjectsWidget(QTreeView):
         super(TreeProjectsWidget, self).setModel(model)
         self.__format_tree()
         # Activated is said to do the right thing on every system
-        self.clicked['const QModelIndex &'].connect(self._open_node)
+        self.doubleClicked['const QModelIndex &'].connect(self._open_node)
 
     def __init__(self, project, state_index=list()):
         super(TreeProjectsWidget, self).__init__()
@@ -705,20 +705,28 @@ class TreeProjectsWidget(QTreeView):
     def _rename_file(self):
         path = self.model().filePath(self.currentIndex())
         name = file_manager.get_basename(path)
-        result = QInputDialog.getText(self, translations.TR_RENAME_FILE,
-                                      translations.TR_ENTER_NEW_FILENAME,
-                                      text=name)
-        fileName = result[0]
-
-        if result[1] and fileName.strip() != '':
-            fileName = os.path.join(
-                file_manager.get_folder(path), fileName)
-            if path == fileName:
+        new_name, ok = QInputDialog.getText(
+            self, translations.TR_RENAME_FILE,
+            translations.TR_ENTER_NEW_FILENAME,
+            text=name)
+        if ok and new_name.strip():
+            filename = file_manager.create_path(
+                file_manager.get_folder(path), new_name)
+            if path == filename:
                 return
-            ide_srv = IDE.get_service("ide")
-            current_nfile = ide_srv.get_or_create_nfile(path)
-            # FIXME: Catch willOverWrite and willMove signals
-            current_nfile.move(fileName)
+            ninjaide = IDE.get_service("ide")
+            print(ninjaide.filesystem.get_files())
+            current_nfile = ninjaide.get_or_create_nfile(path)
+            editable = ninjaide.get_editable(nfile=current_nfile)
+            current_nfile.move(filename)
+            if editable is not None:
+                main_container = IDE.get_service("main_container")
+                main_container.combo_area.bar.update_item_text(
+                    editable, new_name)
+                tree = ninjaide.filesystem.get_files()
+                # FIXME: this is bad
+                tree[filename] = tree.pop(path)
+            print(ninjaide.filesystem.get_files())
 
     def _copy_file(self):
         path = self.model().filePath(self.currentIndex())

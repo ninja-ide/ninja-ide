@@ -403,6 +403,9 @@ class IDE(QMainWindow):
         """For convenience access to files from ide"""
         return self.filesystem.get_file(nfile_path=filename)
 
+    def get_editable(self, nfile=None):
+        return self.__neditables.get(nfile)
+
     def get_or_create_editable(self, filename="", nfile=None):
         if nfile is None:
             nfile = self.filesystem.get_file(nfile_path=filename)
@@ -689,17 +692,19 @@ class IDE(QMainWindow):
         #         editable.swap_file._file_closed()
 
         if data_settings.value("ide/loadFiles", True):
-            # Get opened files
-            opened_files = self.filesystem.get_files()
             # Get opened projects
             projects_obj = self.filesystem.get_projects()
             projects = [projects_obj[project].path for project in projects_obj]
-            data_settings.setValue('lastSession/projects', projects)
-            files_info = []
-            for path in opened_files:
-                editable = self.__neditables.get(opened_files[path])
-                files_info.append((path, editable.editor.cursor_position))
-            data_settings.setValue('lastSession/openedFiles', files_info)
+            data_settings.setValue("lastSession/projects", projects)
+            # Opened files
+            if self.opened_files:
+                files_info = []
+                for nfile in self.opened_files:
+                    editable = self.get_editable(nfile)
+                    files_info.append((
+                        nfile.file_path, editable.editor.cursor_position))
+                data_settings.setValue("lastSession/openedFiles", files_info)
+
         main_container = self.get_service("main_container")
         neditor = main_container.get_current_editor()
         # Current opened file

@@ -46,7 +46,7 @@ How to continue:
     So, to this object, whoever creates new NFiles should ask for a it, this
     way it keeps record of the files and can do closing when receives
     terminate from the ide, and decides to call a changed callback from each
-    file when the watched, that should deppend on it notifies a change.
+    file when the watched, that should depend on it notifies a change.
 """
 
 
@@ -137,8 +137,9 @@ class NFile(QObject):
             if current_mtime != self.__mtime:
                 self.__mtime = current_mtime
                 self.fileChanged.emit()
-        else:
-            self.fileRemoved.emit()
+        # FIXME: for swap file
+        # else:
+        #     self.fileRemoved.emit()
 
     def has_write_permission(self):
         if not self._exists():
@@ -222,7 +223,6 @@ class NFile(QObject):
         # watching
         if self.__watcher is not None:
             if new_path:
-                # FIXME: what?
                 # self.__watcher.removePath(self.__watcher.files()[0])
                 self.__watcher.addPath(self._file_path)
             else:
@@ -279,7 +279,6 @@ class NFile(QObject):
             if self.__watcher:
                 self.__watcher.addPath(new_path)
         self._file_path = new_path
-        return
 
     def copy(self, new_path):
         """

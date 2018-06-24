@@ -16,15 +16,16 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+
 from PyQt5.QtWidgets import QFileSystemModel
-from PyQt5.QtCore import (
-    QObject,
-    QDir,
-    pyqtSignal
-)
+
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import pyqtSignal
+
 from ninja_ide.core.file_handling.nfile import NFile
-from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
+
 logger = NinjaLogger('ninja_ide.core.file_handling.nfilesystem')
 
 
@@ -101,6 +102,7 @@ class NVirtualFileSystem(QObject):
 
     def __add_file(self, nfile):
         nfile.fileClosing['QString', bool].connect(self.__closed_file)
+        # nfile.willMove.connect(lambda _, old, new: self.__closed_file(old))
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         self.__tree[nfile.file_path] = nfile
         for each_path in existing_paths:
