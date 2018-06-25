@@ -89,7 +89,7 @@ Rectangle {
             Behavior on height {
                 NumberAnimation {
                     id: heightAnim
-                    duration: 250
+                    duration: 150
                     onRunningChanged: {
                         if(!heightAnim.running){
                             root.open_item();
@@ -153,7 +153,7 @@ Rectangle {
                         rightMargin: imgType.width
                     }
                     property string message: "%1"
-                    color: bug ? "red" : "yellow"
+                    color: bug ? colors.bug : colors.warning
                     font.pixelSize: expanded ? 16 : 12
                     font.bold: true
                     text: message.arg(name)
@@ -162,7 +162,7 @@ Rectangle {
                     height: expanded ? 60 : 13
 
                     Behavior on font.pixelSize {
-                        NumberAnimation { duration: 250 }
+                        NumberAnimation { duration: 150 }
                     }
                 }
                 Row {

@@ -90,6 +90,13 @@ class ErrorsList(QWidget):
         self.view = QQuickWidget()
         self.view.rootContext().setContextProperty(
             "theme", resources.QML_COLORS)
+        # Colors from theme
+        warn_bug_colors = {}
+        warn_bug_colors["warning"] = resources.COLOR_SCHEME.get("editor.pep8")
+        warn_bug_colors["bug"] = resources.COLOR_SCHEME.get("editor.checker")
+        self.view.rootContext().setContextProperty("colors", warn_bug_colors)
+        print(resources.QML_COLORS)
+        print(resources.COLOR_SCHEME)
         self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("ErrorsList.qml"))
         self._root = self.view.rootObject()
