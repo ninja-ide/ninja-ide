@@ -32,10 +32,13 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QPoint
 
 from ninja_ide import resources
 from ninja_ide.tools import utils
 from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import indenter
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import base_editor
@@ -48,13 +51,30 @@ from ninja_ide.gui.editor.extensions import margin_line
 from ninja_ide.gui.editor.extensions import indentation_guides
 from ninja_ide.gui.editor.extensions import braces
 from ninja_ide.gui.editor.extensions import quotes
-from ninja_ide.gui.editor.extensions import calltip
+# from ninja_ide.gui.editor.extensions import calltip
 # Side
 from ninja_ide.gui.editor.side_area import manager
 from ninja_ide.gui.editor.side_area import line_number_widget
 from ninja_ide.gui.editor.side_area import text_change_widget
 from ninja_ide.gui.editor.side_area import code_folding
 from ninja_ide.gui.editor.side_area import marker_widget
+
+
+class Link(object):
+
+    def __init__(self, filename=""):
+        self.filename = filename
+        self.line = 0
+        self.col = 0
+        self.pos_start = -1
+        self.pos_end = -1
+
+    def is_valid(self):
+        return self.pos_start != self.pos_end
+
+    def __eq__(self, other):
+        return self.pos_start == other.pos_start and \
+            self.pos_end == other.pos_end
 
 
 class NEditor(base_editor.BaseEditor):
@@ -75,6 +95,7 @@ class NEditor(base_editor.BaseEditor):
         self.setFrameStyle(QFrame.NoFrame)
         self._neditable = neditable
         self.setMouseTracking(True)
+        self.setCursorWidth(2)
         self.__encoding = None
         self._highlighter = None
         self._last_line_position = 0
@@ -84,6 +105,8 @@ class NEditor(base_editor.BaseEditor):
         self._indenter = indenter.load_indenter(self, neditable.language())
         # Widgets on side area
         self.side_widgets = manager.SideWidgetManager(self)
+
+        self._current_link = Link()
 
         # Set editor font before build lexer
         self.set_font(settings.FONT)
@@ -115,7 +138,7 @@ class NEditor(base_editor.BaseEditor):
             quotes.AutocompleteQuotes)
         self.autocomplete_quotes(settings.AUTOCOMPLETE_QUOTES)
         # Calltips
-        self.register_extension(calltip.CallTips)
+        # self.register_extension(calltip.CallTips)
         # Highlight word under cursor
         self.__word_occurrences = []
         self._highlight_word_timer = QTimer()
@@ -154,8 +177,11 @@ class NEditor(base_editor.BaseEditor):
         # Code folding
         self.side_widgets.add(code_folding.CodeFoldingWidget)
 
-        from ninja_ide.gui.editor import intellisense_assistant
-        self._intellisense = intellisense_assistant.IntelliSenseAssistant(self)
+        from ninja_ide.gui.editor import intellisense_assistant as ia
+        self._intellisense_assistant = None
+        intellisense = IDE.get_service("intellisense")
+        if intellisense.provider_services(self._neditable.language()):
+            self._intellisense_assistant = ia.IntelliSenseAssistant(self)
 
     @property
     def nfile(self):
@@ -389,6 +415,19 @@ class NEditor(base_editor.BaseEditor):
         font.setStyleStrategy(style)
         self.default_font = font
 
+    def viewportEvent(self, event):
+        if event.type() == QEvent.ToolTip:
+            pos = event.pos()
+            tc = self.cursorForPosition(pos)
+            block = tc.block()
+            line = block.layout().lineForTextPosition(tc.positionInBlock())
+            if line.isValid():
+                if pos.x() <= self.blockBoundingRect(block).left() + \
+                        line.naturalTextRect().right():
+                    # TODO: Handle hover tips
+                    return True
+        return super().viewportEvent(event)
+
     def focusInEvent(self, event):
         super().focusInEvent(event)
         self.editorFocusObtained.emit()
@@ -409,10 +448,6 @@ class NEditor(base_editor.BaseEditor):
         self.side_widgets.resize()
         self.side_widgets.update_viewport()
         self.adjust_scrollbar_ranges()
-
-    def clear_link(self):
-        self._extra_selections.remove("link")
-        self.viewport().setCursor(Qt.IBeamCursor)
 
     def __smart_backspace(self):
         accepted = False
@@ -466,18 +501,50 @@ class NEditor(base_editor.BaseEditor):
 
     def _go_to_definition_requested(self, cursor):
         text = self.word_under_cursor(cursor).selectedText()
+        # self._intellisense_assistant.definitions(text)
         if text and not self.inside_string_or_comment(cursor):
-            self._intellisense.process("definitions")
+            self._intellisense_assistant.invoke("definitions")
+
+    def _update_link(self, mouse_event):
+        if mouse_event.modifiers() == Qt.ControlModifier:
+            cursor = self.cursorForPosition(mouse_event.pos())
+            text = self.word_under_cursor(cursor).selectedText()
+            if not text:
+                return
+            if self.inside_string_or_comment(cursor) or self.is_keyword(text):
+                return
+            self.show_link(cursor)
+            self.viewport().setCursor(Qt.PointingHandCursor)
+        else:
+            self.viewport().setCursor(Qt.IBeamCursor)
+
+    def show_link(self, cursor):
+        start_s, end_s = cursor.selectionStart(), cursor.selectionEnd()
+        selection = extra_selection.ExtraSelection(
+            cursor,
+            start_pos=start_s,
+            end_pos=end_s
+        )
+        link_color = resources.COLOR_SCHEME.get("editor.link.navigate")
+        selection.set_underline(link_color, style=1)
+        selection.set_foreground(link_color)
+        self._extra_selections.add("link", selection)
+
+    def clear_link(self):
+        self._extra_selections.remove("link")
+        self.viewport().setCursor(Qt.IBeamCursor)
 
     def wheelEvent(self, event):
         # Avoid scrolling the editor when the completions view is displayed
-        if self._intellisense._view is not None:
-            if not self._intellisense._view.isVisible():
+        if self._intellisense_assistant._proposal_widget is not None:
+            if not self._intellisense_assistant._proposal_widget.isVisible():
                 super().wheelEvent(event)
         else:
             super().wheelEvent(event)
 
     def mouseMoveEvent(self, event):
+        self._update_link(event)
+
         position = event.pos()
         cursor = self.cursorForPosition(position)
         block = cursor.block()
@@ -497,49 +564,9 @@ class NEditor(base_editor.BaseEditor):
                         if column >= start and column <= end:
                             QToolTip.showText(
                                 self.mapToGlobal(position), message, self)
-
-        # Go to def link emulation
-        if event.modifiers() == Qt.ControlModifier:
-            cursor = self.cursorForPosition(event.pos())
-            text = self.word_under_cursor(cursor).selectedText()
-            block = cursor.block()
-            if text and not self.is_keyword(text) and \
-                    not self.inside_string_or_comment(cursor):
-                start, end = cursor.selectionStart(), cursor.selectionEnd()
-                selection = extra_selection.ExtraSelection(
-                    cursor,
-                    start_pos=start,
-                    end_pos=end
-                )
-                link_color = resources.COLOR_SCHEME.get("editor.link.navigate")
-                selection.set_underline(link_color, style=1)
-                selection.set_foreground(link_color)
-                self._extra_selections.add("link", selection)
-                self.viewport().setCursor(Qt.PointingHandCursor)
-        else:
-            self.clear_link()
         # Restore mouse cursor if settings say hide while typing
         if self.viewport().cursor().shape() == Qt.BlankCursor:
             self.viewport().setCursor(Qt.IBeamCursor)
-        '''if event.modifiers() == Qt.ControlModifier:
-            if self.__link_selection is not None:
-                return
-            cursor = self.cursorForPosition(event.pos())
-            # Check that the mouse was actually on the text somewhere
-            on_text = self.cursorRect(cursor).right() >= event.x()
-            if on_text:
-                cursor.select(QTextCursor.WordUnderCursor)
-                selection_start = cursor.selectionStart()
-                selection_end = cursor.selectionEnd()
-                self.__link_selection = extra_selection.ExtraSelection(
-                    cursor,
-                    start_pos=selection_start,
-                    end_pos=selection_end
-                )
-                self.__link_selection.set_underline("red")
-                self.__link_selection.set_full_width()
-                self.add_extra_selection(self.__link_selection)
-                self.viewport().setCursor(Qt.PointingHandCursor)'''
         super(NEditor, self).mouseMoveEvent(event)
 
     def is_modifier(self, key_event):
@@ -553,14 +580,13 @@ class NEditor(base_editor.BaseEditor):
         self.keyReleased.emit(event)
         if event.key() == Qt.Key_Control:
             self.clear_link()
-        #    if self.__link_selection is not None:
-        #        self.remove_extra_selection(self.__link_selection)
-        #        self.__link_selection = None
-        #        self.viewport().setCursor(Qt.IBeamCursor)
         super().keyReleaseEvent(event)
 
     def show_tooltip(self, text, position, duration=1000 * 60):
         QToolTip.showText(position, text, self, self.rect(), duration)
+
+    def hide_tooltip(self):
+        QToolTip.hideText()
 
     def current_color(self, cursor=None):
         if cursor is None:
@@ -668,13 +694,14 @@ class NEditor(base_editor.BaseEditor):
             super().keyPressEvent(event)
         # Post key press
         self.postKeyPressed.emit(event)
-        ctrl = event.modifiers() == Qt.ControlModifier
+
         # TODO: generalize it with triggers
         # TODO: shortcut
-        force_completion = ctrl and event.key() == Qt.Key_Space
-        if event.key() == Qt.Key_Period or force_completion:
-            if not self.inside_string_or_comment():
-                self._intellisense.process("completions")
+        # force_completion = ctrl and event.key() == Qt.Key_Space
+        # if event.key() == Qt.Key_Period or force_completion:
+        #     if not self.inside_string_or_comment():
+        #         self._intellisense.invoke_completion()
+                # self._intellisense.process("completions")
 
     def adjust_scrollbar_ranges(self):
         line_spacing = QFontMetrics(self.font()).lineSpacing()
@@ -860,6 +887,7 @@ class ExtraSelectionManager(object):
 
 def create_editor(neditable=None):
     neditor = NEditor(neditable)
+
     # if neditable is not None:
     #    language = neditable.language()
     #    if language is not None:

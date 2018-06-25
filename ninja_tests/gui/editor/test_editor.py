@@ -31,7 +31,8 @@ from ninja_ide.tools import json_manager
 
 
 IDE.register_service("ide", Mock())
-IDE.register_service("intellisense", Mock())
+import ninja_ide.intellisensei.intellisense_registry  # noqa
+# IDE.register_service("intellisense", Mock())
 json_manager.load_syntax()
 
 

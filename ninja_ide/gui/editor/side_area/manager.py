@@ -24,6 +24,7 @@ class SideWidgetManager(object):
     def __init__(self, neditor):
         self.__widgets = OrderedDict()
         self._neditor = neditor
+        self.__width = 0
 
         neditor.blockCountChanged.connect(self.update_viewport)
         neditor.updateRequest.connect(self._update)
@@ -82,3 +83,8 @@ class SideWidgetManager(object):
             width = size_hint.width()
             widget.setGeometry(current_x + left, top, width, height)
             left += size_hint.width()
+        self.__width = left
+
+    @property
+    def width(self):
+        return self.__width

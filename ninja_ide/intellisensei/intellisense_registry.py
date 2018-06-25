@@ -16,170 +16,153 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import time
-
+import abc
+from collections import namedtuple
 from collections import Callable
 
 from PyQt5.QtCore import QObject
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QRunnable
+from PyQt5.QtCore import QThread
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import pyqtSlot
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger(__name__)
 
-
-class Signals(QObject):
-
-    finished = pyqtSignal()
-    ready = pyqtSignal("PyQt_PyObject")
-    error = pyqtSignal("PyQt_PyObject")
+CodeInfo = namedtuple("CodeInfo", "pservice source line col path")
 
 
-class Worker(QRunnable):
+class IntelliSenseWorker(QThread):
 
-    def __init__(self, runnable, *args, **kwargs):
-        QRunnable.__init__(self)
-        self.signals = Signals()
+    workerFailed = pyqtSignal(str)
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.__result = None
+
+    def request(self, runnable, *args, **kwargs):
         self.__runnable = runnable
         self.__args = args
         self.__kwargs = kwargs
+        self.start()
 
-    @pyqtSlot()
+    @property
+    def result(self):
+        return self.__result
+
     def run(self):
         try:
-            result = self.__runnable(*self.__args, **self.__kwargs)
+            self.__result = self.__runnable(*self.__args, **self.__kwargs)
         except Exception as reason:
-            logger.error("Error occurred: '%s'" % str(reason))
-            self.signals.error.emit(reason)
-        else:
-            self.signals.ready.emit(result)
-        finally:
-            self.signals.finished.emit()
+            self.workerFailed.emit(str(reason))
 
 
 class IntelliSense(QObject):
 
-    resultAvailable = pyqtSignal("PyQt_PyObject", "QString")
+    resultAvailable = pyqtSignal("PyQt_PyObject")
+
+    services = ("completions", "calltips")
 
     def __init__(self):
         QObject.__init__(self)
-        self.__services = {}
-        self.__thread = QThreadPool()
-        self._main_container = IDE.get_service("main_container")
+        self.__providers = {}
+        self.__thread = None
+        # self._main_container = IDE.get_service("main_container")
 
+        # Register service
         IDE.register_service("intellisense", self)
 
-    def services(self):
-        return self.__services.keys()
+    def providers(self):
+        return self.__providers.keys()
 
-    def _code_info(self, editor):
-        # word = editor.word_under_cursor(ignore=("(", ")", ".")).selectedText()
+    def register_provider(self, provider):
+        provider_object = provider()
+        self.__providers[provider.language] = provider_object
+        provider_object.load()
+
+    def provider(self, language):
+        return self.__providers.get(language)
+
+    def _code_info(self, editor, kind):
         line, col = editor.cursor_position
-        # if not word:
-        return {
-            "source": editor.text,
-            "line": line + 1,
-            "column": col,
-            "path": editor.file_path,
-        }
+        return CodeInfo(
+            kind,
+            editor.text,
+            line + 1,
+            col,
+            editor.file_path
+        )
 
-    def get(self, operation, editor):
-        """Handle request"""
-        func_name = "get_" + operation
-        language = editor.neditable.language()
-        service = self.__services.get(language)
-        if service is None:
-            logger.warning("No IntelliSense service for '{}'".format(language))
+    def process(self, kind, neditor):
+        """Handle request from IntelliSense Assistant"""
+        if self.__thread is not None:
+            if self.__thread.isRunning():
+                logger.debug("Waiting...")
+                return
+        code_info = self._code_info(neditor, kind)
+        logger.debug("Running '{}'".format(code_info.pservice))
+        provider = self.__providers.get(neditor.neditable.language())
+        setattr(provider, "_code_info", code_info)
+        provider_service = getattr(provider, kind, None)
+        if isinstance(provider_service, Callable):
+            self.__thread = IntelliSenseWorker(self)
+            self.__thread.finished.connect(self._on_worker_finished)
+            self.__thread.finished.connect(self.__thread.deleteLater)
+            self.__thread.request(provider_service)
+
+    def _on_worker_finished(self):
+        if self.__thread is None:
             return
-        code_info = self._code_info(editor)
-        setattr(service, "_code_info", code_info)
-        self._start_time = time.time()
-        func = getattr(service, func_name, None)
-        if isinstance(func, Callable):
-            worker = Worker(func)
-            worker.signals.ready.connect(
-                lambda r: self._on_ready(r, operation))
-            worker.signals.error.connect(self._on_error)
-            worker.signals.finished.connect(self._on_finished)
-            self.__thread.start(worker)
+        result = self.__thread.result
+        self.__thread = None
+        self.resultAvailable.emit(result)
 
-    @pyqtSlot()
-    def _on_finished(self):
-        logger.debug("Worker finished")
+    def provider_services(self, language):
+        """Returns the services available for a provider"""
 
-    @pyqtSlot("PyQt_PyObject", "QString")
-    def _on_ready(self, result, operation):
-        logger.debug("Worker finalize in %.1f" % (
-            time.time() - self._start_time))
-        self.resultAvailable.emit(result, operation)
-
-    @pyqtSlot("PyQt_PyObject")
-    def _on_error(self, error):
-        logger.error("Error ocurred '{}'".format(error))
-
-    def register_service(self, service):
-        self.__services[service.language] = service()
+        return [service for service in dir(self.provider(language))
+                if service in IntelliSense.services]
 
 
-class IntelliSenseService(QObject):
-
+class Provider(abc.ABC):
     """
-    Any IntelliSense Service defined should inherit from this
-    The only mandatory method is get_completions.
-    Also, you should specify the language.
+    Any IntelliSense Provider defined should inherit from this class
+    The only mandatory method is Provider.completions.
     """
 
-    language = "python"  # Python is our priority
-
-    def __init__(self):
-        QObject.__init__(self)
+    language = "python"
+    triggers = ["."]  # FIXME: only works with one char
 
     @classmethod
     def register(cls):
+        """Register this provider in the IntelliSense service"""
+
         intellisense = IDE.get_service("intellisense")
-        intellisense.register_service(cls)
+        intellisense.register_provider(cls)
 
-    def get_definitions(self):
-        """
-        Here we expect you to return a list of dicts.
-        {
-            "text": definition name,
-            "filename": definition path,
-            "line": line number,
-            "column": column number
-        }
-        """
+    def load(self):
+        """This will load things before it is used."""
+        pass
 
-    def get_signatures(self):
-        """Here we expect you to return a list of dicts.
-        {
-            "signature.name": name,
-            "signature.params": list of signature params,
-            "signature.index": index
-        }
-        """
-
-    def get_completions(self):
+    @abc.abstractmethod
+    def completions(self):
         """
         Here we expect you to return a list of dicts.
 
         The dict must have the following structure:
         {
-            "text": completion_name,
-            "type": completion_type,
-            "detail": detail, description of completion
+            "text": "completion_name",
+            "type": "completion_type",
+            "detail": "completion_detail"
         }
-        >>> completions = []
-        >>> c1 = {"text": "capitalize", "type": "function"}
-        >>> c2 = {"text": "casefold", "type": "function"}
-        >>> completions.append(c1)
-        >>> completions.append(c2)
-
+        The "text" key is the text that will be displayed in the list.
+        The "type" key can be: function, class, instance.
+        The "detail" key is a text that will be displayed next to the list
+        as a tool tip.
         """
-        raise NotImplementedError("You should implement this")
+
+    def calltips(self):
+        pass
 
 
 # Register service

@@ -31,30 +31,35 @@ finally:
     sys.path.remove(jedi_path)
 
 logger = NinjaLogger(__name__)
-DEBUG = logger.debug
 
 
-class JediService(intellisense_registry.IntelliSenseService):
+class PythonProvider(intellisense_registry.Provider):
+
+    def load(self):
+        jedi.settings.case_insensitive_completion = False
+        for module in ("PyQt4", "PyQt5", "numpy"):
+            jedi.preload_module(module)
 
     def __get_script(self):
         info = self._code_info
         try:
             script = jedi.Script(
-                source=info.get("source"),
-                line=info["line"],
-                column=info["column"],
-                path=info.get("path", ""),
+                source=info.source,
+                line=info.line,
+                column=info.col,
+                path=info.path,
                 sys_path=sys.path
             )
         except Exception as reason:
-            DEBUG("Jedi error: '%s'" % reason)
+            logger.debug("Jedi error: '%s'" % reason)
         return script
 
-    def get_completions(self):
+    def completions(self):
         script = self.__get_script()
         completions = []
+        append = completions.append
         for completion in script.completions():
-            completions.append({
+            append({
                 "text": completion.name,
                 "type": completion.type,
                 "detail": completion.docstring()
@@ -62,7 +67,33 @@ class JediService(intellisense_registry.IntelliSenseService):
 
         return completions
 
-    def get_signatures(self):
+    def definitions(self):
+        script = self.__get_script()
+        func = getattr(script, "goto_assignments", None)
+        _definitions = []
+        if func is not None:
+            definitions = func()
+            for definition in definitions:
+                if definition.type == "import":
+                    definition = self._get_top_definitions(definition)
+                _definitions.append({
+                    "text": definition.name,
+                    "filename": definition.module_path,
+                    "line": definition.line,
+                    "column": definition.column,
+                })
+        return _definitions
+
+    def __get_top_definitions(self, definition):
+        for _def in definition.goto_assignments():
+            if _def == definition:
+                continue
+            if _def.type == "import":
+                return self.__get_top_definitions(_def)
+            return _def
+        return definition
+
+    def calltips(self):
         script = self.__get_script()
         signatures = script.call_signatures()
         results = {}
@@ -88,32 +119,89 @@ class JediService(intellisense_registry.IntelliSenseService):
             params_list.append(name)
         return params_list
 
-    def get_definitions(self):
-        script = self.__get_script()
-        func = getattr(script, "goto_assignments", None)
-        _definitions = []
-        if func is not None:
-            definitions = func()
-            for definition in definitions:
-                if definition.type == "import":
-                    definition = self._get_top_definitions(definition)
 
-                _definitions.append({
-                    "text": definition.name,
-                    "filename": definition.module_path,
-                    "line": definition.line,
-                    "column": definition.column,
-                })
-        return _definitions
+PythonProvider.register()
 
-    def __get_top_definitions(self, definition):
-        for _def in definition.goto_assignments():
-            if _def == definition:
-                continue
-            if _def.type == "import":
-                return self.__get_top_definitions(_def)
-            return _def
-        return definition
+# class JediService(intellisense_registry.IntelliSenseService):
+
+#     def __get_script(self):
+#         info = self._code_info
+#         try:
+#             script = jedi.Script(
+#                 source=info.get("source"),
+#                 line=info["line"],
+#                 column=info["column"],
+#                 path=info.get("path", ""),
+#                 sys_path=sys.path
+#             )
+#         except Exception as reason:
+#             DEBUG("Jedi error: '%s'" % reason)
+#         return script
+
+#     def get_completions(self):
+#         script = self.__get_script()
+#         completions = []
+#         for completion in script.completions():
+#             completions.append({
+#                 "text": completion.name,
+#                 "type": completion.type,
+#                 "detail": completion.docstring()
+#             })
+
+#         return completions
+
+#     def get_signatures(self):
+#         script = self.__get_script()
+#         signatures = script.call_signatures()
+#         results = {}
+#         for signature in signatures:
+#             name = signature.name
+#             if not name:
+#                 continue
+#             results["signature.name"] = name
+#             results["signature.params"] = self._get_params(signature.params)
+#             results["signature.index"] = signature.index
+#         return results
+
+#     def _get_params(self, params):
+#         params_list = []
+#         for pos, param in enumerate(params):
+#             name = param.full_name
+#             if not name:
+#                 continue
+#             if name == "self" and pos == 0:
+#                 continue
+#             if not name.startswith("..."):
+#                 name = name.split(".")[-1]
+#             params_list.append(name)
+#         return params_list
+
+#     def get_definitions(self):
+#         script = self.__get_script()
+#         func = getattr(script, "goto_assignments", None)
+#         _definitions = []
+#         if func is not None:
+#             definitions = func()
+#             for definition in definitions:
+#                 if definition.type == "import":
+#                     definition = self._get_top_definitions(definition)
+
+#                 _definitions.append({
+#                     "text": definition.name,
+#                     "filename": definition.module_path,
+#                     "line": definition.line,
+#                     "column": definition.column,
+#                 })
+#         return _definitions
+
+#     def __get_top_definitions(self, definition):
+#         for _def in definition.goto_assignments():
+#             if _def == definition:
+#                 continue
+#             if _def.type == "import":
+#                 return self.__get_top_definitions(_def)
+#             return _def
+#         return definition
 
 
-JediService.register()
+# JediService.register()

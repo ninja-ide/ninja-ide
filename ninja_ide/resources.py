@@ -195,7 +195,7 @@ SHORTCUTS = {
     "go-to-definition": QKeySequence(Qt.CTRL + Qt.Key_Return),
     "complete-declarations": QKeySequence(Qt.ALT + Qt.Key_Return),
     "locator": QKeySequence(Qt.CTRL + Qt.Key_K),
-    # "show-completions": QKeySequence(Qt.CTRL + Qt.Key_Space),
+    "show-completions": QKeySequence(Qt.CTRL + Qt.Key_Space),
     "file-Opener": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_O),
     "navigate-back": QKeySequence(Qt.ALT + Qt.Key_Left),
     "navigate-forward": QKeySequence(Qt.ALT + Qt.Key_Right),

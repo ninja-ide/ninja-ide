@@ -132,23 +132,23 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # from ninja_ide.gui.editor.checkers import not_import_checker  # noqa
     # from ninja_ide.gui.editor.checkers import migration_2to3
     # Preferences
-    from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
-    from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
-    # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
-    from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
-    from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
-    from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
-    from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
-    from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
+    # # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
+    # from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_behavior  # noqa
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
     from ninja_ide.intellisensei import intellisense_registry  # noqa
     from ninja_ide.intellisensei import python_intellisense  # noqa
     # from ninja_ide.gui.dialogs.preferences
     #                              import preferences_editor_completion
     # from ninja_ide.gui.dialogs.preferences import preferences_plugins
     # from ninja_ide.gui.dialogs.preferences import preferences_theme
-    from ninja_ide.gui.editor.checkers import errors_lists
-    from ninja_ide.gui.editor.checkers import errors_checker
-    from ninja_ide.gui.editor.checkers import pep8_checker
+    from ninja_ide.gui.editor.checkers import errors_lists  # noqa
+    from ninja_ide.gui.editor.checkers import errors_checker  # noqa
+    from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 
     # Loading Shortcuts
     app.processEvents()

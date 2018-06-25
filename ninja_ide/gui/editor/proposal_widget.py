@@ -43,16 +43,28 @@ from ninja_ide.core import settings
 
 
 class ProposalItem(object):
-    __slots__ = ("text", "type", "detail")
+    """
+    The ProposalItem class acts as an interface for representing an assist
+    proposal item.
+    """
+    __slots__ = ("text", "type", "detail", "__icon")
 
     def __init__(self, text):
         self.text = text
         self.type = None
         self.detail = None
+        self.__icon = None
 
     @property
     def lower_text(self):
         return self.text.lower()
+
+    @property
+    def icon(self):
+        return self.__icon
+
+    def set_icon(self, icon_name):
+        self.__icon = QIcon(":img/{}".format(icon_name))
 
     def __repr__(self):
         return self.__str__()
@@ -105,7 +117,7 @@ class ProposalModel(QAbstractListModel):
         if role == Qt.DisplayRole:
             return item.text
         elif role == Qt.DecorationRole:
-            return QIcon(":img/%s" % item.type)
+            return item.icon
         elif role == Qt.UserRole:
             return item.type
         elif role == Qt.WhatsThisRole:
@@ -171,7 +183,7 @@ class ProposalView(QListView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFont(settings.FONT)
-        self.setFrameStyle(QFrame.NoFrame)
+        # self.setFrameStyle(QFrame.NoFrame)
         self.setUniformItemSizes(True)
         self.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -223,6 +235,7 @@ class ProposalView(QListView):
 
 
 class InfoFrame(QFrame):
+    """Widget to show call tips"""
 
     def __init__(self, parent):
         super().__init__(parent, Qt.ToolTip | Qt.WindowStaysOnTopHint)
@@ -271,7 +284,6 @@ class ProposalWidget(QFrame):
 
     def __init__(self, parent):
         super().__init__(parent)
-        # self.setWindowFlags(Qt.SubWindow | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self._editor = parent
         self._model = None
@@ -285,8 +297,9 @@ class ProposalWidget(QFrame):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self._proposal_view = ProposalView()
-        self._proposal_view.setItemDelegate(ProposalDelegate())
         self.setFrameStyle(self._proposal_view.frameStyle())
+        self._proposal_view.setFrameStyle(QFrame.NoFrame)
+        self._proposal_view.setItemDelegate(ProposalDelegate())
 
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)

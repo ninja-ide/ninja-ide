@@ -15,45 +15,87 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-import time
-
 from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import Qt
 
+from ninja_ide import resources
 from ninja_ide.gui.editor import proposal_widget
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
+from ninja_ide.gui.editor.indicator import FadingIndicator
+
 
 logger = NinjaLogger(__name__)
-DEBUG = logger.debug
 
 
 class IntelliSenseAssistant(QObject):
-    """
-    Proxy to communicate the editor with the intellisense.
 
-    This object processes the editor request, communicates with the
-    intellisense through signals/slots and processes the results
-    by applying them to the editor.
-    """
     def __init__(self, editor):
-        super().__init__(editor)
+        QObject.__init__(self)
         self._editor = editor
         # Proposal widget
-        self._view = None
+        self._proposal_widget = None
+        self.__kind = "completions"
 
-        self._operations = {
+        self.__handlers = {
             "completions": self._handle_completions,
-            "definitions": self._handle_definitions,
-            "signatures": self._handle_signatures
+            "calltips": self._handle_calltips,
+            "definitions": self._handle_definitions
         }
-        self._intellisense = IDE.get_service("intellisense")
 
-    def _handle_signatures(self, signatures):
-        if not signatures:
+        self._intellisense = IDE.get_service("intellisense")
+        self._provider = self._intellisense.provider(
+            editor.neditable.language())
+
+        # Connections
+        self._editor.postKeyPressed.connect(self._on_post_key_pressed)
+        self._editor.keyReleased.connect(self._on_key_released)
+        self._intellisense.resultAvailable.connect(self._on_result_available)
+        self._editor.destroyed.connect(self.deleteLater)
+
+    def _on_key_released(self, event):
+        key = event.key()
+        if key in (Qt.Key_ParenLeft, Qt.Key_Comma):
+            self.invoke("calltips")
+        elif key in (
+                Qt.Key_ParenRight,
+                Qt.Key_Return,
+                Qt.Key_Left,
+                Qt.Key_Right,
+                Qt.Key_Down,
+                Qt.Key_Up,
+                Qt.Key_Backspace,
+                Qt.Key_Escape):
+            self._editor.hide_tooltip()
+
+    def _on_post_key_pressed(self, key_event):
+        if key_event.key() == Qt.Key_Escape:
+            self._editor.hide_tooltip()
+
+        key = key_event.text()
+        if not key:
             return
-        if not signatures["signature.params"]:
-            return
+
+        # TODO: shortcut
+        if key in self._provider.triggers and not \
+                self._editor.inside_string_or_comment():
+            self.invoke("completions")
+
+    def invoke(self, kind):
+        self.__kind = kind
+        if kind == "completions":
+            if self._proposal_widget is not None:
+                self._proposal_widget.abort()
+        self._intellisense.process(kind, self._editor)
+
+    def _on_result_available(self, result):
+        try:
+            handler = self.__handlers[self.__kind]
+            handler(result)
+        except KeyError as reason:
+            logger.error(reason)
+
+    def _handle_calltips(self, signatures: list):
         calltip = "<p style='white-space:pre'>{0}(".format(
             signatures.get("signature.name"))
         params = signatures.get("signature.params")
@@ -68,62 +110,56 @@ class IntelliSenseAssistant(QObject):
         calltip += ")"
         crect = self._editor.cursorRect()
         crect.setX(crect.x() + self._editor.viewport().x())
-        crect.setY(crect.y() + self._editor.fontMetrics().height() - 10)
         position = self._editor.mapToGlobal(crect.topLeft())
         self._editor.show_tooltip(calltip, position)
 
-    def _handle_completions(self, completions):
-        if not completions:
-            return
+    def _handle_completions(self, completions: list):
         _completions = []
         append = _completions.append
-        t0 = time.time()
         for completion in completions:
             item = proposal_widget.ProposalItem(completion["text"])
-            item.type = completion["type"]
+            completion_type = completion["type"]
+            item.type = completion_type
             item.detail = completion["detail"]
+            item.set_icon(completion_type)
             append(item)
         self._create_view(_completions)
-        DEBUG("View created in: %.2fs" % (time.time() - t0))
 
-    def _handle_definitions(self, definitions):
-        if not definitions:
-            return
-        result = definitions[0]
-        path = result["filename"]
-        if path is None or path == self._editor.file_path:
-            self._editor.go_to_line(result["line"] - 1, result["column"])
-        else:
-            main = IDE.get_service("main_container")
-            main.open_file(
-                path, result["line"] - 1, result["column"])
+    def _handle_definitions(self, defs):
+        if defs:
+            defs = defs[0]
+            if defs["line"] is not None:
+                line = defs["line"] - 1
+                column = defs["column"]
+                fname = defs["filename"]
+                if fname == self._editor.file_path:
+                    self._editor.go_to_line(line, column)
+                else:
+                    main_container = IDE.get_service("main_container")
+                    main_container.open_file(fname, line, column)
+                return
 
-    @pyqtSlot("PyQt_PyObject", "QString")
-    def _on_finished(self, result, kind):
-        self._operations[kind](result)
-        # Disconnect
-        self._intellisense.resultAvailable.disconnect(self._on_finished)
-
-    def process(self, kind):
-        self._intellisense.resultAvailable.connect(self._on_finished)
-        if kind == "completions":
-            if self._view is not None:
-                self._view.abort()
-        self._intellisense.get(kind, self._editor)
+        FadingIndicator.show_text(self._editor, "Definition not found")
 
     def _create_view(self, completions):
-        self._view = proposal_widget.ProposalWidget(self._editor)
-        self._view.destroyed.connect(self.finalize)
-        self._view.proposalItemActivated.connect(self._process_proposal_item)
+        """Create proposal widget to show completions"""
 
-        model = proposal_widget.ProposalModel(self._view)
+        self._proposal_widget = proposal_widget.ProposalWidget(self._editor)
+        self._proposal_widget.destroyed.connect(self.finalize)
+        self._proposal_widget.proposalItemActivated.connect(
+            self._process_proposal_item)
+
+        model = proposal_widget.ProposalModel(self._proposal_widget)
         model.set_items(completions)
-        self._view.set_model(model)
-        self._view.show_proposal()
+        self._proposal_widget.set_model(model)
+        self._proposal_widget.show_proposal()
+
+    def finalize(self):
+        del self._proposal_widget
+        self._proposal_widget = None
 
     def _process_proposal_item(self, item):
-        """Handle proposal item from completions/snippets"""
-        prefix = self.__word_before_cursor()
+        prefix = self._editor.word_under_cursor().selectedText()
         to_insert = item.text[len(prefix):]
         prefix_inserted = item.text[:len(prefix)]
         if prefix_inserted != prefix:
@@ -138,12 +174,4 @@ class IntelliSenseAssistant(QObject):
         self._editor.textCursor().insertText(to_insert)
 
         if item.type == "function":
-            # If completion inserted is a function, we will add the parentheses
             self._editor.textCursor().insertText("()")
-
-    def finalize(self):
-        del self._view
-        self._view = None
-
-    def __word_before_cursor(self, cursor=None, ignore=None):
-        return self._editor.word_under_cursor(cursor, ignore).selectedText()

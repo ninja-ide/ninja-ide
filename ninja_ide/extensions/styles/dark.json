@@ -13,7 +13,7 @@
     "editor.brace.matched": "green",
     "editor.brace.unmatched": "red",
     "editor.line": "#313131",
-    "editor.link.navigate": "red",
+    "editor.link.navigate": "orange",
     "editor.occurrence": "#434343",
     "editor.search.result": "#73c990",
     "colors": [
