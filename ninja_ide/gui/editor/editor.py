@@ -106,7 +106,7 @@ class NEditor(base_editor.BaseEditor):
         # Widgets on side area
         self.side_widgets = manager.SideWidgetManager(self)
 
-        self._current_link = Link()
+        self.__link_pressed = False
 
         # Set editor font before build lexer
         self.set_font(settings.FONT)
@@ -178,10 +178,10 @@ class NEditor(base_editor.BaseEditor):
         self.side_widgets.add(code_folding.CodeFoldingWidget)
 
         from ninja_ide.gui.editor import intellisense_assistant as ia
-        self._intellisense_assistant = None
+        self._iassistant = None
         intellisense = IDE.get_service("intellisense")
         if intellisense.provider_services(self._neditable.language()):
-            self._intellisense_assistant = ia.IntelliSenseAssistant(self)
+            self._iassistant = ia.IntelliSenseAssistant(self)
 
     @property
     def nfile(self):
@@ -496,27 +496,30 @@ class NEditor(base_editor.BaseEditor):
         super().mouseReleaseEvent(event)
         if event.modifiers() == Qt.ControlModifier:
             if event.button() == Qt.LeftButton:
-                cursor = self.cursorForPosition(event.pos())
-                self._go_to_definition_requested(cursor)
+                if self.__link_pressed:
+                    cursor = self.cursorForPosition(event.pos())
+                    self._go_to_definition_requested(cursor)
 
     def _go_to_definition_requested(self, cursor):
         text = self.word_under_cursor(cursor).selectedText()
-        # self._intellisense_assistant.definitions(text)
+        # self._iassistant.definitions(text)
         if text and not self.inside_string_or_comment(cursor):
-            self._intellisense_assistant.invoke("definitions")
+            self._iassistant.invoke("definitions")
 
     def _update_link(self, mouse_event):
         if mouse_event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(mouse_event.pos())
             text = self.word_under_cursor(cursor).selectedText()
             if not text:
+                self.clear_link()
                 return
             if self.inside_string_or_comment(cursor) or self.is_keyword(text):
                 return
             self.show_link(cursor)
             self.viewport().setCursor(Qt.PointingHandCursor)
-        else:
-            self.viewport().setCursor(Qt.IBeamCursor)
+            return
+
+        self.clear_link()
 
     def show_link(self, cursor):
         start_s, end_s = cursor.selectionStart(), cursor.selectionEnd()
@@ -529,15 +532,20 @@ class NEditor(base_editor.BaseEditor):
         selection.set_underline(link_color, style=1)
         selection.set_foreground(link_color)
         self._extra_selections.add("link", selection)
+        self.__link_pressed = True
 
     def clear_link(self):
         self._extra_selections.remove("link")
         self.viewport().setCursor(Qt.IBeamCursor)
+        self.__link_pressed = False
 
     def wheelEvent(self, event):
         # Avoid scrolling the editor when the completions view is displayed
-        if self._intellisense_assistant._proposal_widget is not None:
-            if not self._intellisense_assistant._proposal_widget.isVisible():
+        if self._iassistant is not None:
+            if self._iassistant._proposal_widget is not None:
+                if not self._iassistant._proposal_widget.isVisible():
+                    super().wheelEvent(event)
+            else:
                 super().wheelEvent(event)
         else:
             super().wheelEvent(event)

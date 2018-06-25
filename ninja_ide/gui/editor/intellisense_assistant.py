@@ -18,12 +18,11 @@
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import Qt
 
-from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.gui.editor import proposal_widget
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor.indicator import FadingIndicator
-
 
 logger = NinjaLogger(__name__)
 
@@ -50,7 +49,6 @@ class IntelliSenseAssistant(QObject):
         # Connections
         self._editor.postKeyPressed.connect(self._on_post_key_pressed)
         self._editor.keyReleased.connect(self._on_key_released)
-        self._intellisense.resultAvailable.connect(self._on_result_available)
         self._editor.destroyed.connect(self.deleteLater)
 
     def _on_key_released(self, event):
@@ -83,12 +81,15 @@ class IntelliSenseAssistant(QObject):
 
     def invoke(self, kind):
         self.__kind = kind
+        self._intellisense.resultAvailable.connect(self._on_result_available)
         if kind == "completions":
             if self._proposal_widget is not None:
                 self._proposal_widget.abort()
         self._intellisense.process(kind, self._editor)
 
     def _on_result_available(self, result):
+        self._intellisense.resultAvailable.disconnect(
+            self._on_result_available)
         try:
             handler = self.__handlers[self.__kind]
             handler(result)
@@ -114,6 +115,8 @@ class IntelliSenseAssistant(QObject):
         self._editor.show_tooltip(calltip, position)
 
     def _handle_completions(self, completions: list):
+        if not completions:
+            return
         _completions = []
         append = _completions.append
         for completion in completions:
@@ -139,7 +142,8 @@ class IntelliSenseAssistant(QObject):
                     main_container.open_file(fname, line, column)
                 return
 
-        FadingIndicator.show_text(self._editor, "Definition not found")
+        FadingIndicator.show_text(
+            self._editor, translations.TR_DEFINITION_NOT_FOUND)
 
     def _create_view(self, completions):
         """Create proposal widget to show completions"""
@@ -148,7 +152,6 @@ class IntelliSenseAssistant(QObject):
         self._proposal_widget.destroyed.connect(self.finalize)
         self._proposal_widget.proposalItemActivated.connect(
             self._process_proposal_item)
-
         model = proposal_widget.ProposalModel(self._proposal_widget)
         model.set_items(completions)
         self._proposal_widget.set_model(model)
