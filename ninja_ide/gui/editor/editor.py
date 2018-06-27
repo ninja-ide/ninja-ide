@@ -511,10 +511,10 @@ class NEditor(base_editor.BaseEditor):
         if mouse_event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(mouse_event.pos())
             text = self.word_under_cursor(cursor).selectedText()
+            if self.inside_string_or_comment(cursor) or self.is_keyword(text):
+                return
             if not text:
                 self.clear_link()
-                return
-            if self.inside_string_or_comment(cursor) or self.is_keyword(text):
                 return
             self.show_link(cursor)
             self.viewport().setCursor(Qt.PointingHandCursor)
