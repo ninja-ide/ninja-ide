@@ -45,7 +45,7 @@ class PythonIndenter(base.BaseIndenter):
             text = cursor.block().text()
             next_char = ""
             if (len(text) > 0):
-                next_char = [0]
+                next_char = text[0]
 
             if len(next_char) > 0 and next_char in "}])":
                 cursor.insertBlock()
