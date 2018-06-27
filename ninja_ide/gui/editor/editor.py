@@ -430,7 +430,8 @@ class NEditor(base_editor.BaseEditor):
 
     def focusInEvent(self, event):
         super().focusInEvent(event)
-        self.editorFocusObtained.emit()
+        if event.reason() == Qt.MouseFocusReason:
+            self.editorFocusObtained.emit()
 
     def dropEvent(self, event):
         if event.type() == Qt.ControlModifier and self.has_selection:

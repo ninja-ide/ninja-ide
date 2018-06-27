@@ -94,7 +94,6 @@ class ComboEditor(QWidget):
             self._main_container.show_files_handler)
         self.bar.combo_files.hideComboSelector.connect(
             self._main_container.hide_files_handler)
-        self.bar.needUpdateFocus.connect(self._editor_with_focus)
         self.bar.change_current['PyQt_PyObject',
                                 int].connect(self._set_current)
         self.bar.splitEditor[bool].connect(self.split_editor)
@@ -174,10 +173,15 @@ class ComboEditor(QWidget):
                 self.bar.setVisible(True)
             if keep_index:
                 self.bar.set_current_by_index(current_index)
+
             # Connections
             neditable.fileClosing.connect(self._close_file)
+            neditable.fileSaved.connect(self._update_symbols)
             editor.editorFocusObtained.connect(self._editor_with_focus)
             editor.modificationChanged.connect(self._editor_modified)
+            editor.cursor_position_changed[int, int].connect(
+                self._update_cursor_position)
+            editor.current_line_changed[int].connect(self._set_current_symbol)
             if neditable._swap_file.dirty:
                 self._editor_modified(True, sender=editor)
             neditable.checkersUpdated.connect(self._show_notification_icon)
@@ -185,34 +189,8 @@ class ComboEditor(QWidget):
             if self.__original:
                 neditable.askForSaveFileClosing.connect(self._ask_for_save)
                 neditable.fileChanged.connect(self._file_has_been_modified)
-            # Editor Signals
-            editor.cursor_position_changed[int, int].connect(
-                self._update_cursor_position)
-            editor.current_line_changed[int].connect(self._set_current_symbol)
-            """
-            # self.connect(editor, SIGNAL("editorFocusObtained()"),
-            #             self._editor_with_focus)
-            editor.editorFocusObtained.connect(self._editor_with_focus)
-            neditable.fileSaved['PyQt_PyObject'].connect(
-                self._update_combo_info)
-            neditable.fileSaved['PyQt_PyObject'].connect(
-                self._update_symbols)
-            editor.modificationChanged[bool].connect(self._editor_modified)
-            neditable.checkersUpdated.connect(self._show_notification_icon)
-
-            # Connect file system signals only in the original
-            neditable.fileClosing['PyQt_PyObject'].connect(self._close_file)
-            if self.__original:
-                neditable.askForSaveFileClosing['PyQt_PyObject'].connect(
-                    self._ask_for_save)
-
-                neditable.fileChanged['PyQt_PyObject'].connect(
-                    self._file_has_been_modified)
-                self.info_bar.reloadClicked.connect(neditable.reload_file)
-
             # Load Symbols
             self._load_symbols(neditable)
-            """
 
     def show_combo_file(self):
         self.bar.combo.showPopup()
@@ -285,11 +263,8 @@ class ComboEditor(QWidget):
     #         # self.emit(SIGNAL("recentTabsModified()"))
 
     def _editor_with_focus(self):
-        # if self._main_container.current_widget is not self:
         self._main_container.combo_area = self
         editor = self.current_editor()
-        # FIXME: maybe improve this in ComboFiles.needUpdateFocus
-        # see issue #2027
         if editor is not None:
             self._main_container.current_editor_changed(
                 editor.neditable.file_path)
@@ -421,7 +396,7 @@ class ComboEditor(QWidget):
     def _update_symbols(self, neditable):
         editor = self.current_editor()
         # Check if it's current to avoid signals from other splits.
-        if editor == neditable.editor:
+        if editor.neditable == neditable:
             self._load_symbols(neditable)
 
     def _update_combo_info(self, neditable):
@@ -509,7 +484,7 @@ class ActionBar(QFrame):
         # self.lbl_checks.setVisible(False)
         # hbox.addWidget(self.lbl_checks)
 
-        self.combo_files = ComboFiles()
+        self.combo_files = ComboFiles(self)
         self.combo_files.setObjectName("combotab")
         self.combo_files.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -517,7 +492,6 @@ class ActionBar(QFrame):
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self.combo_files.setMaximumWidth(400)
         self.combo_files.currentIndexChanged[int].connect(self.current_changed)
-        self.combo_files.needUpdateFocus.connect(lambda: self.needUpdateFocus.emit())
         self.combo_files.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
         self.combo_files.setContextMenuPolicy(Qt.CustomContextMenu)
         self.combo_files.customContextMenuRequested.connect(
@@ -602,7 +576,7 @@ class ActionBar(QFrame):
         return editables
 
     def add_symbols(self, symbols):
-        """Add the symbols to the symbols's combo."""
+        """Add the symbols to thcurrente symbols's combo."""
 
         mo = Model(symbols)
         self.symbols_combo.setModel(mo)
@@ -841,10 +815,12 @@ class ActionBar(QFrame):
 class ComboFiles(QComboBox):
     showComboSelector = pyqtSignal()
     hideComboSelector = pyqtSignal()
-    needUpdateFocus = pyqtSignal()
 
     def focusInEvent(self, event):
-        self.needUpdateFocus.emit()
+        combo_editor = self.parentWidget().parent()
+        main = IDE.get_service("main_container")
+        if combo_editor != main.combo_area:
+            main.combo_area = combo_editor
 
     def showPopup(self):
         self.showComboSelector.emit()

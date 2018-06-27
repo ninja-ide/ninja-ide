@@ -97,6 +97,8 @@ class IntelliSenseAssistant(QObject):
             logger.error(reason)
 
     def _handle_calltips(self, signatures: list):
+        if not signatures:
+            return
         calltip = "<p style='white-space:pre'>{0}(".format(
             signatures.get("signature.name"))
         params = signatures.get("signature.params")
