@@ -598,18 +598,28 @@ class NEditor(base_editor.BaseEditor):
         QToolTip.hideText()
 
     def current_color(self, cursor=None):
+        """Get the sintax highlighting color for the current QTextCursor"""
+
         if cursor is None:
             cursor = self.textCursor()
         block = cursor.block()
+        pos = cursor.position() - block.position()
         layout = block.layout()
         block_formats = layout.additionalFormats()
         if block_formats:
-            current_format = block_formats[-1].format
-            if current_format is None:
-                return None
+            if cursor.atBlockEnd():
+                current_format = block_formats[-1].format
+            else:
+                current_format = None
+                for fmt in block_formats:
+                    if (pos >= fmt.start) and (pos < fmt.start + fmt.length):
+                        current_format = fmt.format
+                if current_format is None:
+                    return None
             color = current_format.foreground().color().name()
             return color
-        return None
+        else:
+            return None
 
     def inside_string_or_comment(self, cursor=None):
         """Check if the cursor is inside a comment or string"""
@@ -618,7 +628,6 @@ class NEditor(base_editor.BaseEditor):
         if cursor is None:
             cursor = self.textCursor()
         current_color = self.current_color(cursor)
-
         colors = []
         for k, v in self._highlighter.formats.items():
             if k.startswith("comment") or k.startswith("string"):
