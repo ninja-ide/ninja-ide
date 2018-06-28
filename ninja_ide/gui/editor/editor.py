@@ -94,6 +94,7 @@ class NEditor(base_editor.BaseEditor):
         super().__init__()
         self.setFrameStyle(QFrame.NoFrame)
         self._neditable = neditable
+        self.allow_word_wrap(False)
         self.setMouseTracking(True)
         self.setCursorWidth(2)
         self.__encoding = None
@@ -552,7 +553,8 @@ class NEditor(base_editor.BaseEditor):
             super().wheelEvent(event)
 
     def mouseMoveEvent(self, event):
-        self._update_link(event)
+        if self._highlighter is not None:
+            self._update_link(event)
 
         position = event.pos()
         cursor = self.cursorForPosition(position)
@@ -905,10 +907,19 @@ class ExtraSelectionManager(object):
 
 def create_editor(neditable=None):
     neditor = NEditor(neditable)
-
-    # if neditable is not None:
-    #    language = neditable.language()
-    #    if language is not None:
-    #        neditor.register_syntax_for(language=language)
-
+    language = neditable.language()
+    if language is None:
+        # For python files without the extension
+        # FIXME: Move to another module
+        # FIXME: Generalize it?
+        for line in neditor.text.splitlines():
+            if not line.strip():
+                continue
+            if line.startswith("#!"):
+                shebang = line[2:]
+                if "python" in shebang:
+                    language = "python"
+            else:
+                break
+    neditor.register_syntax_for(language)
     return neditor

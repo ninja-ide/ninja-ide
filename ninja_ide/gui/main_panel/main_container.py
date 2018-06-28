@@ -462,7 +462,6 @@ class _MainContainer(QWidget):
 
         self.stack.setCurrentWidget(self.splitter)
         editor_widget.setFocus()
-        editor_widget.register_syntax_for(editable.language())
         return editor_widget
 
     def create_editor_from_editable(self, editable):
