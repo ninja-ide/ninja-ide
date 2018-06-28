@@ -16,19 +16,22 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import pytest
+from unittest.mock import Mock
 
-from ninja_ide.core.file_handling import nfile
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import neditable
+
+from PyQt5.QtGui import QTextDocument
 
 
 def make_editor():
-    editable = neditable.NEditable(nfile.NFile())
+    editable = Mock()
+    editable.document = QTextDocument()
+    editable.language = lambda: "python"
     _editor = editor.create_editor(editable)
     return _editor
 
 
-def make_indent(text, language=None):
+def make_indent(text):
     """Indent last line of text"""
 
     editor_bot = make_editor()
@@ -61,22 +64,22 @@ def test_2():
 
 
 def test_3():
-    text = make_indent('def foo():', language='python')
+    text = make_indent('def foo():')
     assert text == 'def foo():\n    '
 
 
 def test_4():
-    text = make_indent('def foo():\n    pass', language='python')
+    text = make_indent('def foo():\n    pass')
     assert text == 'def foo():\n    pass\n'
 
 
 def test_5():
-    text = make_indent('def foo():\n    def inner():', language='python')
+    text = make_indent('def foo():\n    def inner():')
     assert text == 'def foo():\n    def inner():\n        '
 
 
 def test_6():
-    text = make_indent("def foo():\n    def inner():\n        pass", "python")
+    text = make_indent("def foo():\n    def inner():\n        pass")
     assert text == 'def foo():\n    def inner():\n        pass\n    '
 
 
@@ -96,18 +99,18 @@ def test_9():
 
 
 def test_10():
-    text = make_indent("lista = [23,", 'python')
+    text = make_indent("lista = [23,")
     assert text == 'lista = [23,\n         '
 
 
 def test_11():
-    text = make_indent('def foo(*args,', 'python')
+    text = make_indent('def foo(*args,')
     assert text == 'def foo(*args,\n        '
 
 
 def test_12():
     a_text = "def foo(arg1,\n        arg2, arg3):"
-    text = make_indent(a_text, 'python')
+    text = make_indent(a_text)
     assert text == 'def foo(arg1,\n        arg2, arg3):\n    '
 
 
@@ -121,7 +124,7 @@ def test_13():
             def bar(arg1,
                     arg2):"""
 
-    text = make_indent(a_text, 'python')
+    text = make_indent(a_text)
     expected = """# Comment
     class A(object):
         def __init__(self):
@@ -138,7 +141,7 @@ def test_14():
     a_text = """# comment
     lista = [32,
              3232332323, [3232,"""
-    text = make_indent(a_text, 'python')
+    text = make_indent(a_text)
     expected = """# comment
     lista = [32,
              3232332323, [3232,
@@ -155,7 +158,7 @@ def test_15():
 
 def test_16():
     a_text = "def foo():\n    def inner():\n        return foo()"
-    text = make_indent(a_text, 'python')
+    text = make_indent(a_text)
     expected = "def foo():\n    def inner():\n        return foo()\n    "
     assert text == expected
 
@@ -164,7 +167,7 @@ def test_17():
     a_text = """if __name__ == "__main__":
     nombre = input('Nombre: ')
     print(nombre)"""
-    text = make_indent(a_text, 'python')
+    text = make_indent(a_text)
     expected = """if __name__ == "__main__":
     nombre = input('Nombre: ')
     print(nombre)

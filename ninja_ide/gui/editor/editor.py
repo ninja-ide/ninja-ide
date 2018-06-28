@@ -181,8 +181,9 @@ class NEditor(base_editor.BaseEditor):
         from ninja_ide.gui.editor import intellisense_assistant as ia
         self._iassistant = None
         intellisense = IDE.get_service("intellisense")
-        if intellisense.provider_services(self._neditable.language()):
-            self._iassistant = ia.IntelliSenseAssistant(self)
+        if intellisense is not None:
+            if intellisense.provider_services(self._neditable.language()):
+                self._iassistant = ia.IntelliSenseAssistant(self)
 
     @property
     def nfile(self):

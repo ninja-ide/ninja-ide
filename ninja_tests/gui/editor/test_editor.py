@@ -20,25 +20,25 @@ from unittest.mock import Mock
 import pytest
 
 from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextDocument
 
 from PyQt5.QtCore import Qt
 
-from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import neditable
-from ninja_ide.core.file_handling import nfile
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.editor import editor
 from ninja_ide.tools import json_manager
 
 
 IDE.register_service("ide", Mock())
-import ninja_ide.intellisensei.intellisense_registry  # noqa
-# IDE.register_service("intellisense", Mock())
+
 json_manager.load_syntax()
 
 
 @pytest.fixture
 def editor_bot(qtbot):
-    editable = neditable.NEditable(nfile.NFile())
+    editable = Mock()
+    editable.language = lambda: "python"
+    editable.document = QTextDocument()
     _editor = editor.create_editor(editable)
     return _editor
 
