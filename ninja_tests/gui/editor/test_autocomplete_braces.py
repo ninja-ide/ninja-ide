@@ -16,12 +16,12 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import pytest
+from unittest.mock import Mock
 
 from ninja_ide import resources
-from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.editor import editor
-from ninja_ide.core.file_handling import nfile
 
+from PyQt5.QtGui import QTextDocument
 from PyQt5.QtCore import Qt
 
 resources.COLOR_SCHEME = {"colors": []}
@@ -29,7 +29,8 @@ resources.COLOR_SCHEME = {"colors": []}
 
 @pytest.fixture
 def editor_bot(qtbot):
-    editable = neditable.NEditable(nfile.NFile())
+    editable = Mock()
+    editable.document = QTextDocument()
     _editor = editor.create_editor(editable)
     return _editor
 

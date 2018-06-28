@@ -28,7 +28,7 @@ project_delimiter = '<-np>'
 
 def is_running():
     local_socket = QLocalSocket()
-    local_socket.connectToServer("ninja-ide")
+    local_socket.connectToServer("ninja_ide")
     if local_socket.state():
         # It's running
         result = (True, local_socket)

@@ -262,7 +262,7 @@ class IDE(QMainWindow):
         self.s_listener = None
         if start_server:
             self.s_listener = QLocalServer()
-            self.s_listener.listen("ninja-ide")
+            self.s_listener.listen("ninja_ide")
             self.s_listener.newConnection.connect(self._process_connection)
 
         IDE.__instance = self

@@ -90,7 +90,6 @@ class SymbolHighlighter(base.Extension):
             column_index -= 1
         else:
             return
-
         if char in self.OPEN_SYMBOLS:
             generator = self.__iterate_code_forward(current_block,
                                                     column_index + 1)
@@ -140,6 +139,13 @@ class SymbolHighlighter(base.Extension):
         count = 1
         complementary = self.__get_complementary_symbol(symbol)
         for block, column, char in generator:
+            # Check if current position are inside a comment or string
+            cursor = QTextCursor(block)
+            # Because positionInBlock() = cursor.position() - block.position()
+            # and positionInBlock() = column, then "setPositionInBlock":
+            cursor.setPosition(column + block.position())
+            if self._neditor.inside_string_or_comment(cursor):
+                continue
             if char == complementary:
                 count -= 1
                 if count == 0:
