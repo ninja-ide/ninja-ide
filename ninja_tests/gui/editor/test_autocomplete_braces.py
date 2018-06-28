@@ -17,11 +17,14 @@
 
 import pytest
 
+from ninja_ide import resources
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.editor import editor
 from ninja_ide.core.file_handling import nfile
 
 from PyQt5.QtCore import Qt
+
+resources.COLOR_SCHEME = {"colors": []}
 
 
 @pytest.fixture
