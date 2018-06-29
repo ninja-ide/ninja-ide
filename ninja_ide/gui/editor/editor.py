@@ -250,6 +250,18 @@ class NEditor(base_editor.BaseEditor):
     def scrollbar(self):
         return self._scrollbar
 
+    def insertFromMimeData(self, source):
+        if self.isReadOnly():
+            return
+        text = source.text()
+        if not text:
+            return
+        cursor = self.textCursor()
+        with self:
+            cursor.removeSelectedText()
+            cursor.insertText(text)
+            self.setTextCursor(cursor)
+
     def update_current_line_in_scrollbar(self, current_line):
         """Update current line highlight in scrollbar"""
 

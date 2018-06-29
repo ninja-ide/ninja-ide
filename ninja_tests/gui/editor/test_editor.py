@@ -19,8 +19,10 @@ from unittest.mock import Mock
 
 import pytest
 
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtGui import QTextDocument
+from PyQt5.QtGui import QClipboard
 
 from PyQt5.QtCore import Qt
 
@@ -214,6 +216,22 @@ def test_complete_declaration_with_parent(editor_bot, qtbot):
                                "    def __init__(self):\n"
                                "        super(Child, self).__init__()\n"
                                "        ")
+
+
+def test_change_cursor_position_when_pasting(editor_bot, qtbot):
+    editor_bot.text = "123456\n123456"
+    cursor = editor_bot.textCursor()
+    cursor.movePosition(QTextCursor.Start)
+    cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, 3)
+    editor_bot.setTextCursor(cursor)
+    _, pos_in_block = editor_bot.cursor_position
+    assert pos_in_block == 3
+    QApplication.clipboard().setText("foobar", QClipboard.Clipboard)
+    editor_bot.paste()
+    qtbot.keyPress(editor_bot, Qt.Key_Down)
+    _, pos_in_block = editor_bot.cursor_position
+    assert pos_in_block == 6
+    assert editor_bot.text == "123foobar456\n123456"
 
 
 if __name__ == "__main__":
