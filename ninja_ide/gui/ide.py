@@ -700,6 +700,8 @@ class IDE(QMainWindow):
             if self.opened_files:
                 files_info = []
                 for nfile in self.opened_files:
+                    if nfile.is_new_file:
+                        continue
                     editable = self.get_editable(nfile)
                     files_info.append((
                         nfile.file_path, editable.editor.cursor_position))
