@@ -703,13 +703,15 @@ class NEditor(base_editor.BaseEditor):
         text = event.text()
         if text:
             self.__clear_occurrences()
-        # Emit a signal then plugins can do something
         event.ignore()
+        # Emit a signal then plugins can do something
         self.keyPressed.emit(event)
         if event.matches(QKeySequence.InsertParagraphSeparator):
-            self._indenter.indent_block(self.textCursor())
-            self._complete_declaration()
-            return
+            cursor = self.textCursor()
+            if not self.inside_string_or_comment(cursor):
+                self._indenter.indent_block(self.textCursor())
+                self._complete_declaration()
+                return
         if event.key() == Qt.Key_Home:
             self.__manage_key_home(event)
             return
