@@ -37,6 +37,7 @@
         <file alias="class">images/class.png</file>
         <file alias="instance">images/instance.png</file>
         <file alias="statement">images/statement.png</file>
+        <file alias="bookmark">images/bookmark.png</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">images/help/help_locator.png</file>

@@ -146,6 +146,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #                              import preferences_editor_completion
     # from ninja_ide.gui.dialogs.preferences import preferences_plugins
     # from ninja_ide.gui.dialogs.preferences import preferences_theme
+    from ninja_ide.gui.main_panel import bookmark_manager  # noqa
     from ninja_ide.gui.editor.checkers import errors_lists  # noqa
     from ninja_ide.gui.editor.checkers import errors_checker  # noqa
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa

@@ -16,10 +16,14 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import (
-    QColor,
-    QPainter
-)
+from PyQt5.QtWidgets import QMenu
+
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QPainter
+
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QPoint
+
 from ninja_ide import resources
 
 
@@ -27,6 +31,8 @@ class SideWidget(QWidget):
     """
     Base class for editor side widgets
     """
+
+    sidebarContextMenuRequested = pyqtSignal(int, QMenu)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -53,3 +59,11 @@ class SideWidget(QWidget):
         """Show/Hide the widget"""
         QWidget.setVisible(self, value)
         self._neditor.side_widgets.update_viewport()
+
+    def contextMenuEvent(self, event):
+        cursor = self._neditor.cursorForPosition(QPoint(0, event.pos().y()))
+        menu = QMenu(self)
+        self.sidebarContextMenuRequested.emit(cursor.blockNumber(), menu)
+        if not menu.isEmpty():
+            menu.exec_(event.globalPos())
+        event.accept()
