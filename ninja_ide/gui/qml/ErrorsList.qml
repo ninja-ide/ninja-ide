@@ -202,5 +202,25 @@ Rectangle {
         highlightMoveDuration: 200
 
         onActiveFocusChanged: console.log("focus")
+
+        states: State {
+            name: "showScroll"
+            when: listFiles.movingVertically
+            PropertyChanges { target: verticalScrollbar; opacity: 1}
+        }
+
+        transitions: Transition {
+            NumberAnimation { properties: "opacity"; duration: 300 }
+        }
+    }
+
+    ScrollBar {
+        id: verticalScrollbar
+        width: 8; height: listFiles.height
+        anchors.right: listFiles.right
+        opacity: 0
+        orientation: Qt.Vertical
+        position: listFiles.visibleArea.yPosition
+        pageSize: listFiles.visibleArea.heightRatio
     }
 }

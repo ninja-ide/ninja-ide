@@ -46,6 +46,10 @@ class SideWidget(QWidget):
         """
         self.setParent(neditor)
         self._neditor = neditor
+        self.on_register()
+
+    def on_register(self):
+        pass
 
     def paintEvent(self, event):
         if self.isVisible():
@@ -66,4 +70,5 @@ class SideWidget(QWidget):
         self.sidebarContextMenuRequested.emit(cursor.blockNumber(), menu)
         if not menu.isEmpty():
             menu.exec_(event.globalPos())
+        menu.deleteLater()
         event.accept()

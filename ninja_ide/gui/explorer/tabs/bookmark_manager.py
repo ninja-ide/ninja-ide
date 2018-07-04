@@ -36,6 +36,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QModelIndex
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.tools import ui_tools
@@ -47,6 +48,7 @@ class BookmarkWidget(QWidget):
 
     dockWidget = pyqtSignal('PyQt_PyObject')
     undockWidget = pyqtSignal('PyQt_PyObject')
+    dataChanged = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent, Qt.WindowStaysOnTopHint)
@@ -71,19 +73,24 @@ class BookmarkWidget(QWidget):
         ExplorerContainer.register_tab("Bookmarks", self)
 
     def install(self):
+        """Load bookmarks and connect signals for goingDown"""
+
         self.load_bookmarks()
         ninjaide = IDE.get_service("ide")
         ninjaide.goingDown.connect(self._on_going_down)
 
     def _show_menu(self, mousex, mousey, index):
         point = QPoint(mousex, mousey)
-        menu = QMenu()
-        edit_action = menu.addAction("Add Note")
-        menu.addSeparator()
-        remove_action = menu.addAction("Remove")
-        remove_all_action = menu.addAction("Remove All")
 
+        menu = QMenu()
         book = self.bookmark_for_index(index)
+        edit_action = menu.addAction(translations.TR_ADD_BOOKMARK_NOTE)
+        if book is None:
+            edit_action.setEnabled(False)
+        menu.addSeparator()
+        remove_action = menu.addAction(translations.TR_REMOVE_BOOKMARK)
+        remove_all_action = menu.addAction(
+            translations.TR_REMOVE_ALL_BOOKMARKS)
 
         edit_action.triggered.connect(lambda: self._add_note(index))
         remove_action.triggered.connect(lambda: self.remove_bookmark(book))
@@ -109,14 +116,14 @@ class BookmarkWidget(QWidget):
         current_bookmark = self._manager.get_bookmark_for_index(index)
 
         dialog = QDialog(self)
-        dialog.setWindowTitle("Add Bookmark Note")
+        dialog.setWindowTitle(translations.TR_ADD_BOOKMARK_NOTE_TITLE)
         layout = QFormLayout(dialog)
         note_edit = QLineEdit()
         note_edit.setMinimumWidth(300)
         note_edit.setText(current_bookmark.note)
         button_box = QDialogButtonBox(
             QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        layout.addRow("Note Text:", note_edit)
+        layout.addRow(translations.TR_ADD_BOOKMARK_NOTE_LABEL, note_edit)
         layout.addWidget(button_box)
 
         button_box.accepted.connect(dialog.accept)
@@ -127,24 +134,26 @@ class BookmarkWidget(QWidget):
 
     def add_bookmark(self, mark):
         self._manager.add(mark)
+        self.dataChanged.emit()
 
     def find_bookmark(self, fname, line):
         return self._manager.get(fname, line)
 
     def remove_bookmark(self, mark):
         self._manager.remove(mark)
+        self.dataChanged.emit()
 
     def _remove_all_bookmarks(self):
         r = QMessageBox.question(
-            self, "Remove All Bookmarks",
-            "Are you sure you want to remove all bookmarks from all "
-            "files in the current session?",
+            self, translations.TR_REMOVE_ALL_BOOKMARKS_TITLE,
+            translations.TR_REMOVE_ALL_BOOKMARKS_QUESTION,
             QMessageBox.Cancel | QMessageBox.Yes)
         if r == QMessageBox.Yes:
             self.remove_all_bookmarks()
 
     def remove_all_bookmarks(self):
         self._manager.remove_all()
+        self.dataChanged.emit()
 
     def bookmark_for_index(self, index):
         if index == -1:

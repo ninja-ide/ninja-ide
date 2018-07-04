@@ -884,3 +884,15 @@ TR_SCHEME_INVALID_NAME = tr(
     "\nPlease pick a different name.")
 TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
 TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")
+
+# Bookmarks
+TR_ADD_BOOKMARK_NOTE_TITLE = tr("NINJA-IDE", "Add Bookmark Note")
+TR_ADD_BOOKMARK_NOTE = tr("NINJA-IDE", "Add Note")
+TR_ADD_BOOKMARK_NOTE_LABEL = tr("NINJA-IDE", "Note Text:")
+TR_REMOVE_BOOKMARK = tr("NINJA-IDE", "Remove")
+TR_REMOVE_ALL_BOOKMARKS = tr("NINJA-IDE", "Remove All")
+TR_REMOVE_ALL_BOOKMARKS_TITLE = tr("NINJA-IDE", "Remove All Bookmarks")
+TR_REMOVE_ALL_BOOKMARKS_QUESTION = tr(
+    "NINJA-IDE",
+    "Are you sure you want to remove all bookmarks from all"
+    " files in the current session?")

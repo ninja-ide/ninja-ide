@@ -77,5 +77,25 @@ Rectangle {
         spacing: 2
         model: bookmarkModel
         delegate: bookDelegate
+
+        states: State {
+            name: "showScroll"
+            when: listBookmarks.movingVertically
+            PropertyChanges { target: verticalScrollbar; opacity: 1}
+        }
+
+        transitions: Transition {
+            NumberAnimation { properties: "opacity"; duration: 300 }
+        }
+    }
+
+    ScrollBar {
+        id: verticalScrollbar
+        width: 8; height: listBookmarks.height
+        anchors.right: listBookmarks.right
+        opacity: 0
+        orientation: Qt.Vertical
+        position: listBookmarks.visibleArea.yPosition
+        pageSize: listBookmarks.visibleArea.heightRatio
     }
 }

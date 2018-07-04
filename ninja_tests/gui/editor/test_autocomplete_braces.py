@@ -24,6 +24,9 @@ from ninja_ide.gui.editor import editor
 from PyQt5.QtGui import QTextDocument
 from PyQt5.QtCore import Qt
 
+# FIXME: use mock
+from ninja_ide.gui.explorer.tabs import bookmark_manager  # noqa
+
 resources.COLOR_SCHEME = {"colors": []}
 
 

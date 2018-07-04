@@ -39,7 +39,23 @@ class MarkerWidget(side_area.SideWidget):
         self.__bookmarks = defaultdict(list)
         self.__line_hovered = -1
 
+        self._bookmark_manager = IDE.get_service("bookmarks")
+        self._bookmark_manager.dataChanged.connect(
+            self._highlight_in_scrollbar)
         self.sidebarContextMenuRequested.connect(self._show_menu)
+
+    def _highlight_in_scrollbar(self):
+        self._neditor.scrollbar().remove_marker("bookmarks")
+        for book in self._bookmark_manager.bookmarks(self._neditor.file_path):
+            self._neditor.scrollbar().add_marker(
+                "bookmarks", book.lineno, "#8080ff")
+
+    def on_register(self):
+        """Highlight markers on scrollbar"""
+        bookmarks = self._bookmark_manager.bookmarks(self._neditor.file_path)
+        for b in bookmarks:
+            self._neditor.scrollbar().add_marker(
+                "bookmarks", b.lineno, "#8080ff")
 
     def _show_menu(self, line, menu):
         set_breakpoint_action = menu.addAction(
@@ -53,14 +69,12 @@ class MarkerWidget(side_area.SideWidget):
         if line <= 0 or filename is None:
             return
 
-        manager = IDE.get_service("bookmarks")
-
-        bookmark = manager.find_bookmark(filename, line)
+        bookmark = self._bookmark_manager.find_bookmark(filename, line)
         if bookmark is not None:
-            manager.remove_bookmark(bookmark)
+            self._bookmark_manager.remove_bookmark(bookmark)
             return
         bookmark = Bookmark(filename, line)
-        manager.add_bookmark(bookmark)
+        self._bookmark_manager.add_bookmark(bookmark)
 
     def width(self):
         return self.sizeHint().width()
@@ -95,8 +109,7 @@ class MarkerWidget(side_area.SideWidget):
     def mouseMoveEvent(self, event):
         cursor = self._neditor.cursorForPosition(event.pos())
         line = cursor.blockNumber()
-        manager = IDE.get_service("bookmarks")
-        bookmarks = manager.bookmarks(self._neditor.file_path)
+        bookmarks = self._bookmark_manager.bookmarks(self._neditor.file_path)
         for book in bookmarks:
             if book.lineno == line and book.note:
                 QToolTip.showText(self.mapToGlobal(event.pos()), book.note)
