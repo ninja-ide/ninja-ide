@@ -105,12 +105,7 @@ class BookmarkWidget(QWidget):
         main_container = IDE.get_service("main_container")
         if main_container is None:
             return
-        editor = main_container.get_current_editor()
-        if editor is not None:
-            if editor.file_path == filename:
-                editor.go_to_line(lineno)
-            else:
-                main_container.open_file(filename, lineno)
+        main_container.open_file(filename, lineno)
 
     def _add_note(self, index):
         current_bookmark = self._manager.get_bookmark_for_index(index)
