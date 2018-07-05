@@ -18,6 +18,7 @@
 import queue
 import re
 import os
+
 from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -31,6 +32,7 @@ from PyQt5.QtWidgets import (
     QSizePolicy,
     QPushButton,
     QTreeView,
+    QFrame,
     QStyle,
     QItemDelegate
 )
@@ -48,7 +50,7 @@ from PyQt5.QtCore import (
     QThread,
     QModelIndex
 )
-from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QPalette, QColor
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.core import settings
@@ -58,7 +60,8 @@ from ninja_ide.gui.tools_dock.tools_dock import _ToolsDock
 
 class FindInFilesWorker(QObject):
 
-    finished = pyqtSignal('PyQt_PyObject')
+    finished = pyqtSignal()
+    resultAvailable = pyqtSignal('PyQt_PyObject')
 
     def find_in_files(self, dir_name, filters, regexp, recursive):
         """Trigger the find in files thread and return the lines found"""
@@ -94,6 +97,8 @@ class FindInFilesWorker(QObject):
                 self._grep_file(
                     one_file.absoluteFilePath(), one_file.fileName())
 
+        self.finished.emit()
+
     def _grep_file(self, file_path, file_name):
         """Search for each line inside the file"""
         file_obj = QFile(file_path)
@@ -113,7 +118,7 @@ class FindInFilesWorker(QObject):
             line_index += 1
 
         p = os.path.join(self.root_dir, file_path)
-        self.finished.emit((p, lines))
+        self.resultAvailable.emit((p, lines))
 
 
 class SearchResultTreeView(QTreeView):
@@ -121,8 +126,11 @@ class SearchResultTreeView(QTreeView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._model = SearchResultModel(self)
-        self.setItemDelegate(SearchResultDelegate())
         self.setModel(self._model)
+        # self.setItemDelegate(SearchResultDelegate())
+        self.setIndentation(14)
+        self.setUniformRowHeights(True)
+        self.setExpandsOnDoubleClick(True)
         self.header().hide()
 
     def clear(self):
@@ -143,20 +151,43 @@ class FindInFilesWidget(QWidget):
         container.setContentsMargins(3, 0, 3, 0)
         self._actions = FindInFilesActions(self)
         container.addWidget(self._actions)
+        self.__count = 0
+
+        top_widget = QFrame()
+        top_layout = QVBoxLayout(top_widget)
+        top_layout.setContentsMargins(0, 0, 0, 0)
+        top_layout.setSpacing(0)
+        self._message_frame = QFrame()
+        self._message_frame.hide()
+        self._message_frame.setAutoFillBackground(True)
+        pal = QPalette()
+        pal.setColor(QPalette.Window, QColor("#6a6ea9"))
+        pal.setColor(QPalette.WindowText, pal.windowText().color())
+        self._message_frame.setPalette(pal)
+        self._message_label = QLabel("")
+        message_layout = QHBoxLayout(self._message_frame)
+        message_layout.addStretch(1)
+        message_layout.setContentsMargins(2, 2, 2, 2)
+        message_layout.addWidget(self._message_label)
+        top_layout.addWidget(self._message_frame)
+
         self._tree_results = SearchResultTreeView(self)
-        container.addWidget(self._tree_results)
+        top_layout.addWidget(self._tree_results)
+        container.addWidget(top_widget)
+
         self._main_container = IDE.get_service("main_container")
         # Search worker
         self._search_worker = FindInFilesWorker()
-        self._search_thread = QThread()
-        self._search_worker.moveToThread(self._search_thread)
-        self._search_worker.finished.connect(self._on_worker_finished)
-        # self._search_thread.finished.connect(self._search_worker.deleteLater)
+        search_thread = QThread()
+        self._search_worker.moveToThread(search_thread)
+        self._search_worker.resultAvailable.connect(self._on_worker_finished)
+        search_thread.finished.connect(search_thread.deleteLater)
 
         self._actions.searchRequested.connect(self._on_search_requested)
         self._tree_results.activated.connect(self._go_to)
 
     def _clear_results(self):
+        self.__count = 0
         self._tree_results.clear()
 
     def _go_to(self, index):
@@ -170,10 +201,15 @@ class FindInFilesWidget(QWidget):
 
     @pyqtSlot('PyQt_PyObject')
     def _on_worker_finished(self, lines):
+        self.__count += len(lines[-1])
+        self._message_frame.show()
+        self._message_label.setText(
+            translations.TR_MATCHES_FOUND.format(self.__count))
         self._tree_results.add_result(lines)
 
     @pyqtSlot('QString', bool, bool, bool)
     def _on_search_requested(self, to_find, cs, regex, wo):
+        self._clear_results()
         type_ = QRegExp.FixedString
         if regex:
             type_ = QRegExp.RegExp

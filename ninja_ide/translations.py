@@ -896,3 +896,6 @@ TR_REMOVE_ALL_BOOKMARKS_QUESTION = tr(
     "NINJA-IDE",
     "Are you sure you want to remove all bookmarks from all"
     " files in the current session?")
+
+# Find in files
+TR_MATCHES_FOUND = tr("NINJA-IDE", "{} matches found.")
