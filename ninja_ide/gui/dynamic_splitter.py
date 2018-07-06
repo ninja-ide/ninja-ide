@@ -52,26 +52,29 @@ class DynamicSplitter(QSplitter):
         if index == -1:
             return
         sizes = self._get_sizes(current, orientation)
-        if self.count() == 1:
-            self.add_widget(new_widget)
-            self.setOrientation(orientation)
-        else:
+        if self.count() == 2:
             sizes = self._get_sizes(current, orientation)
             splitter = DynamicSplitter(orientation)
             splitter.closeDynamicSplit.connect(self.close_dynamic_split)
+            self.insertWidget(index, splitter)
             splitter.add_widget(current)
             splitter.add_widget(new_widget)
-            self.insertWidget(index, splitter)
-            sizes = [size * 2 for size in sizes]
             splitter.setSizes(sizes)
-        self.setSizes(sizes)
+
+        else:
+            self.add_widget(new_widget)
+            self.setOrientation(orientation)
+            sizes = self._get_sizes(self, orientation)
+            self.setSizes(sizes)
         new_widget.setFocus()
 
     def close_dynamic_split(self, split, widget):
         index = self.indexOf(split)
+        if index == -1:
+            return
         self.insert_widget(index, widget)
+        split.hide()
         split.deleteLater()
-        self.setSizes([1, 1])
 
     def _get_sizes(self, widget, orientation):
         sizes = [1, 1]
@@ -87,13 +90,14 @@ class DynamicSplitter(QSplitter):
         index = self.indexOf(widget)
         if index == -1:
             return
-        new_index = int(index == 0)
+        widget.hide()
         widget.deleteLater()
+
+        new_index = int(index == 0)
         combo_widget = self.widget(new_index)
         if combo_widget is None:
-            w = self.widget(0)
-            self.insert_widget(0, w)
+            self.hide()
             self.deleteLater()
-        else:
-            combo_widget.setFocus()
-            self.closeDynamicSplit.emit(self, combo_widget)
+            return
+        self.closeDynamicSplit.emit(self, combo_widget)
+        combo_widget.setFocus()
