@@ -125,20 +125,20 @@ class IDE(QMainWindow):
         # Opacity
         self.opacity = settings.MAX_OPACITY
         # ToolBar
-        self.toolbar = QToolBar(self)
-        if settings.IS_MAC_OS:
-            self.toolbar.setIconSize(QSize(36, 36))
-        else:
-            self.toolbar.setIconSize(QSize(24, 24))
-        self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
-        self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        # Set toggleViewAction text and tooltip
-        self.toggleView = self.toolbar.toggleViewAction()
-        self.toggleView.setText(translations.TR_TOOLBAR_VISIBILITY)
-        self.toggleView.setToolTip(translations.TR_TOOLBAR_VISIBILITY)
-        self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
-        if settings.HIDE_TOOLBAR:
-            self.toolbar.hide()
+        # self.toolbar = QToolBar(self)
+        # if settings.IS_MAC_OS:
+        #     self.toolbar.setIconSize(QSize(36, 36))
+        # else:
+        #     self.toolbar.setIconSize(QSize(24, 24))
+        # self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
+        # self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        # # Set toggleViewAction text and tooltip
+        # self.toggleView = self.toolbar.toggleViewAction()
+        # self.toggleView.setText(translations.TR_TOOLBAR_VISIBILITY)
+        # self.toggleView.setToolTip(translations.TR_TOOLBAR_VISIBILITY)
+        # self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
+        # if settings.HIDE_TOOLBAR:
+        #     self.toolbar.hide()
         # Notificator
         self.notification = notification.Notification(self)
 
@@ -190,8 +190,9 @@ class IDE(QMainWindow):
         # Register General Menu Items
         ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
         self.register_service('ide', self)
-        self.register_service('toolbar', self.toolbar)
+        # self.register_service('toolbar', self.toolbar)
         self.register_service('filesystem', self.filesystem)
+        self.toolbar = IDE.get_service("toolbar")
         # Register signals connections
         connections = (
             {
@@ -715,8 +716,8 @@ class IDE(QMainWindow):
             current_file = neditor.file_path
         data_settings.setValue('lastSession/currentFile', current_file)
         # Save toolbar visibility
-        ninja_settings.setValue('window/hide_toolbar',
-                                not self.toolbar.isVisible())
+        # ninja_settings.setValue('window/hide_toolbar',
+        #                         not self.toolbar.isVisible())
         # Save window state
         if self.isMaximized():
             ninja_settings.setValue("window/maximized", True)

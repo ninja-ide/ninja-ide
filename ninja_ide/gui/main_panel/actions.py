@@ -68,6 +68,7 @@ ACTIONS = (
         "shortcut": "open-file",
         "action": {
             "text": translations.TR_OPEN,
+            "image": "open-file",
             "section": (translations.TR_MENU_FILE, None),
             "weight": 400
         },

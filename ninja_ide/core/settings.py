@@ -122,9 +122,10 @@ SESSIONS = {}
 TOOLBAR_ITEMS = [
     "_MainContainer.show_selector",
     "_MainContainer.add_editor",
-    # "ProjectTreeColumn.create_new_project",
-    # "_MainContainer.open_file",
+    "ProjectTreeColumn.create_new_project",
+    "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
+    "IDE.show_preferences",
     # "_MainContainer.save_file",
     # "_MainContainer.split_vertically",
     # "_MainContainer.split_horizontally",
@@ -136,6 +137,12 @@ TOOLBAR_ITEMS = [
     # "_ToolsDock.execute_file",
     # "_ToolsDock.execute_project",
     # "_ToolsDock.kill_application",
+]
+
+ACTIONBAR_ITEMS = [
+    "_ToolsDock.execute_file",
+    "_ToolsDock.execute_project",
+    "_ToolsDock.kill_application"
 ]
 
 TOOLBAR_ITEMS_DEFAULT = [

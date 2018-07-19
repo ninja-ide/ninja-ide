@@ -1,19 +1,12 @@
 <RCC>
     <qresource prefix="/img">
         <file alias="warning">images/warning.png</file>
-        <file alias="close">images/close.png</file>
         <file alias="icon">images/icon.png</file>
-        <file alias="folder">images/folder.png</file>
         <file alias="bicho">images/bug.png</file>
         <file alias="new-file">images/document-new.png</file>
         <file alias="open-project">images/open-project.png</file>
         <file alias="selector">images/main_selector.png</file>
-        <file alias="plus">images/plus.png</file>
-        <file alias="minus">images/minus.png</file>
-        <file alias="previous">images/prev.png</file>
-        <file alias="clean">images/clean.png</file>
         <file alias="stop">images/stop.png</file>
-        <file alias="zoom">images/zoom.png</file>
         <file alias="chevron">images/chevron.png</file>
         <file alias="checkbox-unchecked-pressed">images/stylesheet/icon_checkbox_unchecked_pressed.png</file>
         <file alias="checkbox-unchecked-disabled">images/stylesheet/icon_checkbox_unchecked_disabled.png</file>
@@ -38,6 +31,12 @@
         <file alias="instance">images/instance.png</file>
         <file alias="statement">images/statement.png</file>
         <file alias="bookmark">images/bookmark.png</file>
+        <file alias="preferences">images/preferences.png</file>
+        <file alias="plugin">images/plug.png</file>
+        <file alias="run-file">images/play.png</file>
+        <file alias="open-file">images/file-open.png</file>
+        <file alias="new-project">images/new-project.png</file>
+        <file alias="run-project">images/run-project.png</file>
     </qresource>
     <qresource prefix="/help">
         <file alias="locator">images/help/help_locator.png</file>

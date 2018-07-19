@@ -18,76 +18,61 @@
 import os
 import math
 import collections
-import sys
-if sys.version_info[0] >= 3:
-    from urllib.parse import urlparse, urlunparse
-else:
-    from urlparse import urlparse, urlunparse
+from urllib.parse import urlparse, urlunparse
 
-from PyQt5.QtWidgets import (
-    QApplication,
-    QWidget,
-    QMenu,
-    QAction,
-    QFrame,
-    QCompleter,
-    QLineEdit,
-    QItemDelegate,
-    QStyleOptionComboBox,
-    QComboBox,
-    QTableWidgetItem,
-    QAbstractItemView,
-    QShortcut,
-    QStyleOptionToolBar,
-    QTreeWidgetItem,
-    QHBoxLayout,
-    QPushButton,
-    QCheckBox,
-    QTableWidget,
-    QFileSystemModel,
-    QGraphicsOpacityEffect,
-    QLayout,
-    QStylePainter,
-    QLabel,
-    QStyle
-)
-from PyQt5.QtGui import (
-    QKeyEvent,
-    QLinearGradient,
-    QPalette,
-    QPainter,
-    QBrush,
-    QPixmap,
-    QPixmapCache,
-    QIcon,
-    QPen,
-    QColor,
-    QImage,
-    QKeySequence,
-    qGray,
-    qRgba,
-    qAlpha
-)
-from PyQt5.QtPrintSupport import (
-    QPrinter,
-    QPrintPreviewDialog
-)
-from PyQt5.QtCore import (
-    Qt,
-    QSize,
-    QDir,
-    QUrl,
-    QObject,
-    QThread,
-    pyqtSignal,
-    QEvent,
-    QTimeLine,
-    QTimer,
-    QRect,
-    QPoint,
-    QPropertyAnimation,
-    QAbstractAnimation
-)
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QToolButton
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QItemDelegate
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QTableWidget
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QStyle
+
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtGui import QLinearGradient
+from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QFontMetrics
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmapCache
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPen
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtGui import qGray
+from PyQt5.QtGui import qRgba
+from PyQt5.QtGui import qAlpha
+
+from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtPrintSupport import QPrintPreviewDialog
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import pyqtProperty
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QTimeLine
+from PyQt5.QtCore import QRect
+from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPropertyAnimation
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -101,22 +86,314 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.tools.ui_tools')
 
 
-class NComboBox(QComboBox):
+###############################################################################
+# ToolBar
+###############################################################################
+
+class Tab(QObject):
+
+    def __init__(self, parent):
+        QObject.__init__(self, parent)
+        self._toolbar = parent
+        self.icon = None
+        self.text = ""
+        self.has_menu = False
+        self.enabled = True
+        self._fader = 0
+        self._animator = QPropertyAnimation(self)
+        self._animator.setPropertyName(b"fader")
+        self._animator.setTargetObject(self)
+
+    def fade_in(self):
+        self._animator.stop()
+        self._animator.setDuration(80)
+        self._animator.setEndValue(1)
+        self._animator.start()
+
+    def fade_out(self):
+        self._animator.stop()
+        self._animator.setDuration(160)
+        self._animator.setEndValue(0)
+        self._animator.start()
+
+    def _set_fader(self, value):
+        self._fader = value
+        self._toolbar.update()
+
+    def _get_fader(self):
+        return self._fader
+
+    fader = pyqtProperty(float, fget=_get_fader, fset=_set_fader)
+
+
+class ToolBar(QWidget):
+
+    currentChanged = pyqtSignal(int)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        self.setMinimumWidth(40)
+        self.setAttribute(Qt.WA_Hover, True)
+        self.setFocusPolicy(Qt.NoFocus)
+        self.setMouseTracking(True)
+
+        self.__hover_index = -1
+        self.__current_index = -1
+        self.__tabs = []
+
+    def insert_tab(self, index, icon=None):
+        tab = Tab(self)
+        tab.icon = icon
+        self.__tabs.insert(index, tab)
+        if self.__current_index >= index:
+            self.__current_index += 1
+        self.updateGeometry()
+
+    def add_tab(self, icon):
+        tab = Tab(self)
+        tab.icon = icon
+        self.__tabs.append(tab)
+        self.__current_index += 1
+        self.updateGeometry()
+
+    def current_index(self):
+        return self.__current_index
+
+    def set_current_index(self, index):
+        if index != self.__current_index:
+            self.__current_index = index
+            self.update()
+            self.currentChanged.emit(index)
 
     def paintEvent(self, event):
-        super().paintEvent(event)
-        # painter = QStylePainter(self)
-        # opt = QStyleOptionComboBox()
-        # self.initStyleOption(opt)
-        # arrow_rect = QRect((opt.rect.left() + opt.rect.right()) / 2 + 6,
-        #                    opt.rect.center().y(), 7, 7)
-        # arrow_rect.moveRight(opt.rect.width() - 10)
-        # opt.rect = arrow_rect
-        # opt.rect.translate(0, -6)
-        # painter.drawPrimitive(QStyle.PE_IndicatorArrowUp, opt)
-        # opt.rect.translate(0, 6)
-        # painter.drawPrimitive(QStyle.PE_IndicatorArrowDown, opt)
+        painter = QPainter(self)
+        painter.fillRect(event.rect(), QColor("#2e3135"))
 
+        for index in range(self.count()):
+            if index != self.current_index():
+                self._paint_tab(painter, index)
+
+        if self.current_index() != -1:
+            self._paint_tab(painter, self.current_index())
+
+    def _paint_tab(self, painter, index):
+        if not self._is_valid_index(index):
+            return
+
+        painter.save()
+        tab = self.__tabs[index]
+        rect = self._tab_rect(index)
+        selected = index == self.__current_index
+        enabled = self._is_enabled(index)
+
+        if selected:
+            painter.fillRect(rect, QColor("#161719"))
+
+        tab_icon_rect = QRect(rect)
+        if selected:
+            color = QColor(255, 255, 255, 160)
+        else:
+            color = QColor(0, 0, 0, 110)
+        painter.setPen(color)
+
+        fader = self.__tabs[index].fader
+        if fader > 0 and not selected and enabled:
+            painter.save()
+            painter.setOpacity(fader)
+            painter.fillRect(rect, QColor("#424242"))
+            painter.restore()
+
+        if tab.icon is not None:
+            icon_rect = QRect(0, 0, 20, 20)
+            icon_rect.moveCenter(tab_icon_rect.center())
+            tab.icon.paint(painter, rect)
+
+        painter.setOpacity(1.0)
+        if enabled:
+            painter.setPen(QColor("#ffffff"))
+        else:
+            painter.setPen(QColor("blue"))
+        painter.translate(0, -1)
+
+        painter.restore()
+
+    def sizeHint(self):
+        sh = self._tab_size_hint()
+        return QSize(sh.width(), sh.height() * len(self))
+
+    def minimumSizeHint(self):
+        sh = self._tab_size_hint(minimum=True)
+        return QSize(sh.width(), sh.height() * len(self))
+
+    def enterEvent(self, event):
+        self.__hover_rect = QRect()
+        self.__hover_index = -1
+
+    def leaveEvent(self, event):
+        self.__hover_index = -1
+        self.__hover_rect = QRect()
+        for tab in self.__tabs:
+            tab.fade_out()
+
+    def mousePressEvent(self, event):
+        event.accept()
+        for index in range(len(self)):
+            rect = self._tab_rect(index)
+            if rect.contains(event.pos()):
+                if self._is_enabled(index):
+                    self.__current_index = index
+                    self.update()
+                    self.currentChanged.emit(self.__current_index)
+                break
+
+    def mouseMoveEvent(self, event):
+        new_hover = -1
+        for index in range(len(self)):
+            area = self._tab_rect(index)
+            if area.contains(event.pos()):
+                new_hover = index
+                break
+
+        if new_hover == self.__hover_index:
+            return
+
+        if self._is_valid_index(self.__hover_index):
+            self.__tabs[self.__hover_index].fade_out()
+
+        self.__hover_index = new_hover
+
+        if self._is_valid_index(self.__hover_index):
+            self.__tabs[self.__hover_index].fade_in()
+            self.__hover_rect = self._tab_rect(self.__hover_index)
+
+    def _is_enabled(self, index):
+        if index < len(self) and index >= 0:
+            return self.__tabs[index].enabled
+        return False
+
+    def _tab_rect(self, index):
+        sh = self._tab_size_hint()
+        if sh.height() * len(self.__tabs) > self.height():
+            sh.setHeight(self.height() / len(self.__tabs))
+        return QRect(0, index * sh.height(), sh.width(), sh.height())
+
+    def _tab_size_hint(self, minimum=False):
+        bold_font = self.font()
+        bold_font.setPointSizeF(7.5)
+        bold_font.setBold(True)
+        fm = QFontMetrics(bold_font)
+        spacing = 10
+        width = 40 + spacing + 2
+        max_label_width = 0
+        for tab in self.__tabs:
+            _width = fm.width(tab.text)
+            if _width > max_label_width:
+                max_label_width = _width
+        icon_height = 0 if minimum else 32
+        return QSize(
+            max(width, max_label_width + 4),
+            icon_height + spacing + fm.height())
+
+    def _is_valid_index(self, index):
+        return index >= 0 and index < len(self.__tabs)
+
+    def __len__(self):
+        return len(self.__tabs)
+
+    def count(self):
+        return len(self)
+
+
+###############################################################################
+# Cool Tool Button
+###############################################################################
+
+class CoolToolButton(QToolButton):
+
+    def __init__(self, action=None, parent=None):
+        super().__init__(parent)
+
+        self._fader = 0
+        if action is not None:
+            self.setDefaultAction(action)
+        self.setAttribute(Qt.WA_Hover, True)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+
+    def _set_fader(self, value):
+        self._fader = value
+        self.update()
+
+    def _get_fader(self):
+        return self._fader
+
+    fader = pyqtProperty(float, fget=_get_fader, fset=_set_fader)
+
+    def event(self, event):
+        if event.type() == QEvent.Enter:
+            self.anim = QPropertyAnimation(self, b"fader")
+            self.anim.setDuration(150)
+            self.anim.setEndValue(1.0)
+            self.anim.start(QPropertyAnimation.DeleteWhenStopped)
+        elif event.type() == QEvent.Leave:
+            self.anim = QPropertyAnimation(self, b"fader")
+            self.anim.setDuration(124)
+            self.anim.setEndValue(0.0)
+            self.anim.start(QPropertyAnimation.DeleteWhenStopped)
+        else:
+            return QToolButton.event(self, event)
+        return False
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        if self.isEnabled() and not self.isDown() and not self.isChecked():
+            painter.save()
+            hover_color = QColor("#424242")
+            faded_hover_color = QColor(hover_color)
+            faded_hover_color.setAlpha(int(self._fader * hover_color.alpha()))
+            painter.fillRect(event.rect(), faded_hover_color)
+            painter.restore()
+        elif self.isDown() or self.isChecked():
+            painter.save()
+            selected_color = QColor("#161719")
+            painter.fillRect(event.rect(), selected_color)
+            painter.restore()
+
+        is_titled = bool(self.defaultAction().property("titled"))
+        icon_rect = QRect(0, 0, 32, 32)
+        icon_rect.moveCenter(event.rect().center())
+
+        if is_titled:
+            font = painter.font()
+            center_rect = event.rect()
+            font.setPointSizeF(6)
+            fm = QFontMetrics(font)
+            line_height = fm.height()
+            text_flags = Qt.AlignHCenter | Qt.AlignTop
+            project_name = self.defaultAction().property("heading")
+            if project_name is not None:
+                center_rect.adjust(0, line_height, 0, 0)
+                icon_rect.moveTop(center_rect.top())
+            else:
+                icon_rect.moveCenter(center_rect.center())
+            self.icon().paint(painter, icon_rect, Qt.AlignCenter)
+            painter.setFont(font)
+            r = QRect(0, 5, self.rect().width(), line_height)
+            painter.setPen(Qt.white)
+            margin = 5
+            available_width = r.width() - margin
+            ellided_project_name = fm.elidedText(
+                project_name, Qt.ElideMiddle, available_width)
+            painter.drawText(r, text_flags, ellided_project_name)
+        else:
+            self.icon().paint(painter, icon_rect, Qt.AlignCenter)
+
+    def sizeHint(self):
+        button_size = self.iconSize().expandedTo(QSize(48, 48))
+        return button_size
+
+    def minimumSizeHint(self):
+        return QSize(8, 8)
 
 
 ###############################################################################

@@ -157,7 +157,6 @@ class _MenuBar(QObject):
 
     def load_toolbar(self, ide):
         toolbar = ide.get_service("toolbar")
-        toolbar.clear()
         toolbar_items = ide.get_toolbaritems()
         categories = list(ide.get_bar_categories().items())
         categories = sorted(categories, key=lambda x: x[1])
@@ -170,10 +169,9 @@ class _MenuBar(QObject):
             for item in items_in_category:
                 action = item[0]
                 if action.objectName() in settings.TOOLBAR_ITEMS:
-                    toolbar.addAction(action)
-            # FIXME:
-            # if items_in_category:
-            #    toolbar.addSeparator()
+                    toolbar.add_action(action)
+                if action.objectName() in settings.ACTIONBAR_ITEMS:
+                    toolbar.add_actionbar_item(action)
 
 
 menu = _MenuBar()

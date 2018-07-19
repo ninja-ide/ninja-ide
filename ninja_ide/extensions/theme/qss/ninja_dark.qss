@@ -128,7 +128,6 @@ QFrame#actionbar {
         stop: 0 #707070, stop: 1.0 #222222);
     color: gray;
     border: 0px solid darkgray;
-    border-radius: 5px;
     min-height: 1.4em;
 }
 

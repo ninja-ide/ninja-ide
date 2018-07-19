@@ -42,6 +42,7 @@ PROJECTS_TREE_ACTIONS = (
         "shortcut": "new-project",
         "action": {
             "text": translations.TR_NEW_PROJECT,
+            "image": "new-project",
             "section": (translations.TR_MENU_FILE, None),
             "weight": 110
         },

@@ -156,6 +156,7 @@ ACTIONS_GENERAL = (
     {
         "action": {
             "text": translations.TR_PREFERENCES,
+            "image": "preferences",
             "section": (translations.TR_MENU_EDIT, None),
             "weight": 900
         },
