@@ -48,7 +48,7 @@ class ErrorsWidget(QDialog):
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
         hbox = QHBoxLayout()
-        hbox.setContentsMargins(5, 3, 5, 3)
+        hbox.setContentsMargins(0, 0, 0, 0)
         self._list = ErrorsList()
         hbox.addWidget(self._list)
         box.addLayout(hbox)
@@ -99,7 +99,7 @@ class ErrorsList(QWidget):
         self.view.setSource(ui_tools.get_qml_resource("ErrorsList.qml"))
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setContentsMargins(3, 3, 3, 3)
         vbox.setSpacing(0)
         vbox.addWidget(self.view)
 

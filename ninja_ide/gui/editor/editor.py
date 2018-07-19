@@ -438,8 +438,20 @@ class NEditor(base_editor.BaseEditor):
             if line.isValid():
                 if pos.x() <= self.blockBoundingRect(block).left() + \
                         line.naturalTextRect().right():
-                    # TODO: Handle hover tips
+                    column = tc.positionInBlock()
+                    line = self.line_from_position(pos.y())
+                    checkers = self._neditable.sorted_checkers
+                    for items in checkers:
+                        checker, _, _ = items
+                        messages_for_line = checker.message(line)
+                        if messages_for_line is not None:
+                            for (start, end), message, content in \
+                                    messages_for_line:
+                                if column >= start and column <= end:
+                                    QToolTip.showText(
+                                        self.mapToGlobal(pos), message, self)
                     return True
+                QToolTip.hideText()
         return super().viewportEvent(event)
 
     def focusInEvent(self, event):
@@ -568,26 +580,6 @@ class NEditor(base_editor.BaseEditor):
     def mouseMoveEvent(self, event):
         if self._highlighter is not None:
             self._update_link(event)
-
-        position = event.pos()
-        cursor = self.cursorForPosition(position)
-        block = cursor.block()
-        line = block.layout().lineForTextPosition(cursor.positionInBlock())
-        # Only handle tool tip for text cursor if mouse is within the
-        # block for the text cursor
-        if position.x() <= self.blockBoundingGeometry(block).left() + \
-                line.naturalTextRect().right():
-            column = cursor.positionInBlock()
-            line = self.line_from_position(position.y())
-            checkers = self._neditable.sorted_checkers
-            for items in checkers:
-                checker, _, _ = items
-                messages_for_line = checker.message(line)
-                if messages_for_line is not None:
-                    for (start, end), message, content in messages_for_line:
-                        if column >= start and column <= end:
-                            QToolTip.showText(
-                                self.mapToGlobal(position), message, self)
         # Restore mouse cursor if settings say hide while typing
         if self.viewport().cursor().shape() == Qt.BlankCursor:
             self.viewport().setCursor(Qt.IBeamCursor)

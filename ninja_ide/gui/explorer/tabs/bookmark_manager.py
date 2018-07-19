@@ -53,7 +53,8 @@ class BookmarkWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent, Qt.WindowStaysOnTopHint)
         box = QVBoxLayout(self)
-        box.setContentsMargins(5, 5, 5, 5)
+        box.setContentsMargins(3, 3, 3, 3)
+        box.setSpacing(0)
         # Model
         self._manager = BookmarkManager()
         # QML UI
