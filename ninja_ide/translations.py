@@ -899,3 +899,5 @@ TR_REMOVE_ALL_BOOKMARKS_QUESTION = tr(
 
 # Find in files
 TR_MATCHES_FOUND = tr("NINJA-IDE", "{} matches found.")
+
+TR_NO_PROJECTS = tr("NINJA-IDE", "No Projects")

@@ -15,39 +15,31 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 
-from PyQt5.QtWidgets import (
-    QTreeView,
-    QAbstractItemView,
-    QWidget,
-    QFrame,
-    QStackedLayout,
-    QDialog,
-    QComboBox,
-    QStyledItemDelegate,
-    QVBoxLayout,
-    QFileDialog,
-    QInputDialog,
-    QStyle,
-    QMessageBox,
-    QMenu
-)
-from PyQt5.QtGui import (
-    QIcon,
-    QColor,
-    QCursor
-)
-from PyQt5.QtCore import (
-    Qt,
-    pyqtSignal,
-    QDateTime,
-    QModelIndex
-)
+from PyQt5.QtWidgets import QTreeView
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QStyledItemDelegate
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMenu
+
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QCursor
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore import QModelIndex
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -64,7 +56,6 @@ from ninja_ide.gui.explorer.nproject import NProject
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
-DEBUG = logger.debug
 
 
 class ProjectTreeColumn(QDialog):
@@ -99,8 +90,18 @@ class ProjectTreeColumn(QDialog):
         logger.debug("This is the projects area")
         vbox.addLayout(self._projects_area)
 
+        # Empty widget
+        self._empty_proj = QLabel(translations.TR_NO_PROJECTS)
+        self._empty_proj.setAlignment(Qt.AlignCenter)
+        self._empty_proj.setAutoFillBackground(True)
+        self._empty_proj.setBackgroundRole(QPalette.Base)
+        self._projects_area.addWidget(self._empty_proj)
+        self._projects_area.setCurrentWidget(self._empty_proj)
+
         self.projects = []
 
+        self._combo_project.currentIndexChanged.connect(
+            self._change_current_project)
         self._combo_project.customContextMenuRequested[
             'const QPoint&'].connect(self.context_menu_for_root)
 
@@ -250,23 +251,24 @@ class ProjectTreeColumn(QDialog):
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
             self.projects.append(ptree)
-            current_index = self._projects_area.count()
-            self._projects_area.setCurrentIndex(current_index - 1)
-            self._combo_project.setCurrentIndex(current_index - 1)
+            self._projects_area.setCurrentWidget(ptree)  # Can be empty widget
+            self._combo_project.setCurrentIndex(index)
 
         # FIXME: improve?
-        if len(self.projects) == 1:
-            self._combo_project.currentIndexChanged[int].connect(
-                self._change_current_project)
+        # if len(self.projects) == 1:
+        #     self._combo_project.currentIndexChanged[int].connect(
+        #         self._change_current_project)
 
     def _close_project(self, widget):
         """Close the project related to the tree widget."""
-        index = self._projects_area.currentIndex()
+        index = self._combo_project.currentIndex()
         self.projects.remove(widget)
-        self._projects_area.takeAt(index)
+        # index + 1 is necessary because the widget
+        # with index 0 is the empty widget
+        self._projects_area.takeAt(index + 1)
         self._combo_project.removeItem(index)
         index = self._combo_project.currentIndex()
-        self._projects_area.setCurrentIndex(index)
+        self._projects_area.setCurrentIndex(index + 1)
         ninjaide = IDE.get_service('ide')
         ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
@@ -288,7 +290,7 @@ class ProjectTreeColumn(QDialog):
                 nproject.is_current = True
             else:
                 project.is_current = False
-        self._projects_area.setCurrentIndex(index)
+        self._projects_area.setCurrentIndex(index + 1)
         self.activeProjectChanged.emit()
 
     def close_opened_projects(self):
@@ -314,7 +316,11 @@ class ProjectTreeColumn(QDialog):
 
     @property
     def current_tree(self):
-        return self._projects_area.currentWidget()
+        tree = None
+        widget = self._projects_area.currentWidget()
+        if isinstance(widget, TreeProjectsWidget):
+            tree = widget
+        return tree
 
     def set_current_item(self, path):
         if self.current_project is not None:
