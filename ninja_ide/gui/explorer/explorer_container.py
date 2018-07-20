@@ -98,10 +98,8 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
             self.add_tab(tabname, obj, icon)
             obj.dockWidget['PyQt_PyObject'].connect(self._dock_widget)
             obj.undockWidget.connect(self._undock_widget)
-            logger.debug("Falta conectar change_tab_title")
-            # obj.changeTitle.connect(self._change_tab_title)
-            # obj.changeTitle['PyQt_PyObject',
-            #                'QString'].connect(self._change_tab_title)
+            if hasattr(obj, "changeTitle"):
+                obj.changeTitle.connect(self._change_tab_title)
 
         if self.count() == 0:
             self.hide()
