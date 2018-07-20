@@ -30,7 +30,8 @@ Rectangle {
                     text: "class MyClass(object):\n  def __init__(self):"
                     font.bold: true
                     color: theme.SplitAssistantText
-                    font.pixelSize: 7
+                    renderType: Text.NativeRendering
+                    font.pixelSize: 8
                 }
             }
             Rectangle {
@@ -42,8 +43,9 @@ Rectangle {
                     anchors.centerIn: parent
                     text: "def func():\n  print('NINJA-IDE')"
                     color: theme.SplitAssistantText
+                    renderType: Text.NativeRendering
                     font.bold: true
-                    font.pixelSize: 7
+                    font.pixelSize: 8
                 }
             }
         }
@@ -64,7 +66,8 @@ Rectangle {
     pass")
                     color: theme.SplitAssistantText
                     font.bold: true
-                    font.pixelSize: 7
+                    renderType: Text.NativeRendering
+                    font.pixelSize: 8
                 }
             }
             Rectangle {
@@ -76,9 +79,10 @@ Rectangle {
                     anchors.centerIn: parent
                     text: ("def func():
     pass")
+                    renderType: Text.NativeRendering
                     color: theme.SplitAssistantText
                     font.bold: true
-                    font.pixelSize: 7
+                    font.pixelSize: 8
                 }
 
             }
@@ -129,6 +133,7 @@ Rectangle {
             rightMargin: 10
             topMargin: 3
         }
+        renderType: Text.NativeRendering
         color: theme.SplitAssistantText
         font.pointSize: 8
     }
