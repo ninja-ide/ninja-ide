@@ -59,6 +59,7 @@ class _ToolsDock(QWidget):
     executeFile = pyqtSignal()
     executeProject = pyqtSignal()
     executeSelection = pyqtSignal()
+    stopApplication = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -190,6 +191,9 @@ class _ToolsDock(QWidget):
         index = self.get_widget_index_by_instance(run_widget)
         self._show(index)
         self.executeSelection.emit()
+
+    def kill_application(self):
+        self.stopApplication.emit()
 
     def add_widget(self, display_name, obj):
         self._stack_widgets.addWidget(obj)

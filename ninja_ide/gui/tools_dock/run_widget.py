@@ -266,6 +266,11 @@ class RunWidget(QWidget):
                 "target": "tools_dock",
                 "signal_name": "executeSelection",
                 "slot": self.execute_selection
+            },
+            {
+                "target": "tools_dock",
+                "signal_name": "stopApplication",
+                "slot": self.kill_application
             }
         )
         IDE.register_signals("tools_dock", connections)
@@ -289,8 +294,17 @@ class RunWidget(QWidget):
         ninjaide.goingDown.connect(self._kill_processes)
 
     def _kill_processes(self):
+        """Stop all applications"""
         for program in self.__programs:
             program.kill()
+
+    def kill_application(self):
+        """Stop application by current tab index"""
+        index = self._tabs.currentIndex()
+        if index == -1:
+            return
+        program = self.__programs[index]
+        program.kill()
 
     def _menu_for_tabbar(self, position):
         menu = QMenu()
