@@ -305,9 +305,9 @@ class _MainContainer(QWidget):
 
     def __open_file(self, filename, line, col, ignore_checkers=False):
         try:
-            editor_widget = self.add_editor(filename)
+            self.add_editor(filename)
             if line != -1:
-                editor_widget.go_to_line(line, col)
+                self.editor_go_to_line(line, col)
             self.currentEditorChanged.emit(filename)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(
@@ -559,10 +559,10 @@ class _MainContainer(QWidget):
         if editor_widget is not None:
             editor_widget.comment_or_uncomment()
 
-    def editor_go_to_line(self, line):
+    def editor_go_to_line(self, line, column=0, center=True):
         editor_widget = self.get_current_editor()
         if editor_widget is not None:
-            editor_widget.go_to_line(line)
+            editor_widget.go_to_line(line, column, center)
             editor_widget.setFocus()
 
     def _editor_settings_changed(self, key, value):

@@ -79,24 +79,30 @@ class MarkerWidget(side_area.SideWidget):
     def width(self):
         return self.sizeHint().width()
 
-    # def next_bookmark(self):
-    #     if self.__bookmarks:
-    #         current_line, col = self._neditor.cursor_position
-    #         index = bisect.bisect(self.bookmarks, current_line)
-    #         try:
-    #             line = self.bookmarks[index]
-    #         except IndexError:
-    #             line = self.bookmarks[0]
-    #         self._neditor.cursor_position = line, col
+    def next_bookmark(self):
+        bookmarks = self._bookmark_manager.bookmarks(self._neditor.file_path)
+        if bookmarks:
+            bookmarks = [bookmark.lineno for bookmark in bookmarks]
+            current_line, col = self._neditor.cursor_position
+            index = bisect.bisect(bookmarks, current_line)
+            try:
+                line = bookmarks[index]
+            except IndexError:
+                line = bookmarks[0]
+            self._neditor.go_to_line(line, col, center=False)
+            self._neditor.setFocus()
 
-    # def previous_bookmark(self):
-    #     if self.__bookmarks:
-    #         current_line, col = self._neditor.cursor_position
-    #         index = bisect.bisect(self.bookmarks, current_line)
-    #         line = self.bookmarks[index - 1]
-    #         if line == current_line:
-    #             line = self.bookmarks[index - 2]
-    #         self._neditor.cursor_position = line, col
+    def previous_bookmark(self):
+        bookmarks = self._bookmark_manager.bookmarks(self._neditor.file_path)
+        if bookmarks:
+            bookmarks = [bookmark.lineno for bookmark in bookmarks]
+            current_line, col = self._neditor.cursor_position
+            index = bisect.bisect(bookmarks, current_line)
+            line = bookmarks[index - 1]
+            if line == current_line:
+                line = bookmarks[index - 2]
+            self._neditor.go_to_line(line, col, center=False)
+            self._neditor.setFocus()
 
     def sizeHint(self):
         font_metrics = QFontMetrics(self._neditor.font())
