@@ -47,7 +47,7 @@ class ToolBar(QWidget):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.fillRect(event.rect(), QColor("#1d1e21"))
+        painter.fillRect(event.rect(), QColor("#161719"))
 
 
 class NToolBar(QWidget):
@@ -56,7 +56,7 @@ class NToolBar(QWidget):
         super().__init__(parent)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 1, 0)
-        layout.setSpacing(1)
+        layout.setSpacing(0)
 
         self._toolbar = ToolBar(self)
         layout.addWidget(self._toolbar)

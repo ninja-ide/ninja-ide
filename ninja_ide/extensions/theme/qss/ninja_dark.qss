@@ -89,16 +89,10 @@ QComboBox#combo_symbols {
 QPushButton#close_button_combo:hover,
 QPushButton#navigation_button:hover,
 QComboBox#combo_projects:hover,
+QComboBox#combotab:hover,
 QComboBox#combo_symbols:hover {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #808080, stop: 1.0 #474747);
-}
-
-QComboBox#combotab:hover {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #808080, stop: 1.0 #474747);
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+        stop: 0 #616365, stop: 1.0 #333536);
 }
 
 QComboBox#combo_projects::drop-down,
@@ -119,13 +113,13 @@ QComboBox#combo_symbols::down-arrow {
 }
 
 QWidget#tools_dock {
-    background-color: palette(button);
-    border-top: 1px solid rgba(25, 25, 25, 75);
+    background-color: #161719;
+    border-top: 1px solid rgba(45, 45, 45, 75);
 }
 
 QFrame#actionbar {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #707070, stop: 1.0 #222222);
+        stop: 0 #515355, stop: 1.0 #232526);
     color: gray;
     border: 0px solid darkgray;
     min-height: 1.4em;
@@ -187,7 +181,7 @@ QPushButton#status:checked {
 }
 
 QToolButton#toggle_button {
-    background-color: palette(button);
+    background-color: #161719;
     border: none;
 }
 
