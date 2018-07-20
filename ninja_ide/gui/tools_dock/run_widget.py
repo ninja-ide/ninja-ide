@@ -181,13 +181,13 @@ class Program(QObject):
         self.outputw.setReadOnly(False)
 
     def _process_finished(self, code, status):
-        # frmt = "plain"
+        frmt = OutputWidget.Format.NORMAL
         if status == QProcess.NormalExit == code:
             text = translations.TR_PROCESS_EXITED_NORMALLY % code
         else:
             text = translations.TR_PROCESS_INTERRUPTED
-            # frmt = "error"
-        self.outputw.append_text(text)
+            frmt = OutputWidget.Format.ERROR
+        self.outputw.append_text(text, frmt)
         self.outputw.setReadOnly(True)
 
     def _refresh_output(self):
