@@ -311,8 +311,8 @@ class ProjectTreeColumn(QDialog):
 
     @property
     def current_project(self):
-        if self._projects_area.count() > 0:
-            return self._projects_area.currentWidget().project
+        if self._projects_area.count() > 0 and self.current_tree is not None:
+            return self.current_tree.project
 
     @property
     def current_tree(self):
