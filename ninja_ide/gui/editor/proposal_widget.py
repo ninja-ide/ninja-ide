@@ -41,6 +41,8 @@ from PyQt5.QtCore import QSize
 
 from ninja_ide.core import settings
 
+# TODO: implement delegate
+
 
 class ProposalItem(object):
     """
@@ -299,7 +301,7 @@ class ProposalWidget(QFrame):
         self._proposal_view = ProposalView()
         self.setFrameStyle(self._proposal_view.frameStyle())
         self._proposal_view.setFrameStyle(QFrame.NoFrame)
-        self._proposal_view.setItemDelegate(ProposalDelegate())
+        # self._proposal_view.setItemDelegate(ProposalDelegate())
 
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)
@@ -347,6 +349,7 @@ class ProposalWidget(QFrame):
             self._info_timer.start)
 
     def show_proposal(self, prefix=None):
+        self._proposal_view.setFont(self._editor.font())
         self.update_size_and_position()
         self.show()
         self._proposal_view.select_first()
