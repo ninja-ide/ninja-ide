@@ -21,9 +21,9 @@ Rectangle {
         root.filterComposite = filter;
     }
 
-    function loadItem(type, name, lineno, path, color) {
+    function loadItem(type, name, lineno, path, dpath, color) {
         itemsModel.append({"type": type, "name": name, "lineno": lineno,
-                           "path": path, "colorType": color});
+                           "path": path, "displayPath": dpath, "colorType": color});
     }
 
     function clear() {
@@ -59,6 +59,7 @@ Rectangle {
             name: ""
             lineno: 0
             path: ""
+            displayPath: ""
             colorType: ""
         }
     }
@@ -385,7 +386,7 @@ Rectangle {
                                 left: parent.left
                                 right: parent.right
                             }
-                            text: path
+                            text: displayPath
                             font.pixelSize: 12
                             color: listItem.current ? theme.LocatorText : theme.LocatorAlternativeText
                             //font.bold: true
