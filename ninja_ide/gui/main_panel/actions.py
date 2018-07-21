@@ -56,6 +56,14 @@ ACTIONS = (
         "connect": "add_editor"
     },
     {
+        "action": {
+            "text": translations.TR_RECENT_FILES,
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 420,
+            "is_menu": True
+        }
+    },
+    {
         "shortcut": "close-file",
         "action": {
             "text": translations.TR_CLOSE_FILE,

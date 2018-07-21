@@ -86,7 +86,7 @@ class _MainContainer(QWidget):
             1: self._navigate_bookmarks
         }
         # Recent files list
-        self.__last_opened_files = OrderedDict()
+        self.__last_opened_files = []
         # QML UI
         self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
@@ -139,6 +139,10 @@ class _MainContainer(QWidget):
         # Code Locator
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
+        data_settings = IDE.data_settings()
+        recent_files = data_settings.value("lastSession/recentFiles")
+        if recent_files is not None:
+            self.__last_opened_files = recent_files
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
         # self.fileSaved.connect(self._show_message_about_saved)
 
@@ -252,17 +256,26 @@ class _MainContainer(QWidget):
 
     @property
     def last_opened_files(self):
-        return self.__last_opened_files.values()
+        return self.__last_opened_files
 
     def _add_to_last_opened(self, nfile):
         MAX_RECENT_FILES = 10  # FIXME: configuration
-        if nfile.file_path in self.__last_opened_files:
-            del self.__last_opened_files[nfile.file_path]
-        self.__last_opened_files.update({nfile.file_path: nfile})
-        self.__last_opened_files.move_to_end(nfile.file_path, last=False)
+        file_path = nfile.file_path
+        if file_path in self.__last_opened_files:
+            self.__last_opened_files.remove(file_path)
+        self.__last_opened_files.insert(0, file_path)
         if len(self.__last_opened_files) > MAX_RECENT_FILES:
-            last = list(self.__last_opened_files)[-1]
-            del self.__last_opened_files[last]
+            self.__last_opened_files.pop(-1)
+        # if file_path in self.__last_opened_files:
+        #     del self.__last_opened_files[nfile.file_path]
+        # self.__last_opened_files.update({nfile.file_path: nfile})
+        # self.__last_opened_files.move_to_end(nfile.file_path, last=False)
+        # if len(self.__last_opened_files) > MAX_RECENT_FILES:
+        #     last = list(self.__last_opened_files)[-1]
+        #     del self.__last_opened_files[last]
+
+    def clear_last_opened_files(self):
+        self.__last_opened_files.clear()
 
     def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
         logger.debug("Will try to open %s" % filename)

@@ -57,6 +57,8 @@ from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 
+MAX_RECENT_PROJECTS = 10
+
 
 class ProjectTreeColumn(QDialog):
 
@@ -334,10 +336,10 @@ class ProjectTreeColumn(QDialog):
         name = projectProperties.get('name', '')
         description = projectProperties.get('description', '')
 
-        if name == '':
+        if not name:
             name = file_manager.get_basename(folder)
 
-        if description == '':
+        if not description:
             description = translations.TR_NO_DESCRIPTION
 
         if folder in recent_project_list:
@@ -354,7 +356,7 @@ class ProjectTreeColumn(QDialog):
             # if the length of the project list it's high that 10 then delete
             # the most old
             # TODO: add the length of available projects to setting
-            if len(recent_project_list) > 10:
+            if len(recent_project_list) > MAX_RECENT_PROJECTS:
                 del recent_project_list[self.find_most_old_open(
                     recent_project_list)]
         settings.setValue('recentProjects', recent_project_list)

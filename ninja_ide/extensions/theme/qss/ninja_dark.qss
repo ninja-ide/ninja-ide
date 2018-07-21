@@ -40,6 +40,10 @@ QMenu::item:selected {
     background: palette(highlight);
 }
 
+QMenu::item:disabled {
+    color: #666;
+}
+
 QMenu::icon:checked {
     background-color: qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
     border: 1px solid palette(highlight);

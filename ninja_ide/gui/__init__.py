@@ -169,7 +169,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         files = data_qsettings.value('lastSession/openedFiles')
         projects = data_qsettings.value('lastSession/projects')
         current_file = data_qsettings.value('lastSession/currentFile')
-        # FIXME: recent files
         if files is None:
             files = []
         if projects is None:
@@ -184,8 +183,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         if projects_path:
             projects += projects_path
         ninjaide.load_session_files_projects(
-            files, projects, current_file, []
-        )
+            files, projects, current_file)
 
     # Showing GUI
     ninjaide.show()

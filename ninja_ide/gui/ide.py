@@ -532,8 +532,7 @@ class IDE(QMainWindow):
         pref.setModal(True)
         pref.show()
 
-    def load_session_files_projects(self, files, projects, current_file,
-                                    recent_files=None):
+    def load_session_files_projects(self, files, projects, current_file):
         """Load the files and projects from previous session."""
         # Load projects
         projects_explorer = IDE.get_service('projects_explorer')
@@ -560,9 +559,6 @@ class IDE(QMainWindow):
         #        main_container.open_file(current_file)
         # if projects_explorer and projects:
         #    projects_explorer.load_session_projects(projects)
-            #if recent_files is not None:
-                #menu_file = IDE.get_service('menu_file')
-                #menu_file.update_recent_files(recent_files)
 
     #def _set_editors_project_data(self):
         #self.__project_to_open -= 1
@@ -752,6 +748,9 @@ class IDE(QMainWindow):
         #    data_qsettings.setValue('lastSession/openedFiles', files_info)
         #    if current_file is not None:
         #        data_qsettings.setValue('lastSession/currentFile', current_file)
+        recent_files = main_container.last_opened_files
+        data_settings.setValue("lastSession/recentFiles", recent_files)
+        #     "lastSession/recentFiles", list(main_container.last_opened_files))
         #    data_qsettings.setValue('lastSession/recentFiles',
         #                            settings.LAST_OPENED_FILES)
         # qsettings.setValue('preferences/editor/bookmarks',
