@@ -56,8 +56,8 @@ from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import unsaved_files
-# from ninja_ide.gui.dialogs import schemes_manager
-# from ninja_ide.gui.dialogs import language_manager
+from ninja_ide.gui.dialogs import schemes_manager
+from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs.preferences import preferences
 # from ninja_ide.gui.dialogs import traceback_widget
