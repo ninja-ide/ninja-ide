@@ -39,11 +39,12 @@ from PyQt5.QtCore import QRect
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QSize
 
+from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.tools_dock import actions
-
+from ninja_ide.gui.tools_dock import python_chooser
 
 logger = NinjaLogger(__name__)
 DEBUG = logger.debug
@@ -114,7 +115,8 @@ class _ToolsDock(QWidget):
         shortcut_number = Qt.Key_1
 
         for index, (obj, name) in _ToolsDock.__WIDGETS.items():
-            button = ToolButton(index + 1, name)
+            button = ToolButton(name, index + 1)
+            button.setCheckable(True)
             button.clicked.connect(self.on_button_triggered)
             self.__buttons.append(button)
             self.buttons_widget.layout().addWidget(button)
@@ -128,6 +130,15 @@ class _ToolsDock(QWidget):
 
         self.buttons_widget.layout().addItem(
             QSpacerItem(0, 0, QSizePolicy.Expanding))
+
+        select_python_btn = ui_tools.FancyButton(settings.PYTHON_EXEC)
+        select_python_btn.setIcon(ui_tools.get_icon("python"))
+        select_python_btn.setCheckable(True)
+        self.buttons_widget.layout().addWidget(select_python_btn)
+        select_python_btn.toggled[bool].connect(
+            lambda v: self._python_chooser.setVisible(v))
+
+        self._python_chooser = python_chooser.PyChooser(select_python_btn)
 
         button_toggle_widgets = ToggleButton()
         self.buttons_widget.layout().addWidget(button_toggle_widgets)
@@ -294,33 +305,45 @@ class StackedWidget(QStackedWidget):
 
 class ToolButton(QPushButton):
 
-    def __init__(self, number, text, parent=None):
+    def __init__(self, text, number=None, parent=None):
         super().__init__(parent)
         self.setObjectName("button_tooldock")
-        # self.setAutoRaise(True)
+
         self.setFlat(True)
-        self.setCheckable(True)
-        self._number = str(number)
+        if number is None:
+            self._number = None
+        else:
+            self._number = str(number)
+        self._text = text
+
+    def setText(self, text):
+        super().setText(text)
         self._text = text
 
     def paintEvent(self, event):
         super().paintEvent(event)
-        fm = self.fontMetrics()
-        base_line = (self.height() - fm.height()) / 2 + fm.ascent()
-        number_width = fm.width(self._number)
+        if self._number is None:
+            painter = QPainter(self)
+            fm = self.fontMetrics()
+            base_line = (self.height() - fm.height()) / 2 + fm.ascent()
+            painter.drawText(event.rect(), Qt.AlignCenter, self._text)
+        else:
+            fm = self.fontMetrics()
+            base_line = (self.height() - fm.height()) / 2 + fm.ascent()
+            number_width = fm.width(self._number)
 
-        painter = QPainter(self)
-        # Draw shortcut number
-        painter.drawText(
-            (15 - number_width) / 2,
-            base_line,
-            self._number
-        )
-        # Draw display name of tool button
-        painter.drawText(
-            18,
-            base_line,
-            fm.elidedText(self._text, Qt.ElideRight, self.width()))
+            painter = QPainter(self)
+            # Draw shortcut number
+            painter.drawText(
+                (15 - number_width) / 2,
+                base_line,
+                self._number
+            )
+            # Draw display name of tool button
+            painter.drawText(
+                18,
+                base_line,
+                fm.elidedText(self._text, Qt.ElideRight, self.width()))
 
     def sizeHint(self):
         self.ensurePolished()

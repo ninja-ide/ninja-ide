@@ -306,6 +306,70 @@ class ToolBar(QWidget):
 
 
 ###############################################################################
+# Fancy Tool Button
+###############################################################################
+
+class FancyButton(QToolButton):
+
+    def __init__(self, text="", parent=None):
+        super().__init__(parent)
+        self.setAttribute(Qt.WA_Hover, True)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        if text:
+            self.setText(text)
+        self._fader = 0
+
+    def _set_fader(self, value):
+        self._fader = value
+        self.update()
+
+    def _get_fader(self):
+        return self._fader
+
+    fader = pyqtProperty(float, fget=_get_fader, fset=_set_fader)
+
+    def event(self, event):
+        if event.type() == QEvent.Enter:
+            self.anim = QPropertyAnimation(self, b"fader")
+            self.anim.setDuration(150)
+            self.anim.setEndValue(1.0)
+            self.anim.start(QPropertyAnimation.DeleteWhenStopped)
+        elif event.type() == QEvent.Leave:
+            self.anim = QPropertyAnimation(self, b"fader")
+            self.anim.setDuration(124)
+            self.anim.setEndValue(0.0)
+            self.anim.start(QPropertyAnimation.DeleteWhenStopped)
+        else:
+            return QToolButton.event(self, event)
+        return False
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        if self.isEnabled() and not self.isDown() and not self.isChecked():
+            painter.save()
+            hover_color = QColor("#424242")
+            faded_hover_color = QColor(hover_color)
+            faded_hover_color.setAlpha(int(self._fader * hover_color.alpha()))
+            painter.fillRect(event.rect(), faded_hover_color)
+            painter.restore()
+        elif self.isDown() or self.isChecked():
+            painter.save()
+            selected_color = QColor("#090909")
+            painter.fillRect(event.rect(), selected_color)
+            painter.restore()
+        fm = QFontMetrics(painter.font())
+        rect = QRect(-3, 0, self.rect().width(), fm.height())
+        icon_rect = QRect(0, 0, 22, 22)
+        self.icon().paint(painter, icon_rect, Qt.AlignVCenter)
+        painter.drawText(rect, Qt.AlignRight | Qt.AlignVCenter, self.text())
+
+    def sizeHint(self):
+        self.ensurePolished()
+        s = self.fontMetrics().size(Qt.TextSingleLine, self.text())
+        s.setWidth(s.width() + 25)
+        return s.expandedTo(QApplication.globalStrut())
+
+###############################################################################
 # Cool Tool Button
 ###############################################################################
 
