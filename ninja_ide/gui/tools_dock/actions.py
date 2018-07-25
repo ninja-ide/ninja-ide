@@ -9,15 +9,15 @@ from ninja_ide import translations
 #}
 
 ACTIONS = (
-    {
-        "shortcut": "Find-in-files",
-        "action": {
-            "text": translations.TR_FIND_IN_FILES,
-            "section": (translations.TR_MENU_EDIT, None),
-            "weight": 240
-        },
-        "connect": "show_find_in_files_widget"
-    },
+    # {
+    #     "shortcut": "Find-in-files",
+    #     "action": {
+    #         "text": translations.TR_FIND_IN_FILES,
+    #         "section": (translations.TR_MENU_EDIT, None),
+    #         "weight": 240
+    #     },
+    #     "connect": "show_find_in_files_widget"
+    # },
     {
         "shortcut": "run-file",
         "action": {

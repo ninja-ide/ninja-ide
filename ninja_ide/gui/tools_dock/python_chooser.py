@@ -52,10 +52,11 @@ class PyChooser(QWidget):
         self._btn.setChecked(visible)
 
     def showEvent(self, event):
-        tools = IDE.get_service("tools_dock")
         ide = IDE.get_service("ide")
-        move_to = tools.mapToGlobal(QPoint(0, 0))
-        move_to -= QPoint(-ide.width() + self.width() + 45, self.height() - 5)
+        move_to = ide.mapToGlobal(QPoint(0, 0))
+        move_to -= QPoint(
+            -ide.width() + self.width() - 5,
+            -ide.height() + self.height() + 20)
         self.move(move_to)
         self.add_model()
 

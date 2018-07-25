@@ -268,13 +268,6 @@ class _MainContainer(QWidget):
         self.__last_opened_files.insert(0, file_path)
         if len(self.__last_opened_files) > MAX_RECENT_FILES:
             self.__last_opened_files.pop(-1)
-        # if file_path in self.__last_opened_files:
-        #     del self.__last_opened_files[nfile.file_path]
-        # self.__last_opened_files.update({nfile.file_path: nfile})
-        # self.__last_opened_files.move_to_end(nfile.file_path, last=False)
-        # if len(self.__last_opened_files) > MAX_RECENT_FILES:
-        #     last = list(self.__last_opened_files)[-1]
-        #     del self.__last_opened_files[last]
 
     def clear_last_opened_files(self):
         self.__last_opened_files.clear()
@@ -568,7 +561,7 @@ class _MainContainer(QWidget):
         if editor_widget is not None:
             editor_widget.duplicate_line()
 
-    def editor_comment(self):
+    def editor_toggle_comment(self):
         """Mark the current line or selection as a comment."""
         editor_widget = self.get_current_editor()
         if editor_widget is not None:
