@@ -260,6 +260,8 @@ class _MainContainer(QWidget):
 
     def _add_to_last_opened(self, nfile):
         MAX_RECENT_FILES = 10  # FIXME: configuration
+        if nfile.is_new_file:
+            return
         file_path = nfile.file_path
         if file_path in self.__last_opened_files:
             self.__last_opened_files.remove(file_path)
