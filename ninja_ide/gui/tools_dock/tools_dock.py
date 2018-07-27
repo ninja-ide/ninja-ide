@@ -231,6 +231,11 @@ class _ToolsDock(QWidget):
         self.widget(index).setVisible(False)
         self.hide()
 
+    def hide_widget(self, obj):
+        index = self.get_widget_index_by_instance(obj)
+        self.set_current_index(index)
+        self._hide()
+
     def _show(self, index):
         widget = self.widget(index)
         self.__current_widget = widget

@@ -333,7 +333,8 @@ class RunWidget(QWidget):
 
         if self._tabs.count() == 0:
             # Hide widget
-            self.allTabsClosed.emit()
+            tools = IDE.get_service("tools_dock")
+            tools.hide_widget(self)
 
     def close_all_tabs(self):
         for _ in range(self._tabs.count()):
