@@ -14,7 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
 
 from PyQt5.QtWidgets import (
     QDialog,
@@ -66,6 +65,11 @@ class TreeSymbolsWidget(QDialog):
         self.actualSymbols = ('', {})
         self.docstrings = {}
         self.collapsedItems = {}
+        self.__icons = {
+            "function": QIcon(":img/function"),
+            "attribute": QIcon(":img/statement"),
+            "class": QIcon(":img/class")
+        }
 
         self.tree.itemClicked.connect(self._go_to_definition)
         self.tree.itemActivated.connect(self._go_to_definition)
@@ -235,9 +239,7 @@ class TreeSymbolsWidget(QDialog):
                 globItem = ItemTree(globalAttribute, [glob],
                                     lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
-                # globItem.setIcon(
-                #    0, ui_tools.colored_icon(":img/attr", "#5dade2"))
-                globItem.setIcon(0, QIcon(":img/attr"))
+                globItem.setIcon(0, self.__icons["attribute"])
                 globItem.setExpanded(self._get_expand(globItem))
 
         if 'functions' in symbols and symbols['functions']:
@@ -253,7 +255,7 @@ class TreeSymbolsWidget(QDialog):
                 tooltip = self.create_tooltip(
                     func, symbols['functions'][func]['lineno'])
                 item.isMethod = True
-                item.setIcon(0, QIcon(":img/function"))
+                item.setIcon(0, self.__icons["function"])
                 # item.setIcon(
                 #    0, ui_tools.colored_icon(":img/function", "#9FA8DA"))
                 item.setToolTip(0, tooltip)
@@ -275,7 +277,7 @@ class TreeSymbolsWidget(QDialog):
                 item.setToolTip(0, tooltip)
                 # item.setIcon(0, ui_tools.colored_icon(":img/class", "#FFCC80"))
                 # item.setIcon(0, ui_tools.get_icon('class', '#FFCC80'))
-                item.setIcon(0, ui_tools.get_icon('class'))
+                item.setIcon(0, self.__icons["class"])
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz]['members'],
                                          parent=item)
