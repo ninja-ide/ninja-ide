@@ -16,22 +16,18 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from collections import OrderedDict
 
-from PyQt5.QtWidgets import (
-    QWidget,
-    QVBoxLayout,
-    QStackedLayout,
-    QFileDialog,
-    QMessageBox,
-    QShortcut
-)
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QShortcut
+
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import (
-    pyqtSignal,
-    pyqtSlot,
-    Qt
-)
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt
+
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
@@ -58,12 +54,13 @@ logger = NinjaLogger(__name__)
 
 class _MainContainer(QWidget):
 
-    currentEditorChanged = pyqtSignal("QString")
-    fileOpened = pyqtSignal("QString")
-    fileSaved = pyqtSignal("QString")
-    runFile = pyqtSignal("QString")
-    showFileInExplorer = pyqtSignal("QString")
-    addToProject = pyqtSignal("QString")
+    currentEditorChanged = pyqtSignal(str)
+    fileOpened = pyqtSignal(str)
+    beforeFileSaved = pyqtSignal(str)
+    fileSaved = pyqtSignal(str)
+    runFile = pyqtSignal(str)
+    showFileInExplorer = pyqtSignal(str)
+    addToProject = pyqtSignal(str)
     allFilesClosed = pyqtSignal()
 
     def __init__(self, parent=None):
@@ -96,28 +93,29 @@ class _MainContainer(QWidget):
         IDE.register_service("main_container", self)
         # Register signals connections
         connections = (
-            {
-                "target": "main_container",
-                "signal_name": "updateLocator",
-                "slot": self._explore_code
-            },
+            # {
+            #     "target": "main_container",
+            #     "signal_name": "updateLocator",
+            #     "slot": self._explore_code
+            # },
             {
                 "target": "filesystem",
                 "signal_name": "projectOpened",
                 "slot": self._explore_code
             },
+            # {
+            #     "target": "projects_explore",
+            #     "signal_name": "updateLocator",
+            #     "slot": self._explore_code
+            # }
             {
-                "target": "projects_explore",
-                "signal_name": "updateLocator",
+                "target": "filesystem",
+                "signal_name": "projectClosed",
                 "slot": self._explore_code
             }
         )
 
         IDE.register_signals("main_container", connections)
-
-        # FIXME: short usado en el intellisense
-        # esc_sort = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        # esc_sort.activated.connect(self._set_focus_to_editor)
 
         fhandler_short = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Tab), self)
         fhandler_short.activated.connect(self.show_files_handler)
@@ -154,11 +152,6 @@ class _MainContainer(QWidget):
 
     def _add_to_project(self, filepath):
         self.addToProject.emit(filepath)
-
-    # def _show_message_about_saved(self, message):
-    #     if settings.NOTIFICATION_ON_SAVE:
-    #         editor_widget = self.get_current_editor()
-    #         indicator.Indicator.show_text(editor_widget, message)
 
     def show_files_handler(self):
         self._files_handler.next_item()
@@ -241,6 +234,11 @@ class _MainContainer(QWidget):
 
         self._code_locator.explore_code()
 
+    def _explore_file_code(self, path):
+        """Update locator metadata for the file in path"""
+
+        self._code_locator.explore_file_code(path)
+
     def current_editor_changed(self, filename):
         """Notify the new filename of the current editor"""
 
@@ -320,7 +318,7 @@ class _MainContainer(QWidget):
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(
                 self,
-                "The file couldn't be open",  # FIXME: translations
+                translations.TR_OPEN_FILE_ERROR,
                 str(reason))
             logger.error("The file %s couldn't be open" % filename)
 
@@ -353,24 +351,26 @@ class _MainContainer(QWidget):
                 if editor_widget.nfile.is_new_file or \
                         not editor_widget.nfile.has_write_permission():
                     return self.save_file_as(editor_widget)
-                # FIXME: beforeFileSaved.emit
+
+                file_path = editor_widget.file_path
+                # Emit signal before save
+                self.beforeFileSaved.emit(file_path)
                 if settings.REMOVE_TRAILING_SPACES:
                     editor_widget.remove_trailing_spaces()
-                # FIXME: new line at end
                 if settings.ADD_NEW_LINE_AT_EOF:
                     editor_widget.insert_block_at_end()
                 # Save content
                 editor_widget.neditable.save_content()
                 # FIXME: encoding
-                # FIXME: translations
-                self.fileSaved.emit("File Saved: %s" % editor_widget.file_path)
+                message = translations.TR_FILE_SAVED.format(file_path)
+                self.fileSaved.emit(message)
                 return True
             except Exception as reason:
                 logger.error("Save file error: %s" % reason)
                 QMessageBox.information(
                     self,
-                    "Save Error",
-                    "The file could't be saved!"
+                    translations.TR_SAVE_FILE_ERROR_TITLE,
+                    translations.TR_SAVE_FILE_ERROR_BODY
                 )
             return False
 
@@ -395,7 +395,10 @@ class _MainContainer(QWidget):
                 save_folder = settings.WORKSPACE
 
             filename = QFileDialog.getSaveFileName(
-                self, "Save File", save_folder, filters
+                self,
+                translations.TR_SAVE_FILE_DIALOG,
+                save_folder,
+                filters
             )[0]
             if not filename:
                 return False
@@ -405,19 +408,22 @@ class _MainContainer(QWidget):
                 filename = "%s.%s" % (filename, "py")
             editor_widget.neditable.save_content(path=filename, force=force)
             # self._setter_language.set_language_from_extension(extension)
-            self.fileSaved.emit("File Saved: {}".format(filename))
+            self.fileSaved.emit(translations.TR_FILE_SAVED.format(filename))
             self.currentEditorChanged.emit(filename)
             return True
         except file_manager.NinjaFileExistsException as reason:
             QMessageBox.information(
-                self, "File Already Exists",
-                "Invalid Path: the file '%s' already exists." % reason.filename
+                self,
+                translations.TR_FILE_ALREADY_EXISTS_TITLE,
+                translations.TR_FILE_ALREADY_EXISTS_BODY.format(
+                    reason.filename)
             )
         except Exception as reason:
-            logger.error("save_file_as: %s", reason)
+            logger.error("Save file as: %s", reason)
             QMessageBox.information(
-                self, "Save Error",
-                "The file couldn't be saved!"
+                self,
+                translations.TR_SAVE_FILE_ERROR_TITLE,
+                translations.TR_SAVE_FILE_ERROR_BODY
             )
         return False
 
@@ -476,7 +482,8 @@ class _MainContainer(QWidget):
         neditor = editor.create_editor(editable)
         neditor.zoomChanged.connect(self._on_zoom_changed)
         neditor.addBackItemNavigation.connect(self.add_back_item_navigation)
-        # editable.fileSaved.connect(self._editor_tab)
+        editable.fileSaved.connect(
+            lambda neditable: self._explore_file_code(neditable.file_path))
         return neditor
 
     def add_back_item_navigation(self):

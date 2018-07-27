@@ -241,7 +241,8 @@ class Program(QObject):
 class RunWidget(QWidget):
 
     allTabsClosed = pyqtSignal()
-    projectExecuted = pyqtSignal("QString")
+    projectExecuted = pyqtSignal(str)
+    fileExecuted = pyqtSignal(str)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -352,11 +353,12 @@ class RunWidget(QWidget):
         editor_widget = main_container.get_current_editor()
         if editor_widget is not None and (editor_widget.is_modified or
                                           editor_widget.file_path):
-            if not main_container.save_file(editor_widget):
-                return
-            # FIXME: Emit a signal for plugin!
-            # self.fileExecuted.emit(editor_widget.file_path)
+            main_container.save_file(editor_widget)
             file_path = editor_widget.file_path
+            if file_path is None:
+                return
+            # Emit signal for plugin!
+            self.fileExecuted.emit(editor_widget.file_path)
             extension = file_manager.get_file_extension(file_path)
             # TODO: Remove the IF statment and use Handlers
             if extension == "py":

@@ -246,21 +246,15 @@ class ComboEditor(QWidget):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
         # neditable.editor.completer.cc.unload_module()
-        # self._add_to_last_opened(neditable.file_path)
         self.fileClosed.emit(neditable.nfile)
         layoutItem.widget().deleteLater()
 
         if self.stacked.isEmpty():
             self.bar.hide()
             self.allFilesClosed.emit()
-
-    # def _add_to_last_opened(self, path):
-    #     if path not in settings.LAST_OPENED_FILES:
-    #         settings.LAST_OPENED_FILES.append(path)
-    #         if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_EDITORS:
-    #             self.__lastOpened = self.__lastOpened[1:]
-    #         print("RecentTabsModified")
-    #         # self.emit(SIGNAL("recentTabsModified()"))
+            tree_symbols = IDE.get_service("symbols_explorer")
+            if tree_symbols is not None:
+                tree_symbols.clear()
 
     def _editor_with_focus(self):
         self._main_container.combo_area = self
@@ -645,10 +639,12 @@ class ActionBar(QFrame):
            translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
         action_show_file_in_explorer = menu.addAction(
            translations.TR_SHOW_FILE_IN_EXPLORER)
-        # actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
+        action_reopen = menu.addAction(translations.TR_REOPEN_FILE)
         action_undock = menu.addAction(translations.TR_UNDOCK_EDITOR)
-        # if len(settings.LAST_OPENED_FILES) == 0:
-        #    actionReopen.setEnabled(False)
+
+        main_container = IDE.get_service("main_container")
+        if not main_container.last_opened_files:
+            action_reopen.setEnabled(False)
 
         # set language action
         # menu_set_language = menu.addMenu(translations.TR_SET_LANGUAGE)
@@ -666,28 +662,11 @@ class ActionBar(QFrame):
         action_show_file_in_explorer.triggered.connect(
             self._show_file_in_explorer)
         action_add.triggered.connect(self._add_to_project)
+        action_reopen.triggered.connect(self._reopen_last_tab)
         # self.connect(actionSplitH, SIGNAL("triggered()"),
         #             lambda: self._split(False))
         # self.connect(actionSplitV, SIGNAL("triggered()"),
         #             lambda: self._split(True))
-        # self.connect(actionRun, SIGNAL("triggered()"),
-        #             self._run_this_file)
-        # self.connect(actionAdd, SIGNAL("triggered()"),
-        #             self._add_to_project)
-        # self.connect(actionClose, SIGNAL("triggered()"),
-        #             self.about_to_close_file)
-        # self.connect(actionCloseAllNotThis, SIGNAL("triggered()"),
-        #             self._close_all_files_except_this)
-        # self.connect(actionCloseAll, SIGNAL("triggered()"),
-        #             self._close_all_files)
-        # self.connect(actionCopyPath, SIGNAL("triggered()"),
-        #             self._copy_file_location)
-        # self.connect(actionShowFileInExplorer, SIGNAL("triggered()"),
-        #             self._show_file_in_explorer)
-        # self.connect(actionReopen, SIGNAL("triggered()"),
-        #             self._reopen_last_tab)
-        # self.connect(actionUndock, SIGNAL("triggered()"),
-        #             self._undock_editor)
 
         menu.exec_(QCursor.pos())
 
@@ -752,7 +731,6 @@ class ActionBar(QFrame):
 
     def close_split(self):
         self.closeSplit.emit()
-        # self.emit(SIGNAL("closeSplit()"))
 
     def close_file(self, neditable):
         """Receive the confirmation to close the file."""
@@ -772,17 +750,16 @@ class ActionBar(QFrame):
         self.addToProject.emit(neditable.file_path)
 
     def _show_file_in_explorer(self):
-        '''Triggered when the "Show File in Explorer" context
+        """Triggered when the "Show File in Explorer" context
         menu action is selected. Emits the "showFileInExplorer(QString)"
-        signal with the current file's full path as argument.'''
+        signal with the current file's full path as argument."""
         neditable = self.combo_files.itemData(self.combo_files.currentIndex())
         self.showFileInExplorer.emit(neditable.file_path)
 
     def _reopen_last_tab(self):
-        print("Emitir reopenTab y recentTabsModified")
-        # self.emit(SIGNAL("reopenTab(QString)"),
-        #          settings.LAST_OPENED_FILES.pop())
-        # self.emit(SIGNAL("recentTabsModified()"))
+        main_container = IDE.get_service("main_container")
+        last_closed = main_container.last_opened_files[0]
+        self.reopenTab.emit(last_closed)
 
     def _undock_editor(self):
         self.undockEditor.emit()

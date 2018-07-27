@@ -45,6 +45,7 @@ from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import utils
 from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
@@ -108,12 +109,16 @@ class ProjectTreeColumn(QDialog):
             'const QPoint&'].connect(self.context_menu_for_root)
 
         connections = (
-            {'target': 'main_container',
-             'signal_name': 'addToProject',
-             'slot': self._add_file_to_project},
-            {'target': 'main_container',
-             'signal_name': 'showFileInExplorer',
-             'slot': self._show_file_in_explorer},
+            {
+                "target": "main_container",
+                "signal_name": "addToProject",
+                "slot": self._add_file_to_project
+            },
+            {
+                "target": "main_container",
+                "signal_name": "showFileInExplorer",
+                "slot": self._show_file_in_explorer
+            },
         )
         IDE.register_service('projects_explorer', self)
         IDE.register_signals('projects_explorer', connections)
@@ -189,10 +194,10 @@ class ProjectTreeColumn(QDialog):
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
         if self._projects_area.count() > 0:
-            pathProject = [self.current_project]
-            addToProject = add_to_project.AddToProject(pathProject, self)
-            addToProject.exec_()
-            if not addToProject.pathSelected:
+            path_project = [self.current_project]
+            _add_to_project = add_to_project.AddToProject(path_project, self)
+            _add_to_project.exec_()
+            if not _add_to_project.path_selected:
                 return
             main_container = IDE.get_service('main_container')
             if not main_container:
@@ -212,7 +217,7 @@ class ProjectTreeColumn(QDialog):
             else:
                 name = file_manager.get_basename(editorWidget.file_path)
             new_path = file_manager.create_path(
-                addToProject.pathSelected, name)
+                _add_to_project.path_selected, name)
             ide_srv = IDE.get_service("ide")
             old_file = ide_srv.get_or_create_nfile(path)
             new_file = old_file.save(editorWidget.text(), new_path)
@@ -243,6 +248,8 @@ class ProjectTreeColumn(QDialog):
     def add_project(self, project):
         if project not in self.projects:
             self._combo_project.addItem(project.name)
+            tooltip = utils.path_with_tilde_homepath(project.path)
+            self._combo_project.setToolTip(tooltip)
             index = self._combo_project.count() - 1
             self._combo_project.setItemData(index, project)
             ptree = TreeProjectsWidget(project)

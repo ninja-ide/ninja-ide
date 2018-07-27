@@ -68,14 +68,15 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
         self._widget_index = 0
         self.__splitted_tabs = {}
         self.menu = QMenu()
-        self.actionSplit = self.menu.addAction(translations.TR_SPLIT_TAB)
-        self.actionSplit.triggered.connect(self._split_widget)
-        self.actionUndock = self.menu.addAction(translations.TR_UNDOCK)
-        self.actionUndock.triggered.connect(self._undock_widget)
+        action_split = self.menu.addAction(translations.TR_SPLIT_TAB)
+        action_split.triggered.connect(self._split_widget)
+        self.action_undock = self.menu.addAction(translations.TR_UNDOCK)
+        self.action_undock.triggered.connect(self._undock_widget)
         self.actionCloseSplit = self.menu.addAction(
             translations.TR_CLOSE_SPLIT)
         self.actionCloseSplit.triggered.connect(self._close_split)
-        self.menuMoveToSplit = self.menu.addMenu(translations.TR_MOVE_TO_SPLIT)
+        self.menu_move_to_split = self.menu.addMenu(
+            translations.TR_MOVE_TO_SPLIT)
 
         IDE.register_signals('explorer_container', connections)
         self.__created = True
@@ -218,18 +219,19 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
         self._point = point
         self._widget_index = widget_index
         if widget_index != 0:
-            self.actionUndock.setVisible(False)
+            self.action_undock.setVisible(False)
             self.actionCloseSplit.setVisible(True)
         else:
-            self.actionUndock.setVisible(True)
+            self.action_undock.setVisible(True)
             self.actionCloseSplit.setVisible(False)
 
-        self.menuMoveToSplit.clear()
-        if self.count() > 1:
+        self.menu_move_to_split.clear()
+        has_split = self.count() > 1
+        if has_split:
             for i in range(1, self.count() + 1):
-                action = self.menuMoveToSplit.addAction("%d" % i)
+                action = self.menu_move_to_split.addAction("%d" % i)
                 action.triggered.connect(partial(self._move_to_split, -1))
-
+        self.menu_move_to_split.setEnabled(has_split)
         self.menu.exec_(bar.mapToGlobal(point))
 
     def enterEvent(self, event):

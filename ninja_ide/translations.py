@@ -261,6 +261,15 @@ TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint Errors: ")
 TR_NOT_IMPORT_CHECKER_TEXT = tr("NINJA-IDE", "Imports don't exist: ")
 
 # Dialogs
+TR_FILE_ALREADY_EXISTS_TITLE = tr("NINJA-IDE", "File Already Exists")
+TR_FILE_ALREADY_EXISTS_BODY = tr(
+    "NINJA-IDE",
+    "Invalid Path: the file '{}'already exists.")
+TR_SAVE_FILE_DIALOG = tr("NINJA-IDE", "Save File")
+TR_SAVE_FILE_ERROR_TITLE = tr("NINJA-IDE", "Save Error")
+TR_SAVE_FILE_ERROR_BODY = tr("NINJA-IDE", "The file could't be saved!")
+TR_OPEN_FILE_ERROR = tr("NINJA-IDE", "The file could't be open")
+TR_FILE_SAVED = tr("NINJA-IDE", "File Saved: {}")
 TR_PREFERENCES_TITLE = tr("NINJA-IDE", "NINJA-IDE - Preferences")
 TR_SESSIONS_TITLE = tr("NINJA-IDE", "Sessions Manager")
 TR_SESSIONS_DIALOG_BODY = tr(

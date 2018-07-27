@@ -210,6 +210,9 @@ class TreeSymbolsWidget(QDialog):
             return "%s_%s" % (parent.text(0), item.text(0))
         return "_%s" % item.text(0)
 
+    def clear(self):
+        self.tree.clear()
+
     def update_symbols_tree(self, symbols, filename='', parent=None):
         """Method to Update the symbols on the Tree"""
         TIP = "{} {}"
