@@ -37,7 +37,6 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
-from ninja_ide.gui.editor.indicator import FadingIndicator
 
 logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
@@ -226,8 +225,8 @@ class SearchWidget(QWidget):
                 self.search_text, cs, wo)
             matches = len(matches)
             if index == 1:
-                FadingIndicator.show_text(
-                    editor, translations.TR_SEARCH_FROM_TOP, 1500)
+                ide = IDE.get_service("ide")
+                ide.show_message(translations.TR_SEARCH_FROM_TOP)
         self._line_search.counter.update_count(
             index, matches, len(self.search_text) > 0)
 

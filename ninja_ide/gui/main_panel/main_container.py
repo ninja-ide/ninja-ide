@@ -46,8 +46,6 @@ from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.editor import editor
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.locator import locator_widget
-from ninja_ide.gui.editor.indicator import FadingIndicator
-# from ninja_ide.gui import notification
 
 logger = NinjaLogger(__name__)
 
@@ -495,9 +493,9 @@ class _MainContainer(QWidget):
                 # self.__code_forward.clear()
 
     def _on_zoom_changed(self, zoom):
-        editor_widget = self.get_current_editor()
         text = "Zoom: {}%".format(str(zoom))
-        FadingIndicator.show_text(editor_widget, text)
+        ide = IDE.get_service("ide")
+        ide.show_message(text)
 
     def add_widget(self, widget):
         self.stack.addWidget(widget)

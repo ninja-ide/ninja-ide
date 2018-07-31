@@ -22,7 +22,6 @@ from ninja_ide import translations
 from ninja_ide.gui.editor import proposal_widget
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
-from ninja_ide.gui.editor.indicator import FadingIndicator
 
 logger = NinjaLogger(__name__)
 
@@ -144,8 +143,8 @@ class IntelliSenseAssistant(QObject):
                     main_container.open_file(fname, line, column)
                 return
 
-        FadingIndicator.show_text(
-            self._editor, translations.TR_DEFINITION_NOT_FOUND)
+        ide = IDE.get_service("ide")
+        ide.show_message(translations.TR_DEFINITION_NOT_FOUND)
 
     def _create_view(self, completions):
         """Create proposal widget to show completions"""
