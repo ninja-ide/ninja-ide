@@ -700,6 +700,7 @@ class NEditor(base_editor.BaseEditor):
         self.keyPressed.emit(event)
         if event.matches(QKeySequence.InsertParagraphSeparator):
             cursor = self.textCursor()
+            print(cursor.positionInBlock())
             if not self.inside_string_or_comment(cursor):
                 self._indenter.indent_block(self.textCursor())
                 self._complete_declaration()
