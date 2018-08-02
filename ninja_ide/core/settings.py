@@ -186,8 +186,10 @@ AUTOCOMPLETE_BRACKETS = AUTOCOMPLETE_QUOTES = True
 # by default Unix (\n) is used
 USE_TABS = ALLOW_WORD_WRAP = USE_PLATFORM_END_OF_LINE = False
 
-REMOVE_TRAILING_SPACES = SHOW_INDENTATION_GUIDES = True
-SHOW_TABS_AND_SPACES = False
+REMOVE_TRAILING_SPACES = True
+
+SHOW_INDENTATION_GUIDES = SHOW_TABS_AND_SPACES = False
+
 ADD_NEW_LINE_AT_EOF = HIDE_MOUSE_CURSOR = SCROLL_WHEEL_ZOMMING = True
 
 # Current Line
@@ -649,7 +651,7 @@ def load_settings():
     FONT_ANTIALIASING = qsettings.value("editor/general/font_antialiasing",
                                         True, type=bool)
     SHOW_INDENTATION_GUIDES = qsettings.value(
-        "editor/display/show_indentation_guides", True, type=bool)
+        "editor/display/show_indentation_guides", False, type=bool)
     # IGNORE_PEP8_LIST = list(qsettings.value(
     #    'preferences/editor/defaultIgnorePep8', [], type='QStringList'))
     # FIXME:

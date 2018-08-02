@@ -36,6 +36,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QProcess
 from PyQt5.QtCore import QProcessEnvironment
 from PyQt5.QtCore import QTime
+from PyQt5.QtCore import QElapsedTimer
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -59,6 +60,7 @@ class Program(QObject):
         self.pre_script = kwargs.get("pre_script")
         self.post_script = kwargs.get("post_script")
         self.__params = kwargs.get("params")
+        self.__elapsed = QElapsedTimer()
 
         self.outputw = None
 
@@ -112,6 +114,7 @@ class Program(QObject):
             self.__main_execution()
 
     def __main_execution(self):
+        self.__elapsed.start()
         self.__current_process = self.main_process
         if not self.only_text:
             # In case a text is executed and not a file or project
@@ -188,6 +191,14 @@ class Program(QObject):
             text = translations.TR_PROCESS_INTERRUPTED
             frmt = OutputWidget.Format.ERROR
         self.outputw.append_text(text, frmt)
+        if self.__current_process is self.main_process:
+            tformat = QTime(0, 0, 0, 0).addMSecs(
+                self.__elapsed.elapsed() + 500)
+            time = tformat.toString("h:mm:ss")
+            if time.startswith("0:"):
+                # Don't display zero hours
+                time = time[2:]
+            self.outputw.append_text(translations.TR_ELAPSED_TIME.format(time))
         self.outputw.setReadOnly(True)
 
     def _refresh_output(self):

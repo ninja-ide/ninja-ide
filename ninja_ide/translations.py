@@ -357,6 +357,7 @@ TR_WEB_PREVIEW = tr("NINJA-IDE", "Web Preview")
 TR_CONTENT = tr("NINJA-IDE", "Content")
 TR_SHORTCUT = tr("NINJA-IDE", "Shortcut")
 TR_ACCEPT = tr("NINJA-IDE", "Accept")
+TR_ELAPSED_TIME = tr("NINJA-IDE", "Elapsed time: {}.")
 TR_PROCESS_EXITED_NORMALLY = tr(
     "NINJA-IDE",
     "The process exited normally with code %d")

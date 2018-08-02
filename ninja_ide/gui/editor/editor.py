@@ -33,7 +33,6 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import QEvent
-from PyQt5.QtCore import QPoint
 
 from ninja_ide import resources
 from ninja_ide.tools import utils
@@ -370,6 +369,7 @@ class NEditor(base_editor.BaseEditor):
         self._extra_selections.add("checker", selections)
 
     def show_indentation_guides(self, value):
+        print(value)
         self._indentation_guides.actived = value
 
     def register_extension(self, Extension):
@@ -671,7 +671,6 @@ class NEditor(base_editor.BaseEditor):
             definition = "\n{}{}\n{}".format(
                 indentation, init_def, indentation * 2
             )
-
             super_include = ""
             if line_text.find("(") != -1:
                 classes = line_text.split("(")
@@ -694,7 +693,7 @@ class NEditor(base_editor.BaseEditor):
             return
         text = event.text()
         if text:
-            self.__clear_occurrences()
+            self.__clear_occurrences("")
         event.ignore()
         # Emit a signal then plugins can do something
         self.keyPressed.emit(event)
@@ -728,7 +727,7 @@ class NEditor(base_editor.BaseEditor):
         # if event.key() == Qt.Key_Period or force_completion:
         #     if not self.inside_string_or_comment():
         #         self._intellisense.invoke_completion()
-                # self._intellisense.process("completions")
+        #         self._intellisense.process("completions")
 
     def adjust_scrollbar_ranges(self):
         line_spacing = QFontMetrics(self.font()).lineSpacing()
