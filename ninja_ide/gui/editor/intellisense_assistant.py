@@ -110,9 +110,11 @@ class IntelliSenseAssistant(QObject):
             if i < len(params) - 1:
                 calltip += ", "
         calltip += ")"
+        font = self._editor.default_font
         crect = self._editor.cursorRect()
         crect.setX(crect.x() + self._editor.viewport().x())
         position = self._editor.mapToGlobal(crect.topLeft())
+        position.setY(position.y() + font.pointSize() + 1)
         self._editor.show_tooltip(calltip, position)
 
     def _handle_completions(self, completions: list):
