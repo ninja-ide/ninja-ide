@@ -369,7 +369,6 @@ class NEditor(base_editor.BaseEditor):
         self._extra_selections.add("checker", selections)
 
     def show_indentation_guides(self, value):
-        print(value)
         self._indentation_guides.actived = value
 
     def register_extension(self, Extension):
@@ -693,7 +692,7 @@ class NEditor(base_editor.BaseEditor):
             return
         text = event.text()
         if text:
-            self.__clear_occurrences("")
+            self.__clear_occurrences()
         event.ignore()
         # Emit a signal then plugins can do something
         self.keyPressed.emit(event)
