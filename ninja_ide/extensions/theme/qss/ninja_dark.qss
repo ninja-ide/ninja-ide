@@ -222,14 +222,12 @@ QScrollBar:horizontal {
 
 QScrollBar::handle:vertical {
     background-color: palette(alternate-base);
-    border-radius: 4px;
     min-height: 50px;
-    margin: 0px 3px 0px 3px;
+    margin: 0px 2px 0px 2px;
 
 }
 QScrollBar::handle:horizontal {
     background-color: palette(alternate-base);
-    border-radius: 4px;
 }
 
 QScrollBar::handle:vertical:hover,
