@@ -18,26 +18,18 @@
 # import os
 import collections
 
-from PyQt5.QtWidgets import (
-    QMainWindow,
-    QDialog,
-    QMessageBox,
-    QToolBar,
-    QToolTip,
-)
-from PyQt5.QtGui import (
-    QFont,
-    # QKeySequence,
-    # QColor
-)
-from PyQt5.QtCore import (
-    QSettings,
-    Qt,
-    QPointF,
-    QSizeF,
-    QSize,
-    pyqtSignal
-)
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QToolTip
+
+from PyQt5.QtGui import QFont
+
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QPointF
+from PyQt5.QtCore import QSizeF
+from PyQt5.QtCore import pyqtSignal
+
 from PyQt5.QtNetwork import QLocalServer
 
 from ninja_ide import resources
@@ -55,7 +47,6 @@ from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
-from ninja_ide.gui.dialogs import unsaved_files
 # from ninja_ide.gui.dialogs import schemes_manager
 # from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
@@ -543,8 +534,8 @@ class IDE(QMainWindow):
         for path, cursor_pos in files:
             line, col = cursor_pos
             main_container.open_file(path, line, col)
-        # if current_file:
-        #    main_container.open_file(current_file)
+        if current_file:
+            main_container.open_file(current_file)
         self.filesAndProjectsLoaded.emit()
         # projects_explorer = IDE.get_service('projects_explorer')
         # if main_container and files:
@@ -560,20 +551,20 @@ class IDE(QMainWindow):
         # if projects_explorer and projects:
         #    projects_explorer.load_session_projects(projects)
 
-    #def _set_editors_project_data(self):
-        #self.__project_to_open -= 1
-        #if self.__project_to_open == 0:
-            #self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
-                #self._set_editors_project_data)
-            #self.mainContainer.update_editor_project()
+    # def _set_editors_project_data(self):
+    #     self.__project_to_open -= 1
+    #     if self.__project_to_open == 0:
+    #         self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
+    #             self._set_editors_project_data)
+    #         self.mainContainer.update_editor_project()
 
-    #def open_file(self, filename):
-        # if filename:
-            #self.mainContainer.open_file(filename)
+    # def open_file(self, filename):
+    #     if filename:
+    #         self.mainContainer.open_file(filename)
 
     # def open_project(self, project):
-        # if project:
-            #self.actions.open_project(project)
+    #     if project:
+    #         self.actions.open_project(project)
 
     def __get_session(self):
         return self._session
@@ -747,7 +738,8 @@ class IDE(QMainWindow):
         #                          stat_value])
         #    data_qsettings.setValue('lastSession/openedFiles', files_info)
         #    if current_file is not None:
-        #        data_qsettings.setValue('lastSession/currentFile', current_file)
+        #        data_qsettings.setValue(
+        # 'lastSession/currentFile', current_file)
         recent_files = main_container.last_opened_files
         data_settings.setValue("lastSession/recentFiles", recent_files)
         #     "lastSession/recentFiles", list(main_container.last_opened_files))
@@ -828,39 +820,39 @@ class IDE(QMainWindow):
         # completion_daemon.shutdown_daemon()
         super(IDE, self).closeEvent(event)
 
-    def notify_plugin_errors(self):
-        # TODO: Check if the Plugin Error dialog can be improved
-        errors = self.plugin_manager.errors
-        if errors:
-            plugin_error_dialog = traceback_widget.PluginErrorDialog()
-            for err_tuple in errors:
-                plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
-            # show the dialog
-            plugin_error_dialog.exec_()
+    # def notify_plugin_errors(self):
+    #     # TODO: Check if the Plugin Error dialog can be improved
+    #     errors = self.plugin_manager.errors
+    #     if errors:
+    #         plugin_error_dialog = traceback_widget.PluginErrorDialog()
+    #         for err_tuple in errors:
+    #             plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
+    #         # show the dialog
+    #         plugin_error_dialog.exec_()
 
     def show_message(self, message, duration=1800):
         """Show status message."""
         self.notification.set_message(message, duration)
         self.notification.show()
 
-    def show_plugins_store(self):
-        """Open the Plugins Manager to install/uninstall plugins."""
-        store = plugins_store.PluginsStore(self)
-        main_container = IDE.get_service("main_container")
-        if main_container:
-            main_container.show_dialog(store)
-        else:
-            store.show()
+    # def show_plugins_store(self):
+    #     """Open the Plugins Manager to install/uninstall plugins."""
+    #     store = plugins_store.PluginsStore(self)
+    #     main_container = IDE.get_service("main_container")
+    #     if main_container:
+    #         main_container.show_dialog(store)
+    #     else:
+    #         store.show()
 
-    def show_languages(self):
-        """Open the Language Manager to install/uninstall languages."""
-        manager = language_manager.LanguagesManagerWidget(self)
-        manager.show()
+    # def show_languages(self):
+    #     """Open the Language Manager to install/uninstall languages."""
+    #     manager = language_manager.LanguagesManagerWidget(self)
+    #     manager.show()
 
-    def show_schemes(self):
-        """Open the Schemes Manager to install/uninstall schemes."""
-        manager = schemes_manager.SchemesManagerWidget(self)
-        manager.show()
+    # def show_schemes(self):
+    #     """Open the Schemes Manager to install/uninstall schemes."""
+    #     manager = schemes_manager.SchemesManagerWidget(self)
+    #     manager.show()
 
     def show_about_qt(self):
         """Show About Qt Dialog."""
@@ -871,10 +863,10 @@ class IDE(QMainWindow):
         about = about_ninja.AboutNinja(self)
         about.show()
 
-    def show_python_detection(self):
-        """Show Python detection dialog for windows."""
-        # TODO: Notify the user when no python version could be found
-        suggested = settings.detect_python_path()
-        if suggested:
-            dialog = python_detect_dialog.PythonDetectDialog(suggested, self)
-            dialog.show()
+    # def show_python_detection(self):
+    #     """Show Python detection dialog for windows."""
+    #     # TODO: Notify the user when no python version could be found
+    #     suggested = settings.detect_python_path()
+    #     if suggested:
+    #         dialog = python_detect_dialog.PythonDetectDialog(suggested, self)
+    #         dialog.show()
