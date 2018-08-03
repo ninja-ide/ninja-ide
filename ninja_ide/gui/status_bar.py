@@ -216,6 +216,7 @@ class SearchWidget(QWidget):
         found = editor.find_match(self.search_text, cs, wo, backward, forward)
         if found:
             if rehighlight:
+                editor.clear_found_results()
                 index, matches = editor.highlight_found_results(
                     self.search_text, cs, wo)
         else:
