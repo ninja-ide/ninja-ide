@@ -44,7 +44,7 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.tools_dock import actions
-from ninja_ide.gui.tools_dock import python_chooser
+from ninja_ide.gui.tools_dock import python_selector
 
 logger = NinjaLogger(__name__)
 DEBUG = logger.debug
@@ -131,15 +131,24 @@ class _ToolsDock(QWidget):
         self.buttons_widget.layout().addItem(
             QSpacerItem(0, 0, QSizePolicy.Expanding))
 
-        select_python_btn = ui_tools.FancyButton(settings.PYTHON_EXEC)
-        select_python_btn.setIcon(ui_tools.get_icon("python"))
-        select_python_btn.setCheckable(True)
-        self.buttons_widget.layout().addWidget(select_python_btn)
-        select_python_btn.toggled[bool].connect(
-            lambda v: self._python_chooser.setVisible(v))
+        # Python Selector
+        btn_selector = ui_tools.FancyButton("Loading...")
+        btn_selector.setIcon(ui_tools.get_icon("python"))
+        btn_selector.setCheckable(True)
+        btn_selector.setEnabled(False)
+        self.buttons_widget.layout().addWidget(btn_selector)
 
-        self._python_chooser = python_chooser.PyChooser(select_python_btn)
+        # QML Interface
+        self._python_selector = python_selector.PythonSelector(btn_selector)
 
+        interpreter_srv = IDE.get_service("interpreter")
+        interpreter_srv.foundInterpreters.connect(
+            self._python_selector.add_model)
+
+        btn_selector.toggled[bool].connect(
+            lambda v: self._python_selector.setVisible(v))
+
+        # Popup for show/hide tools widget
         button_toggle_widgets = ToggleButton()
         self.buttons_widget.layout().addWidget(button_toggle_widgets)
         button_toggle_widgets.clicked.connect(self._show_menu)

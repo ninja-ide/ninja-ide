@@ -538,7 +538,7 @@ def load_settings():
     #                               True, type=bool)
     # UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     PYTHON_EXEC = qsettings.value('execution/pythonExec',
-                                  sys.executable, type='QString')
+                                  sys.executable, type=str)
     # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
     # SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)

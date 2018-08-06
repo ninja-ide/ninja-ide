@@ -22,8 +22,6 @@ from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtGui import QPainter
 from PyQt5.QtGui import QColor
 
-from PyQt5.QtCore import Qt
-
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 

@@ -41,6 +41,8 @@ from ninja_ide.core.file_handling import nfilesystem
 from ninja_ide.core import settings
 from ninja_ide.core import nsettings
 from ninja_ide.core import ipc
+from ninja_ide.core import interpreter_service
+
 from ninja_ide.gui import actions
 # from ninja_ide.gui import updates
 from ninja_ide.gui import notification
@@ -111,6 +113,8 @@ class IDE(QMainWindow):
         self.__neditables = {}
         # Filesystem
         self.filesystem = nfilesystem.NVirtualFileSystem()
+        # Interpreter service
+        self.interpreter = interpreter_service.InterpreterService()
         # Sessions handler
         self._session = None
         # Opacity
@@ -180,9 +184,10 @@ class IDE(QMainWindow):
         IDE.register_bar_category(translations.TR_MENU_ABOUT, 160)
         # Register General Menu Items
         ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
-        self.register_service('ide', self)
+        self.register_service("ide", self)
+        self.register_service("interpreter", self.interpreter)
         # self.register_service('toolbar', self.toolbar)
-        self.register_service('filesystem', self.filesystem)
+        self.register_service("filesystem", self.filesystem)
         self.toolbar = IDE.get_service("toolbar")
         # Register signals connections
         connections = (
@@ -256,6 +261,9 @@ class IDE(QMainWindow):
             self.s_listener = QLocalServer()
             self.s_listener.listen("ninja_ide")
             self.s_listener.newConnection.connect(self._process_connection)
+
+        # Load interpreters
+        self.load_interpreters()
 
         IDE.__instance = self
 
@@ -444,6 +452,20 @@ class IDE(QMainWindow):
                 current_project = projects[project]
                 break
         return current_project
+
+    def get_interpreters(self):
+        return self.interpreter.get_interpreters()
+
+    def get_interpreter(self, path):
+        return self.interpreter.get_interpreter(path)
+
+    def set_interpreter(self, path):
+        self.interpreter.set_interpreter(path)
+
+    def load_interpreters(self):
+        # ds = self.data_settings()
+        # settings.PYTHON_EXEC = ds.value("ide/interpreter")
+        self.interpreter.load()
 
     @classmethod
     def select_current(cls, widget):
@@ -763,6 +785,8 @@ class IDE(QMainWindow):
                     self.Session, self)
         # qsettings.setValue('preferences/general/toolbarArea',
         # self.toolBarArea(self.toolbar))
+        interpreter = self.interpreter.current.exec_path
+        data_settings.setValue("ide/interpreter", interpreter)
 
     def activate_profile(self):
         """Show the Session Manager dialog."""

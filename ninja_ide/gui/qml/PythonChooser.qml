@@ -6,19 +6,29 @@ Rectangle {
     radius: 3
     focus: true
 
-    signal pythonSelected(string path, string name)
+    signal pythonSelected(string path)
 
     function setModel(model) {
         for( var i = 0; i < model.length; i++ ) {
             pythonList.model.append({
                 "name": model[i][0],
-                "path": model[i][1]
+                "path": model[i][1],
+                "pexec": model[i][2]
             })
         }
+        forceActiveFocus();
     }
 
     function clearModel() {
         pythonList.model.clear();
+    }
+
+    Keys.onDownPressed: {
+        pythonList.incrementCurrentIndex();
+    }
+
+    Keys.onUpPressed: {
+        pythonList.decrementCurrentIndex();
     }
 
     ListView {
@@ -27,7 +37,6 @@ Rectangle {
         anchors.margins: 5
         spacing: 2
         boundsBehavior: Flickable.StopAtBounds
-        focus: true
         clip: true
         model: ListModel {}
         delegate: Rectangle {
@@ -59,7 +68,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     pythonList.currentIndex = index;
-                    root.pythonSelected(path, name);
+                    root.pythonSelected(pexec);
                 }
             }
         }
