@@ -5,53 +5,10 @@ import QtQuick 2.5
 Rectangle {
     id: root
 
-    property bool compressed: false
     signal onDrop(string files);
     signal openProject(string path)
     signal newFile
     color: theme.StartPageBackground;
-
-    NumberAnimation {
-        id: animationEnd
-        running: false
-        target: listContainer
-        property: "opacity"
-        to: 0;
-        duration: 150
-        onStopped:  {
-            listContainer.visible = false
-        }
-    }
-
-    ParallelAnimation {
-        id: animation
-        running: false
-        NumberAnimation {
-            target: features; property: "opacity"; to: 0; duration: 150
-        }
-        NumberAnimation {
-            target: logo; property: "opacity"; to: 0; duration: 150
-        }
-
-        onStopped: {
-            features.visible = false;
-            logo.visible = false;
-            listContainer.visible = true;
-            //ani.start();
-        }
-    }
-
-    NumberAnimation {
-        id: ani
-        target: listContainer; property: "opacity"; to: 1; duration: 150
-    }
-
-    ParallelAnimation {
-        id: aniEnd
-        NumberAnimation { target: features; property: "opacity"; to: 1; duration: 150 }
-        NumberAnimation { target: logo; property: "opacity"; to: 1; duration: 150 }
-    }
-
 
     DropArea {
         anchors.fill: parent
@@ -131,138 +88,63 @@ Rectangle {
                             }
                         }
                     }
-                    onVisibleChanged: {
-                        if(visible) {
-                            ani.start();
-                        } else {
-                            logo.visible = true;
-                            if(features != null)
-                                features.visible = true;
-                            aniEnd.start();
-                        }
-                    }
                 }
             }
 
             Column {
                 id: features
                 spacing: 0
-                Text {
-                    text: "• Open a Project with <%1>".arg(shortcuts.openproject)
-                    color: theme.StartPageText
-                    renderType: Text.NativeRendering
-                    font.family: "monospace"
+                Row {
+                    Text {
+                        text: "Open a Project with "
+                        color: theme.StartPageText
+                        renderType: Text.NativeRendering
+                        font.family: "monospace"
+                    }
+                    Rectangle {
+                        width: shor.width + 10
+                        height: shor.height
+                        Text {
+                            id: shor
+                            anchors.centerIn: parent
+                            text: shortcuts.openproject
+                            color: theme.StartPageText
+                            renderType: Text.NativeRendering
+                            font.bold: true
+                        }
+                        color: "#333"
+                        radius: 3
+                    }
+                }
+                Row {
+                    Text {
+                        text: "Locates anything in the project with "
+                        color: theme.StartPageText
+                        renderType: Text.NativeRendering
+                        font.family: "monospace"
+                    }
+                    Rectangle {
+                        width: shor2.width + 10
+                        height: shor2.height
+                        Text {
+                            id: shor2
+                            anchors.centerIn: parent
+                            text: shortcuts.locator
+                            color: theme.StartPageText
+                            renderType: Text.NativeRendering
+                            font.bold: true
+                        }
+                        color: "#333"
+                        radius: 3
+                    }
                 }
                 Text {
-                    text: "• Locates anything in the project with <%1>".arg(shortcuts.locator)
-                    color: theme.StartPageText
-                    renderType: Text.NativeRendering
-                    font.family: "monospace"
-                }
-                Text {
-                    text: "• Drag and drop files here!"
+                    text: "Drag and drop files here!"
                     color: theme.StartPageText
                     renderType: Text.NativeRendering
                     font.family: "monospace"
                 }
             }
-
-            /*Button {
-                id: control
-                text: listProjects.visible ? "Back" : "Open a Recent Project"
-                anchors.horizontalCenter: parent.horizontalCenter
-                property bool clicked: false
-                contentItem: Text {
-                    text: control.text
-                    renderType: Text.NativeRendering
-                    color: theme.WelcomeAlternativeTextColor
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                background: Rectangle {
-                    implicitHeight: 40
-                    implicitWidth: 100
-                    radius: 2
-                    opacity: enabled ? 1 : 0.3
-                    color: control.down ? theme.WelcomeButtonSelected : theme.WelcomeButton
-                }
-                onClicked: {
-                    if(control.clicked) {
-                        control.clicked = false
-                        animationEnd.start();
-                    } else {
-                        control.clicked = true;
-                        animation.start();
-                    }
-                }
-            }*/
-
-            /*RowLayout {
-                anchors.horizontalCenter: parent.horizontalCenter
-                NButton {
-                    text: "Open a Recent Project"
-                    color: "red"
-                }
-                NButton {
-                    text: "New File"
-                }*/
-
-                /*NButton {
-                    id: control
-                    text: listProjects.visible ? "Back" : "Open a Recent Project"
-                    //anchors.horizontalCenter: parent.horizontalCenter
-                    property bool clicked: false
-                    /*contentItem: Text {
-                        text: control.text
-                        renderType: Text.NativeRendering
-                        color: theme.WelcomeAlternativeTextColor
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    /*background: Rectangle {
-                        implicitHeight: 40
-                        implicitWidth: 100
-                        radius: 2
-                        opacity: enabled ? 1 : 0.3
-                        color: control.down ? theme.WelcomeButtonSelected : theme.WelcomeButton
-                    }
-                    onClicked: {
-                        if(control.clicked) {
-                            control.clicked = false
-                            animationEnd.start();
-                        } else {
-                            control.clicked = true;
-                            animation.start();
-                        }
-                    }
-                }*/
-
-               /* Button {
-                    id: control2
-                    visible: !listProjects.visible
-                    text: "New File"
-                    //anchors.horizontalCenter: parent.horizontalCenter
-                    property bool clicked: false
-                    contentItem: Text {
-                        text: control2.text
-                        renderType: Text.NativeRendering
-                        color: theme.WelcomeAlternativeTextColor
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    background: Rectangle {
-                        implicitHeight: 40
-                        implicitWidth: 100
-                        radius: 2
-                        opacity: enabled ? 1 : 0.3
-                        color: control2.down ? theme.WelcomeButtonSelected : theme.WelcomeButton
-                    }
-                    onClicked: root.newFile();
-                }*/
-        //}
 
             Text {
                 id: link
@@ -297,9 +179,5 @@ Rectangle {
             rightMargin: 10
             bottomMargin: 10
         }
-    }
-
-    function addProject(name, path, lastOpen) {
-        listProjects.model.append({"name": name, "path": path, "lastOpen": lastOpen});
     }
 }
