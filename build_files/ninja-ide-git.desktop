@@ -5,6 +5,6 @@ Exec=ninja-ide-git %F
 Icon=ninja-ide-git
 Terminal=false
 Type=Application
-Categories=Development;
+Categories=Development;IDE;
 StartupNotify=true
 MimeType=application/x-python;application/x-ninja-ide;
