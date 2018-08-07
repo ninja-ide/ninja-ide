@@ -31,6 +31,7 @@ from PyQt5.QtWidgets import QStyle
 from PyQt5.QtWidgets import QStyledItemDelegate
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QHeaderView
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPalette
@@ -136,8 +137,13 @@ class ProjectTreeColumn(QDialog):
     def install_tab(self):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
+        ide.goingDown.connect(self._on_ide_going_down)
 
-        ide.goingDown.connect(self.close)
+    def _on_ide_going_down(self):
+        """Save some settings before close"""
+        ds = IDE.data_settings()
+        show_filesize = not bool(self.current_tree.isColumnHidden(1))
+        ds.setValue("projectsExplorer/showFileSize", show_filesize)
 
     def load_session_projects(self, projects):
         for project in projects:
@@ -402,6 +408,7 @@ class ProjectTreeColumn(QDialog):
         menu.addSeparator()
         action_run_project = menu.addAction(translations.TR_RUN_PROJECT)
         action_properties = menu.addAction(translations.TR_PROJECT_PROPERTIES)
+        action_show_file_size = menu.addAction(translations.TR_SHOW_FILESIZE)
         menu.addSeparator()
         action_close = menu.addAction(translations.TR_CLOSE_PROJECT)
 
@@ -416,8 +423,9 @@ class ProjectTreeColumn(QDialog):
         action_properties.triggered.connect(
             self.current_tree.open_project_properties)
         action_close.triggered.connect(self.current_tree._close_project)
-        # self.connect(action_close, SIGNAL("triggered()"),
-        #             self.current_tree._close_project)
+        action_show_file_size.triggered.connect(
+            self.current_tree.show_filesize_info)
+
         # menu for the project
         for m in self.current_tree.extra_menus_by_scope['project']:
             if isinstance(m, QMenu):
@@ -427,17 +435,6 @@ class ProjectTreeColumn(QDialog):
         # show the menu!
         menu.exec_(QCursor.pos())
 
-        # self.connect(action_add_file, SIGNAL("triggered()"),
-        #             lambda: self.current_tree._add_new_file(path))
-        # self.connect(action_add_folder, SIGNAL("triggered()"),
-        #             lambda: self.current_tree._add_new_folder(path))
-        # self.connect(action_create_init, SIGNAL("triggered()"),
-        #             lambda: self.current_tree._create_init(path))
-        # menu.addSeparator()
-        # actionRunProject = menu.addAction(QIcon(
-        #    ":img/play"), translations.TR_RUN_PROJECT)
-        # self.connect(actionRunProject, SIGNAL("triggered()"),
-        #             self.current_tree._execute_project)
         # if self.current_tree._added_to_console:
         #    actionRemoveFromConsole = menu.addAction(
         #        translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
@@ -448,14 +445,6 @@ class ProjectTreeColumn(QDialog):
         #        translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
         #    self.connect(actionAdd2Console, SIGNAL("triggered()"),
         #                 self.current_tree._add_project_to_console)
-        # actionShowFileSizeInfo = menu.addAction(
-        #                          translations.TR_SHOW_FILESIZE)
-        # self.connect(actionShowFileSizeInfo, SIGNAL("triggered()"),
-        #             self.current_tree.show_filesize_info)
-        # actionProperties = menu.addAction(QIcon(":img/pref"),
-        #                                  translations.TR_PROJECT_PROPERTIES)
-        # self.connect(actionProperties, SIGNAL("triggered()"),
-        #             self.current_tree.open_project_properties)
 
 
 class TreeProjectsWidget(QTreeView):
@@ -484,6 +473,7 @@ class TreeProjectsWidget(QTreeView):
         self.setSelectionMode(QTreeView.SingleSelection)
         self.setAnimated(True)
         self.setHeaderHidden(True)
+        self.header().setSectionResizeMode(QHeaderView.ResizeToContents)
         pal = self.palette()
         pal.setColor(pal.Base, pal.base().color())
         self.setPalette(pal)
@@ -492,6 +482,10 @@ class TreeProjectsWidget(QTreeView):
         self.hideColumn(2)  # Type
         self.hideColumn(3)  # Modification date
         self.setUniformRowHeights(True)
+
+        ds = IDE.data_settings()
+        if ds.value("projectsExplorer/showFileSize", type=bool):
+            self.show_filesize_info()
 
     def set_current_item(self, path: str):
         index = self.model().index(path)
@@ -512,6 +506,7 @@ class TreeProjectsWidget(QTreeView):
         self.__format_tree()
 
         self.setStyleSheet("QTreeView{ show-decoration-selected: 1;}")
+
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self._menu_context_tree)
