@@ -141,6 +141,8 @@ class ProjectTreeColumn(QDialog):
 
     def _on_ide_going_down(self):
         """Save some settings before close"""
+        if self.current_tree is None:
+            return
         ds = IDE.data_settings()
         show_filesize = not bool(self.current_tree.isColumnHidden(1))
         ds.setValue("projectsExplorer/showFileSize", show_filesize)
