@@ -36,7 +36,7 @@ if settings.IS_WINDOWS:
 else:
     _PYREGEX = re.compile("^python(\d+(.\d+)?)?$")
 
-
+# TODO: esto debería ser configurable
 _VENV_PATHS = [".virtualenvs"]
 
 
@@ -179,6 +179,8 @@ class _IntepreterLocator(QObject):
         interpreters, venvs = [], []
         for venv in _VENV_PATHS:
             venvdir = os.path.join(os.path.expanduser("~"), venv)
+            if not os.path.exists(venvdir):
+                continue
             subdirs = os.listdir(venvdir)
             for subdir in subdirs:
                 if os.path.isdir(os.path.join(venvdir, subdir)):
