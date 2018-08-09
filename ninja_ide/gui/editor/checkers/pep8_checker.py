@@ -29,11 +29,12 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.dependencies import pycodestyle
-from ninja_ide.gui.editor.checkers import (
-    register_checker,
-    remove_checker,
-)
+from ninja_ide.gui.editor.checkers import register_checker
+from ninja_ide.gui.editor.checkers import remove_checker
 from ninja_ide.gui.editor import helpers
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger(__name__)
 
 
 class Pep8Checker(QThread):
@@ -71,27 +72,29 @@ class Pep8Checker(QThread):
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
-            self.reset()
-            source = self._editor.text
-            path = self._editor.file_path
-            pep8_style = pycodestyle.StyleGuide(
-                parse_argv=False,
-                config_file='',
-                checker_class=CustomChecker
-            )
-            temp_data = pep8_style.input_file(
-                path,
-                lines=source.splitlines(True)
-            )
+            try:
+                self.reset()
+                source = self._editor.text
+                path = self._editor.file_path
+                pep8_style = pycodestyle.StyleGuide(
+                    parse_argv=False,
+                    config_file='',
+                    checker_class=CustomChecker
+                )
+                temp_data = pep8_style.input_file(
+                    path,
+                    lines=source.splitlines(True)
+                )
 
-            source_lines = source.split('\n')
-            # for lineno, offset, code, text, doc in temp_data:
-            for lineno, col, code, text in temp_data:
-                message = '[PEP8]: %s' % text
-                range_ = helpers.get_range(self._editor, lineno - 1, col)
-                self.checks[lineno - 1].append(
-                    (range_, message, source_lines[lineno - 1].strip()))
-
+                source_lines = source.split('\n')
+                # for lineno, offset, code, text, doc in temp_data:
+                for lineno, col, code, text in temp_data:
+                    message = '[PEP8]: %s' % text
+                    range_ = helpers.get_range(self._editor, lineno - 1, col)
+                    self.checks[lineno - 1].append(
+                        (range_, message, source_lines[lineno - 1].strip()))
+            except Exception as reason:
+                logger.warning("Checker not finished: {}".format(reason))
         self.checkerCompleted.emit()
 
     def message(self, line):

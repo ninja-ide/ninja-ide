@@ -64,32 +64,35 @@ class ErrorsChecker(QThread):
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
-            self.reset()
-            source = self._neditor.text
-            text = "[Error]: %s"
-            # Compile into an AST and handle syntax errors
             try:
-                tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
-            except SyntaxError as reason:
-                if reason.text is None:
-                    logger.error("Syntax error")
+                self.reset()
+                source = self._neditor.text
+                text = "[Error]: %s"
+                # Compile into an AST and handle syntax errors
+                try:
+                    tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
+                except SyntaxError as reason:
+                    if reason.text is None:
+                        logger.error("Syntax error")
+                    else:
+                        text = text % reason.args[0]
+                        range_ = helpers.get_range(
+                            self._neditor, reason.lineno - 1, reason.offset)
+                        self.checks[reason.lineno - 1].append((range_, text, ""))
                 else:
-                    text = text % reason.args[0]
-                    range_ = helpers.get_range(
-                        self._neditor, reason.lineno - 1, reason.offset)
-                    self.checks[reason.lineno - 1].append((range_, text, ""))
-            else:
-                # Okay, now check it
-                lint_checker = checker.Checker(tree, self._path)
-                lint_checker.messages.sort(key=lambda msg: msg.lineno)
-                source_lines = source.split('\n')
-                for message in lint_checker.messages:
-                    lineno = message.lineno - 1
-                    text = message.message % message.message_args
-                    range_ = helpers.get_range(
-                        self._neditor, lineno, message.col)
-                    self.checks[lineno].append(
-                        (range_, text, source_lines[lineno].strip()))
+                    # Okay, now check it
+                    lint_checker = checker.Checker(tree, self._path)
+                    lint_checker.messages.sort(key=lambda msg: msg.lineno)
+                    source_lines = source.split('\n')
+                    for message in lint_checker.messages:
+                        lineno = message.lineno - 1
+                        text = message.message % message.message_args
+                        range_ = helpers.get_range(
+                            self._neditor, lineno, message.col)
+                        self.checks[lineno].append(
+                            (range_, text, source_lines[lineno].strip()))
+            except Exception as reason:
+                logger.warning("Checker not finished: {}".format(reason))
 
         self.checkerCompleted.emit()
 

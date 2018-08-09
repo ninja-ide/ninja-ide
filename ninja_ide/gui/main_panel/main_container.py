@@ -269,7 +269,6 @@ class _MainContainer(QWidget):
         self.__last_opened_files.clear()
 
     def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
-        logger.debug("Will try to open %s" % filename)
         if not filename:
             logger.debug("Has no filename")
             if settings.WORKSPACE:
