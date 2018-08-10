@@ -59,23 +59,6 @@ from ninja_ide.gui.editor.side_area import code_folding
 from ninja_ide.gui.editor.side_area import marker_widget
 
 
-class Link(object):
-
-    def __init__(self, filename=""):
-        self.filename = filename
-        self.line = 0
-        self.col = 0
-        self.pos_start = -1
-        self.pos_end = -1
-
-    def is_valid(self):
-        return self.pos_start != self.pos_end
-
-    def __eq__(self, other):
-        return self.pos_start == other.pos_start and \
-            self.pos_end == other.pos_end
-
-
 class NEditor(base_editor.BaseEditor):
 
     goToDefRequested = pyqtSignal("PyQt_PyObject")
@@ -88,6 +71,8 @@ class NEditor(base_editor.BaseEditor):
     # FIXME: cambiar nombre
     cursor_position_changed = pyqtSignal(int, int)
     current_line_changed = pyqtSignal(int)
+
+    _MAX_CHECKER_SELECTIONS = 150  # For good performance
 
     def __init__(self, neditable):
         super().__init__()
@@ -348,24 +333,26 @@ class NEditor(base_editor.BaseEditor):
         self._scrollbar.remove_marker("checker")
         # Get checkers from neditable
         checkers = neditable.sorted_checkers
-
         selections = []
+        append = selections.append  # Reduce name look-ups for better speed
         for items in checkers:
             checker, color, _ = items
-            lines = checker.checks.keys()
-            for line in lines:
+            lines = list(checker.checks.keys())
+            lines.sort()
+            for line in lines[:self._MAX_CHECKER_SELECTIONS]:
+                cursor = self.textCursor()
                 # Scrollbar marker
                 self._scrollbar.add_marker("checker", line, color, priority=1)
                 ms = checker.checks[line]
-                for (col_start, col_end), message, line_content in ms:
+                for (col_start, col_end), _, _ in ms:
                     selection = extra_selection.ExtraSelection(
-                        self.textCursor(),
+                        cursor,
                         start_line=line,
                         col_start=col_start,
                         col_end=col_end
                     )
                     selection.set_underline(color)
-                    selections.append(selection)
+                    append(selection)
         self._extra_selections.add("checker", selections)
 
     def show_indentation_guides(self, value):

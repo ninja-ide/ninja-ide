@@ -17,12 +17,10 @@
 
 from collections import defaultdict
 
-from PyQt5.QtCore import (
-    QThread,
-    QTimer,
-    # Qt,
-    pyqtSignal
-)
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import pyqtSignal
+
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
