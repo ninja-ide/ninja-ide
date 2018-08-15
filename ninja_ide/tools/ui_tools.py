@@ -357,11 +357,14 @@ class FancyButton(QToolButton):
             selected_color = QColor("#090909")
             painter.fillRect(event.rect(), selected_color)
             painter.restore()
-        fm = QFontMetrics(painter.font())
-        rect = QRect(-3, 0, self.rect().width(), fm.height())
+        # fm = QFontMetrics(painter.font())
+        # rect = QRect(-3, 2, self.rect().width(), fm.height())
+        rect = event.rect()
         icon_rect = QRect(0, 0, 22, 22)
         self.icon().paint(painter, icon_rect, Qt.AlignVCenter)
-        painter.drawText(rect, Qt.AlignRight | Qt.AlignVCenter, self.text())
+        painter.drawText(
+            rect.adjusted(0, 0, -3, 0),
+            Qt.AlignRight | Qt.AlignVCenter, self.text())
 
     def sizeHint(self):
         self.ensurePolished()
