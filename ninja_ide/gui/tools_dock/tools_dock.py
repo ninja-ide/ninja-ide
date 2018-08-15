@@ -112,7 +112,7 @@ class _ToolsDock(QWidget):
     def _load_ui(self):
         ninjaide = IDE.get_service("ide")
 
-        shortcut_number = Qt.Key_1
+        shortcut_number = 1
 
         for index, (obj, name) in _ToolsDock.__WIDGETS.items():
             button = ToolButton(name, index + 1)
@@ -120,11 +120,13 @@ class _ToolsDock(QWidget):
             button.clicked.connect(self.on_button_triggered)
             self.__buttons.append(button)
             self.buttons_widget.layout().addWidget(button)
-            # self._stack_widgets.addWidget(obj)
             self.add_widget(name, obj)
             self.__buttons_visibility[button] = True
             # Shortcut action
-            short = QShortcut(QKeySequence(Qt.ALT + shortcut_number), ninjaide)
+            ksequence = self._get_shortcut(shortcut_number)
+            short = QShortcut(ksequence, ninjaide)
+            button.setToolTip(
+                ui_tools.tooltip_with_shortcut(button._text, ksequence))
             short.activated.connect(self._shortcut_triggered)
             shortcut_number += 1
 
@@ -152,6 +154,14 @@ class _ToolsDock(QWidget):
         button_toggle_widgets = ToggleButton()
         self.buttons_widget.layout().addWidget(button_toggle_widgets)
         button_toggle_widgets.clicked.connect(self._show_menu)
+
+    def _get_shortcut(self, short_number: int):
+        """Return shortcut as ALT + number"""
+
+        if short_number < 1 or short_number > 9:
+            return QKeySequence()
+        modifier = Qt.ALT if not settings.IS_MAC_OS else Qt.CTRL
+        return QKeySequence(modifier + (Qt.Key_0 + short_number))
 
     def _shortcut_triggered(self):
         short = self.sender()
