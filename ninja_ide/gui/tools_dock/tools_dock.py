@@ -322,6 +322,7 @@ class ToolButton(QPushButton):
     def __init__(self, text, number=None, parent=None):
         super().__init__(parent)
         self.setObjectName("button_tooldock")
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
 
         self.setFlat(True)
         if number is None:
