@@ -32,6 +32,7 @@ from PyQt5.QtWidgets import QStyledItemDelegate
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtWidgets import QSizePolicy
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QPalette
@@ -74,18 +75,21 @@ class ProjectTreeColumn(QDialog):
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent)
         vbox = QVBoxLayout(self)
-        # vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
+        vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self._buttons = []
         frame = QFrame()
         frame.setObjectName("actionbar")
         box = QVBoxLayout(frame)
-        box.setContentsMargins(0, 0, 0, 0)
+        box.setContentsMargins(1, 1, 1, 1)
         box.setSpacing(0)
 
         self._combo_project = QComboBox()
-        self._combo_project.setItemDelegate(QStyledItemDelegate())
+        self._combo_project.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self._combo_project.setSizeAdjustPolicy(
+            QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self._combo_project.setObjectName("combo_projects")
         box.addWidget(self._combo_project)
         vbox.addWidget(frame)
