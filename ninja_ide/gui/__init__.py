@@ -66,7 +66,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setMask(splash_pix.mask())
     splash.show()
-    app.processEvents()
 
     qsettings = ide.IDE.ninja_settings()
     data_qsettings = ide.IDE.data_settings()
@@ -95,9 +94,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     app.processEvents()
     json_manager.load_syntax()
 
-    # Read Settings
-    splash.showMessage("Loading Settings...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
     # Loading Schemes
     splash.showMessage("Loading Schemes...",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
@@ -109,6 +105,9 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #     scheme = "Ninja Dark"
     # resources.COLOR_SCHEME = all_schemes[scheme]
 
+    splash.showMessage("Loading IDE Services...",
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
+    app.processEvents()
     # Register tools dock service after load some settings
     # FIXME: Find a better way to do this
     import ninja_ide.gui.tools_dock.tools_dock  # noqa
@@ -152,10 +151,11 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 
     # Loading Shortcuts
-    app.processEvents()
     resources.load_shortcuts()
-    # Loading GUI
     app.processEvents()
+    splash.showMessage(
+        "Loading Shortcuts...", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    # Loading GUI
     splash.showMessage("Loading GUI...", Qt.AlignRight | Qt.AlignTop, Qt.black)
     ninjaide = ide.IDE(start_server)
 

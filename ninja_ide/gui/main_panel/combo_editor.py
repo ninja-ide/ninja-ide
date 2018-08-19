@@ -467,6 +467,8 @@ class ActionBar(QFrame):
 
     def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
+        self.setAutoFillBackground(True)
+        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
@@ -480,8 +482,8 @@ class ActionBar(QFrame):
 
         self.combo_files = ComboFiles(self)
         self.combo_files.setObjectName("combotab")
-        self.combo_files.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Fixed)
+        # self.combo_files.setSizePolicy(
+        #     QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.combo_files.setSizeAdjustPolicy(
             QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self.combo_files.setMaximumWidth(400)
@@ -491,7 +493,6 @@ class ActionBar(QFrame):
         self.combo_files.customContextMenuRequested.connect(
             self._context_menu_requested)
         hbox.addWidget(self.combo_files)
-
         self.symbols_combo = QComboBox()
         self.symbols_combo.setObjectName("combo_symbols")
         # For correctly style sheet
@@ -533,7 +534,7 @@ class ActionBar(QFrame):
             self.btn_close.setObjectName('close_split')
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
             self.btn_close.clicked.connect(lambda: self.closeSplit.emit())
-        self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
         hbox.addWidget(self.btn_close)
 
         # Added for set language
@@ -844,7 +845,7 @@ class CodeNavigator(QWidget):
         super(CodeNavigator, self).__init__()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        self.setContentsMargins(0, 0, 0, 0)
+        # self.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         if settings.IS_MAC_OS:
@@ -852,18 +853,19 @@ class CodeNavigator(QWidget):
         else:
             hbox.setSpacing(0)
         self.btnPrevious = QPushButton()
+        self.btnPrevious.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
         self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.clicked.connect(self._on_previous_pressed)
         self.btnPrevious.setIcon(ui_tools.get_icon('code-left'))
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         self.btnNext = QPushButton()
+        self.btnNext.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
         self.btnNext.setObjectName('navigation_button')
         self.btnNext.clicked.connect(self._on_next_pressed)
         self.btnNext.setIcon(ui_tools.get_icon('code-right'))
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         hbox.addWidget(self.btnPrevious)
         hbox.addWidget(self.btnNext)
-
         self.menuNavigate = QMenu(self.tr("Navigate"))
         self.codeAction = self.menuNavigate.addAction(
             translations.TR_NAV_CODE_JUMP)

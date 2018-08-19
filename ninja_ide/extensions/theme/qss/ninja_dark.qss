@@ -134,6 +134,8 @@ QPushButton#navigation_button {
     background: none;
     margin-left: 5px;
     padding: 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 QPushButton#close_split {
@@ -143,6 +145,8 @@ QPushButton#close_split {
     background: none;
     padding: 0;
     margin-right: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 QPushButton#close_button_combo {
@@ -151,6 +155,8 @@ QPushButton#close_button_combo {
     border-color: gray;
     background: transparent;
     margin-right: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
     padding: 2px 0 3px 0;
 }
 
