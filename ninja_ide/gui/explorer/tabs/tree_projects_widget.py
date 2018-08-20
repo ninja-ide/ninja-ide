@@ -104,7 +104,7 @@ class ProjectTreeColumn(QDialog):
 
         self.projects = []
 
-        self._combo_project.currentIndexChanged.connect(
+        self._combo_project.activated.connect(
             self._change_current_project)
         self._combo_project.customContextMenuRequested[
             'const QPoint&'].connect(self.context_menu_for_root)

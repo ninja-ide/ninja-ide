@@ -116,6 +116,8 @@ class IDE(QMainWindow):
         # Interpreter service
         self.interpreter = interpreter_service.InterpreterService()
         # Sessions handler
+        self._session_manager = session_manager.SessionsManager(self)
+        IDE.register_service("session_manager", self._session_manager)
         self._session = None
         # Opacity
         self.opacity = settings.MAX_OPACITY
@@ -603,19 +605,23 @@ class IDE(QMainWindow):
     Session = property(__get_session, __set_session)
 
     def change_window_title(self, text=""):
-        """Change the title of the Application."""
+        """Change the title of the Application
 
-        # display_name - project - NINJA-IDE
+        display_name - [project] - {session} - NINJA-IDE
+        """
         title = []
-        if text:
-            title.append(text)
-        if self._session is None:
-            if self.get_current_project() is not None:
-                project_name = self.get_current_project().name
-                title.append("[" + project_name + "]")
-        else:
-            title.append(
-                translations.TR_SESSION_IDE_HEADER.format(self._session))
+        main_container = self.get_service("main_container")
+        neditor = main_container.get_current_editor()
+        if neditor is not None:
+            nfile = neditor.nfile
+            title.append(nfile.display_name)
+        nproject = self.get_current_project()
+        if nproject is not None:
+            title.append("[" + nproject.name + "]")
+
+        session = self._session_manager.current_session
+        if session is not None:
+            title.append(translations.TR_SESSION_IDE_HEADER.format(session))
 
         title.append("NINJA-IDE")
         formated_list = ["{}" for _ in title]
@@ -773,16 +779,16 @@ class IDE(QMainWindow):
         #                   settings.BREAKPOINTS)
 
         # Session
-        if self._session is not None:
-            val = QMessageBox.question(
-                self,
-                translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
-                (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
-                    {'session': self.Session}),
-                QMessageBox.Yes, QMessageBox.No)
-            if val == QMessageBox.Yes:
-                session_manager.SessionsManager.save_session_data(
-                    self.Session, self)
+        # if self._session is not None:
+        #     val = QMessageBox.question(
+        #         self,
+        #         translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
+        #         (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
+        #             {'session': self.Session}),
+        #         QMessageBox.Yes, QMessageBox.No)
+        #     if val == QMessageBox.Yes:
+        #         session_manager.SessionsManager.save_session_data(
+        #             self.Session, self)
         # qsettings.setValue('preferences/general/toolbarArea',
         # self.toolBarArea(self.toolbar))
         interpreter = self.interpreter.current.exec_path
@@ -790,12 +796,15 @@ class IDE(QMainWindow):
 
     def activate_profile(self):
         """Show the Session Manager dialog."""
-        profilesLoader = session_manager.SessionsManager(self)
-        profilesLoader.show()
+        # profilesLoader = session_manager.SessionsManager(self)
+        # profilesLoader.show()
+        # pass
+        self._session_manager.show()
 
     def deactivate_profile(self):
         """Close the Session Session."""
-        self.Session = None
+        # self.Session = None
+        pass
 
     def load_window_geometry(self):
         """Load from QSettings the window size of Ninja IDE"""

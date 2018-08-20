@@ -280,11 +280,12 @@ TR_SESSIONS_DIALOG_BODY = tr(
     "This allows you to save your working environment, "
     "keep working in another\nproject and then go back "
     "exactly where you left.")
-TR_SESSIONS_BTN_DELETE = tr("NINJA-IDE", "Delete Session")
+TR_SESSIONS_BTN_DELETE = tr("NINJA-IDE", "&Delete")
 TR_SESSIONS_BTN_UPDATE = tr("NINJA-IDE", "Update Session")
-TR_SESSIONS_BTN_CREATE = tr("NINJA-IDE", "Create New Session")
-TR_SESSIONS_BTN_ACTIVATE = tr("NINJA-IDE", "Activate Session")
+TR_SESSIONS_BTN_CREATE = tr("NINJA-IDE", "&Create")
+TR_SESSIONS_BTN_ACTIVATE = tr("NINJA-IDE", "&Activate")
 TR_SESSIONS_CREATE_TITLE = tr("NINJA-IDE", "Create Session")
+TR_SESSIONS_BTN_DETAILS = tr("NINJA-IDE", "D&etails...")
 TR_SESSIONS_CREATE_BODY = tr(
     "NINJA-IDE",
     "The Current Files and Projects will"
@@ -293,7 +294,7 @@ TR_SESSIONS_MESSAGE_TITLE = tr("NINJA-IDE", "Session Name Invalid")
 TR_SESSIONS_MESSAGE_BODY = tr(
     "NINJA-IDE",
     "The Session name is invalid or already exists.")
-TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
+TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session {} Updated!")
 TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "File has been modified")
 TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
