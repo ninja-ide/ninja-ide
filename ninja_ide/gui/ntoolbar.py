@@ -18,6 +18,8 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QStyleOption
+from PyQt5.QtWidgets import QStyle
 
 from PyQt5.QtGui import QPainter
 from PyQt5.QtGui import QColor
@@ -30,6 +32,7 @@ class ToolBar(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setObjectName("toolbar")
         self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         self._action_layout = QVBoxLayout()
         self._action_layout.setContentsMargins(0, 0, 0, 0)
@@ -44,8 +47,10 @@ class ToolBar(QWidget):
         self._action_layout.addWidget(button)
 
     def paintEvent(self, event):
+        opt = QStyleOption()
+        opt.initFrom(self)
         painter = QPainter(self)
-        painter.fillRect(event.rect(), QColor("#161719"))
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
 
 
 class NToolBar(QWidget):
@@ -78,6 +83,7 @@ class ActionBar(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setObjectName("toolbar_actionbar")
         self._action_layout = QVBoxLayout()
         self._action_layout.setContentsMargins(0, 0, 0, 0)
         spacer = QVBoxLayout(self)
@@ -92,8 +98,10 @@ class ActionBar(QWidget):
         self._action_layout.addWidget(button)
 
     def paintEvent(self, event):
+        opt = QStyleOption()
+        opt.initFrom(self)
         painter = QPainter(self)
-        painter.fillRect(event.rect(), QColor("#1b1c1f"))
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
 
     def minimumSizeHint(self):
         return self.sizeHint()

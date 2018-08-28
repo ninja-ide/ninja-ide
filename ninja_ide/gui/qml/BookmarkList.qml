@@ -43,7 +43,7 @@ Rectangle {
                 anchors.top: parent.top
                 anchors.right: linenoText.left
                 anchors.margins: 5
-                color: item.current ? "#8080ff" : theme.FilesHandlerText
+                color: theme.FilesHandlerText
                 elide: Text.ElideRight
                 font.pixelSize: 16
                 font.bold: true
@@ -54,7 +54,7 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.margins: 5
-                color: item.current ? "#8080ff" : theme.FilesHandlerText
+                color: theme.FilesHandlerAlternativeText
                 text: lineno + 1
             }
             Text {

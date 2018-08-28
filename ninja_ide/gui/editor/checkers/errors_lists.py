@@ -99,7 +99,7 @@ class ErrorsList(QWidget):
         self.view.setSource(ui_tools.get_qml_resource("ErrorsList.qml"))
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(3, 3, 3, 3)
+        vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         vbox.addWidget(self.view)
 
