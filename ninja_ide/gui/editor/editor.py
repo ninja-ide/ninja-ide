@@ -58,6 +58,8 @@ from ninja_ide.gui.editor.side_area import text_change_widget
 from ninja_ide.gui.editor.side_area import code_folding
 from ninja_ide.gui.editor.side_area import marker_widget
 
+# TODO: separte this module and create a editor component
+
 
 class NEditor(base_editor.BaseEditor):
 

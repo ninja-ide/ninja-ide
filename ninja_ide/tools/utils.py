@@ -92,15 +92,9 @@ def search_for_folder(regex, path):
 
 
 def get_inverted_color(color):
-    if isinstance(color, str):
-        color = QColor(color)
-    red = 255 - color.red()
-    green = 255 - color.green()
-    blue = 255 - color.blue()
-    color.setRed(red)
-    color.setGreen(green)
-    color.setBlue(blue)
-    return color
+    return "#" + "".join(
+        (hex(255 - int(x, 16)))[2:].zfill(2)
+        for x in (color[1:3], color[3:5], color[5:7]))
 
 
 def path_with_tilde_homepath(path):

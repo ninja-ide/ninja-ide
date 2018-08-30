@@ -285,7 +285,7 @@ class IDE(QMainWindow):
 
     def get_menuitems(self):
         """Return a dictionary with the registered menu items."""
-        return IDE.__IDEMENUS
+        return IDE.__IDEMENUS  #
 
     def get_bar_categories(self):
         """Get the registered Categories for the Application menus."""

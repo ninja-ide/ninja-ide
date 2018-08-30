@@ -1,16 +1,36 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 import re
+
 from PyQt5.QtWidgets import QStyleOptionViewItem
 from PyQt5.QtWidgets import QStyle
 
 from PyQt5.QtGui import QPainter
 from PyQt5.QtGui import QTextBlock
+from PyQt5.QtGui import QColor
 
 from PyQt5.QtCore import QSize
 from PyQt5.QtCore import QRect
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QTimer
 
+from ninja_ide import resources
 from ninja_ide.gui.editor import side_area
+from ninja_ide.tools.utils import get_inverted_color
 
 
 class BaseCodeFolding(object):
@@ -98,6 +118,9 @@ class CodeFoldingWidget(side_area.SideWidget):
         self.__timer.setSingleShot(True)
         self.__timer.setInterval(100)
         self.__timer.timeout.connect(self.update)
+        reverse_color = get_inverted_color(
+            resources.COLOR_SCHEME.get("editor.background"))
+        self.__line_fold_color = QColor(reverse_color)
 
     def register(self, neditor):
         self.code_folding = IMPLEMENTATIONS.get(neditor.neditable.language())
@@ -106,26 +129,21 @@ class CodeFoldingWidget(side_area.SideWidget):
             return
         super().register(neditor)
         self.user_data = neditor.user_data
-        neditor.painted.connect(self.__draw_collapsed_rect)
+        neditor.painted.connect(self.__draw_collapsed_line)
 
-    def __draw_collapsed_rect(self):
-        painter = QPainter(self._neditor.viewport())
-        painter.setFont(self._neditor.font())
+    def __draw_collapsed_line(self):
+        viewport = self._neditor.viewport()
+        painter = QPainter(viewport)
+        painter.setPen(self.__line_fold_color)
         for top, _, block in self._neditor.visible_blocks:
             if not block.next().isVisible():
                 layout = block.layout()
                 line = layout.lineAt(layout.lineCount() - 1)
                 offset = self._neditor.contentOffset()
-                top = self._neditor.blockBoundingGeometry(
-                    block).translated(offset).top()
                 line_rect = line.naturalTextRect().translated(offset.x(), top)
-                collapsed_rect = QRect(
-                    line_rect.right() + 5,
-                    line_rect.top() + 4,
-                    self._neditor.fontMetrics().width("..."),
-                    line_rect.height() / 2
-                )
-                painter.drawText(collapsed_rect, Qt.AlignCenter, "...")
+                bottom = line_rect.bottom()
+                painter.drawLine(
+                    line_rect.x(), bottom, line_rect.width(), bottom)
 
     def __block_under_mouse(self, event):
         """Returns QTextBlock under mouse"""

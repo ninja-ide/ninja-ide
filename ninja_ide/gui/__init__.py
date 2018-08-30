@@ -45,6 +45,11 @@ from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     """Load all the settings necessary before loading the UI, and start IDE."""
 
+    def _add_splash(message):
+        splash.showMessage(
+            message, Qt.AlignTop | Qt.AlignRight | Qt.AlignAbsolute, Qt.black)
+        QCoreApplication.processEvents()
+
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
@@ -89,25 +94,15 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #    app.installTranslator(qtTranslator)
 
     # Loading Syntax
-    splash.showMessage("Loading Syntax...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-    app.processEvents()
+    _add_splash("Loading Syntax..")
     json_manager.load_syntax()
 
     # Loading Schemes
-    splash.showMessage("Loading Schemes...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-    app.processEvents()
+    _add_splash("Loading Schemes...")
     all_schemes = json_manager.load_editor_schemes()
     resources.COLOR_SCHEME = all_schemes["Ninja Dark"]
-    # scheme = qsettings.value("editor/general/scheme", "")
-    # if not scheme:
-    #     scheme = "Ninja Dark"
-    # resources.COLOR_SCHEME = all_schemes[scheme]
-
-    splash.showMessage("Loading IDE Services...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-    app.processEvents()
+    # Load Services
+    _add_splash("Loading IDE Services...")
     # Register tools dock service after load some settings
     # FIXME: Find a better way to do this
     import ninja_ide.gui.tools_dock.tools_dock  # noqa
@@ -142,8 +137,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
     from ninja_ide.intellisensei import intellisense_registry  # noqa
     from ninja_ide.intellisensei import python_intellisense  # noqa
-    # from ninja_ide.gui.dialogs.preferences
-    #                              import preferences_editor_completion
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
     # from ninja_ide.gui.dialogs.preferences import preferences_plugins
     # from ninja_ide.gui.dialogs.preferences import preferences_theme
     from ninja_ide.gui.editor.checkers import errors_lists  # noqa
@@ -151,19 +145,12 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 
     # Loading Shortcuts
-    resources.load_shortcuts()
-    app.processEvents()
-    splash.showMessage(
-        "Loading Shortcuts...", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    # resources.load_shortcuts()
     # Loading GUI
-    splash.showMessage("Loading GUI...", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    _add_splash("Loading GUI...")
     ninjaide = ide.IDE(start_server)
-
     # Loading Session Files
-    app.processEvents()
-    splash.showMessage("Loading Files and Projects..",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-
+    _add_splash("Loading Files and Projects...")
     # First check if we need to load last session files
     if qsettings.value('general/loadFiles', True, type=bool):
         files = data_qsettings.value('lastSession/openedFiles')

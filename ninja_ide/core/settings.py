@@ -42,7 +42,7 @@ IS_WINDOWS = IS_MAC_OS = False
 
 OS_KEY = "Ctrl"
 
-FONT = QFont('monospace', 11)
+FONT = QFont('monospace', 12)
 if sys.platform == "darwin":
     from PyQt5.QtGui import QKeySequence
     from PyQt5.QtCore import Qt
@@ -196,7 +196,7 @@ ADD_NEW_LINE_AT_EOF = HIDE_MOUSE_CURSOR = SCROLL_WHEEL_ZOMMING = True
 HIGHLIGHT_CURRENT_LINE = True
 # 0: Full background
 # 1: Simple
-HIGHLIGHT_CURRENT_LINE_MODE = 1
+HIGHLIGHT_CURRENT_LINE_MODE = 0
 
 INDENT = 4
 
@@ -600,7 +600,7 @@ def load_settings():
     HIGHLIGHT_CURRENT_LINE = qsettings.value(
         'editor/display/highlightCurrentLine', True, type=bool)
     HIGHLIGHT_CURRENT_LINE_MODE = qsettings.value(
-        "editor/display/current_line_mode", 1, type=int)
+        "editor/display/current_line_mode", 0, type=int)
     BRACE_MATCHING = qsettings.value(
         "editor/display/brace_matching", True, type=bool)
     # DOCMAP_SEARCH_LINES = qsettings.value(
