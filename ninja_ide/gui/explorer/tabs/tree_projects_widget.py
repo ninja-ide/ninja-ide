@@ -320,7 +320,7 @@ class ProjectTreeColumn(QDialog):
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
-        if self._projects_area.count() > 0:
+        if self.current_project is not None:
             path = self.current_project.path
             main_container = IDE.get_service('main_container')
             if path and main_container:
@@ -332,8 +332,10 @@ class ProjectTreeColumn(QDialog):
 
     @property
     def current_project(self):
+        project = None
         if self._projects_area.count() > 0 and self.current_tree is not None:
-            return self.current_tree.project
+            project = self.current_tree.project
+        return project
 
     @property
     def current_tree(self):
