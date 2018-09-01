@@ -194,11 +194,19 @@ ACTIONS_GENERAL = (
         "connect": "change_toolbar_visibility"
     },
     {
+        "action": {
+            "text": translations.TR_TOOLSDOCK_VISIBILITY,
+            "section": (translations.TR_MENU_VIEW, None),
+            "weight": 150
+        },
+        "connect": "change_toolsdock_visibility"
+    },
+    {
         "shortcut": "full-screen",
         "action": {
             "text": translations.TR_FULLSCREEN_VISIBILITY,
             "section": (translations.TR_MENU_VIEW, None),
-            "weight": 150
+            "weight": 160
         },
         "connect": "fullscreen_mode"
     },

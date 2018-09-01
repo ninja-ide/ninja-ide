@@ -523,6 +523,14 @@ class IDE(QMainWindow):
         else:
             self.toolbar.show()
 
+    def change_toolsdock_visibility(self):
+        """Switch the tools dock visibility"""
+        tools_dock = IDE.get_service("tools_dock").buttons_widget
+        if tools_dock.isVisible():
+            tools_dock.hide()
+        else:
+            tools_dock.show()
+
     def load_external_plugins(self, paths):
         """Load external plugins, the ones added to ninja throw the cmd."""
         for path in paths:
