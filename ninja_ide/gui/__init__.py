@@ -97,6 +97,8 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     _add_splash("Loading Syntax..")
     json_manager.load_syntax()
 
+    load_fonts()
+
     # Loading Schemes
     _add_splash("Loading Schemes...")
     all_schemes = json_manager.load_editor_schemes()
@@ -185,3 +187,13 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash.finish(ninjaide)
     # ninjaide.notify_plugin_errors()
     # ninjaide.show_python_detection()
+
+
+def load_fonts():
+    import os
+    from PyQt5.QtGui import QFontDatabase
+
+    fonts = [f for f in os.listdir(resources.FONTS)
+             if f.endswith(".ttf")]
+    for font in fonts:
+        QFontDatabase.addApplicationFont(os.path.join(resources.FONTS, font))

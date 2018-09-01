@@ -41,18 +41,21 @@ IS_WINDOWS = IS_MAC_OS = False
 
 
 OS_KEY = "Ctrl"
-
-FONT = QFont('monospace', 12)
+# Font
+FONT = QFont("Source Code Pro")
 if sys.platform == "darwin":
     from PyQt5.QtGui import QKeySequence
     from PyQt5.QtCore import Qt
 
-    FONT = QFont('Monaco', 12)
+    FONT = QFont("Monaco")
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
     IS_MAC_OS = True
 elif sys.platform == "win32":
-    FONT = QFont('Courier', 12)
+    FONT = QFont("Courier")
     IS_WINDOWS = True
+
+FONT.setStyleHint(QFont.TypeWriter)
+FONT.setPointSize(12)
 
 FONT_ANTIALIASING = True
 

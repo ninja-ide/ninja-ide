@@ -87,6 +87,8 @@ GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
 
 QML_FILES = os.path.join(PRJ_PATH, "gui", "qml")
 
+FONTS = os.path.join(PRJ_PATH, "fonts")
+
 ###############################################################################
 # URLS
 ###############################################################################
