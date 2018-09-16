@@ -276,7 +276,7 @@ class ReplaceWidget(QWidget):
         """Replace all the occurrences of the word"""
 
         status_search = IDE.get_service("status_search")
-        cs, wo = status_search.search_flags
+        cs, wo, highlight = status_search.search_flags
         main_container = IDE.get_service("main_container")
         editor_widget = main_container.get_current_editor()
         editor_widget.replace_all(
