@@ -471,7 +471,7 @@ class ActionBar(QFrame):
         self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
-        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setContentsMargins(1, 0, 0, 0)
         hbox.setSpacing(1)
 
         # self.lbl_checks = QLabel('')
