@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # pycodestyle.py - Check Python source code formatting, according to PEP 8
 #
 # Copyright (C) 2006-2009 Johann C. Rocholl <johann@rocholl.net>
