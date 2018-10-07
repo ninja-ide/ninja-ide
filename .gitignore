@@ -1,6 +1,6 @@
 # ninja_ide specific
 ninja_ide/addins/plugins/*
-NINJA_IDE.egg-info/*
+*.egg-info/*
 build/*
 dist/*
 

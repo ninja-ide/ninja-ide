@@ -1,0 +1,2 @@
+graft ninja_ide
+global-exclude *.qmlc *.py[cod] __pycache__
