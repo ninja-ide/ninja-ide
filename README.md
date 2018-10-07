@@ -26,7 +26,7 @@ You can clone this repo and simply execute:
 ```bash
 git clone git://github.com/ninja-ide/ninja-ide.git
 cd ninja-ide
-python ninja-ide.py
+python3 ninja-ide.py
 ```
 
 Piece of cake, huh?
