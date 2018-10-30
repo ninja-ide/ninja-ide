@@ -4,6 +4,17 @@ python:
   - 3.5
   - 3.6
 
+stages:
+  - syntax
+  - test
+
+
+jobs:
+  include:
+    - stage: syntax
+      script: echo "Running flake8..."
+    - stage: test
+
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
