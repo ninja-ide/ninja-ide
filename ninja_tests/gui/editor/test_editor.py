@@ -15,224 +15,109 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from unittest.mock import Mock
-
 import pytest
 
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtGui import QTextDocument
-from PyQt5.QtGui import QClipboard
 
-from PyQt5.QtCore import Qt
-
-from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.editor import editor
-from ninja_ide.tools import json_manager
-
-
-IDE.register_service("ide", Mock())
-
-json_manager.load_syntax()
+from ninja_ide.gui.editor import base
 
 
 @pytest.fixture
-def editor_bot(qtbot):
-    editable = Mock()
-    editable.language = lambda: "python"
-    editable.document = QTextDocument()
-    _editor = editor.create_editor(editable)
-    return _editor
+def editor_fixture():
+    editor = base.BaseTextEditor()
+    return editor
 
 
-def test_replace(editor_bot, qtbot):
-    editor_bot.text = "this gabo is Gabo a testGaBo aslkd laskd"
-    editor_bot.moveCursor(QTextCursor.Start)
-    editor_bot.find_match("gabo")
-    editor_bot.replace_match("gabo", "gaboxx")
-    editor_bot.find_match("gabo")
-    editor_bot.replace_match("gabo", "gaboxx")
-    assert editor_bot.text == "this gaboxx is gaboxx a testGaBo aslkd laskd"
+@pytest.fixture
+def editor_with_text(editor_fixture):
+    editor_fixture.setPlainText("this\nis\an\nexample")
+    editor_fixture.moveCursor(QTextCursor.Start)
+    return editor_fixture
 
 
-def test_replace_all(editor_bot, qtbot):
-    editor_bot.text = "this gabo is Gabo a testGaBo aslkd laskd"
-    editor_bot.moveCursor(QTextCursor.Start)
-    editor_bot.replace_all("gabo", "gabox")
-    assert editor_bot.text == "this gabox is gabox a testgabox aslkd laskd"
+def test_selected_text(editor_with_text):
+    cursor = editor_with_text.textCursor()
+    cursor.movePosition(cursor.Right, cursor.KeepAnchor, 4)
+    editor_with_text.setTextCursor(cursor)
+    assert editor_with_text.has_selection()
+    assert editor_with_text.selected_text() == 'this'
 
 
-def test_replace_cs(editor_bot, qtbot):
-    editor_bot.text = "this gabo is Gabo a testGaBo aslkd laskd"
-    editor_bot.moveCursor(QTextCursor.Start)
-    editor_bot.find_match("Gabo", case_sensitive=True)
-    editor_bot.replace_match("Gabo", "GABO", cs=True)
-    assert editor_bot.text == "this gabo is GABO a testGaBo aslkd laskd"
+def test_selection_range(editor_with_text):
+    cursor = editor_with_text.textCursor()
+    cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor, 2)
+    editor_with_text.setTextCursor(cursor)
+    assert editor_with_text.selection_range() == (0, 1)
+    cursor.movePosition(QTextCursor.Right, QTextCursor. KeepAnchor)
+    editor_with_text.setTextCursor(cursor)
+    assert editor_with_text.selection_range() == (0, 2)
 
 
-def test_replace_wo(editor_bot, qtbot):
-    editor_bot.text = "this gabo is Gabo a testGaBo aslkd laskd"
-    editor_bot.moveCursor(QTextCursor.Start)
-    editor_bot.replace_all("gabo", "GABO", wo=True)
-    assert editor_bot.text == "this GABO is GABO a testGaBo aslkd laskd"
+@pytest.mark.parametrize(
+    'text, lineno, expected',
+    [
+        ('ninja\nIDE\n\nis awesome!', 2, ''),
+        ('ninja\nIDE\n\nis awesome!', 0, 'ninja'),
+        ('ninja\nIDE\n\nis awesome!', 3, 'is awesome!')
+    ]
+)
+def test_line_text(editor_fixture, text, lineno, expected):
+    editor_fixture.text = text
+    editor_fixture.cursor_position = lineno, 0
+    assert editor_fixture.line_text(lineno) == expected
+
+@pytest.mark.parametrize(
+    'text, expected',
+    [
+        ('asd ldsaj lkaskdj hakjshdkjh asd', 1),
+        ('as\n\n\nd ld\nsaj l\nkaskdj hakjshdkjh asd', 6),
+        ('asd ldsaj lkaskdj ha\nkj\nshdkjh asd', 3)
+    ]
+)
+def test_line_count(editor_fixture, text, expected):
+    editor_fixture.text = text
+    assert editor_fixture.line_count() == expected
 
 
-def test_move_up(editor_bot, qtbot):
-    editor_bot.text = 'print\ntype(str)'
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.End)
-    editor_bot.setTextCursor(cursor)
-    editor_bot.move_up_down(up=True)
-    assert editor_bot.text == 'type(str)\nprint\n'
+@pytest.mark.parametrize(
+    'text, position, expected',
+    [
+        ('hola como estas', (0, 0), 'hola'),
+        ('hola\n como \nestas', (2, 3), 'estas'),
+        ('hola\n aaa ssss wwww como estas', (1, 17), 'como')
+    ]
+)
+def test_get_right_word(editor_fixture, text, position, expected):
+    editor_fixture.text = text
+    editor_fixture.cursor_position = position
+    assert editor_fixture.cursor_position == position
 
 
-def test_move_down(editor_bot, qtbot):
-    editor_bot.text = 'print\ntype(str)'
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.Start)
-    editor_bot.setTextCursor(cursor)
-    editor_bot.move_up_down()
-    assert editor_bot.text == 'type(str)\nprint'
+@pytest.mark.parametrize(
+    'text, position, expected',
+    [
+        ('hola como estas', (0, 0), 'h'),
+        ('hola\n como \nestas', (2, 3), 'a'),
+        ('hola\n aaa ssss wwww como estas', (1, 17), 'm')
+    ]
+)
+def test_get_right_character(editor_fixture, text, position, expected):
+    editor_fixture.text = text
+    editor_fixture.cursor_position = position
+    assert editor_fixture.get_right_character() == expected
 
 
-def test_move_up_selection(editor_bot, qtbot):
-    editor_bot.text = 'print\nprint\nprint\nninja\nninja'
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.End)
-    cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
-    cursor.movePosition(QTextCursor.Up, QTextCursor.KeepAnchor)
-    cursor.movePosition(QTextCursor.Up, QTextCursor.KeepAnchor)
-    editor_bot.setTextCursor(cursor)
-    editor_bot.move_up_down(True)
-    editor_bot.move_up_down(True)
-    assert editor_bot.text == 'print\nninja\nninja\nprint\nprint\n'
-
-
-def test_move_down_selection(editor_bot, qtbot):
-    editor_bot.text = 'print\nprint\nprint\nninja\nninja'
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.Start)
-    cursor.movePosition(QTextCursor.EndOfBlock, QTextCursor.KeepAnchor)
-    cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor)
-    cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor)
-    editor_bot.setTextCursor(cursor)
-    editor_bot.move_up_down()
-    editor_bot.move_up_down()
-    assert editor_bot.text == 'ninja\nninja\nprint\nprint\nprint'
-
-
-def test_simple_comment(editor_bot, qtbot):
-    editor_bot.text = "this\nis\na\ntext"
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == "# this\nis\na\ntext"
-
-
-def test_simple_uncomment(editor_bot, qtbot):
-    editor_bot.text = "# this\nis\na\ntext"
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == "this\nis\na\ntext"
-
-
-def test_comment_selected_lines(editor_bot, qtbot):
-    editor_bot.text = "this\nis\na\ntext"
-    editor_bot.selectAll()
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == "# this\n# is\n# a\n# text"
-
-
-def test_uncomment_selected_lines(editor_bot, qtbot):
-    editor_bot.text = "# this\n# is\n# a\n# text"
-    editor_bot.selectAll()
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == "this\nis\na\ntext"
-
-
-def test_comment(editor_bot, qtbot):
-    editor_bot.text = "# This is a comment\ndef foo():\n    # pass\n    pass"
-    editor_bot.selectAll()
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == ("# # This is a comment\n# def foo():\n#     "
-                               "# pass\n#     pass")
-
-
-def test_uncomment(editor_bot, qtbot):
-    editor_bot.text = ("# # This is a comment\n# def foo():\n#     "
-                       "# pass\n#     pass")
-    editor_bot.selectAll()
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == ("# This is a comment\ndef foo():\n    "
-                               "# pass\n    pass")
-
-
-def test_uncomment2(editor_bot, qtbot):
-    editor_bot.text = "print\n# print"
-    editor_bot.selectAll()
-    editor_bot.comment_or_uncomment()
-    assert editor_bot.text == "# print\n# # print"
-
-
-def test_complete_declaration(editor_bot, qtbot):
-    editor_bot.text = "class Parent(object):"
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.End)
-    editor_bot.setTextCursor(cursor)
-    qtbot.keyPress(editor_bot, Qt.Key_Enter)
-    assert editor_bot.text == ("class Parent(object):\n    \n"
-                               "    def __init__(self):\n"
-                               "        ")
-
-
-def test_complete_declaration2(editor_bot, qtbot):
-    editor_bot.text = "class Parent(object):"
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.End)
-    editor_bot.setTextCursor(cursor)
-    qtbot.keyPress(editor_bot, Qt.Key_Enter)
-    assert editor_bot.text == ("class Parent(object):\n    \n"
-                               "    def __init__(self):\n"
-                               "        ")
-    editor_bot.moveCursor(QTextCursor.Start)
-    editor_bot.moveCursor(QTextCursor.EndOfLine)
-    qtbot.keyPress(editor_bot, Qt.Key_Enter)
-    assert editor_bot.text == ("class Parent(object):\n    \n    \n"
-                               "    def __init__(self):\n"
-                               "        ")
-
-
-def test_complete_declaration_with_parent(editor_bot, qtbot):
-    editor_bot.text = ("class Parent(object):\n"
-                       "    pass"
-                       "\n"
-                       "class Child(Parent):")
-
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.End)
-    editor_bot.setTextCursor(cursor)
-    qtbot.keyPress(editor_bot, Qt.Key_Enter)
-    assert editor_bot.text == ("class Parent(object):\n"
-                               "    pass"
-                               "\n"
-                               "class Child(Parent):\n    \n"
-                               "    def __init__(self):\n"
-                               "        super(Child, self).__init__()\n"
-                               "        ")
-
-
-def test_change_cursor_position_when_pasting(editor_bot, qtbot):
-    editor_bot.text = "123456\n123456"
-    cursor = editor_bot.textCursor()
-    cursor.movePosition(QTextCursor.Start)
-    cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, 3)
-    editor_bot.setTextCursor(cursor)
-    _, pos_in_block = editor_bot.cursor_position
-    assert pos_in_block == 3
-    QApplication.clipboard().setText("foobar", QClipboard.Clipboard)
-    editor_bot.paste()
-    qtbot.keyPress(editor_bot, Qt.Key_Down)
-    _, pos_in_block = editor_bot.cursor_position
-    assert pos_in_block == 6
-    assert editor_bot.text == "123foobar456\n123456"
-
-
-if __name__ == "__main__":
-    pytest.main()
+@pytest.mark.parametrize(
+    'text, lineno, up, expected',
+    [
+        ('ninja\nIDE\n\nis awesome!!!\n!', 0, False,
+         'IDE\nninja\n\nis awesome!!!\n!'),
+        ('ninja\nIDE\n\nis awesome!!!\n!', 3, True,
+         'ninja\nIDE\nis awesome!!!\n\n!')
+    ]
+)
+def test_move_up_down(editor_fixture, text, lineno, up, expected):
+    editor_fixture.text = text
+    editor_fixture.cursor_position = lineno, 0
+    editor_fixture.move_up_down(up)
+    assert editor_fixture.text == expected
