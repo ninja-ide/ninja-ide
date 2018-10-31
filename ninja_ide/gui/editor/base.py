@@ -165,3 +165,24 @@ class BaseTextEditor(QPlainTextEdit):
             else:
                 move.setPosition(start)
             self.setTextCursor(move)
+
+    def duplicate_line(self):
+        cursor = self.textCursor()
+        if cursor.hasSelection():
+            text = cursor.selectedText()
+            start = cursor.selectionStart()
+            end = cursor.selectionEnd()
+            cursor_at_start = cursor.position() == start
+            cursor.setPosition(end)
+            cursor.insertText("\n" + text)
+            cursor.setPosition(end if cursor_at_start else start)
+            cursor.setPosition(start if cursor_at_start else end,
+                               QTextCursor.KeepAnchor)
+        else:
+            position = cursor.position()
+            block = cursor.block()
+            text = block.text() + "\n"
+            cursor.setPosition(block.position())
+            cursor.insertText(text)
+            cursor.setPosition(position)
+        self.setTextCursor(cursor)

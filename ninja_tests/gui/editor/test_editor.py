@@ -58,7 +58,8 @@ def test_selection_range(editor_with_text):
     [
         ('ninja\nIDE\n\nis awesome!', 2, ''),
         ('ninja\nIDE\n\nis awesome!', 0, 'ninja'),
-        ('ninja\nIDE\n\nis awesome!', 3, 'is awesome!')
+        ('ninja\nIDE\n\nis awesome!', 3, 'is awesome!'),
+        ('ninja\nIDE\n\nis awesome!', -1, 'ninja')
     ]
 )
 def test_line_text(editor_fixture, text, lineno, expected):
@@ -120,4 +121,40 @@ def test_move_up_down(editor_fixture, text, lineno, up, expected):
     editor_fixture.text = text
     editor_fixture.cursor_position = lineno, 0
     editor_fixture.move_up_down(up)
+    assert editor_fixture.text == expected
+
+
+@pytest.mark.parametrize(
+    'text, lineno, n, expected',
+    [
+        ('example\ntext', 0, 1, 'example\nexample\ntext'),
+        ('example\ntext', 1, 1, 'example\ntext\ntext'),
+        ('example\ntext', 1, 3, 'example\ntext\ntext\ntext\ntext')
+    ]
+)
+def test_duplicate_line(editor_fixture, text, lineno, n, expected):
+    editor_fixture.text = text
+    editor_fixture.cursor_position = lineno, 0
+    for i in range(n):
+        editor_fixture.duplicate_line()
+    assert editor_fixture.text == expected
+
+
+@pytest.mark.parametrize(
+    'text, _range, n, expected',
+    [
+        ('exa\nmple\ntext\n!!', (0, 1), 1, 'exa\nmple\nexa\nmple\ntext\n!!'),
+        ('exa\nmple\ntext\n!!', (0, 1), 4, 'exa\nmple\nexa\nmple\nexa\nmple\nexa\nmple\nexa\nmple\ntext\n!!'),  # noqa
+    ]
+)
+def test_duplicate_line_selection(editor_fixture, text, _range, n, expected):
+    editor_fixture.text = text
+    cursor = editor_fixture.textCursor()
+    start, end = _range
+    editor_fixture.cursor_position = start, 0
+    cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor, end - start)
+    cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+    editor_fixture.setTextCursor(cursor)
+    for i in range(n):
+        editor_fixture.duplicate_line()
     assert editor_fixture.text == expected
