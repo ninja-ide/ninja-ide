@@ -77,6 +77,10 @@ class BaseTextEditor(QPlainTextEdit):
 
         return self.document().blockCount()
 
+    def insert_text(self, text):
+        if not self.isReadOnly():
+            self.textCursor().insertText(text)
+
     def first_visible_block(self):
         return self.firstVisibleBlock()
 
