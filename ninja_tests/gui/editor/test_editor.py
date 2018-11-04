@@ -80,6 +80,15 @@ def test_line_count(editor_fixture, text, expected):
     assert editor_fixture.line_count() == expected
 
 
+def test_insert_text(editor_fixture):
+    assert editor_fixture.text == ''
+    editor_fixture.insert_text("inserting text")
+    assert editor_fixture.text == 'inserting text'
+    editor_fixture.setReadOnly(True)
+    editor_fixture.insert_text("INSERTING TEXt")
+    assert editor_fixture.text == 'inserting text'
+
+
 @pytest.mark.parametrize(
     'text, position, expected',
     [
