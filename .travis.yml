@@ -4,26 +4,15 @@ python:
   - 3.5
   - 3.6
 
-stages:
-  - syntax
-  - test
-
-
-jobs:
-  include:
-    - stage: syntax
-      script: echo "Running flake8..."
-    - stage: test
-
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 
 install:
   - pip install pip --upgrade
-  - pip install pytest
+  - pip install pytest pytest-qt
   - pip install pytest-qt
-  - pip install PyQt5==5.9
+  - pip install PyQt5
 
 before_script: rm --recursive --force --verbose *.py[cod]
 

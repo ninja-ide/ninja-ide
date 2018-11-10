@@ -1,6 +1,5 @@
 # Ninja-IDE Is Not Just Another IDE
 [![Build Status](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master)](https://travis-ci.org/ninja-ide/ninja-ide)
-[![Coverage Status](https://coveralls.io/repos/github/ninja-ide/ninja-ide/badge.svg?branch=master)](https://coveralls.io/github/ninja-ide/ninja-ide?branch=master)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
  [Ninja-IDE](http://ninja-ide.org) is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
