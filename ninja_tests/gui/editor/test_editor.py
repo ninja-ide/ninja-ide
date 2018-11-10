@@ -134,6 +134,33 @@ def test_move_up_down(editor_fixture, text, lineno, up, expected):
 
 
 @pytest.mark.parametrize(
+    'text, range_, up, expected',
+    [
+        ('ninja is not just\nanother\nide\nprint', (0, 1), False,
+         'ide\nninja is not just\nanother\nprint'),
+        ('ninja is not just\nanother\nide\nprint', (2, 1), True,
+         'another\nide\nninja is not just\nprint')
+    ]
+)
+def test_move_up_down_selection(editor_fixture, text, range_, up, expected):
+    editor_fixture.text = text
+    start, end = range_
+    editor_fixture.cursor_position = start, 0
+    cursor = editor_fixture.textCursor()
+    if up:
+        cursor.movePosition(QTextCursor.EndOfLine)
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        cursor.movePosition(QTextCursor.Up, QTextCursor.KeepAnchor, abs(end - start))
+    else:
+        cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor, end - start)
+        cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+    editor_fixture.setTextCursor(cursor)
+    editor_fixture.move_up_down(up)
+    assert editor_fixture.text == expected
+
+
+
+@pytest.mark.parametrize(
     'text, lineno, n, expected',
     [
         ('example\ntext', 0, 1, 'example\nexample\ntext'),
