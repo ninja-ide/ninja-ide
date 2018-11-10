@@ -97,17 +97,6 @@ QPushButton#button_tooldock:checked {
     border-top: 2px solid #FF5644;
 }
 
-QComboBox {
-    color: #fff;
-    selection-background-color: #ffaa00;
-    background-color: QLinearGradient(
-        x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #464646, stop: 0.1 #424242,
-        stop: 0.5 #424242, stop: 0.9 #3a3a3a, stop: 1 #464646);
-    border-style: solid;
-    border: 1px solid #1e1e1e;
-}
-
 QPushButton#navigation_button,
 QPushButton#close_button_combo,
 QPushButton#close_split {
@@ -116,7 +105,7 @@ QPushButton#close_split {
 }
 QPushButton#close_button_combo,
 QPushButton#navigation_button {
-    border: 1px solid #1e1e1e;
+    border: 1px solid gray;
     background: none;
     margin: 1px;
     padding: 1;
@@ -153,17 +142,44 @@ QLabel#position {
     background-color: transparent;
 }
 
+QComboBox#combotab {
+    background-color: transparent;
+    border-top-left-radius: 2px;
+    min-width: 4em;
+    color: #FFFFFF;
+    padding: 1px 1px 1px 5px;
+    border-right: 1px solid gray;
+}
+
+QComboBox#combo_symbols {
+    background-color: transparent;
+    border-top-right-radius: 0px;
+    min-width: 4em;
+    padding: 1px 1px 1px 5px;
+    border-right: 1px solid gray;
+}
+
+QComboBox#combo_projects {
+    background-color: transparent;
+    border-top-left-radius: 2px;
+    min-width: 4em;
+    color: #FFFFFF;
+}
+
 QComboBox:on {
     padding-top: 3px;
     padding-left: 4px;
-    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);
+    background-color: qLineargradient(
+        x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #2d2d2d, stop: 0.1 #2b2b2b,
+        stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);
     selection-background-color: #ffaa00;
 }
 
 QComboBox QAbstractItemView {
-    selection-background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+    selection-background-color: qlineargradient(
+        x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
 }
-
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
@@ -181,17 +197,14 @@ QComboBox::down-arrow {
     subcontrol-position: center;
     margin-right: 6;
 }
-
-/*QFrame#actionbar {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #858585, stop: 1.0 #222222);
-    border: 0px solid darkgray;
-    min-height: 1.2em;
-}*/
-
 QFrame#actionbar {
-    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #464646, stop: 0.1 #424242, stop: 0.5 #4e4e4e, stop: 0.9 #3a3a3a, stop: 1 #464646);
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #717375, stop: 1.0 #232526);
+    color: gray;
+    border: 0px solid darkgray;
+    max-height: 1.3em;
 }
+
 QScrollBar:horizontal {
     background-color: #1d1f21;
     height: 10px;
