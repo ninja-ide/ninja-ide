@@ -21,15 +21,21 @@ Base editor
 
 from PyQt5.QtWidgets import QPlainTextEdit
 
+from PyQt5.QtGui import QTextBlockUserData
+from PyQt5.QtGui import QTextDocument
 from PyQt5.QtGui import QTextCursor
 
 from PyQt5.QtCore import QPoint
+
+
+_WORD_SEPARATORS = '`~!@#$%^&*()-=+[{]}\\|;:\'\",.<>/?'
 
 
 class BaseTextEditor(QPlainTextEdit):
 
     def __init__(self):
         super().__init__()
+        self.word_separators = _WORD_SEPARATORS
 
     def __enter__(self):
         self.textCursor().beginEditBlock()
@@ -77,6 +83,15 @@ class BaseTextEditor(QPlainTextEdit):
 
         return self.document().blockCount()
 
+    def line_indent(self, line=-1):
+        """Returns the indentation level of `line`"""
+
+        if line == -1:
+            line, _ = self.cursor_position
+        text = self.line_text(line)
+        indentation = len(text) - len(text.lstrip())
+        return indentation
+
     def insert_text(self, text):
         if not self.isReadOnly():
             self.textCursor().insertText(text)
@@ -122,6 +137,45 @@ class BaseTextEditor(QPlainTextEdit):
         if right_word:
             right_char = right_word[0]
         return right_char
+
+    def word_under_cursor(self, cursor=None, ignore=None):
+        """Returns QTextCursor that contains a word under passed cursor
+        or actual cursor"""
+        if cursor is None:
+            cursor = self.textCursor()
+        word_separators = self.word_separators
+        if ignore is not None:
+            word_separators = [w for w in self.word_separators
+                               if w not in ignore]
+        start_pos = end_pos = cursor.position()
+        while not cursor.atStart():
+            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+            selected_text = cursor.selectedText()
+            if not selected_text:
+                break
+            char = selected_text[0]
+            if (selected_text in word_separators and (
+                    selected_text != "n" and selected_text != "t") or
+                    char.isspace()):
+                break
+            start_pos = cursor.position()
+            cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos)
+        while not cursor.atEnd():
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            selected_text = cursor.selectedText()
+            if not selected_text:
+                break
+            char = selected_text[0]
+            if (selected_text in word_separators and (
+                    selected_text != "n" and selected_text != "t") or
+                    char.isspace()):
+                break
+            end_pos = cursor.position()
+            cursor.setPosition(end_pos)
+        cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
+        return cursor
 
     def move_up_down(self, up=False):
         cursor = self.textCursor()
@@ -190,3 +244,129 @@ class BaseTextEditor(QPlainTextEdit):
             cursor.insertText(text)
             cursor.setPosition(position)
         self.setTextCursor(cursor)
+
+
+class BlockUserData(QTextBlockUserData):
+    """Representation of the data for a block"""
+
+    def __init__(self):
+        QTextBlockUserData.__init__(self)
+        self.attrs = {}
+
+    def get(self, name, default=None):
+        return self.attrs.get(name, default)
+
+    def __getitem__(self, name):
+        return self.attrs[name]
+
+    def __setitem__(self, name, value):
+        self.attrs[name] = value
+
+
+class CodeEditor(BaseTextEditor):
+
+    def __init__(self):
+        super().__init__()
+        self.__visible_blocks = []
+
+    @property
+    def visible_blocks(self):
+        return self.__visible_blocks
+
+    def _update_visible_blocks(self):
+        """Updates the list of visible blocks"""
+
+        self.__visible_blocks.clear()
+        append = self.__visible_blocks.append
+
+        block = self.firstVisibleBlock()
+        block_number = block.blockNumber()
+        top = self.blockBoundingGeometry(block).translated(
+            self.contentOffset()).top()
+        bottom = top + self.blockBoundingRect(block).height()
+        editor_height = self.height()
+        while block.isValid():
+            visible = bottom <= editor_height
+            if not visible:
+                break
+            if block.isVisible():
+                append((top, block_number, block))
+            block = block.next()
+            top = bottom
+            bottom = top + self.blockBoundingRect(block).height()
+            block_number += 1
+
+    def user_data(self, block=None):
+        if block is None:
+            block = self.textCursor().block()
+        user_data = block.userData()
+        if user_data is None:
+            user_data = BlockUserData()
+            block.setUserData(user_data)
+        return user_data
+
+    def replace_match(self, word_old, word_new, cs=False, wo=False,
+                      wrap_around=True):
+        """
+        Find if searched text exists and replace it with new one.
+        If there is a selection just do it inside it and exit
+        """
+
+        cursor = self.textCursor()
+        text = cursor.selectedText()
+        if not cs:
+            word_old = word_old.lower()
+            text = text.lower()
+        if text == word_old:
+            cursor.insertText(word_new)
+
+        # Next
+        return self.find_match(word_old, cs, wo, forward=True,
+                               wrap_around=wrap_around)
+
+    def replace_all(self, word_old, word_new, cs=False, wo=False):
+        # Save cursor for restore later
+        cursor = self.textCursor()
+        with self:
+            # Move to beginning of text and replace all
+            self.moveCursor(QTextCursor.Start)
+            found = True
+            while found:
+                found = self.replace_match(word_old, word_new, cs, wo,
+                                           wrap_around=False)
+        # Reset position
+        self.setTextCursor(cursor)
+
+    def find_match(self, search, case_sensitive=False, whole_word=False,
+                   backward=False, forward=False, wrap_around=True):
+
+        if not backward and not forward:
+            self.moveCursor(QTextCursor.StartOfWord)
+
+        flags = QTextDocument.FindFlags()
+        if case_sensitive:
+            flags |= QTextDocument.FindCaseSensitively
+        if whole_word:
+            flags |= QTextDocument.FindWholeWords
+        if backward:
+            flags |= QTextDocument.FindBackward
+
+        cursor = self.textCursor()
+        found = self.document().find(search, cursor, flags)
+        if not found.isNull():
+            self.setTextCursor(found)
+
+        elif wrap_around:
+            if not backward and not forward:
+                cursor.movePosition(QTextCursor.Start)
+            elif forward:
+                cursor.movePosition(QTextCursor.Start)
+            else:
+                cursor.movePosition(QTextCursor.End)
+
+            # Try again
+            found = self.document().find(search, cursor, flags)
+            if not found.isNull():
+                self.setTextCursor(found)
+
+        return not found.isNull()

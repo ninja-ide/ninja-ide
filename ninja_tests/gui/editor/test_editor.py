@@ -194,3 +194,21 @@ def test_duplicate_line_selection(editor_fixture, text, _range, n, expected):
     for i in range(n):
         editor_fixture.duplicate_line()
     assert editor_fixture.text == expected
+
+
+@pytest.mark.parametrize(
+    'text, position, expected',
+    [
+        ('hola\ncomo\nestas\n  ', (0, 4), 'hola'),
+        ('hola\ncomo\nestas\n  ', (2, 1), 'estas'),
+        ('hola\ncomo\nestas\n  ', (0, 1), 'hola'),
+        ('hola\ncomo\nestas\n  ', (1, 3), 'como'),
+        ('hola\ncomo\nestas\n  ', (3, 2), '')
+    ]
+)
+def test_word_under_cursor(editor_fixture, text, position, expected):
+    editor_fixture.text = text
+    editor_fixture.cursor_position = position
+    cursor = editor_fixture.word_under_cursor()
+    assert not cursor.isNull()
+    assert cursor.selectedText() == expected
