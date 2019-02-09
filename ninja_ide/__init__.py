@@ -62,7 +62,7 @@ def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core
-    from ninja_ide import nresources  # lint:ok
+    from ninja_ide import nresources  # noqa
     from multiprocessing import freeze_support
 
     # Used to support multiprocessing on windows packages

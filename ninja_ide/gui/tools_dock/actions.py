@@ -9,19 +9,20 @@ from ninja_ide import translations
 #}
 
 ACTIONS = (
-    {
-        "shortcut": "Find-in-files",
-        "action": {
-            "text": translations.TR_FIND_IN_FILES,
-            "section": (translations.TR_MENU_EDIT, None),
-            "weight": 240
-        },
-        "connect": "show_find_in_files_widget"
-    },
+    # {
+    #     "shortcut": "Find-in-files",
+    #     "action": {
+    #         "text": translations.TR_FIND_IN_FILES,
+    #         "section": (translations.TR_MENU_EDIT, None),
+    #         "weight": 240
+    #     },
+    #     "connect": "show_find_in_files_widget"
+    # },
     {
         "shortcut": "run-file",
         "action": {
             "text": translations.TR_RUN_FILE,
+            "image": "run-file",
             "section": (translations.TR_MENU_PROJECT, None),
             "weight": 110
         },
@@ -40,19 +41,21 @@ ACTIONS = (
         "shortcut": "run-project",
         "action": {
             "text": translations.TR_RUN_PROJECT,
-            "image": 'play',
+            "image": "run-project",
             "section": (translations.TR_MENU_PROJECT, None),
             "weight": 100
         },
         "connect": "execute_project"
     },
     {
-    "shortcut": "Stop-execution",
-    "action": {'text': translations.TR_STOP,
-               'image': 'stop',
-               'section': (translations.TR_MENU_PROJECT, None),
-               'weight': 120},
-    "connect": "kill_application"
+        "shortcut": "stop-execution",
+        "action": {
+            'text': translations.TR_STOP,
+            'image': "stop",
+            'section': (translations.TR_MENU_PROJECT, None),
+            'weight': 120
+        },
+        "connect": "kill_application"
     },
     # {
     #     "shortcut": "hide-misc",

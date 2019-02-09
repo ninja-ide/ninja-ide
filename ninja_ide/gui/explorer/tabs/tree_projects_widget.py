@@ -15,44 +15,39 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 
-from PyQt5.QtWidgets import (
-    QTreeView,
-    QAbstractItemView,
-    QWidget,
-    QFrame,
-    QStackedLayout,
-    QDialog,
-    QComboBox,
-    QStyledItemDelegate,
-    QVBoxLayout,
-    QFileDialog,
-    QInputDialog,
-    QStyle,
-    QMessageBox,
-    QMenu
-)
-from PyQt5.QtGui import (
-    QIcon,
-    QColor,
-    QCursor
-)
-from PyQt5.QtCore import (
-    Qt,
-    pyqtSignal,
-    QDateTime,
-    QModelIndex
-)
+from PyQt5.QtWidgets import QTreeView
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QStyledItemDelegate
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtWidgets import QSizePolicy
+
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QCursor
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore import QModelIndex
 
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import utils
 from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
@@ -64,7 +59,8 @@ from ninja_ide.gui.explorer.nproject import NProject
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
-DEBUG = logger.debug
+
+MAX_RECENT_PROJECTS = 10
 
 
 class ProjectTreeColumn(QDialog):
@@ -79,18 +75,21 @@ class ProjectTreeColumn(QDialog):
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent)
         vbox = QVBoxLayout(self)
-        # vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
+        vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self._buttons = []
         frame = QFrame()
         frame.setObjectName("actionbar")
         box = QVBoxLayout(frame)
-        box.setContentsMargins(0, 0, 0, 0)
+        box.setContentsMargins(1, 1, 1, 1)
         box.setSpacing(0)
 
         self._combo_project = QComboBox()
-        self._combo_project.setItemDelegate(QStyledItemDelegate())
+        self._combo_project.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self._combo_project.setSizeAdjustPolicy(
+            QComboBox.AdjustToMinimumContentsLengthWithIcon)
         self._combo_project.setObjectName("combo_projects")
         box.addWidget(self._combo_project)
         vbox.addWidget(frame)
@@ -99,18 +98,32 @@ class ProjectTreeColumn(QDialog):
         logger.debug("This is the projects area")
         vbox.addLayout(self._projects_area)
 
+        # Empty widget
+        self._empty_proj = QLabel(translations.TR_NO_PROJECTS)
+        self._empty_proj.setAlignment(Qt.AlignCenter)
+        self._empty_proj.setAutoFillBackground(True)
+        self._empty_proj.setBackgroundRole(QPalette.Base)
+        self._projects_area.addWidget(self._empty_proj)
+        self._projects_area.setCurrentWidget(self._empty_proj)
+
         self.projects = []
 
+        self._combo_project.activated.connect(
+            self._change_current_project)
         self._combo_project.customContextMenuRequested[
             'const QPoint&'].connect(self.context_menu_for_root)
 
         connections = (
-            {'target': 'main_container',
-             'signal_name': 'addToProject',
-             'slot': self._add_file_to_project},
-            {'target': 'main_container',
-             'signal_name': 'showFileInExplorer',
-             'slot': self._show_file_in_explorer},
+            {
+                "target": "main_container",
+                "signal_name": "addToProject",
+                "slot": self._add_file_to_project
+            },
+            {
+                "target": "main_container",
+                "signal_name": "showFileInExplorer",
+                "slot": self._show_file_in_explorer
+            },
         )
         IDE.register_service('projects_explorer', self)
         IDE.register_signals('projects_explorer', connections)
@@ -128,8 +141,15 @@ class ProjectTreeColumn(QDialog):
     def install_tab(self):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
+        ide.goingDown.connect(self._on_ide_going_down)
 
-        ide.goingDown.connect(self.close)
+    def _on_ide_going_down(self):
+        """Save some settings before close"""
+        if self.current_tree is None:
+            return
+        ds = IDE.data_settings()
+        show_filesize = not bool(self.current_tree.isColumnHidden(1))
+        ds.setValue("projectsExplorer/showFileSize", show_filesize)
 
     def load_session_projects(self, projects):
         for project in projects:
@@ -186,10 +206,10 @@ class ProjectTreeColumn(QDialog):
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
         if self._projects_area.count() > 0:
-            pathProject = [self.current_project]
-            addToProject = add_to_project.AddToProject(pathProject, self)
-            addToProject.exec_()
-            if not addToProject.pathSelected:
+            path_project = [self.current_project]
+            _add_to_project = add_to_project.AddToProject(path_project, self)
+            _add_to_project.exec_()
+            if not _add_to_project.path_selected:
                 return
             main_container = IDE.get_service('main_container')
             if not main_container:
@@ -209,7 +229,7 @@ class ProjectTreeColumn(QDialog):
             else:
                 name = file_manager.get_basename(editorWidget.file_path)
             new_path = file_manager.create_path(
-                addToProject.pathSelected, name)
+                _add_to_project.path_selected, name)
             ide_srv = IDE.get_service("ide")
             old_file = ide_srv.get_or_create_nfile(path)
             new_file = old_file.save(editorWidget.text(), new_path)
@@ -240,6 +260,8 @@ class ProjectTreeColumn(QDialog):
     def add_project(self, project):
         if project not in self.projects:
             self._combo_project.addItem(project.name)
+            tooltip = utils.path_with_tilde_homepath(project.path)
+            self._combo_project.setToolTip(tooltip)
             index = self._combo_project.count() - 1
             self._combo_project.setItemData(index, project)
             ptree = TreeProjectsWidget(project)
@@ -250,23 +272,24 @@ class ProjectTreeColumn(QDialog):
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
             self.projects.append(ptree)
-            current_index = self._projects_area.count()
-            self._projects_area.setCurrentIndex(current_index - 1)
-            self._combo_project.setCurrentIndex(current_index - 1)
+            self._projects_area.setCurrentWidget(ptree)  # Can be empty widget
+            self._combo_project.setCurrentIndex(index)
 
         # FIXME: improve?
-        if len(self.projects) == 1:
-            self._combo_project.currentIndexChanged[int].connect(
-                self._change_current_project)
+        # if len(self.projects) == 1:
+        #     self._combo_project.currentIndexChanged[int].connect(
+        #         self._change_current_project)
 
     def _close_project(self, widget):
         """Close the project related to the tree widget."""
-        index = self._projects_area.currentIndex()
+        index = self._combo_project.currentIndex()
         self.projects.remove(widget)
-        self._projects_area.takeAt(index)
+        # index + 1 is necessary because the widget
+        # with index 0 is the empty widget
+        self._projects_area.takeAt(index + 1)
         self._combo_project.removeItem(index)
         index = self._combo_project.currentIndex()
-        self._projects_area.setCurrentIndex(index)
+        self._projects_area.setCurrentIndex(index + 1)
         ninjaide = IDE.get_service('ide')
         ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
@@ -288,7 +311,7 @@ class ProjectTreeColumn(QDialog):
                 nproject.is_current = True
             else:
                 project.is_current = False
-        self._projects_area.setCurrentIndex(index)
+        self._projects_area.setCurrentIndex(index + 1)
         self.activeProjectChanged.emit()
 
     def close_opened_projects(self):
@@ -297,7 +320,7 @@ class ProjectTreeColumn(QDialog):
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
-        if self._projects_area.count() > 0:
+        if self.current_project is not None:
             path = self.current_project.path
             main_container = IDE.get_service('main_container')
             if path and main_container:
@@ -309,12 +332,18 @@ class ProjectTreeColumn(QDialog):
 
     @property
     def current_project(self):
-        if self._projects_area.count() > 0:
-            return self._projects_area.currentWidget().project
+        project = None
+        if self._projects_area.count() > 0 and self.current_tree is not None:
+            project = self.current_tree.project
+        return project
 
     @property
     def current_tree(self):
-        return self._projects_area.currentWidget()
+        tree = None
+        widget = self._projects_area.currentWidget()
+        if isinstance(widget, TreeProjectsWidget):
+            tree = widget
+        return tree
 
     def set_current_item(self, path):
         if self.current_project is not None:
@@ -328,10 +357,10 @@ class ProjectTreeColumn(QDialog):
         name = projectProperties.get('name', '')
         description = projectProperties.get('description', '')
 
-        if name == '':
+        if not name:
             name = file_manager.get_basename(folder)
 
-        if description == '':
+        if not description:
             description = translations.TR_NO_DESCRIPTION
 
         if folder in recent_project_list:
@@ -348,7 +377,7 @@ class ProjectTreeColumn(QDialog):
             # if the length of the project list it's high that 10 then delete
             # the most old
             # TODO: add the length of available projects to setting
-            if len(recent_project_list) > 10:
+            if len(recent_project_list) > MAX_RECENT_PROJECTS:
                 del recent_project_list[self.find_most_old_open(
                     recent_project_list)]
         settings.setValue('recentProjects', recent_project_list)
@@ -387,6 +416,7 @@ class ProjectTreeColumn(QDialog):
         menu.addSeparator()
         action_run_project = menu.addAction(translations.TR_RUN_PROJECT)
         action_properties = menu.addAction(translations.TR_PROJECT_PROPERTIES)
+        action_show_file_size = menu.addAction(translations.TR_SHOW_FILESIZE)
         menu.addSeparator()
         action_close = menu.addAction(translations.TR_CLOSE_PROJECT)
 
@@ -401,8 +431,9 @@ class ProjectTreeColumn(QDialog):
         action_properties.triggered.connect(
             self.current_tree.open_project_properties)
         action_close.triggered.connect(self.current_tree._close_project)
-        # self.connect(action_close, SIGNAL("triggered()"),
-        #             self.current_tree._close_project)
+        action_show_file_size.triggered.connect(
+            self.current_tree.show_filesize_info)
+
         # menu for the project
         for m in self.current_tree.extra_menus_by_scope['project']:
             if isinstance(m, QMenu):
@@ -412,17 +443,6 @@ class ProjectTreeColumn(QDialog):
         # show the menu!
         menu.exec_(QCursor.pos())
 
-        # self.connect(action_add_file, SIGNAL("triggered()"),
-        #             lambda: self.current_tree._add_new_file(path))
-        # self.connect(action_add_folder, SIGNAL("triggered()"),
-        #             lambda: self.current_tree._add_new_folder(path))
-        # self.connect(action_create_init, SIGNAL("triggered()"),
-        #             lambda: self.current_tree._create_init(path))
-        # menu.addSeparator()
-        # actionRunProject = menu.addAction(QIcon(
-        #    ":img/play"), translations.TR_RUN_PROJECT)
-        # self.connect(actionRunProject, SIGNAL("triggered()"),
-        #             self.current_tree._execute_project)
         # if self.current_tree._added_to_console:
         #    actionRemoveFromConsole = menu.addAction(
         #        translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
@@ -433,14 +453,6 @@ class ProjectTreeColumn(QDialog):
         #        translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
         #    self.connect(actionAdd2Console, SIGNAL("triggered()"),
         #                 self.current_tree._add_project_to_console)
-        # actionShowFileSizeInfo = menu.addAction(
-        #                          translations.TR_SHOW_FILESIZE)
-        # self.connect(actionShowFileSizeInfo, SIGNAL("triggered()"),
-        #             self.current_tree.show_filesize_info)
-        # actionProperties = menu.addAction(QIcon(":img/pref"),
-        #                                  translations.TR_PROJECT_PROPERTIES)
-        # self.connect(actionProperties, SIGNAL("triggered()"),
-        #             self.current_tree.open_project_properties)
 
 
 class TreeProjectsWidget(QTreeView):
@@ -469,6 +481,7 @@ class TreeProjectsWidget(QTreeView):
         self.setSelectionMode(QTreeView.SingleSelection)
         self.setAnimated(True)
         self.setHeaderHidden(True)
+        self.header().setSectionResizeMode(QHeaderView.ResizeToContents)
         pal = self.palette()
         pal.setColor(pal.Base, pal.base().color())
         self.setPalette(pal)
@@ -477,6 +490,10 @@ class TreeProjectsWidget(QTreeView):
         self.hideColumn(2)  # Type
         self.hideColumn(3)  # Modification date
         self.setUniformRowHeights(True)
+
+        ds = IDE.data_settings()
+        if ds.value("projectsExplorer/showFileSize", type=bool):
+            self.show_filesize_info()
 
     def set_current_item(self, path: str):
         index = self.model().index(path)
@@ -497,6 +514,7 @@ class TreeProjectsWidget(QTreeView):
         self.__format_tree()
 
         self.setStyleSheet("QTreeView{ show-decoration-selected: 1;}")
+
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self._menu_context_tree)

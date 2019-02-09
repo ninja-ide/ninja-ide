@@ -15,17 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import re
 
-from PyQt5.QtWidgets import (
-    QWidget,
-    QDialog,
-    QVBoxLayout,
-    QShortcut,
-)
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QShortcut
+
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import Qt
 from PyQt5.QtQuickWidgets import QQuickWidget
@@ -35,9 +30,11 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import utils
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.locator import locator
 from ninja_ide.tools.logger import NinjaLogger
+
 logger = NinjaLogger(__name__)
 DEBUG = logger.debug
 
@@ -159,8 +156,12 @@ class LocatorWidget(QDialog):
     def _load_items(self, items):
         for item in items:
             typeIcon = self._replace_symbol_type.get(item.type, item.type)
+            if settings.IS_WINDOWS:
+                display_path = item.path
+            else:
+                display_path = utils.path_with_tilde_homepath(item.path)
             self._root.loadItem(typeIcon, item.name, item.lineno,
-                                item.path, self._colors[item.type])
+                                item.path, display_path, self._colors[item.type])
 
     def _fetch_more(self):
         locations = self._create_list_items(self.tempLocations)

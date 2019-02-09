@@ -48,7 +48,7 @@ class ErrorsWidget(QDialog):
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
         hbox = QHBoxLayout()
-        hbox.setContentsMargins(5, 3, 5, 3)
+        hbox.setContentsMargins(0, 0, 0, 0)
         self._list = ErrorsList()
         hbox.addWidget(self._list)
         box.addLayout(hbox)

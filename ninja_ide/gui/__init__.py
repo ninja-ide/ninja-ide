@@ -45,6 +45,11 @@ from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     """Load all the settings necessary before loading the UI, and start IDE."""
 
+    def _add_splash(message):
+        splash.showMessage(
+            message, Qt.AlignTop | Qt.AlignRight | Qt.AlignAbsolute, Qt.black)
+        QCoreApplication.processEvents()
+
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
@@ -66,7 +71,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setMask(splash_pix.mask())
     splash.show()
-    app.processEvents()
 
     qsettings = ide.IDE.ninja_settings()
     data_qsettings = ide.IDE.data_settings()
@@ -90,25 +94,17 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #    app.installTranslator(qtTranslator)
 
     # Loading Syntax
-    splash.showMessage("Loading Syntax...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-    app.processEvents()
+    _add_splash("Loading Syntax..")
     json_manager.load_syntax()
 
-    # Read Settings
-    splash.showMessage("Loading Settings...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
+    load_fonts()
+
     # Loading Schemes
-    splash.showMessage("Loading Schemes...",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-    app.processEvents()
+    _add_splash("Loading Schemes...")
     all_schemes = json_manager.load_editor_schemes()
     resources.COLOR_SCHEME = all_schemes["Ninja Dark"]
-    # scheme = qsettings.value("editor/general/scheme", "")
-    # if not scheme:
-    #     scheme = "Ninja Dark"
-    # resources.COLOR_SCHEME = all_schemes[scheme]
-
+    # Load Services
+    _add_splash("Loading IDE Services...")
     # Register tools dock service after load some settings
     # FIXME: Find a better way to do this
     import ninja_ide.gui.tools_dock.tools_dock  # noqa
@@ -143,8 +139,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
     from ninja_ide.intellisensei import intellisense_registry  # noqa
     from ninja_ide.intellisensei import python_intellisense  # noqa
-    # from ninja_ide.gui.dialogs.preferences
-    #                              import preferences_editor_completion
+    # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
     # from ninja_ide.gui.dialogs.preferences import preferences_plugins
     # from ninja_ide.gui.dialogs.preferences import preferences_theme
     from ninja_ide.gui.editor.checkers import errors_lists  # noqa
@@ -152,24 +147,17 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 
     # Loading Shortcuts
-    app.processEvents()
-    resources.load_shortcuts()
+    # resources.load_shortcuts()
     # Loading GUI
-    app.processEvents()
-    splash.showMessage("Loading GUI...", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    _add_splash("Loading GUI...")
     ninjaide = ide.IDE(start_server)
-
     # Loading Session Files
-    app.processEvents()
-    splash.showMessage("Loading Files and Projects..",
-                       Qt.AlignRight | Qt.AlignTop, Qt.black)
-
+    _add_splash("Loading Files and Projects...")
     # First check if we need to load last session files
     if qsettings.value('general/loadFiles', True, type=bool):
         files = data_qsettings.value('lastSession/openedFiles')
         projects = data_qsettings.value('lastSession/projects')
         current_file = data_qsettings.value('lastSession/currentFile')
-        # FIXME: recent files
         if files is None:
             files = []
         if projects is None:
@@ -184,8 +172,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         if projects_path:
             projects += projects_path
         ninjaide.load_session_files_projects(
-            files, projects, current_file, []
-        )
+            files, projects, current_file)
 
     # Showing GUI
     ninjaide.show()
@@ -200,3 +187,13 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     splash.finish(ninjaide)
     # ninjaide.notify_plugin_errors()
     # ninjaide.show_python_detection()
+
+
+def load_fonts():
+    import os
+    from PyQt5.QtGui import QFontDatabase
+
+    fonts = [f for f in os.listdir(resources.FONTS)
+             if f.endswith(".ttf")]
+    for font in fonts:
+        QFontDatabase.addApplicationFont(os.path.join(resources.FONTS, font))

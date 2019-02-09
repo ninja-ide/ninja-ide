@@ -14,7 +14,6 @@ Item {
         y: orientation == Qt.Vertical ? (scrollBar.position * (scrollBar.height-2) + 1) : 1
         width: orientation == Qt.Vertical ? (parent.width-2) : (scrollBar.pageSize * (scrollBar.width-2))
         height: orientation == Qt.Vertical ? (scrollBar.pageSize * (scrollBar.height-2)) : (parent.height-2)
-        radius: 4
         color: "gray"
         opacity: 0.7
     }

@@ -18,6 +18,7 @@
 from PyQt5.QtWidgets import (
     QWidget,
     QHBoxLayout,
+    QAction,
     QVBoxLayout,
 )
 
@@ -27,6 +28,7 @@ from ninja_ide.gui import actions
 from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
+from ninja_ide.gui import ntoolbar
 
 
 class CentralWidget(QWidget):
@@ -37,34 +39,68 @@ class CentralWidget(QWidget):
     def __init__(self, parent=None):
         super(CentralWidget, self).__init__(parent)
         self.parent = parent
-        vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.setSpacing(0)
-        # This variables are used to save the splitter sizes before hide
+        main_container = QHBoxLayout(self)
+        main_container.setContentsMargins(0, 0, 0, 0)
+        main_container.setSpacing(0)
+        # This variables are used to save the spliiter sizes
         self.lateral_panel = LateralPanel()
 
         self._add_functions = {
             "central": self._insert_widget_inside,
-            "lateral": self._insert_widget_base,
+            "lateral": self._insert_widget_base
         }
         self._items = {}
 
-        hbox = QHBoxLayout()
-        hbox.setContentsMargins(0, 0, 0, 0)
-        hbox.setSpacing(0)
+        # Toolbar
+        self._toolbar = ntoolbar.NToolBar(self)
+        main_container.addWidget(self._toolbar)
+
         # Create Splitters to divide the UI 3 regions
         self._splitter_base = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
-        self._splitter_base.setOpaqueResize(True)
         self._splitter_inside = dynamic_splitter.DynamicSplitter(Qt.Vertical)
-        self._splitter_inside.setOpaqueResize(True)
         self._splitter_base.addWidget(self._splitter_inside)
 
-        # Add to Main Layout
-        hbox.addWidget(self._splitter_base)
-        vbox.addLayout(hbox)
-        tool = IDE.get_service('tools_dock')
-        vbox.addWidget(tool.buttons_widget)
-        IDE.register_service('central_container', self)
+        vbox = QVBoxLayout()
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+
+        vbox.addWidget(self._splitter_base)
+        tools_dock = IDE.get_service("tools_dock")
+        vbox.addWidget(tools_dock.buttons_widget)
+        main_container.addLayout(vbox)
+        # main_container.addWidget(self._splitter_base)
+        IDE.register_service("central_container", self)
+
+        # vbox = QVBoxLayout(self)
+        # vbox.setContentsMargins(0, 0, 0, 0)
+        # vbox.setSpacing(0)
+        # # This variables are used to save the splitter sizes before hide
+        # self.lateral_panel = LateralPanel()
+
+        # self._add_functions = {
+        #     "central": self._insert_widget_inside,
+        #     "lateral": self._insert_widget_base,
+        # }
+        # self._items = {}
+
+        # hbox = QHBoxLayout()
+        # hbox.setContentsMargins(0, 0, 0, 0)
+        # hbox.setSpacing(0)
+        # toolbar = ui_tools.ToolBar(self)
+        # hbox.addWidget(toolbar)
+        # # Create Splitters to divide the UI 3 regions
+        # self._splitter_base = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
+        # self._splitter_base.setOpaqueResize(True)
+        # self._splitter_inside = dynamic_splitter.DynamicSplitter(Qt.Vertical)
+        # self._splitter_inside.setOpaqueResize(True)
+        # self._splitter_base.addWidget(self._splitter_inside)
+
+        # # Add to Main Layout
+        # hbox.addWidget(self._splitter_base)
+        # vbox.addLayout(hbox)
+        # tool = IDE.get_service('tools_dock')
+        # vbox.addWidget(tool.buttons_widget)
+        # IDE.register_service('central_container', self)
 
     def install(self):
         ide = IDE.get_service('ide')

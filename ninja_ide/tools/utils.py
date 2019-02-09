@@ -5,11 +5,11 @@ import re
 
 from PyQt5.QtGui import QColor
 
-from PyQt5.QtCore import (
-    QObject,
-    QTimer
-)
-from ninja_ide import resources
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFileInfo
+
 from ninja_ide.core.settings import IS_WINDOWS
 
 
@@ -92,15 +92,22 @@ def search_for_folder(regex, path):
 
 
 def get_inverted_color(color):
-    if isinstance(color, str):
-        color = QColor(color)
-    red = 255 - color.red()
-    green = 255 - color.green()
-    blue = 255 - color.blue()
-    color.setRed(red)
-    color.setGreen(green)
-    color.setBlue(blue)
-    return color
+    return "#" + "".join(
+        (hex(255 - int(x, 16)))[2:].zfill(2)
+        for x in (color[1:3], color[3:5], color[5:7]))
+
+
+def path_with_tilde_homepath(path):
+    if IS_WINDOWS:
+        return path
+    home_path = QDir.homePath()
+    fi = QFileInfo(QDir.cleanPath(path))
+    outpath = fi.absoluteFilePath()
+    if outpath.startswith(home_path):
+        outpath = "~" + outpath[len(home_path):]
+    else:
+        outpath = path
+    return outpath
 
 
 class SignalFlowControl(QObject):

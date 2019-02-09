@@ -53,7 +53,8 @@ class BookmarkWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent, Qt.WindowStaysOnTopHint)
         box = QVBoxLayout(self)
-        box.setContentsMargins(5, 5, 5, 5)
+        box.setContentsMargins(0, 0, 0, 0)
+        box.setSpacing(0)
         # Model
         self._manager = BookmarkManager()
         # QML UI
@@ -83,14 +84,15 @@ class BookmarkWidget(QWidget):
         point = QPoint(mousex, mousey)
 
         menu = QMenu()
-        book = self.bookmark_for_index(index)
         edit_action = menu.addAction(translations.TR_ADD_BOOKMARK_NOTE)
-        if book is None:
-            edit_action.setEnabled(False)
-        menu.addSeparator()
         remove_action = menu.addAction(translations.TR_REMOVE_BOOKMARK)
         remove_all_action = menu.addAction(
             translations.TR_REMOVE_ALL_BOOKMARKS)
+
+        book = self.bookmark_for_index(index)
+        if book is None:
+            edit_action.setEnabled(False)
+            remove_action.setEnabled(False)
 
         edit_action.triggered.connect(lambda: self._add_note(index))
         remove_action.triggered.connect(lambda: self.remove_bookmark(book))

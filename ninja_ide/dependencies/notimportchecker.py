@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 __author__ = "Emmanuel Arias <eamanu@eamanu.com>"
 __copyright__ = "Copyright 2018"
 __license__ = "GPL"

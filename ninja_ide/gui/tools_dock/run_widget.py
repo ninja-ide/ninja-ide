@@ -36,6 +36,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QProcess
 from PyQt5.QtCore import QProcessEnvironment
 from PyQt5.QtCore import QTime
+from PyQt5.QtCore import QElapsedTimer
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -59,6 +60,7 @@ class Program(QObject):
         self.pre_script = kwargs.get("pre_script")
         self.post_script = kwargs.get("post_script")
         self.__params = kwargs.get("params")
+        self.__elapsed = QElapsedTimer()
 
         self.outputw = None
 
@@ -112,6 +114,7 @@ class Program(QObject):
             self.__main_execution()
 
     def __main_execution(self):
+        self.__elapsed.start()
         self.__current_process = self.main_process
         if not self.only_text:
             # In case a text is executed and not a file or project
@@ -181,13 +184,21 @@ class Program(QObject):
         self.outputw.setReadOnly(False)
 
     def _process_finished(self, code, status):
-        # frmt = "plain"
+        frmt = OutputWidget.Format.NORMAL
         if status == QProcess.NormalExit == code:
             text = translations.TR_PROCESS_EXITED_NORMALLY % code
         else:
             text = translations.TR_PROCESS_INTERRUPTED
-            # frmt = "error"
-        self.outputw.append_text(text)
+            frmt = OutputWidget.Format.ERROR
+        self.outputw.append_text(text, frmt)
+        if self.__current_process is self.main_process:
+            tformat = QTime(0, 0, 0, 0).addMSecs(
+                self.__elapsed.elapsed() + 500)
+            time = tformat.toString("h:mm:ss")
+            if time.startswith("0:"):
+                # Don't display zero hours
+                time = time[2:]
+            self.outputw.append_text(translations.TR_ELAPSED_TIME.format(time))
         self.outputw.setReadOnly(True)
 
     def _refresh_output(self):
@@ -241,7 +252,8 @@ class Program(QObject):
 class RunWidget(QWidget):
 
     allTabsClosed = pyqtSignal()
-    projectExecuted = pyqtSignal("QString")
+    projectExecuted = pyqtSignal(str)
+    fileExecuted = pyqtSignal(str)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -266,6 +278,11 @@ class RunWidget(QWidget):
                 "target": "tools_dock",
                 "signal_name": "executeSelection",
                 "slot": self.execute_selection
+            },
+            {
+                "target": "tools_dock",
+                "signal_name": "stopApplication",
+                "slot": self.kill_application
             }
         )
         IDE.register_signals("tools_dock", connections)
@@ -289,8 +306,17 @@ class RunWidget(QWidget):
         ninjaide.goingDown.connect(self._kill_processes)
 
     def _kill_processes(self):
+        """Stop all applications"""
         for program in self.__programs:
             program.kill()
+
+    def kill_application(self):
+        """Stop application by current tab index"""
+        index = self._tabs.currentIndex()
+        if index == -1:
+            return
+        program = self.__programs[index]
+        program.kill()
 
     def _menu_for_tabbar(self, position):
         menu = QMenu()
@@ -319,7 +345,8 @@ class RunWidget(QWidget):
 
         if self._tabs.count() == 0:
             # Hide widget
-            self.allTabsClosed.emit()
+            tools = IDE.get_service("tools_dock")
+            tools.hide_widget(self)
 
     def close_all_tabs(self):
         for _ in range(self._tabs.count()):
@@ -338,9 +365,11 @@ class RunWidget(QWidget):
         if editor_widget is not None and (editor_widget.is_modified or
                                           editor_widget.file_path):
             main_container.save_file(editor_widget)
-            # FIXME: Emit a signal for plugin!
-            # self.fileExecuted.emit(editor_widget.file_path)
             file_path = editor_widget.file_path
+            if file_path is None:
+                return
+            # Emit signal for plugin!
+            self.fileExecuted.emit(editor_widget.file_path)
             extension = file_manager.get_file_extension(file_path)
             # TODO: Remove the IF statment and use Handlers
             if extension == "py":

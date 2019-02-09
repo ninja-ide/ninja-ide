@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This file is part of NINJA-IDE (http://ninja-ide.org).
@@ -20,8 +20,6 @@
 ###############################################################################
 # IMPORTS
 ###############################################################################
-
-from __future__ import absolute_import
 
 import ninja_ide
 

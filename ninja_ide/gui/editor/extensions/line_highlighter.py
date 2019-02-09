@@ -15,12 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtGui import (
-    QColor,
-    QPainter,
-    QPen
-)
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPen
+
 from ninja_ide.gui.editor.extensions import base
 from ninja_ide.gui.editor.extra_selection import ExtraSelection
 from ninja_ide import resources
@@ -59,6 +57,7 @@ class CurrentLineHighlighter(base.Extension):
     def __init__(self):
         super().__init__()
         self.__background = QColor(resources.COLOR_SCHEME.get('editor.line'))
+        self.__background.setAlpha(20)
         self.__mode = settings.HIGHLIGHT_CURRENT_LINE_MODE
 
     def install(self):
@@ -99,8 +98,8 @@ class CurrentLineHighlighter(base.Extension):
                          self._neditor.width(), line_rect.y() + height)
 
     def _highlight(self):
-        self._neditor.clear_extra_selections('current_line')
+        self._neditor.extra_selections.remove("current_line")
         selection = ExtraSelection(self._neditor.textCursor())
         selection.set_full_width()
         selection.set_background(self.__background)
-        self._neditor.add_extra_selections('current_line', [selection])
+        self._neditor.extra_selections.add("current_line", selection)

@@ -56,6 +56,14 @@ ACTIONS = (
         "connect": "add_editor"
     },
     {
+        "action": {
+            "text": translations.TR_RECENT_FILES,
+            "section": (translations.TR_MENU_FILE, None),
+            "weight": 420,
+            "is_menu": True
+        }
+    },
+    {
         "shortcut": "close-file",
         "action": {
             "text": translations.TR_CLOSE_FILE,
@@ -68,6 +76,7 @@ ACTIONS = (
         "shortcut": "open-file",
         "action": {
             "text": translations.TR_OPEN,
+            "image": "open-file",
             "section": (translations.TR_MENU_FILE, None),
             "weight": 400
         },
@@ -172,17 +181,17 @@ ACTIONS = (
             "section": (translations.TR_MENU_SOURCE, None),
             "weight": 130
         },
-        "connect": "editor_comment"
+        "connect": "editor_toggle_comment"
     },
-    {
-        "shortcut": "uncomment",
-        "action": {
-            "text": translations.TR_UNCOMMENT,
-            "section": (translations.TR_MENU_SOURCE, None),
-            "weight": 140
-        },
-        "connect": "editor_uncomment"
-    },
+    # {
+    #     "shortcut": "uncomment",
+    #     "action": {
+    #         "text": translations.TR_UNCOMMENT,
+    #         "section": (translations.TR_MENU_SOURCE, None),
+    #         "weight": 140
+    #     },
+    #     "connect": "editor_uncomment"
+    # },
     {
         "shortcut": "navigate-back",
         "connect": "navigate_back"

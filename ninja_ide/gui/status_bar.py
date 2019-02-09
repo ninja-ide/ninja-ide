@@ -37,7 +37,6 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
-from ninja_ide.gui.editor.indicator import FadingIndicator
 
 logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
@@ -217,6 +216,7 @@ class SearchWidget(QWidget):
         found = editor.find_match(self.search_text, cs, wo, backward, forward)
         if found:
             if rehighlight:
+                editor.clear_found_results()
                 index, matches = editor.highlight_found_results(
                     self.search_text, cs, wo)
         else:
@@ -226,8 +226,8 @@ class SearchWidget(QWidget):
                 self.search_text, cs, wo)
             matches = len(matches)
             if index == 1:
-                FadingIndicator.show_text(
-                    editor, translations.TR_SEARCH_FROM_TOP, 1500)
+                ide = IDE.get_service("ide")
+                ide.show_message(translations.TR_SEARCH_FROM_TOP)
         self._line_search.counter.update_count(
             index, matches, len(self.search_text) > 0)
 
@@ -262,7 +262,7 @@ class ReplaceWidget(QWidget):
         """Replace one occurrence of the word"""
 
         status_search = IDE.get_service("status_search")
-        cs, wo = status_search.search_flags
+        cs, wo, highlight = status_search.search_flags
         main_container = IDE.get_service("main_container")
         editor_widget = main_container.get_current_editor()
         editor_widget.replace_match(
@@ -276,7 +276,7 @@ class ReplaceWidget(QWidget):
         """Replace all the occurrences of the word"""
 
         status_search = IDE.get_service("status_search")
-        cs, wo = status_search.search_flags
+        cs, wo, highlight = status_search.search_flags
         main_container = IDE.get_service("main_container")
         editor_widget = main_container.get_current_editor()
         editor_widget.replace_all(

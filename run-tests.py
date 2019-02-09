@@ -1,16 +1,23 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import sys
+import os
 import pytest
 # Create dirs structure before run tests
 from ninja_ide import resources
 resources.create_home_dir_structure()
 
 
+IN_CI = os.getenv('CI', None) is not None
+
+
 def main(path):
     if path is None:
-        # Run all tests
         path = 'ninja_tests'
-    errno = pytest.main(['-x', path, '-vv'])
+    args = '{path} -vv'.format(path=path)
+    if IN_CI:
+        args += ' -x --cov=ninja_ide --no-cov-on-fail'
+
+    errno = pytest.main(args.split())
     if errno != 0:
         raise SystemExit(errno)
 

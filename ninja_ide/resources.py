@@ -15,20 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import os
 import sys
 import json
 
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import (
-    QDir,
-    QSettings,
-    Qt
-)
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import Qt
 
 from ninja_ide.core.file_handling import file_manager
 
@@ -92,6 +86,8 @@ LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
 
 QML_FILES = os.path.join(PRJ_PATH, "gui", "qml")
+
+FONTS = os.path.join(PRJ_PATH, "fonts")
 
 ###############################################################################
 # URLS

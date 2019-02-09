@@ -15,14 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtGui import (
-    QTextCursor,
-    QColor,
-    QFontMetrics,
-    QPainter,
-)
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QColor
+
 from ninja_ide import resources
 from ninja_ide.gui.editor.extensions import base
+from ninja_ide.gui.editor.extra_selection import ExtraSelection
 # TODO: change colors for all editor clones
 
 
@@ -67,14 +65,14 @@ class SymbolHighlighter(base.Extension):
             resources.COLOR_SCHEME.get('editor.brace.unmatched'))
 
     def install(self):
-        self._neditor.painted.connect(self._highlight)
-        self._neditor.viewport().update()
+        self._neditor.cursorPositionChanged.connect(self._highlight)
 
     def shutdown(self):
-        self._neditor.painted.disconnect(self._highlight)
-        self._neditor.viewport().update()
+        self._neditor.cursorPositionChanged.disconnect(self._highlight)
 
     def _highlight(self):
+
+        self._neditor.extra_selections.remove("matcher")
         cursor = self._neditor.textCursor()
         current_block = cursor.block()
         if self._neditor.inside_string_or_comment(cursor):
@@ -100,32 +98,27 @@ class SymbolHighlighter(base.Extension):
         matched_block, matched_index = self.__find_matching_symbol(
             char, generator)
 
-        fm = QFontMetrics(cursor.document().defaultFont())
-        width = fm.width(char)
-
         if matched_block is not None:
-            self._make_selection(current_block, width, column_index, True)
-            self._make_selection(matched_block, width, matched_index, True)
+            selections = [
+                self._make_selection(current_block, column_index, True),
+                self._make_selection(matched_block, matched_index, True)
+            ]
         else:
-            self._make_selection(current_block, width, column_index, False)
+            selections = [
+                self._make_selection(current_block, column_index, False)
+            ]
+        self._neditor.extra_selections.add("matcher", selections)
 
-    def _make_selection(self, block, width, index, matched):
+    def _make_selection(self, block, index, matched):
         cur = QTextCursor(block)
         cur.setPosition(block.position() + index)
         cur.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-        cr = self._neditor.cursorRect(cur)
-        top = cr.top()
-        left = cr.left() - width
-        height = cr.bottom() - top
-        painter = QPainter(self._neditor.viewport())
+        selection = ExtraSelection(cur)
         background = self.matched_background
         if not matched:
             background = self.unmatched_background
-        background.setAlpha(50)
-        painter.setBrush(background)
-        background.setAlpha(120)
-        painter.setPen(background)
-        painter.drawRect(left, top, width, height)
+        selection.set_background(background)
+        return selection
 
     def __get_complementary_symbol(self, symbol):
         complementary = self.SYMBOLS_MAP.get(symbol, None)
@@ -140,19 +133,20 @@ class SymbolHighlighter(base.Extension):
         complementary = self.__get_complementary_symbol(symbol)
         for block, column, char in generator:
             # Check if current position are inside a comment or string
-            cursor = QTextCursor(block)
+            # cursor = QTextCursor(block)
             # Because positionInBlock() = cursor.position() - block.position()
             # and positionInBlock() = column, then "setPositionInBlock":
-            cursor.setPosition(column + block.position())
-            if self._neditor.inside_string_or_comment(cursor):
-                continue
+            # cursor.setPosition(column + block.position())
+            # if self._neditor.inside_string_or_comment(cursor):
+            #     continue
             if char == complementary:
                 count -= 1
                 if count == 0:
                     return block, column
             elif char == symbol:
                 count += 1
-        return None, None
+        else:
+            return None, None
 
     @staticmethod
     def __iterate_code_forward(block, index):

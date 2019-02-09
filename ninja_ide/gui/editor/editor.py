@@ -33,7 +33,6 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import QEvent
-from PyQt5.QtCore import QPoint
 
 from ninja_ide import resources
 from ninja_ide.tools import utils
@@ -59,22 +58,7 @@ from ninja_ide.gui.editor.side_area import text_change_widget
 from ninja_ide.gui.editor.side_area import code_folding
 from ninja_ide.gui.editor.side_area import marker_widget
 
-
-class Link(object):
-
-    def __init__(self, filename=""):
-        self.filename = filename
-        self.line = 0
-        self.col = 0
-        self.pos_start = -1
-        self.pos_end = -1
-
-    def is_valid(self):
-        return self.pos_start != self.pos_end
-
-    def __eq__(self, other):
-        return self.pos_start == other.pos_start and \
-            self.pos_end == other.pos_end
+# TODO: separte this module and create a editor component
 
 
 class NEditor(base_editor.BaseEditor):
@@ -89,6 +73,8 @@ class NEditor(base_editor.BaseEditor):
     # FIXME: cambiar nombre
     cursor_position_changed = pyqtSignal(int, int)
     current_line_changed = pyqtSignal(int)
+
+    _MAX_CHECKER_SELECTIONS = 150  # For good performance
 
     def __init__(self, neditable):
         super().__init__()
@@ -349,24 +335,26 @@ class NEditor(base_editor.BaseEditor):
         self._scrollbar.remove_marker("checker")
         # Get checkers from neditable
         checkers = neditable.sorted_checkers
-
         selections = []
+        append = selections.append  # Reduce name look-ups for better speed
         for items in checkers:
             checker, color, _ = items
-            lines = checker.checks.keys()
-            for line in lines:
+            lines = list(checker.checks.keys())
+            lines.sort()
+            for line in lines[:self._MAX_CHECKER_SELECTIONS]:
+                cursor = self.textCursor()
                 # Scrollbar marker
                 self._scrollbar.add_marker("checker", line, color, priority=1)
                 ms = checker.checks[line]
-                for (col_start, col_end), message, line_content in ms:
+                for (col_start, col_end), _, _ in ms:
                     selection = extra_selection.ExtraSelection(
-                        self.textCursor(),
+                        cursor,
                         start_line=line,
                         col_start=col_start,
                         col_end=col_end
                     )
                     selection.set_underline(color)
-                    selections.append(selection)
+                    append(selection)
         self._extra_selections.add("checker", selections)
 
     def show_indentation_guides(self, value):
@@ -438,8 +426,20 @@ class NEditor(base_editor.BaseEditor):
             if line.isValid():
                 if pos.x() <= self.blockBoundingRect(block).left() + \
                         line.naturalTextRect().right():
-                    # TODO: Handle hover tips
+                    column = tc.positionInBlock()
+                    line = self.line_from_position(pos.y())
+                    checkers = self._neditable.sorted_checkers
+                    for items in checkers:
+                        checker, _, _ = items
+                        messages_for_line = checker.message(line)
+                        if messages_for_line is not None:
+                            for (start, end), message, content in \
+                                    messages_for_line:
+                                if column >= start and column <= end:
+                                    QToolTip.showText(
+                                        self.mapToGlobal(pos), message, self)
                     return True
+                QToolTip.hideText()
         return super().viewportEvent(event)
 
     def focusInEvent(self, event):
@@ -568,26 +568,6 @@ class NEditor(base_editor.BaseEditor):
     def mouseMoveEvent(self, event):
         if self._highlighter is not None:
             self._update_link(event)
-
-        position = event.pos()
-        cursor = self.cursorForPosition(position)
-        block = cursor.block()
-        line = block.layout().lineForTextPosition(cursor.positionInBlock())
-        # Only handle tool tip for text cursor if mouse is within the
-        # block for the text cursor
-        if position.x() <= self.blockBoundingGeometry(block).left() + \
-                line.naturalTextRect().right():
-            column = cursor.positionInBlock()
-            line = self.line_from_position(position.y())
-            checkers = self._neditable.sorted_checkers
-            for items in checkers:
-                checker, _, _ = items
-                messages_for_line = checker.message(line)
-                if messages_for_line is not None:
-                    for (start, end), message, content in messages_for_line:
-                        if column >= start and column <= end:
-                            QToolTip.showText(
-                                self.mapToGlobal(position), message, self)
         # Restore mouse cursor if settings say hide while typing
         if self.viewport().cursor().shape() == Qt.BlankCursor:
             self.viewport().setCursor(Qt.IBeamCursor)
@@ -679,7 +659,6 @@ class NEditor(base_editor.BaseEditor):
             definition = "\n{}{}\n{}".format(
                 indentation, init_def, indentation * 2
             )
-
             super_include = ""
             if line_text.find("(") != -1:
                 classes = line_text.split("(")
@@ -736,7 +715,7 @@ class NEditor(base_editor.BaseEditor):
         # if event.key() == Qt.Key_Period or force_completion:
         #     if not self.inside_string_or_comment():
         #         self._intellisense.invoke_completion()
-                # self._intellisense.process("completions")
+        #         self._intellisense.process("completions")
 
     def adjust_scrollbar_ranges(self):
         line_spacing = QFontMetrics(self.font()).lineSpacing()

@@ -41,7 +41,7 @@
             "tokens": [
                 {
                     "name": "constant_character_escape",
-                    "pattern": "({)\\w*(\\W?\\w+)(})"
+                    "pattern": "({)\\w*(\\W?\\w?)(})"
                 }
             ]
         },

@@ -24,6 +24,9 @@ TR_MOVE_DOWN = tr("NINJA-IDE", "Move Down")
 TR_CLOSE_FILE = tr("NINJA-IDE", "Close File")
 TR_NEW_FILE = tr("NINJA-IDE", "New File")
 TR_OPEN = tr("NINJA-IDE", "Open")
+TR_RECENT_FILES = tr("NINJA-IDE", "Recent Files")
+TR_RECENT_PROJECTS = tr("NINJA-IDE", "Recent Projects")
+TR_CLEAR_THIS_LIST = tr("NINJA-IDE", "Clear This List")
 TR_SAVE = tr("NINJA-IDE", "Save")
 TR_SAVE_AS = tr("NINJA-IDE", "Save As")
 TR_SAVE_ALL = tr("NINJA-IDE", "Save All")
@@ -31,8 +34,8 @@ TR_DONOT_SAVE = tr("NINJA-IDE", "Do Not Save")
 TR_SAVE_SELECTED = tr("NINJA-IDE", "Save Selected")
 TR_UNDO = tr("NINJA-IDE", "Undo")
 TR_REDO = tr("NINJA-IDE", "Redo")
-TR_COMMENT = tr("NINJA-IDE", "Comment")
-TR_UNCOMMENT = tr("NINJA-IDE", "Uncomment")
+TR_COMMENT = tr("NINJA-IDE", "Toggle Comment")
+# TR_UNCOMMENT = tr("NINJA-IDE", "Uncomment")
 TR_INSERT_TITLE_COMMENT = tr("NINJA-IDE", "Insert Comment Title")
 TR_INDENT_MORE = tr("NINJA-IDE", "Indent More")
 TR_INDENT_LESS = tr("NINJA-IDE", "Indent Less")
@@ -85,6 +88,7 @@ TR_TABS_SPACES_VISIBILITY = tr("NINJA-IDE", "Show/Hide Tabs and &Spaces")
 TR_ALL_VISIBILITY = tr("NINJA-IDE", "Show/Hide &All")
 TR_EXPLORER_VISIBILITY = tr("NINJA-IDE", "Show/Hide &Explorer")
 TR_TOOLBAR_VISIBILITY = tr("NINJA-IDE", "Show/Hide &Toolbar")
+TR_TOOLSDOCK_VISIBILITY = tr("NINJA-IDE", "Show/Hide Tools &Dock")
 TR_FULLSCREEN_VISIBILITY = tr("NINJA-IDE", "Full Screen &Mode")
 TR_ZOOM_IN = tr("NINJA-IDE", "Zoom &In  (Ctrl+Wheel-Up)")
 TR_ZOOM_OUT = tr("NINJA-IDE", "Zoom &Out  (Ctrl+Wheel-Down)")
@@ -258,6 +262,15 @@ TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint Errors: ")
 TR_NOT_IMPORT_CHECKER_TEXT = tr("NINJA-IDE", "Imports don't exist: ")
 
 # Dialogs
+TR_FILE_ALREADY_EXISTS_TITLE = tr("NINJA-IDE", "File Already Exists")
+TR_FILE_ALREADY_EXISTS_BODY = tr(
+    "NINJA-IDE",
+    "Invalid Path: the file '{}'already exists.")
+TR_SAVE_FILE_DIALOG = tr("NINJA-IDE", "Save File")
+TR_SAVE_FILE_ERROR_TITLE = tr("NINJA-IDE", "Save Error")
+TR_SAVE_FILE_ERROR_BODY = tr("NINJA-IDE", "The file could't be saved!")
+TR_OPEN_FILE_ERROR = tr("NINJA-IDE", "The file could't be open")
+TR_FILE_SAVED = tr("NINJA-IDE", "File Saved: {}")
 TR_PREFERENCES_TITLE = tr("NINJA-IDE", "NINJA-IDE - Preferences")
 TR_SESSIONS_TITLE = tr("NINJA-IDE", "Sessions Manager")
 TR_SESSIONS_DIALOG_BODY = tr(
@@ -268,11 +281,12 @@ TR_SESSIONS_DIALOG_BODY = tr(
     "This allows you to save your working environment, "
     "keep working in another\nproject and then go back "
     "exactly where you left.")
-TR_SESSIONS_BTN_DELETE = tr("NINJA-IDE", "Delete Session")
+TR_SESSIONS_BTN_DELETE = tr("NINJA-IDE", "&Delete")
 TR_SESSIONS_BTN_UPDATE = tr("NINJA-IDE", "Update Session")
-TR_SESSIONS_BTN_CREATE = tr("NINJA-IDE", "Create New Session")
-TR_SESSIONS_BTN_ACTIVATE = tr("NINJA-IDE", "Activate Session")
+TR_SESSIONS_BTN_CREATE = tr("NINJA-IDE", "&Create")
+TR_SESSIONS_BTN_ACTIVATE = tr("NINJA-IDE", "&Activate")
 TR_SESSIONS_CREATE_TITLE = tr("NINJA-IDE", "Create Session")
+TR_SESSIONS_BTN_DETAILS = tr("NINJA-IDE", "D&etails...")
 TR_SESSIONS_CREATE_BODY = tr(
     "NINJA-IDE",
     "The Current Files and Projects will"
@@ -281,7 +295,7 @@ TR_SESSIONS_MESSAGE_TITLE = tr("NINJA-IDE", "Session Name Invalid")
 TR_SESSIONS_MESSAGE_BODY = tr(
     "NINJA-IDE",
     "The Session name is invalid or already exists.")
-TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
+TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session {} Updated!")
 TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "File has been modified")
 TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
@@ -345,6 +359,7 @@ TR_WEB_PREVIEW = tr("NINJA-IDE", "Web Preview")
 TR_CONTENT = tr("NINJA-IDE", "Content")
 TR_SHORTCUT = tr("NINJA-IDE", "Shortcut")
 TR_ACCEPT = tr("NINJA-IDE", "Accept")
+TR_ELAPSED_TIME = tr("NINJA-IDE", "Elapsed time: {}.")
 TR_PROCESS_EXITED_NORMALLY = tr(
     "NINJA-IDE",
     "The process exited normally with code %d")
@@ -899,3 +914,5 @@ TR_REMOVE_ALL_BOOKMARKS_QUESTION = tr(
 
 # Find in files
 TR_MATCHES_FOUND = tr("NINJA-IDE", "{} matches found.")
+
+TR_NO_PROJECTS = tr("NINJA-IDE", "No Projects")

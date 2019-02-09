@@ -15,11 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import (
-    QWidget,
-    # QDialog,
-    QVBoxLayout
-)
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtQuickWidgets import QQuickWidget
 
@@ -33,7 +31,9 @@ class Notification(QWidget):
     def __init__(self, parent=None):
         super(Notification, self).__init__(None, Qt.ToolTip)
         self._parent = parent
-        self._duration = 3000
+        self._duration = 1800
+        self._text = ""
+        self._running = False
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
         self.setAttribute(Qt.WA_ShowWithoutActivating)
@@ -51,6 +51,13 @@ class Notification(QWidget):
 
         self._root.close.connect(self.close)
         self._parent.goingDown.connect(self.close)
+
+    def set_parent(self, parent):
+        self._parent = parent
+
+    def hideEvent(self, event):
+        super().hideEvent(event)
+        self._running = False
 
     def showEvent(self, event):
         """Method takes an event to show the Notification"""
@@ -71,7 +78,12 @@ class Notification(QWidget):
         self._root.setColor(background_color, foreground_color)
         self._root.start(self._duration)
 
-    def set_message(self, text='', duration=3000):
+    def set_message(self, text='', duration=1800):
         """Method that takes str text and int duration to setup Notification"""
-        self._root.setText(text)
-        self._duration = duration
+        self._text = text
+        if self._running:
+            self._root.updateText(self._text)
+        else:
+            self._root.setText(self._text)
+            self._duration = duration
+            self._running = True

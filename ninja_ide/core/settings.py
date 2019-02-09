@@ -41,18 +41,21 @@ IS_WINDOWS = IS_MAC_OS = False
 
 
 OS_KEY = "Ctrl"
-
-FONT = QFont('monospace', 11)
+# Font
+FONT = QFont("Source Code Pro")
 if sys.platform == "darwin":
     from PyQt5.QtGui import QKeySequence
     from PyQt5.QtCore import Qt
 
-    FONT = QFont('Monaco', 12)
+    FONT = QFont("Monaco")
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
     IS_MAC_OS = True
 elif sys.platform == "win32":
-    FONT = QFont('Courier', 12)
+    FONT = QFont("Courier")
     IS_WINDOWS = True
+
+FONT.setStyleHint(QFont.TypeWriter)
+FONT.setPointSize(12)
 
 FONT_ANTIALIASING = True
 
@@ -122,9 +125,10 @@ SESSIONS = {}
 TOOLBAR_ITEMS = [
     "_MainContainer.show_selector",
     "_MainContainer.add_editor",
-    # "ProjectTreeColumn.create_new_project",
-    # "_MainContainer.open_file",
+    "ProjectTreeColumn.create_new_project",
+    "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
+    "IDE.show_preferences",
     # "_MainContainer.save_file",
     # "_MainContainer.split_vertically",
     # "_MainContainer.split_horizontally",
@@ -136,6 +140,12 @@ TOOLBAR_ITEMS = [
     # "_ToolsDock.execute_file",
     # "_ToolsDock.execute_project",
     # "_ToolsDock.kill_application",
+]
+
+ACTIONBAR_ITEMS = [
+    "_ToolsDock.execute_file",
+    "_ToolsDock.execute_project",
+    "_ToolsDock.kill_application"
 ]
 
 TOOLBAR_ITEMS_DEFAULT = [
@@ -179,15 +189,17 @@ AUTOCOMPLETE_BRACKETS = AUTOCOMPLETE_QUOTES = True
 # by default Unix (\n) is used
 USE_TABS = ALLOW_WORD_WRAP = USE_PLATFORM_END_OF_LINE = False
 
-REMOVE_TRAILING_SPACES = SHOW_INDENTATION_GUIDES = True
-SHOW_TABS_AND_SPACES = False
+REMOVE_TRAILING_SPACES = True
+
+SHOW_INDENTATION_GUIDES = SHOW_TABS_AND_SPACES = False
+
 ADD_NEW_LINE_AT_EOF = HIDE_MOUSE_CURSOR = SCROLL_WHEEL_ZOMMING = True
 
 # Current Line
 HIGHLIGHT_CURRENT_LINE = True
 # 0: Full background
 # 1: Simple
-HIGHLIGHT_CURRENT_LINE_MODE = 1
+HIGHLIGHT_CURRENT_LINE_MODE = 0
 
 INDENT = 4
 
@@ -529,7 +541,7 @@ def load_settings():
     #                               True, type=bool)
     # UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     PYTHON_EXEC = qsettings.value('execution/pythonExec',
-                                  sys.executable, type='QString')
+                                  sys.executable, type=str)
     # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
     # SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)
@@ -591,7 +603,7 @@ def load_settings():
     HIGHLIGHT_CURRENT_LINE = qsettings.value(
         'editor/display/highlightCurrentLine', True, type=bool)
     HIGHLIGHT_CURRENT_LINE_MODE = qsettings.value(
-        "editor/display/current_line_mode", 1, type=int)
+        "editor/display/current_line_mode", 0, type=int)
     BRACE_MATCHING = qsettings.value(
         "editor/display/brace_matching", True, type=bool)
     # DOCMAP_SEARCH_LINES = qsettings.value(
@@ -642,7 +654,7 @@ def load_settings():
     FONT_ANTIALIASING = qsettings.value("editor/general/font_antialiasing",
                                         True, type=bool)
     SHOW_INDENTATION_GUIDES = qsettings.value(
-        "editor/display/show_indentation_guides", True, type=bool)
+        "editor/display/show_indentation_guides", False, type=bool)
     # IGNORE_PEP8_LIST = list(qsettings.value(
     #    'preferences/editor/defaultIgnorePep8', [], type='QStringList'))
     # FIXME:

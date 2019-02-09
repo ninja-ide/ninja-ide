@@ -17,14 +17,13 @@
 
 import os
 import shutil
-from PyQt5.QtCore import (
-    QObject,
-    QFile,
-    QFileSystemWatcher,
-    QIODevice,
-    QTextStream,
-    pyqtSignal
-)
+
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QFileSystemWatcher
+from PyQt5.QtCore import QIODevice
+from PyQt5.QtCore import QTextStream
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import translations
 # FIXME: Obtain these form a getter
@@ -249,7 +248,7 @@ class NFile(QObject):
         try:
             with open(open_path, 'r') as f:
                 content = f.read()
-        except IOError as reason:
+        except (IOError, UnicodeDecodeError) as reason:
             raise NinjaIOException(reason)
         self.fileReaded.emit()
         return content
