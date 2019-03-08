@@ -87,7 +87,7 @@ class EditorConfiguration(QWidget):
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         hboxg2.addWidget(self._checkShowMargin)
         self._spinMargin = QSpinBox()
-        self._spinMargin.setRange(50, 100)
+        self._spinMargin.setRange(50, 160)
         self._spinMargin.setSingleStep(2)
         self._spinMargin.setValue(settings.MARGIN_LINE)
         hboxg2.addWidget(self._spinMargin)
