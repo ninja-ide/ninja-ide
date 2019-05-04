@@ -22,17 +22,13 @@ from ninja_ide.core.template_registry.bundled_project_types import initial_page
 from ninja_ide.core.template_registry.ntemplate_registry import BaseProjectType
 
 
-SETUP_PY_FILE = """
-# BEWARE: This is a minimal version you will most likely need to extend it
-from setuptools import setup, find_packages
+# Open a setup python file based on pypi recommendation.
+PATH_PY_SETUP = 'ninja_ide/core/template_registry/' \
+                'bundled_project_types/templates/'
 
-setup(
-    name='%s',
-    version='1.0',
-    packages=find_packages(),
-
-)
-"""
+with open(os.path.join(PATH_PY_SETUP,
+                       'setup_py_file.txt'), 'r') as f:
+    SETUP_PY_FILE = f.read()
 
 BASIC_HELLO = """
 # This is a sample yet useful program, for python 3
@@ -68,7 +64,7 @@ class PythonProject(BaseProjectType):
         filepath = os.path.join(project_path, "setup.py")
         with open(filepath, "w") as base_setup:
             self.init_file(base_setup, filepath)
-            base_setup.write(SETUP_PY_FILE % self.name)
+            base_setup.write(SETUP_PY_FILE)
         # Create a basic main file
         filepath = os.path.join(project_path, "main.py")
         with open(filepath, "w") as base_main:
