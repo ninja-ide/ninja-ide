@@ -19,15 +19,16 @@ from __future__ import absolute_import
 import sys
 import os
 
-from PyQt4 import uic
-from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QIcon
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QDir
+from PyQt5 import uic
+from PyQt5.QtWidgets import QSplitter
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QIcon
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core import file_manager
@@ -37,7 +38,7 @@ from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
-from ninja_ide.gui.main_panel import browser_widget
+# from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
@@ -83,6 +84,25 @@ class __MainContainer(QSplitter):
     allTabClosed()
     """
 ###############################################################################
+    recentTabsModified = pyqtSignal(list)
+    currentTabChanged = pyqtSignal(str)
+    locateFunction = pyqtSignal(str, str, bool)
+    navigateCode = pyqtSignal(bool, int)
+    addBackItemNavigation = pyqtSignal()
+    updateFileMetadata = pyqtSignal()
+    updateLocator = pyqtSignal(str)
+    openPreferences = pyqtSignal()
+    dontOpenStartPage = pyqtSignal()
+    allTabsClosed = pyqtSignal()
+    findOcurrences = pyqtSignal(str)
+    cursorPositionChanged = pyqtSignal(int, int)
+    enabledFollowMode = pyqtSignal(bool)
+    openProject = pyqtSignal(str)
+    editorKeyPressEvent = pyqtSignal(object)
+    beforeFileSaved = pyqtSignal(str)
+    fileSaved = pyqtSignal(str)
+    fileOpened = pyqtSignal(str)
+    migrationAnalyzed = pyqtSignal()
 
     def __init__(self, parent=None):
         QSplitter.__init__(self, parent)
@@ -104,56 +124,77 @@ class __MainContainer(QSplitter):
         self._file_watcher = NinjaFileSystemWatcher
         self._watched_simple_files = []
 
-        self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
-            self._current_tab_changed)
-        self.connect(self._tabSecondary, SIGNAL("currentChanged(int)"),
-            self._current_tab_changed)
-        self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
-            self._exit_follow_mode)
-        self.connect(self._tabMain, SIGNAL("changeActualTab(QTabWidget)"),
-            self._change_actual)
-        self.connect(self._tabSecondary, SIGNAL("changeActualTab(QTabWidget)"),
-            self._change_actual)
-        self.connect(self._tabMain, SIGNAL("splitTab(QTabWidget, int, bool)"),
-            self._split_this_tab)
-        self.connect(self._tabSecondary,
-            SIGNAL("splitTab(QTabWidget, int, bool)"),
-            self._split_this_tab)
-        self.connect(self._tabMain, SIGNAL("reopenTab(QTabWidget, QString)"),
-            self._reopen_last_tab)
-        self.connect(self._tabSecondary,
-            SIGNAL("reopenTab(QTabWidget, QString)"),
-            self._reopen_last_tab)
-        self.connect(self._tabMain, SIGNAL("syntaxChanged(QWidget, QString)"),
-            self._specify_syntax)
-        self.connect(self._tabSecondary,
-            SIGNAL("syntaxChanged(QWidget, QString)"),
-            self._specify_syntax)
-        self.connect(self._tabMain, SIGNAL("allTabsClosed()"),
-            self._main_without_tabs)
-        self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
-            self._secondary_without_tabs)
+        self._tabMain.currentChanged.connect(self._current_tab_changed)
+        # self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
+        #     self._current_tab_changed)
+        self._tabSecondary.currentChanged.connect(self._current_tab_changed)
+        # self.connect(self._tabSecondary, SIGNAL("currentChanged(int)"),
+        #     self._current_tab_changed)
+        self._tabMain.currentChanged.connect(self._exit_follow_mode)
+        # self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
+        #     self._exit_follow_mode)
+        self._tabMain.changeActualTab.connect(self._change_actual)
+        # self.connect(self._tabMain, SIGNAL("changeActualTab(QTabWidget)"),
+        #     self._change_actual)
+        self._tabSecondary.changeActualTab.connect(self._change_actual)
+        # self.connect(self._tabSecondary, SIGNAL("changeActualTab(QTabWidget)"),
+        #     self._change_actual)
+        self._tabMain.splitTab.connect(self._split_this_tab)
+        # self.connect(self._tabMain, SIGNAL("splitTab(QTabWidget, int, bool)"),
+        #     self._split_this_tab)
+        self._tabSecondary.splitTab.connect(self._split_this_tab)
+        # self.connect(self._tabSecondary,
+        #     SIGNAL("splitTab(QTabWidget, int, bool)"),
+        #     self._split_this_tab)
+        self._tabMain.reopenTab.connect(self._reopen_last_tab)
+        # self.connect(self._tabMain, SIGNAL("reopenTab(QTabWidget, QString)"),
+        #     self._reopen_last_tab)
+        self._tabSecondary.reopenTab.connect(self._reopen_last_tab)
+        # self.connect(self._tabSecondary,
+        #     SIGNAL("reopenTab(QTabWidget, QString)"),
+        #     self._reopen_last_tab)
+        self._tabMain.syntaxChanged.connect(self._specify_syntax)
+        # self.connect(self._tabMain, SIGNAL("syntaxChanged(QWidget, QString)"),
+        #     self._specify_syntax)
+        self._tabSecondary.syntaxChanged.connect(self._specify_syntax)
+        # self.connect(self._tabSecondary,
+        #     SIGNAL("syntaxChanged(QWidget, QString)"),
+        #     self._specify_syntax)
+        self._tabMain.allTabsClosed.connect(self._main_without_tabs)
+        # self.connect(self._tabMain, SIGNAL("allTabsClosed()"),
+        #     self._main_without_tabs)
+        self._tabSecondary.allTabsClosed.connect(self._secondary_without_tabs)
+        # self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
+        #     self._secondary_without_tabs)
         #reload file
-        self.connect(self._tabMain, SIGNAL("reloadFile(QWidget)"),
-            self.reload_file)
-        self.connect(self._tabSecondary, SIGNAL("reloadFile(QWidget)"),
-            self.reload_file)
+        self._tabMain.reloadFile.connect(self.reload_file)
+        # self.connect(self._tabMain, SIGNAL("reloadFile(QWidget)"),
+        #     self.reload_file)
+        self._tabSecondary.reloadFile.connect(self.reload_file)
+        # self.connect(self._tabSecondary, SIGNAL("reloadFile(QWidget)"),
+        #     self.reload_file)
         #for Save on Close operation
-        self.connect(self._tabMain, SIGNAL("saveActualEditor()"),
-            self.save_file)
-        self.connect(self._tabSecondary, SIGNAL("saveActualEditor()"),
-            self.save_file)
+        self._tabMain.saveActualEditor.connect(self.save_file)
+        # self.connect(self._tabMain, SIGNAL("saveActualEditor()"),
+        #     self.save_file)
+        self._tabSecondary.saveActualEditor.connect(self.save_file)
+        # self.connect(self._tabSecondary, SIGNAL("saveActualEditor()"),
+        #     self.save_file)
         #Navigate Code
-        self.connect(self._tabMain, SIGNAL("navigateCode(bool, int)"),
-            self._navigate_code)
-        self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
-            self._navigate_code)
+        self._tabMain.navigateCode.connect(self._navigate_code)
+        # self.connect(self._tabMain, SIGNAL("navigateCode(bool, int)"),
+        #     self._navigate_code)
+        self._tabSecondary.navigateCode.connect(self._navigate_code)
+        # self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
+        #     self._navigate_code)
         # Refresh recent tabs
-        self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
-            self._recent_files_changed)
+        self._tabMain.recentTabsModified.connect(self._recent_files_changed)
+        # self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
+        #     self._recent_files_changed)
 
     def _recent_files_changed(self, files):
-        self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
+        self.recentTabsModified.emit(files)
+        # self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -166,7 +207,8 @@ class __MainContainer(QSplitter):
         self.open_file(file_path)
 
     def _navigate_code(self, val, op):
-        self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+        self.navigateCode.emit(val, op)
+        # self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
 
     def _main_without_tabs(self):
         if self._followMode:
@@ -174,7 +216,8 @@ class __MainContainer(QSplitter):
             self._exit_follow_mode()
         elif self._tabSecondary.isVisible():
             self.show_split(self.orientation())
-        self.emit(SIGNAL("allTabsClosed()"))
+        self.allTabsClosed.emit()
+        # self.emit(SIGNAL("allTabsClosed()"))
 
     def _secondary_without_tabs(self):
         self.show_split(self.orientation())
@@ -189,8 +232,9 @@ class __MainContainer(QSplitter):
 
     def _current_tab_changed(self, index):
         if self.actualTab.widget(index):
-            self.emit(SIGNAL("currentTabChanged(QString)"),
-                self.actualTab.widget(index)._id)
+            self.currentTabChanged.emit(self.actualTab.widget(index)._id)
+            # self.emit(SIGNAL("currentTabChanged(QString)"),
+            #     self.actualTab.widget(index)._id)
 
     def split_tab(self, orientationHorizontal):
         """Split the main container in 2 areas.
@@ -247,7 +291,8 @@ class __MainContainer(QSplitter):
             self.splitted = True
             self.setSizes([1, 1])
             self.actualTab = self._tabSecondary
-            self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
+            self.currentTabChanged.emit(widget.ID)
+            # self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
         self.setOrientation(orientation)
 
     def move_tab_to_next_split(self, tab_from):
@@ -286,36 +331,49 @@ class __MainContainer(QSplitter):
         self.actualTab.setTabToolTip(inserted_index,
             QDir.toNativeSeparators(fileName))
         #Connect signals
-        self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
-            self._editor_tab_was_modified)
-        self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
-            self._editor_tab_was_saved)
-        self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
-            self.open_file)
-        self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
-            lambda: self.emit(SIGNAL("addBackItemNavigation()")))
-        self.connect(editorWidget,
-            SIGNAL("locateFunction(QString, QString, bool)"),
-            self._editor_locate_function)
-        self.connect(editorWidget, SIGNAL("warningsFound(QPlainTextEdit)"),
-            self._show_warning_tab_indicator)
-        self.connect(editorWidget, SIGNAL("errorsFound(QPlainTextEdit)"),
-            self._show_error_tab_indicator)
-        self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
-            self._hide_icon_tab_indicator)
-        self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
-            self._find_occurrences)
-        self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
-            lambda: self.emit(SIGNAL("migrationAnalyzed()")))
+        editorWidget.modificationChanged.connect(self._editor_tab_was_modified)
+        # self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
+        #     self._editor_tab_was_modified)
+        editorWidget.fileSaved.connect(self._editor_tab_was_saved)
+        # self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
+        #     self._editor_tab_was_saved)
+        editorWidget.openDropFile.connect(self.open_file)
+        # self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
+        #     self.open_file)
+        editorWidget.addBackItemNavigation.connect(self.addBackItemNavigation.emit)
+        # self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
+        #     lambda: self.emit(SIGNAL("addBackItemNavigation()")))
+        editorWidget.locateFunction.connect(self._editor_locate_function)
+        # self.connect(editorWidget,
+        #     SIGNAL("locateFunction(QString, QString, bool)"),
+        #     self._editor_locate_function)
+        editorWidget.warningsFound.connect(self._show_warning_tab_indicator)
+        # self.connect(editorWidget, SIGNAL("warningsFound(QPlainTextEdit)"),
+        #     self._show_warning_tab_indicator)
+        editorWidget.errorsFound.connect(self._show_error_tab_indicator)
+        # self.connect(editorWidget, SIGNAL("errorsFound(QPlainTextEdit)"),
+        #     self._show_error_tab_indicator)
+        editorWidget.cleanDocument.connect(self._hide_icon_tab_indicator)
+        # self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
+        #     self._hide_icon_tab_indicator)
+        editorWidget.findOcurrences.connect(self._find_occurrences)
+        # self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
+        #     self._find_occurrences)
+        editorWidget.migrationAnalyzed.connect(self.migrationAnalyzed.emit)
+        # self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
+        #     lambda: self.emit(SIGNAL("migrationAnalyzed()")))
         #Cursor position changed
-        self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
-            self._cursor_position_changed)
+        editorWidget.cursorPositionChange.connect(self._cursor_position_changed)
+        # self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
+        #     self._cursor_position_changed)
         #keyPressEventSignal for plugins
-        self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
-            self._editor_keyPressEvent)
+        editorWidget.keyPressed.connect(self._editor_keyPressEvent)
+        # self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
+        #     self._editor_keyPressEvent)
 
         #emit a signal about the file open
-        self.emit(SIGNAL("fileOpened(QString)"), fileName)
+        self.fileOpened.emit(fileName)
+        # self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
         return editorWidget
 
@@ -370,44 +428,52 @@ class __MainContainer(QSplitter):
                     widget.hide_lint_errors()
 
     def _cursor_position_changed(self, row, col):
-        self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)
+        # self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)
+        self.cursorPositionChanged.emit(row, col)
 
     def _find_occurrences(self, word):
-        self.emit(SIGNAL("findOcurrences(QString)"), word)
+        # self.emit(SIGNAL("findOcurrences(QString)"), word)
+        self.findOcurrences.emit(word)
 
     def _show_warning_tab_indicator(self, editorWidget):
         index = self.actualTab.indexOf(editorWidget)
-        self.emit(SIGNAL("updateFileMetadata()"))
+        # self.emit(SIGNAL("updateFileMetadata()"))
+        self.updateFileMetadata.emit()
         if index >= 0:
             self.actualTab.setTabIcon(index,
                 QIcon(self.style().standardIcon(QStyle.SP_MessageBoxWarning)))
 
     def _show_error_tab_indicator(self, editorWidget):
         index = self.actualTab.indexOf(editorWidget)
-        self.emit(SIGNAL("updateFileMetadata()"))
+        # self.emit(SIGNAL("updateFileMetadata()"))
+        self.updateFileMetadata.emit()
         if index >= 0:
             self.actualTab.setTabIcon(index,
                 QIcon(resources.IMAGES['bug']))
 
     def _hide_icon_tab_indicator(self, editorWidget):
         index = self.actualTab.indexOf(editorWidget)
-        self.emit(SIGNAL("updateFileMetadata()"))
+        # self.emit(SIGNAL("updateFileMetadata()"))
+        self.updateFileMetadata.emit()
         if index >= 0:
             self.actualTab.setTabIcon(index, QIcon())
 
     def _editor_keyPressEvent(self, event):
-        self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), event)
+        # self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), event)
+        self.editorKeyPressEvent.emit(event)
 
     def _editor_locate_function(self, function, filePath, isVariable):
-        self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-            function, filePath, isVariable)
+        # self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
+        #     function, filePath, isVariable)
+        self.locateFunction.emit(function, filePath, isVariable)
 
     def _editor_tab_was_modified(self, val=True):
         self.actualTab.tab_was_modified(val)
 
     def _editor_tab_was_saved(self, editorWidget=None):
         self.actualTab.tab_was_saved(editorWidget)
-        self.emit(SIGNAL("updateLocator(QString)"), editorWidget.ID)
+        # self.emit(SIGNAL("updateLocator(QString)"), editorWidget.ID)
+        self.updateLocator.emit(editorWidget.ID)
 
     def add_tab(self, widget, tabName, tabIndex=None):
         return self.actualTab.add_tab(widget, tabName, index=tabIndex)
@@ -533,7 +599,8 @@ class __MainContainer(QSplitter):
                         editorWidget.go_to_line(cursorPosition)
                     else:
                         editorWidget.set_cursor_position(cursorPosition)
-            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            # self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            self.currentTabChanged.emit(fileName)
         except file_manager.NinjaIOException as reason:
             if notStart:
                 QMessageBox.information(self,
@@ -571,7 +638,8 @@ class __MainContainer(QSplitter):
             self._tabSecondary.move_to_open(filename)
             self.actualTab = self._tabSecondary
         self.actualTab.currentWidget().setFocus()
-        self.emit(SIGNAL("currentTabChanged(QString)"), filename)
+        # self.emit(SIGNAL("currentTabChanged(QString)"), filename)
+        self.currentTabChanged.emit(filename)
 
     def get_widget_for_path(self, filename):
         if self._tabMain.is_open(filename) != -1:
@@ -629,7 +697,8 @@ class __MainContainer(QSplitter):
                 return self.save_file_as()
 
             fileName = editorWidget.ID
-            self.emit(SIGNAL("beforeFileSaved(QString)"), fileName)
+            # self.emit(SIGNAL("beforeFileSaved(QString)"), fileName)
+            self.beforeFileSaved.emit(fileName)
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
             content = editorWidget.get_text()
@@ -643,8 +712,9 @@ class __MainContainer(QSplitter):
             editorWidget.ID = fileName
             encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
-            self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % fileName))
+            # self.emit(SIGNAL("fileSaved(QString)"),
+            #     (self.tr("File Saved: %s") % fileName))
+            self.fileSaved.emit(self.tr("File Saved: %s" % fileName))
             editorWidget._file_saved()
             return True
         except Exception as reason:
@@ -685,9 +755,11 @@ class __MainContainer(QSplitter):
             if editorWidget.ID != fileName:
                 self.remove_standalone_watcher(editorWidget.ID)
             editorWidget.ID = fileName
-            self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % fileName))
-            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            # self.emit(SIGNAL("fileSaved(QString)"),
+            #     (self.tr("File Saved: %s") % fileName))
+            self.fileSaved.emit(self.tr("File Saved: %s" % fileName))
+            # self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            self.currentTabChanged.emit(fileName)
             editorWidget._file_saved()
             self.add_standalone_watcher(fileName)
             self._file_watcher.allow_kill = True
@@ -768,10 +840,12 @@ class __MainContainer(QSplitter):
     def show_start_page(self):
         if not self.is_open("Start Page"):
             startPage = start_page.StartPage(parent=self)
-            self.connect(startPage, SIGNAL("openProject(QString)"),
-                self.open_project)
-            self.connect(startPage, SIGNAL("openPreferences()"),
-                lambda: self.emit(SIGNAL("openPreferences()")))
+            startPage.openProject.connect(self.open_project)
+            # self.connect(startPage, SIGNAL("openProject(QString)"),
+            #     self.open_project)
+            startPage.openPreferences.connect(self.openPreferences.emit)
+            # self.connect(startPage, SIGNAL("openPreferences()"),
+            #     lambda: self.emit(SIGNAL("openPreferences()")))
             self.add_tab(startPage, 'Start Page')
         else:
             self.move_to_open("Start Page")
@@ -819,7 +893,8 @@ class __MainContainer(QSplitter):
             self._tabSecondary.setTabsClosable(False)
             self._tabSecondary.follow_mode = True
             self.setSizes([1, 1])
-            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            # self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            self.enabledFollowMode.emit(self._followMode)
         self.actualTab = tempTab
 
     def _exit_follow_mode(self):
@@ -829,7 +904,8 @@ class __MainContainer(QSplitter):
             self._tabSecondary.hide()
             self._tabSecondary.follow_mode = False
             self._tabSecondary.setTabsClosable(True)
-            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            # self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            self.enabledFollowMode.emit(self._followMode)
 
     def get_opened_documents(self):
         if self._followMode:
@@ -896,7 +972,8 @@ class __MainContainer(QSplitter):
                 widget._update_margin_line()
 
     def open_project(self, path):
-        self.emit(SIGNAL("openProject(QString)"), path)
+        # self.emit(SIGNAL("openProject(QString)"), path)
+        self.openProject.emit(path)
 
     def close_python_doc(self):
         #close the python document server (if running)

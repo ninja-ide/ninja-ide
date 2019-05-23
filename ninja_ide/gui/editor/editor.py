@@ -29,23 +29,23 @@ except:
     from io import StringIO
 #lint:enable
 
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QFontMetricsF
-from PyQt4.QtGui import QToolTip
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QTextOption
-from PyQt4.QtGui import QTextEdit
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QTextDocument
-from PyQt4.QtGui import QTextFormat
-from PyQt4.QtGui import QFont
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QColor
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QMimeData
-from PyQt4.QtCore import Qt
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtGui import QFontMetricsF
+from PyQt5.QtWidgets import QToolTip
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtGui import QTextOption
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QTextDocument
+from PyQt5.QtGui import QTextFormat
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QColor
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QMimeData
+from PyQt5.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -93,6 +93,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     migrationAnalyzed()
     """
 ###############################################################################
+    migrationAnalyzed = pyqtSignal()
+    errorsFound = pyqtSignal(object)
+    warningsFound = pyqtSignal(object)
+    cleanDocument = pyqtSignal(object)
+    fileSaved = pyqtSignal(object)
+    addBackItemNavigation = pyqtSignal()
+    findOcurrences = pyqtSignal(str)
+    keyPressed = pyqtSignal(object)
+    openDropFile = pyqtSignal(str)
+    locateFunction = pyqtSignal(str, str, bool)
+    cursorPositionChange = pyqtSignal(int, int)
 
     def __init__(self, filename, project, project_obj=None):
         QPlainTextEdit.__init__(self)
@@ -171,33 +182,42 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                             resources.COLOR_SCHEME['migration-underline'])),
         }
 
-        self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
-            self._sidebarWidget.update_area)
-        self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
-        self.connect(self, SIGNAL("cursorPositionChanged()"),
-            self.highlight_current_line)
-        self.connect(self.pep8, SIGNAL("finished()"), self.show_pep8_errors)
-        self.connect(self.migration, SIGNAL("finished()"),
-            self.show_migration_info)
-        self.connect(self.errors, SIGNAL("finished()"),
-            self.show_static_errors)
-        self.connect(self, SIGNAL("blockCountChanged(int)"),
-            self._update_file_metadata)
+        self.updateRequest.connect(self._sidebarWidget.update_area)
+        # self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+        #     self._sidebarWidget.update_area)
+        self.undoAvailable.connect(self._file_saved)
+        # self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
+        # self.connect(self, SIGNAL("cursorPositionChanged()"),
+        #     self.highlight_current_line)
+        self.cursorPositionChanged.connect(self.highlight_current_line)
+        self.pep8.finished.connect(self.show_pep8_errors)
+        # self.connect(self.pep8, SIGNAL("finished()"), self.show_pep8_errors)
+        self.migration.finished.connect(self.show_migration_info)
+        # self.connect(self.migration, SIGNAL("finished()"),
+        #     self.show_migration_info)
+        self.errors.finished.connect(self.show_static_errors)
+        # self.connect(self.errors, SIGNAL("finished()"),
+        #     self.show_static_errors)
+        self.blockCountChanged.connect(self._update_file_metadata)
+        # self.connect(self, SIGNAL("blockCountChanged(int)"),
+        #     self._update_file_metadata)
 
         self._mini = None
         if settings.SHOW_MINIMAP:
             self._mini = minimap.MiniMap(self)
             self._mini.show()
-            self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
-                self._mini.update_visible_area)
+            self.updateRequest.connect(self._mini.update_visible_area)
+            # self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+            #     self._mini.update_visible_area)
 
         #Indentation
         self.set_project(project_obj)
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
-        self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
-            self._find_occurrences)
+        self.__actionFindOccurrences.triggered.connect(self._find_occurrences)
+        # self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
+        #     self._find_occurrences)
 
     def set_project(self, project):
         if project is not None:
@@ -206,9 +226,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             #Set tab usage
             if self.useTabs:
                 self.set_tab_usage()
-            self.connect(project._parent,
-                SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
-                self.set_project)
+            project._parent.projectPropertiesUpdated.connect(self.set_project)
+            # self.connect(project._parent,
+            #     SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
+            #     self.set_project)
         else:
             self.indent = settings.INDENT
             self.useTabs = settings.USE_TABS
@@ -332,7 +353,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         lines = list(self.migration.migration_data.keys())
         self._sidebarWidget.migration_lines(lines)
         self.highlighter.rehighlight_lines(lines)
-        self.emit(SIGNAL("migrationAnalyzed()"))
+        # self.emit(SIGNAL("migrationAnalyzed()"))
+        self.migrationAnalyzed.emit()
         self.migration.wait()
 
     def hide_pep8_errors(self):
@@ -361,11 +383,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _sync_tab_icon_notification_signal(self):
         self.syncDocErrorsSignal = False
         if self.errors.errorsSummary:
-            self.emit(SIGNAL("errorsFound(QPlainTextEdit)"), self)
+            # self.emit(SIGNAL("errorsFound(QPlainTextEdit)"), self)
+            self.errorsFound.emit(self)
         elif self.pep8.pep8checks:
-            self.emit(SIGNAL("warningsFound(QPlainTextEdit)"), self)
+            # self.emit(SIGNAL("warningsFound(QPlainTextEdit)"), self)
+            self.warningsFound.emit(self)
         else:
-            self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
+            # self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
+            self.cleanDocument.emit(self)
         if self.highlighter:
             lines = list(set(list(self.errors.errorsSummary.keys()) +
                         list(self.pep8.pep8checks.keys())))
@@ -427,7 +452,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
-            self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
+            # self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
+            self.fileSaved.emit(self)
             self.newDocument = False
             self.textModified = False
             self.document().setModified(self.textModified)
@@ -512,7 +538,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         Jump to a specific line number or ask to the user for the line
         """
         if lineno is not None:
-            self.emit(SIGNAL("addBackItemNavigation()"))
+            # self.emit(SIGNAL("addBackItemNavigation()"))
+            self.addBackItemNavigation.emit()
             self.go_to_line(lineno)
             return
 
@@ -520,7 +547,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         line = QInputDialog.getInt(self, self.tr("Jump to Line"),
             self.tr("Line:"), 1, 1, maximum, 1)
         if line[1]:
-            self.emit(SIGNAL("addBackItemNavigation()"))
+            # self.emit(SIGNAL("addBackItemNavigation()"))
+            self.addBackItemNavigation.emit()
             self.go_to_line(line[0] - 1)
 
     def _find_occurrences(self):
@@ -528,7 +556,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             word = self.textCursor().selectedText()
         else:
             word = self._text_under_cursor()
-        self.emit(SIGNAL("findOcurrences(QString)"), word)
+        # self.emit(SIGNAL("findOcurrences(QString)"), word)
+        self.findOcurrences.emit(word)
 
     def _unfold_blocks_for_jump(self, lineno):
         """Unfold the blocks previous to the lineno."""
@@ -938,7 +967,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
             #emit a signal then plugings can do something
-            self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+            # self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+            self.keyPressed.emit(event)
             return
         self.selected_text = self.textCursor().selectedText()
 
@@ -950,7 +980,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.completer.process_post_key_event(event)
 
         #emit a signal then plugings can do something
-        self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+        # self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+        self.keyPressed.emit(event)
 
     def _text_under_cursor(self):
         tc = self.textCursor()
@@ -1068,7 +1099,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:
             path = event.mimeData().urls()[0].path()
-            self.emit(SIGNAL("openDropFile(QString)"), path)
+            self.openDropFile.emit(path)
+            # self.emit(SIGNAL("openDropFile(QString)"), path)
             event.ignore()
             event.mimeData = QMimeData()
         QPlainTextEdit.dropEvent(self, event)
@@ -1086,14 +1118,16 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
            cursor.selectedText().startswith('@'):
             cursor.setPosition(selection_start)
             cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
-            self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                cursor.selectedText(), self.ID, False)
+            # self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
+            #     cursor.selectedText(), self.ID, False)
+            self.locateFunction.emit(cursor.selectedText(), self.ID, False)
         elif cursor.selectedText().endswith('.') or \
              cursor.selectedText().startswith('.'):
             cursor.setPosition(selection_start)
             cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
-            self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                cursor.selectedText(), self.ID, True)
+            # self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
+            #     cursor.selectedText(), self.ID, True)
+            self.locateFunction.emit(cursor.selectedText(), self.ID, True)
 
     def get_selection(self, posStart, posEnd):
         cursor = self.textCursor()
@@ -1170,9 +1204,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 brace_stack.append(tkn_rep)
 
     def highlight_current_line(self):
-        self.emit(SIGNAL("cursorPositionChange(int, int)"),
-            self.textCursor().blockNumber() + 1,
-            self.textCursor().columnNumber())
+        self.cursorPositionChange.emit(self.textCursor().blockNumber() + 1, self.textCursor().columnNumber())
+        # self.emit(SIGNAL("cursorPositionChange(int, int)"),
+        #     self.textCursor().blockNumber() + 1,
+        #     self.textCursor().columnNumber())
         self.extraSelections = []
 
         if not self.isReadOnly():

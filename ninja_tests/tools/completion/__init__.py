@@ -42,7 +42,7 @@ import os
 
 r = os.path.sep
 
-from PyQt4 import QtGui
+from PyQt5 import QtGui
 
 c = QtGui.Q
 

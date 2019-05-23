@@ -17,15 +17,15 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import SIGNAL
 
 
 class FromImportDialog(QDialog):
@@ -48,10 +48,12 @@ class FromImportDialog(QDialog):
         self._btnAdd = QPushButton(self.tr('Add'))
         hbox.addWidget(self._btnAdd)
 
-        self.connect(self._lineImport, SIGNAL("returnPressed()"),
-            self._add_import)
-        self.connect(self._btnAdd, SIGNAL("clicked()"),
-            self._add_import)
+        self._lineImport.returnPressed.connect(self._add_import)
+        # self.connect(self._lineImport, SIGNAL("returnPressed()"),
+        #     self._add_import)
+        self._btnAdd.clicked.connect(self._add_import)
+        # self.connect(self._btnAdd, SIGNAL("clicked()"),
+        #     self._add_import)
 
     def _add_import(self):
         fromItem = self._lineFrom.text()

@@ -16,16 +16,16 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QStackedLayout
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtGui import QIcon
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QListWidget
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QStackedLayout
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtWidgets import QListWidget
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -77,12 +77,14 @@ class CodeCompletionWidget(QFrame):
 
         self.desktop = QApplication.instance().desktop()
 
-        self.connect(self.completion_list,
-                     SIGNAL("itemClicked(QListWidgetItem*)"),
-                     self.pre_key_insert_completion)
-        self.connect(self._editor.document(),
-                     SIGNAL("cursorPositionChanged(QTextCursor)"),
-                     self.update_metadata)
+        self.completion_list.itemClicked.connect(self.pre_key_insert_completion)
+        # self.connect(self.completion_list,
+        #              SIGNAL("itemClicked(QListWidgetItem*)"),
+        #              self.pre_key_insert_completion)
+        self._editor.document().cursorPositionChanged.connect(self.update_metadata)
+        # self.connect(self._editor.document(),
+        #              SIGNAL("cursorPositionChanged(QTextCursor)"),
+        #              self.update_metadata)
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
@@ -106,7 +108,7 @@ class CodeCompletionWidget(QFrame):
             if self._editor.document().revision() != self._revision and \
                cursor.block().blockNumber() != self._block:
                 source = self._editor.get_text()
-                source = source.encode(self._editor.encoding)
+                # source = source.encode(self._editor.encoding)
                 self.cc.analyze_file(self._editor.ID, source,
                                      self._editor.indent, self._editor.useTabs)
                 self._revision = self._editor.document().revision()
@@ -264,8 +266,9 @@ class CompleterWidget(QCompleter):
         self.cc = code_completion.CodeCompletion()
         self.completion_results = {}
 
-        self.connect(self, SIGNAL("activated(const QString&)"),
-                     self.insert_completion)
+        self.activated.connect(self.insert_completion)
+        # self.connect(self, SIGNAL("activated(const QString&)"),
+        #              self.insert_completion)
 
     def insert_completion(self, insert):
         self.widget().textCursor().insertText(

@@ -17,7 +17,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 from ninja_ide.gui.editor import highlighter
-from PyQt4.QtGui import QFont
+from PyQt5.QtGui import QFont
 import unittest
 
 

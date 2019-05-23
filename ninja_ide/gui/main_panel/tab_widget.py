@@ -16,19 +16,20 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QCursor
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QClipboard
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QDir
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QClipboard
+from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -37,7 +38,7 @@ from ninja_ide.core.filesystem_notifications.base_watcher import MODIFIED, \
                                                                 DELETED
 from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.main_panel import browser_widget
+# from ninja_ide.gui.main_panel import browser_widget
 
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -67,6 +68,19 @@ class TabWidget(QTabWidget):
     """
 ###############################################################################
 
+    navigateCode = pyqtSignal(bool, int)
+    recentTabsModified = pyqtSignal(str)
+    changeActualTab = pyqtSignal(object)
+    reloadFile = pyqtSignal(object)
+    allTabsClosed = pyqtSignal()
+    syntaxChanged = pyqtSignal(object, str)
+    runFile = pyqtSignal()
+    changeActualTab = pyqtSignal(object)
+    addToProject = pyqtSignal(str)
+    reopenTab = pyqtSignal(object, str)
+    splitTab = pyqtSignal(object, int, bool)
+    saveActualEditor = pyqtSignal()
+
     def __init__(self, parent):
         QTabWidget.__init__(self, parent)
         self.setTabsClosable(True)
@@ -85,28 +99,34 @@ class TabWidget(QTabWidget):
         #Keep track of the tab titles
         self.titles = []
         self.dontLoopInExpandTitle = False
-        self.connect(NinjaFileSystemWatcher,
-            SIGNAL("fileChanged(int, QString)"), self._file_changed)
-        self.connect(self, SIGNAL("tabCloseRequested(int)"), self.removeTab)
-        self.connect(self.navigator.btnPrevious, SIGNAL("clicked()"),
-            lambda: self._navigate_code(False))
-        self.connect(self.navigator.btnNext, SIGNAL("clicked()"),
-            lambda: self._navigate_code(True))
+        NinjaFileSystemWatcher.fileChanged.connect(self._file_changed)
+        # self.connect(NinjaFileSystemWatcher,
+        #     SIGNAL("fileChanged(int, QString)"), self._file_changed)
+        self.tabCloseRequested.connect(self.removeTab)
+        # self.connect(self, SIGNAL("tabCloseRequested(int)"), self.removeTab)
+        self.navigator.btnPrevious.clicked.connect(lambda: self._navigate_code(False))
+        # self.connect(self.navigator.btnPrevious, SIGNAL("clicked()"),
+        #     lambda: self._navigate_code(False))
+        self.navigator.btnNext.clicked.connect(lambda: self._navigate_code(True))
+        # self.connect(self.navigator.btnNext, SIGNAL("clicked()"),
+        #     lambda: self._navigate_code(True))
 
     def get_recent_files_list(self):
         return self.__lastOpened
 
     def _navigate_code(self, val):
         op = self.navigator.operation
-        self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+        # self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+        self.navigateCode.emit(val, op)
 
     def _add_to_last_opened(self, path):
         if path not in self.__lastOpened:
             self.__lastOpened.append(path)
             if len(self.__lastOpened) > settings.MAX_REMEMBER_TABS:
                 self.__lastOpened = self.__lastOpened[1:]
-            self.emit(SIGNAL("recentTabsModified(QStringList)"),
-                self.__lastOpened)
+                self.recentTabsModified.emit(self.__lastOpened)
+            # self.emit(SIGNAL("recentTabsModified(QStringList)"),
+            #     self.__lastOpened)
 
     def add_tab(self, widget, title, index=None):
         try:
@@ -169,7 +189,8 @@ class TabWidget(QTabWidget):
 
     def focusInEvent(self, event):
         QTabWidget.focusInEvent(self, event)
-        self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)
+        # self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)
+        self.changeActualTab.emit(self)
 
         #custom behavior after the default
         editorWidget = self.currentWidget()
@@ -193,7 +214,8 @@ class TabWidget(QTabWidget):
                 (self.tr("%s\nDo you want to reload it?") % editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
-                self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
+                # self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
+                self.reloadFile.emit(self)
             else:
                 #dont ask again while the current file is open
                 editorWidget.ask_if_externally_modified = False
@@ -271,7 +293,8 @@ class TabWidget(QTabWidget):
         if self.currentWidget() is not None:
             self.currentWidget().setFocus()
         else:
-            self.emit(SIGNAL("allTabsClosed()"))
+            self.allTabsClosed.emit()
+            # self.emit(SIGNAL("allTabsClosed()"))
 
     def removeTab(self, index):
         """Remove the Tab at the selected index and check if the
@@ -292,12 +315,13 @@ class TabWidget(QTabWidget):
                 if val == QMessageBox.Cancel:
                     return
                 elif val == QMessageBox.Yes:
-                    self.emit(SIGNAL("saveActualEditor()"))
+                    self.saveActualEditor.emit()
+                    # self.emit(SIGNAL("saveActualEditor()"))
                     if widget.textModified:
                         return
-            if type(widget) == browser_widget.BrowserWidget:
-                widget.shutdown_pydoc()
-            elif type(widget) is editor.Editor and widget.ID:
+            # if type(widget) == browser_widget.BrowserWidget:
+            #     widget.shutdown_pydoc()
+            if type(widget) is editor.Editor and widget.ID:
                 self._add_to_last_opened(widget.ID)
                 self._parent.remove_standalone_watcher(widget.ID)
                 widget.completer.cc.unload_module()
@@ -353,21 +377,25 @@ class TabWidget(QTabWidget):
                     actionCloseSplit = menu.addAction(
                         self.tr("Close Split"))
                     #Connect split actions
-                    self.connect(actionMoveSplit, SIGNAL("triggered()"),
-                        lambda: self._parent.move_tab_to_next_split(self))
-                    self.connect(actionCloseSplit, SIGNAL("triggered()"),
-                        lambda: self._parent.split_tab(
-                            self._parent.orientation() == Qt.Horizontal))
+                    actionMoveSplit.triggered.connect(lambda: self._parent.move_tab_to_next_split(self))
+                    # self.connect(actionMoveSplit, SIGNAL("triggered()"),
+                    #     lambda: self._parent.move_tab_to_next_split(self))
+                    actionCloseSplit.triggered.connect(lambda: self._parent.split_tab(self._parent.orientation() == Qt.Horizontal))
+                    # self.connect(actionCloseSplit, SIGNAL("triggered()"),
+                    #     lambda: self._parent.split_tab(
+                    #         self._parent.orientation() == Qt.Horizontal))
                 else:
                     actionSplitH = menu.addAction(
                         self.tr("Split this Tab (Vertically)"))
                     actionSplitV = menu.addAction(
                         self.tr("Split this Tab (Horizontally)"))
                     #Connect split actions
-                    self.connect(actionSplitH, SIGNAL("triggered()"),
-                        lambda: self._split_this_tab(True))
-                    self.connect(actionSplitV, SIGNAL("triggered()"),
-                        lambda: self._split_this_tab(False))
+                    actionSplitH.triggered.connect(lambda: self._split_this_tab(True))
+                    # self.connect(actionSplitH, SIGNAL("triggered()"),
+                    #     lambda: self._split_this_tab(True))
+                    actionSplitV.triggered.connect(lambda: self._split_this_tab(False))
+                    # self.connect(actionSplitV, SIGNAL("triggered()"),
+                    #     lambda: self._split_this_tab(False))
                 menu.addSeparator()
                 actionCopyPath = menu.addAction(
                     self.tr("Copy file location to Clipboard"))
@@ -376,20 +404,27 @@ class TabWidget(QTabWidget):
                 if len(self.__lastOpened) == 0:
                     actionReopen.setEnabled(False)
                 #Connect actions
-                self.connect(actionRun, SIGNAL("triggered()"),
-                    self._run_this_file)
-                self.connect(actionAdd, SIGNAL("triggered()"),
-                    self._add_to_project)
-                self.connect(actionClose, SIGNAL("triggered()"),
-                    lambda: self.removeTab(index))
-                self.connect(actionCloseAllNotThis, SIGNAL("triggered()"),
-                    self._close_all_tabs_except_this)
-                self.connect(actionCloseAll, SIGNAL("triggered()"),
-                    self._close_all_tabs)
-                self.connect(actionCopyPath, SIGNAL("triggered()"),
-                    self._copy_file_location)
-                self.connect(actionReopen, SIGNAL("triggered()"),
-                    self._reopen_last_tab)
+                actionRun.triggered.connect(self._run_this_file)
+                # self.connect(actionRun, SIGNAL("triggered()"),
+                #     self._run_this_file)
+                actionAdd.triggered.connect(self._add_to_project)
+                # self.connect(actionAdd, SIGNAL("triggered()"),
+                #     self._add_to_project)
+                actionClose.triggered.connect(lambda: self.removeTab(index))
+                # self.connect(actionClose, SIGNAL("triggered()"),
+                #     lambda: self.removeTab(index))
+                actionCloseAllNotThis.triggered.connect(self._close_all_tabs_except_this)
+                # self.connect(actionCloseAllNotThis, SIGNAL("triggered()"),
+                #     self._close_all_tabs_except_this)
+                actionCloseAll.triggered.connect(self._close_all_tabs)
+                # self.connect(actionCloseAll, SIGNAL("triggered()"),
+                #     self._close_all_tabs)
+                actionCopyPath.triggered.connect(self._copy_file_location)
+                # self.connect(actionCopyPath, SIGNAL("triggered()"),
+                #     self._copy_file_location)
+                actionReopen.triggered.connect(self._reopen_last_tab)
+                # self.connect(actionReopen, SIGNAL("triggered()"),
+                #     self._reopen_last_tab)
                 menu.exec_(event.globalPos())
         if event.button() == Qt.MidButton:
             index = self.tabBar().tabAt(event.pos())
@@ -400,32 +435,40 @@ class TabWidget(QTabWidget):
         syntax.sort()
         for syn in syntax:
             menuSyntax.addAction(syn)
-            self.connect(menuSyntax, SIGNAL("triggered(QAction*)"),
-                self._reapply_syntax)
+            menuSyntax.triggered.connect(self._reapply_syntax)
+            # self.connect(menuSyntax, SIGNAL("triggered(QAction*)"),
+            #     self._reapply_syntax)
 
     def _reapply_syntax(self, syntaxAction):
         if [self.currentIndex(), syntaxAction] != self._resyntax:
             self._resyntax = [self.currentIndex(), syntaxAction]
-            self.emit(SIGNAL("syntaxChanged(QWidget, QString)"),
-                self.currentWidget(), syntaxAction.text())
+            self.syntaxChanged.emit(self.currentWidget(), syntaxAction.text())
+            # self.emit(SIGNAL("syntaxChanged(QWidget, QString)"),
+            #     self.currentWidget(), syntaxAction.text())
 
     def _run_this_file(self):
-        self.emit(SIGNAL("runFile()"))
+        self.runFile.emit()
+        # self.emit(SIGNAL("runFile()"))
 
     def _add_to_project(self):
-        self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)
+        self.changeActualTab.emit(self)
+        # self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)
         widget = self.currentWidget()
         if type(widget) is editor.Editor:
-            self.emit(SIGNAL("addToProject(QString)"), widget.ID)
+            self.addToProject.emit(widget.ID)
+            # self.emit(SIGNAL("addToProject(QString)"), widget.ID)
 
     def _reopen_last_tab(self):
-        self.emit(SIGNAL("reopenTab(QTabWidget, QString)"),
-            self, self.__lastOpened.pop())
-        self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
+        self.reopenTab.emit(self, self.__lastOpened.pop())
+        # self.emit(SIGNAL("reopenTab(QTabWidget, QString)"),
+        #     self, self.__lastOpened.pop())
+        self.recentTabsModified.emit(self.__lastOpened)
+        # self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
 
     def _split_this_tab(self, orientation):
-        self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
-            self, self.currentIndex(), orientation)
+        self.splitTab.emit(self, self.currentIndex(), orientation)
+        # self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
+        #     self, self.currentIndex(), orientation)
 
     def _copy_file_location(self):
         widget = self.currentWidget()
@@ -520,12 +563,15 @@ class TabNavigator(QWidget):
         # 2 = Breakpoints
         self.operation = 0
 
-        self.connect(self.codeAction, SIGNAL("triggered()"),
-            self._show_code_nav)
-        self.connect(self.breakpointsAction, SIGNAL("triggered()"),
-            self._show_breakpoints)
-        self.connect(self.bookmarksAction, SIGNAL("triggered()"),
-            self._show_bookmarks)
+        self.codeAction.triggered.connect(self._show_code_nav)
+        # self.connect(self.codeAction, SIGNAL("triggered()"),
+        #     self._show_code_nav)
+        self.breakpointsAction.triggered.connect(self._show_breakpoints)
+        # self.connect(self.breakpointsAction, SIGNAL("triggered()"),
+        #     self._show_breakpoints)
+        self.bookmarksAction.triggered.connect(self._show_bookmarks)
+        # self.connect(self.bookmarksAction, SIGNAL("triggered()"),
+        #     self._show_bookmarks)
 
     def contextMenuEvent(self, event):
         self.show_menu_navigation()

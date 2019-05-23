@@ -17,7 +17,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtCore import QThread
+from PyQt5.QtCore import QThread
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings

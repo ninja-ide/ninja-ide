@@ -21,10 +21,10 @@ from __future__ import unicode_literals
 # Import this before Qt to set the correct API
 import ninja_ide  # lint:ok
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtCore import Qt
+from PyQt5.QtGui import QApplication
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtGui import QTreeWidgetItem
+from PyQt5.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.gui.dialogs import preferences

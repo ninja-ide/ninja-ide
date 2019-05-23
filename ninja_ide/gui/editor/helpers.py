@@ -18,8 +18,8 @@ from __future__ import absolute_import
 
 import re
 
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QInputDialog
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtWidgets import QInputDialog
 
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager

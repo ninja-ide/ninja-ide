@@ -21,11 +21,11 @@ from __future__ import unicode_literals
 # Import this before Qt to set the correct API
 import ninja_ide  # lint:ok
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QKeyEvent
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEvent
+from PyQt5.QtGui import QApplication
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEvent
 
 from ninja_ide.gui.misc import console_widget
 from ninja_tests import BaseTest

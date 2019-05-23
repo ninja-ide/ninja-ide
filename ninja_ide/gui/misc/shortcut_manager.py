@@ -17,22 +17,22 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QMessageBox
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QMessageBox
 
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QSettings
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.gui import actions

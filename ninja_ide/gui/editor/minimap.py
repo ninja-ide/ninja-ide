@@ -16,17 +16,17 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 import sys
 
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QTextOption
-from PyQt4.QtGui import QGraphicsOpacityEffect
-from PyQt4.QtGui import QFontMetrics
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QPen
-from PyQt4.QtGui import QBrush
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QPropertyAnimation
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtGui import QTextOption
+from PyQt5.QtWidgets import QGraphicsOpacityEffect
+from PyQt5.QtGui import QFontMetrics
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QPen
+from PyQt5.QtGui import QBrush
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QPropertyAnimation
 
 from ninja_ide import resources
 from ninja_ide.core import settings

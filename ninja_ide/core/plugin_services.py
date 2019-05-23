@@ -18,9 +18,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
@@ -54,18 +54,24 @@ class MainService(QObject):
         self._action = actions.Actions()
         self._explorer = explorer_container.ExplorerContainer()
         #Connect signals
-        self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
-                     self._keyPressEvent)
-        self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
-                     self._beforeFileSaved)
-        self.connect(self._main, SIGNAL("fileSaved(QString)"),
-                     self._fileSaved)
-        self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
-                     self._currentTabChanged)
-        self.connect(self._action, SIGNAL("fileExecuted(QString)"),
-                     self._fileExecuted)
-        self.connect(self._main, SIGNAL("fileOpened(QString)"),
-                     self._fileOpened)
+        self._main.editorKeyPressEvent.connect(self._keyPressEvent)
+        self._main.beforeFileSaved.connect(self._beforeFileSaved)
+        self._main.fileSaved.connect(self._fileSaved)
+        self._main.currentTabChanged.connect(self._currentTabChanged)
+        self._action.fileExecuted.connect(self._fileExecuted)
+        self._main.fileOpened.connect(self._fileOpened)
+        # self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
+        #              self._keyPressEvent)
+        # self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
+        #              self._beforeFileSaved)
+        # self.connect(self._main, SIGNAL("fileSaved(QString)"),
+        #              self._fileSaved)
+        # self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
+        #              self._currentTabChanged)
+        # self.connect(self._action, SIGNAL("fileExecuted(QString)"),
+        #              self._fileExecuted)
+        # self.connect(self._main, SIGNAL("fileOpened(QString)"),
+        #              self._fileOpened)
 
 ###############################################################################
 # Get main GUI Objects
@@ -380,10 +386,12 @@ class ExplorerService(QObject):
         QObject.__init__(self)
         self._explorer = explorer_container.ExplorerContainer()
         self._action = actions.Actions()
-        self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
-                     self._projectOpened)
-        self.connect(self._action, SIGNAL("projectExecuted(QString)"),
-                     self._projectExecuted)
+        self._explorer.projectOpened.connect(self._projectOpened)
+        # self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
+        #              self._projectOpened)
+        self._action.projectExecuted.connect(self._projectExecuted)
+        # self.connect(self._action, SIGNAL("projectExecuted(QString)"),
+        #              self._projectExecuted)
 
     def get_tree_projects(self):
         """
@@ -483,7 +491,7 @@ class ExplorerService(QObject):
         @scope: String with the menu scope (all, project, folder, file)
         """
         if scope is None:
-            #default behavior show ALL
+            # default behavior show ALL
             scope = plugin_util.ContextMenuScope(project=True, folder=True,
                                                  files=True)
         if self._explorer._treeProjects:

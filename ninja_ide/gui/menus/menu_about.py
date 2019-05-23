@@ -18,14 +18,14 @@ from __future__ import absolute_import
 
 import webbrowser
 
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import QObject
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui.main_panel import browser_widget
+# from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.dialogs import about_ninja
 
 
@@ -47,19 +47,24 @@ class MenuAbout(QObject):
         aboutQtAction = menuAbout.addAction(self.tr("About Qt"))
 
         #Connect Action SIGNALs to proper functions
-        self.connect(startPageAction, SIGNAL("triggered()"),
-            main_container.MainContainer().show_start_page)
-
-        self.connect(reportBugAction, SIGNAL("triggered()"),
-            self.show_report_bugs)
-        self.connect(aboutQtAction, SIGNAL("triggered()"),
-                            self._show_about_qt)
-        self.connect(helpAction, SIGNAL("triggered()"),
-            main_container.MainContainer().show_python_doc)
-        self.connect(aboutNinjaAction, SIGNAL("triggered()"),
-                            self._show_about_ninja)
-        self.connect(pluginsDocAction, SIGNAL("triggered()"),
-            self.show_plugins_doc)
+        startPageAction.triggered.connect(main_container.MainContainer().show_start_page)
+        # self.connect(startPageAction, SIGNAL("triggered()"),
+        #     main_container.MainContainer().show_start_page)
+        reportBugAction.triggered.connect(self.show_report_bugs)
+        # self.connect(reportBugAction, SIGNAL("triggered()"),
+        #     self.show_report_bugs)
+        aboutQtAction.triggered.connect(self._show_about_qt)
+        # self.connect(aboutQtAction, SIGNAL("triggered()"),
+        #                     self._show_about_qt)
+        helpAction.triggered.connect(main_container.MainContainer().show_python_doc)
+        # self.connect(helpAction, SIGNAL("triggered()"),
+        #     main_container.MainContainer().show_python_doc)
+        aboutNinjaAction.triggered.connect(self._show_about_ninja)
+        # self.connect(aboutNinjaAction, SIGNAL("triggered()"),
+        #                     self._show_about_ninja)
+        pluginsDocAction.triggered.connect(self.show_plugins_doc)
+        # self.connect(pluginsDocAction, SIGNAL("triggered()"),
+        #     self.show_plugins_doc)
 
     def show_report_bugs(self):
         webbrowser.open(resources.BUGS_PAGE)

@@ -16,25 +16,25 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QStackedWidget
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtWebKit import QWebPage
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QStackedWidget
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+# from PyQt5.QtCore import SIGNAL
+# from PyQt5.QtWebKit import QWebPage
 
 from ninja_ide import resources
 from ninja_ide .core import settings
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
-from ninja_ide.gui.misc import web_render
+# from ninja_ide.gui.misc import web_render
 from ninja_ide.gui.misc import find_in_files
 from ninja_ide.gui.misc import results
 from ninja_ide.tools import ui_tools
@@ -74,8 +74,8 @@ class __MiscContainer(QWidget):
         self._runWidget = run_widget.RunWidget()
         self.stack.addWidget(self._runWidget)
 
-        self._web = web_render.WebRender()
-        self.stack.addWidget(self._web)
+        # self._web = web_render.WebRender()
+        # self.stack.addWidget(self._web)
 
         self._findInFilesWidget = find_in_files.FindInFilesWidget(
             self.parent())
@@ -107,15 +107,19 @@ class __MiscContainer(QWidget):
         btn_close.setToolTip(self.tr('F4: Show/Hide'))
         hbox.addWidget(btn_close)
 
-        self.connect(self._btnConsole, SIGNAL("clicked()"),
-            lambda: self._item_changed(0))
-        self.connect(self._btnRun, SIGNAL("clicked()"),
-            lambda: self._item_changed(1))
-        self.connect(self._btnWeb, SIGNAL("clicked()"),
-            lambda: self._item_changed(2))
-        self.connect(self._btnFind, SIGNAL("clicked()"),
-            lambda: self._item_changed(3))
-        self.connect(btn_close, SIGNAL('clicked()'), self.hide)
+        self._btnConsole.clicked.connect(lambda: self._item_changed(0))
+        # self.connect(self._btnConsole, SIGNAL("clicked()"),
+        #     lambda: self._item_changed(0))
+        self._btnRun.clicked.connect(lambda: self._item_changed(1))
+        # self.connect(self._btnRun, SIGNAL("clicked()"),
+        #     lambda: self._item_changed(1))
+        # self.connect(self._btnWeb, SIGNAL("clicked()"),
+        #     lambda: self._item_changed(2))
+        self._btnFind.clicked.connect(lambda: self._item_changed(2))
+        # self.connect(self._btnFind, SIGNAL("clicked()"),
+        #     lambda: self._item_changed(3))
+        btn_close.clicked.connect(self.hide)
+        # self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
     def gain_focus(self):
         self._console.setFocus()
@@ -179,7 +183,8 @@ class __MiscContainer(QWidget):
         button.setToolTip(description)
         index = self.stack.count() - 1
         func = lambda: self._item_changed(index)
-        self.connect(button, SIGNAL("clicked()"), func)
+        button.clicked.connect(func)
+        # self.connect(button, SIGNAL("clicked()"), func)
         self.__toolbar.addWidget(button)
 
 

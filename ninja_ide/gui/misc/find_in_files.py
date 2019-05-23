@@ -24,35 +24,36 @@ try:
 except:
     import queue as Queue  # lint:ok
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QTextStream
-from PyQt4.QtCore import QRegExp
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QTextStream
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal
+# from PyQt5.QtCore import SIGNAL
 
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QRadioButton
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QFileDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QRadioButton
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QGroupBox
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QFileDialog
 
 from ninja_ide import resources
 from ninja_ide.core import file_manager
@@ -65,6 +66,7 @@ class FindInFilesThread(QThread):
     Emit the signal
     found_pattern(PyQt_PyObject)
     '''
+    found_pattern = pyqtSignal("PyQt_PyObject")
 
     def find_in_files(self, dir_name, filters, reg_exp, recursive, by_phrase):
         self._cancel = False
@@ -131,8 +133,9 @@ class FindInFilesThread(QThread):
         #emit a signal!
         relative_file_name = file_manager.convert_to_relative(
             self.root_dir, file_path)
-        self.emit(SIGNAL("found_pattern(PyQt_PyObject)"),
-            (relative_file_name, lines))
+        self.found_pattern.emit((relative_file_name, lines))
+        # self.emit(SIGNAL("found_pattern(PyQt_PyObject)"),
+        #     (relative_file_name, lines))
 
     def cancel(self):
         self._cancel = True
@@ -144,8 +147,8 @@ class FindInFilesResult(QTreeWidget):
         QTreeWidget.__init__(self)
         self.setHeaderLabels((self.tr('File'), self.tr('Line')))
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
-        self.header().setResizeMode(1, QHeaderView.ResizeToContents)
+        self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.sortByColumn(0, Qt.AscendingOrder)
 
@@ -166,6 +169,7 @@ class FindInFilesRootItem(QTreeWidgetItem):
 
 
 class FindInFilesDialog(QDialog):
+    findStarted = pyqtSignal()
 
     def __init__(self, result_widget, parent):
         QDialog.__init__(self, parent)
@@ -245,21 +249,29 @@ class FindInFilesDialog(QDialog):
         self.open_button.setFocusPolicy(Qt.NoFocus)
 
         #signal
-        self.connect(self.open_button, SIGNAL("clicked()"), self._select_dir)
-        self.connect(self.find_button, SIGNAL("clicked()"),
-            self._find_in_files)
-        self.connect(self.cancel_button, SIGNAL("clicked()"),
-            self._kill_thread)
-        self.connect(self._find_thread, SIGNAL("found_pattern(PyQt_PyObject)"),
-            self._found_match)
-        self.connect(self._find_thread, SIGNAL("finished()"),
-            self._find_thread_finished)
-        self.connect(self.type_checkbox, SIGNAL("stateChanged(int)"),
-            self._change_radio_enabled)
-        self.connect(self.check_replace, SIGNAL("stateChanged(int)"),
-            self._replace_activated)
-        self.connect(self.words_radio, SIGNAL("clicked(bool)"),
-            self._words_radio_pressed)
+        self.open_button.clicked.connect(self._select_dir)
+        # self.connect(self.open_button, SIGNAL("clicked()"), self._select_dir)
+        self.find_button.clicked.connect(self._find_in_files)
+        # self.connect(self.find_button, SIGNAL("clicked()"),
+        #     self._find_in_files)
+        self.cancel_button.clicked.connect(self._kill_thread)
+        # self.connect(self.cancel_button, SIGNAL("clicked()"),
+        #     self._kill_thread)
+        self._find_thread.found_pattern.connect(self._found_match)
+        # self.connect(self._find_thread, SIGNAL("found_pattern(PyQt_PyObject)"),
+        #     self._found_match)
+        self._find_thread.finished.connect(self._find_thread_finished)
+        # self.connect(self._find_thread, SIGNAL("finished()"),
+        #     self._find_thread_finished)
+        self.type_checkbox.stateChanged.connect(self._change_radio_enabled)
+        # self.connect(self.type_checkbox, SIGNAL("stateChanged(int)"),
+        #     self._change_radio_enabled)
+        self.check_replace.stateChanged.connect(self._replace_activated)
+        # self.connect(self.check_replace, SIGNAL("stateChanged(int)"),
+        #     self._replace_activated)
+        self.words_radio.clicked.connect(self._words_radio_pressed)
+        # self.connect(self.words_radio, SIGNAL("clicked(bool)"),
+        #     self._words_radio_pressed)
 
     def _replace_activated(self):
         self.replace_line.setEnabled(self.check_replace.isChecked())
@@ -320,7 +332,8 @@ class FindInFilesDialog(QDialog):
         self.accept()
 
     def _find_in_files(self):
-        self.emit(SIGNAL("findStarted()"))
+        self.findStarted.emit()
+        # self.emit(SIGNAL("findStarted()"))
         self._kill_thread()
         self.result_widget.clear()
         pattern = self.pattern_line_edit.text()
@@ -398,21 +411,29 @@ class FindInFilesWidget(QWidget):
 
         self._open_find_button.setFocus()
         #signals
-        self.connect(self._open_find_button, SIGNAL("clicked()"),
-            self.open)
-        self.connect(self._stop_button, SIGNAL("clicked()"), self._find_stop)
-        self.connect(self._clear_button, SIGNAL("clicked()"),
-            self._clear_results)
-        self.connect(self._result_widget, SIGNAL(
-            "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
-        self.connect(self._result_widget, SIGNAL(
-            "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
-        self.connect(self._find_widget, SIGNAL("finished()"),
-            self._find_finished)
-        self.connect(self._find_widget, SIGNAL("findStarted()"),
-            self._find_started)
-        self.connect(self._replace_button, SIGNAL("clicked()"),
-            self._replace_results)
+        self._open_find_button.clicked.connect(self.open)
+        # self.connect(self._open_find_button, SIGNAL("clicked()"),
+        #     self.open)
+        self._stop_button.clicked.connect(self._find_stop)
+        # self.connect(self._stop_button, SIGNAL("clicked()"), self._find_stop)
+        self._clear_button.clicked.connect(self._clear_results)
+        # self.connect(self._clear_button, SIGNAL("clicked()"),
+        #     self._clear_results)
+        self._result_widget.itemActivated.connect(self._go_to)
+        # self.connect(self._result_widget, SIGNAL(
+        #     "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
+        self._result_widget.itemClicked.connect(self._go_to)
+        # self.connect(self._result_widget, SIGNAL(
+        #     "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
+        self._find_widget.finished.connect(self._find_finished)
+        # self.connect(self._find_widget, SIGNAL("finished()"),
+        #     self._find_finished)
+        self._find_widget.findStarted.connect(self._find_started)
+        # self.connect(self._find_widget, SIGNAL("findStarted()"),
+        #     self._find_started)
+        self._replace_button.clicked.connect(self._replace_results)
+        # self.connect(self._replace_button, SIGNAL("clicked()"),
+        #     self._replace_results)
 
     def _find_finished(self):
         self._stop_button.setEnabled(False)

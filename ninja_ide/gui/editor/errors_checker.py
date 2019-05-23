@@ -23,7 +23,7 @@ try:
 except ImportError:
     print('Errors checker not working in Python3')
 
-from PyQt4.QtCore import QThread
+from PyQt5.QtCore import QThread
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings

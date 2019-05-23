@@ -25,17 +25,17 @@ except ImportError:
     from urllib2 import URLError
 #lint:enable
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QTableWidget
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QDialog
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QSpacerItem
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QTableWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import file_manager

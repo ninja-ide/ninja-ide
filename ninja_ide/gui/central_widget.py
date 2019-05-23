@@ -17,19 +17,20 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
+from PyQt5.QtWidgets import QWidget
 from ninja_ide.tools import ui_tools
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QScrollBar
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSettings
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QSplitter
+from PyQt5.QtWidgets import QScrollBar
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -56,6 +57,7 @@ class __CentralWidget(QWidget):
     """
 
 ###############################################################################
+    splitterCentralRotated = pyqtSignal()
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -77,8 +79,9 @@ class __CentralWidget(QWidget):
         self.scrollBar.setFixedWidth(20)
         self.scrollBar.setToolTip('Follow Mode: Scroll the Editors together')
         self.scrollBar.hide()
-        self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
-            self.move_follow_scrolls)
+        self.scrollBar.valueChanged.connect(self.move_follow_scrolls)
+        # self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
+        #     self.move_follow_scrolls)
 
         #Add to Main Layout
         hbox.addWidget(self.scrollBar)
@@ -155,7 +158,8 @@ class __CentralWidget(QWidget):
         w1, w2 = self._splitterArea.widget(0), self._splitterArea.widget(1)
         self._splitterArea.insertWidget(0, w2)
         self._splitterArea.insertWidget(1, w1)
-        self.emit(SIGNAL("splitterCentralRotated()"))
+        # self.emit(SIGNAL("splitterCentralRotated()"))
+        self.splitterCentralRotated.emit()
 
     def splitter_central_orientation(self):
         if self._splitterArea.orientation() == Qt.Horizontal:
@@ -213,12 +217,12 @@ class LateralPanel(QWidget):
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         self.labelText = "Ln: %s, Col: %s"
-        self.labelCursorPosition = QLabel(self.trUtf8(self.labelText % (0, 0)))
+        self.labelCursorPosition = QLabel(self.tr(self.labelText % (0, 0)))
         hbox.addWidget(self.labelCursorPosition)
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
-        self.combo.setToolTip(self.trUtf8("Select the item from the Paste "
+        self.combo.setToolTip(self.tr("Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
             "%s\nor Paste them using: %s") %
                 (resources.get_shortcut("History-Copy").toString(
@@ -230,7 +234,7 @@ class LateralPanel(QWidget):
         vbox.addLayout(hbox)
 
     def update_line_col(self, line, col):
-        self.labelCursorPosition.setText(self.trUtf8(
+        self.labelCursorPosition.setText(self.tr(
             self.labelText % (line, col)))
 
     def add_new_copy(self, copy):

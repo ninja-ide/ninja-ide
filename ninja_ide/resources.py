@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import Qt
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import Qt
 
 import os
 import sys
@@ -32,7 +32,7 @@ HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
-PRJ_PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
+PRJ_PATH = os.path.abspath(os.path.dirname(__file__))
 #Only for py2exe
 frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):

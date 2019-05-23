@@ -16,10 +16,10 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QObject
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QKeySequence
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QObject
 
 from ninja_ide import resources
 from ninja_ide.gui import actions
@@ -31,31 +31,31 @@ class MenuProject(QObject):
         QObject.__init__(self)
 
         runAction = menuProject.addAction(QIcon(resources.IMAGES['play']),
-            (self.trUtf8("Run Project (%s)") %
+            (self.tr("Run Project (%s)") %
                 resources.get_shortcut("Run-project").toString(
                     QKeySequence.NativeText)))
 #        debugAction = menuProject.addAction(
 #            QIcon(resources.IMAGES['debug']),
-#            self.trUtf8("Debug Project (%s)" %
+#            self.tr("Debug Project (%s)" %
 #                resources.get_shortcut("Debug").toString(
 #                    QKeySequence.NativeText)))
         runFileAction = menuProject.addAction(
             QIcon(resources.IMAGES['file-run']),
-            (self.trUtf8("Run File (%s)") %
+            (self.tr("Run File (%s)") %
                 resources.get_shortcut("Run-file").toString(
                     QKeySequence.NativeText)))
         stopAction = menuProject.addAction(QIcon(resources.IMAGES['stop']),
-            (self.trUtf8("Stop (%s)") %
+            (self.tr("Stop (%s)") %
                 resources.get_shortcut("Stop-execution").toString(
                     QKeySequence.NativeText)))
         menuProject.addSeparator()
         projectPropertiesAction = menuProject.addAction(
-            self.trUtf8("Open Project Properties"))
+            self.tr("Open Project Properties"))
         menuProject.addSeparator()
         previewAction = menuProject.addAction(
             QIcon(resources.IMAGES['preview-web']),
-            self.trUtf8("Preview Web in Default Browser"))
-#        diagramView = menuProject.addAction(self.trUtf8("Diagram View"))
+            self.tr("Preview Web in Default Browser"))
+#        diagramView = menuProject.addAction(self.tr("Diagram View"))
 
         self.toolbar_items = {
             'run-project': runAction,
@@ -63,16 +63,21 @@ class MenuProject(QObject):
             'stop': stopAction,
             'preview-web': previewAction}
 
-        self.connect(runAction, SIGNAL("triggered()"),
-            actions.Actions().execute_project)
-        self.connect(runFileAction, SIGNAL("triggered()"),
-            actions.Actions().execute_file)
-        self.connect(stopAction, SIGNAL("triggered()"),
-            actions.Actions().kill_execution)
-        self.connect(previewAction, SIGNAL("triggered()"),
-            actions.Actions().preview_in_browser)
-        self.connect(projectPropertiesAction, SIGNAL("triggered()"),
-            actions.Actions().open_project_properties)
+        runAction.triggered.connect(actions.Actions().execute_project)
+        # self.connect(runAction, SIGNAL("triggered()"),
+        #     actions.Actions().execute_project)
+        runFileAction.triggered.connect(actions.Actions().execute_file)
+        # self.connect(runFileAction, SIGNAL("triggered()"),
+        #     actions.Actions().execute_file)
+        stopAction.triggered.connect(actions.Actions().kill_execution)
+        # self.connect(stopAction, SIGNAL("triggered()"),
+        #     actions.Actions().kill_execution)
+        projectPropertiesAction.triggered.connect(actions.Actions().open_project_properties)
+        # self.connect(previewAction, SIGNAL("triggered()"),
+        #     actions.Actions().preview_in_browser)
+        # self.connect(projectPropertiesAction, SIGNAL("triggered()"),
+        #     actions.Actions().open_project_properties)
+        # debugAction
 #        self.connect(debugAction, SIGNAL("triggered()"),
 #            actions.Actions().debug_file)
 #        self.connect(diagramView, SIGNAL("triggered()"),

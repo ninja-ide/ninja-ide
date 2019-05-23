@@ -16,16 +16,17 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QHeaderView
-from PyQt4.QtGui import QCursor
-from PyQt4.QtGui import QMenu
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtWidgets import QHeaderView
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QMenu
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 
@@ -41,6 +42,7 @@ class TreeSymbolsWidget(QTreeWidget):
     """
 
 ###############################################################################
+    goToDefinition = pyqtSignal(int)
 
     def __init__(self):
         QTreeWidget.__init__(self)
@@ -48,24 +50,29 @@ class TreeSymbolsWidget(QTreeWidget):
         self.setSelectionMode(self.SingleSelection)
         self.setAnimated(True)
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        self.header().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
         self.docstrings = {}
         self.collapsedItems = {}
 
-        self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-                     self._go_to_definition)
-        self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-                     self._go_to_definition)
+        self.itemClicked.connect(self._go_to_definition)
+        # self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
+        #              self._go_to_definition)
+        self.itemActivated.connect(self._go_to_definition)
+        # self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
+        #              self._go_to_definition)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self,
-                     SIGNAL("customContextMenuRequested(const QPoint &)"),
-                     self._menu_context_tree)
-        self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
-                     self._item_collapsed)
-        self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
-                     self._item_expanded)
+        self.customContextMenuRequested.connect(self._menu_context_tree)
+        # self.connect(self,
+        #              SIGNAL("customContextMenuRequested(const QPoint &)"),
+        #              self._menu_context_tree)
+        self.itemCollapsed.connect(self._item_collapsed)
+        # self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
+        #              self._item_collapsed)
+        self.itemExpanded.connect(self._item_expanded)
+        # self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
+        #              self._item_expanded)
 
     def select_current_item(self, line, col):
         #TODO
@@ -86,16 +93,20 @@ class TreeSymbolsWidget(QTreeWidget):
         u_class_attr = menu.addAction(self.tr("Unfold classes and attributes"))
         menu.addSeparator()
         #save_state = menu.addAction(self.tr("Save State"))
-
-        self.connect(f_all, SIGNAL("triggered()"),
-                     lambda: self.collapseAll())
-        self.connect(u_all, SIGNAL("triggered()"),
-                     lambda: self.expandAll())
-        self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
-        self.connect(u_class_method, SIGNAL("triggered()"),
-                     self._unfold_class_method)
-        self.connect(u_class_attr, SIGNAL("triggered()"),
-                     self._unfold_class_attribute)
+        f_all.triggered.connect(lambda: self.collapseAll())
+        # self.connect(f_all, SIGNAL("triggered()"),
+        #              lambda: self.collapseAll())
+        u_all.triggered.connect(lambda: self.expandAll())
+        # self.connect(u_all, SIGNAL("triggered()"),
+        #              lambda: self.expandAll())
+        u_class.triggered.connect(self._unfold_class)
+        # self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
+        u_class_method.triggered.connect(self._unfold_class_method)
+        # self.connect(u_class_method, SIGNAL("triggered()"),
+        #              self._unfold_class_method)
+        u_class_attr.triggered.connect(self._unfold_class_attribute)
+        # self.connect(u_class_attr, SIGNAL("triggered()"),
+        #              self._unfold_class_attribute)
         #self.connect(save_state, SIGNAL("triggered()"),
             #self._save_symbols_state)
 
@@ -240,7 +251,8 @@ class TreeSymbolsWidget(QTreeWidget):
 
     def _go_to_definition(self, item):
         if item.isClickable:
-            self.emit(SIGNAL("goToDefinition(int)"), item.lineno - 1)
+            # self.emit(SIGNAL("goToDefinition(int)"), item.lineno - 1)
+            self.goToDefinition.emit(item.lineno - 1)
 
     def create_tooltip(self, name, lineno):
         doc = self.docstrings.get(lineno, None)

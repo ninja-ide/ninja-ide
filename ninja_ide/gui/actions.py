@@ -21,15 +21,16 @@ import re
 import sys
 import webbrowser
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QShortcut
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QSettings
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QShortcut
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
@@ -40,7 +41,7 @@ from ninja_ide.tools import json_manager
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.dialogs import from_import_dialog
-from ninja_ide.gui.main_panel import class_diagram
+# from ninja_ide.gui.main_panel import class_diagram
 from ninja_ide.gui.main_panel import tab_group
 
 
@@ -65,6 +66,9 @@ class __Actions(QObject):
     but the containers don't need to know between each other, in this way we
     can keep a better api without the need to tie the behaviour between
     the widgets, and let them just consume the 'actions' they need."""
+
+    projectExecuted = pyqtSignal(str)
+    fileExecuted = pyqtSignal(str)
 
     def __init__(self):
         QObject.__init__(self)
@@ -160,124 +164,183 @@ class __Actions(QObject):
             short("change-tab-visibility"), self.ide)
 
         #Connect Shortcuts Signals
-        self.connect(self.shortNavigateBack, SIGNAL("activated()"),
-            lambda: self.__navigate_with_keyboard(False))
-        self.connect(self.shortNavigateForward, SIGNAL("activated()"),
-            lambda: self.__navigate_with_keyboard(True))
-        self.connect(self.shortCodeLocator, SIGNAL("activated()"),
-            self.ide.status.show_locator)
-        self.connect(self.shortFileOpener, SIGNAL("activated()"),
-            self.ide.status.show_file_opener)
-        self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
-            self.editor_go_to_definition)
-        self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
-            self.editor_complete_declaration)
-        self.connect(self.shortRedo, SIGNAL("activated()"),
-            self.editor_redo)
-        self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
-            self.editor_insert_horizontal_line)
-        self.connect(self.shortTitleComment, SIGNAL("activated()"),
-            self.editor_insert_title_comment)
-        self.connect(self.shortFollowMode, SIGNAL("activated()"),
-            self.ide.mainContainer.show_follow_mode)
-        self.connect(self.shortReloadFile, SIGNAL("activated()"),
-            self.ide.mainContainer.reload_file)
-        self.connect(self.shortSplitHorizontal, SIGNAL("activated()"),
-            lambda: self.ide.mainContainer.split_tab(True))
-        self.connect(self.shortSplitVertical, SIGNAL("activated()"),
-            lambda: self.ide.mainContainer.split_tab(False))
-        self.connect(self.shortNew, SIGNAL("activated()"),
-            self.ide.mainContainer.add_editor)
-        self.connect(self.shortNewProject, SIGNAL("activated()"),
-            self.ide.explorer.create_new_project)
-        self.connect(self.shortHideMisc, SIGNAL("activated()"),
-            self.view_misc_visibility)
-        self.connect(self.shortHideEditor, SIGNAL("activated()"),
-            self.view_main_visibility)
-        self.connect(self.shortHideExplorer, SIGNAL("activated()"),
-            self.view_explorer_visibility)
-        self.connect(self.shortHideAll, SIGNAL("activated()"),
-            self.hide_all)
-        self.connect(self.shortFullscreen, SIGNAL("activated()"),
-            self.fullscreen_mode)
-        self.connect(self.shortOpen, SIGNAL("activated()"),
-            self.ide.mainContainer.open_file)
-        self.connect(self.shortOpenProject, SIGNAL("activated()"),
-            self.open_project)
-        self.connect(self.shortCloseTab, SIGNAL("activated()"),
-            self.ide.mainContainer.close_tab)
-        self.connect(self.shortSave, SIGNAL("activated()"),
-            self.ide.mainContainer.save_file)
-        self.connect(self.shortSaveProject, SIGNAL("activated()"),
-            self.save_project)
-        self.connect(self.shortPrint, SIGNAL("activated()"),
-            self.print_file)
-        self.connect(self.shortFind, SIGNAL("activated()"),
-            self.ide.status.show)
-        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
-            self.ide.status._searchWidget.find_previous)
-        self.connect(self.shortFindNext, SIGNAL("activated()"),
-            self.ide.status._searchWidget.find_next)
-        self.connect(self.shortFindWithWord, SIGNAL("activated()"),
-            self.ide.status.show_with_word)
-        self.connect(self.shortFindReplace, SIGNAL("activated()"),
-            self.ide.status.show_replace)
-        self.connect(self.shortRunFile, SIGNAL("activated()"),
-            self.execute_file)
-        self.connect(self.shortRunProject, SIGNAL("activated()"),
-            self.execute_project)
-        self.connect(self.shortSwitchFocus, SIGNAL("activated()"),
-            self.switch_focus)
-        self.connect(self.shortStopExecution, SIGNAL("activated()"),
-            self.kill_execution)
-        self.connect(self.shortIndentLess, SIGNAL("activated()"),
-            self.editor_indent_less)
-        self.connect(self.shortComment, SIGNAL("activated()"),
-            self.editor_comment)
-        self.connect(self.shortUncomment, SIGNAL("activated()"),
-            self.editor_uncomment)
-        self.connect(self.shortHelp, SIGNAL("activated()"),
-            self.ide.mainContainer.show_python_doc)
-        self.connect(self.shortImport, SIGNAL("activated()"),
-            self.import_from_everywhere)
-        self.connect(self.shortFindInFiles, SIGNAL("activated()"),
-            self.ide.misc.show_find_in_files_widget)
-        self.connect(self.shortMoveUp, SIGNAL("activated()"),
-            self.editor_move_up)
-        self.connect(self.shortMoveDown, SIGNAL("activated()"),
-            self.editor_move_down)
-        self.connect(self.shortRemove, SIGNAL("activated()"),
-            self.editor_remove_line)
-        self.connect(self.shortDuplicate, SIGNAL("activated()"),
-            self.editor_duplicate)
-        self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
-            self.reopen_last_tab)
-        self.connect(self.shortChangeTab, SIGNAL("activated()"),
-            self.ide.mainContainer.change_tab)
-        self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
-            self.ide.mainContainer.change_tab_reverse)
-        self.connect(self.shortMoveTabToRight, SIGNAL("activated()"),
-            self.move_tab)
-        self.connect(self.shortMoveTabToLeft, SIGNAL("activated()"),
-            lambda: self.move_tab(next=False))
-        self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
-            self.ide.mainContainer.show_navigation_buttons)
-        self.connect(self.shortAddBookmark, SIGNAL("activated()"),
-            self._add_bookmark_breakpoint)
-        self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
-            self.ide.central.lateralPanel.combo.showPopup)
-        self.connect(self.shortCopyHistory, SIGNAL("activated()"),
-            self._copy_history)
-        self.connect(self.shortPasteHistory, SIGNAL("activated()"),
-            self._paste_history)
-        self.connect(self.shortHighlightWord, SIGNAL("activated()"),
-            self.editor_highlight_word)
-        self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
-            self.ide.mainContainer.change_split_focus)
-        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
-            self.move_tab_to_next_split)
-        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
-            self.ide.mainContainer.change_tabs_visibility)
+        self.shortNavigateBack.activated.connect(lambda: self.__navigate_with_keyboard(False))
+        # self.connect(self.shortNavigateBack, SIGNAL("activated()"),
+        #     lambda: self.__navigate_with_keyboard(False))
+        self.shortNavigateForward.activated.connect(lambda: self.__navigate_with_keyboard(True))
+        # self.connect(self.shortNavigateForward, SIGNAL("activated()"),
+        #     lambda: self.__navigate_with_keyboard(True))
+        self.shortCodeLocator.activated.connect(self.ide.status.show_locator)
+        # self.connect(self.shortCodeLocator, SIGNAL("activated()"),
+        #     self.ide.status.show_locator)
+        self.shortFileOpener.activated.connect(self.ide.status.show_file_opener)
+        # self.connect(self.shortFileOpener, SIGNAL("activated()"),
+        #     self.ide.status.show_file_opener)
+        self.shortGoToDefinition.activated.connect(self.editor_go_to_definition)
+        # self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
+        #     self.editor_go_to_definition)
+        self.shortCompleteDeclarations.activated.connect(self.editor_complete_declaration)
+        # self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
+        #     self.editor_complete_declaration)
+        self.shortRedo.activated.connect(self.editor_redo)
+        # self.connect(self.shortRedo, SIGNAL("activated()"),
+        #     self.editor_redo)
+        self.shortHorizontalLine.activated.connect(self.editor_insert_horizontal_line)
+        # self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
+        #     self.editor_insert_horizontal_line)
+        self.shortTitleComment.activated.connect(self.editor_insert_title_comment)
+        # self.connect(self.shortTitleComment, SIGNAL("activated()"),
+        #     self.editor_insert_title_comment)
+        self.shortFollowMode.activated.connect(self.ide.mainContainer.show_follow_mode)
+        # self.connect(self.shortFollowMode, SIGNAL("activated()"),
+        #     self.ide.mainContainer.show_follow_mode)
+        self.shortReloadFile.activated.connect(self.ide.mainContainer.reload_file)
+        # self.connect(self.shortReloadFile, SIGNAL("activated()"),
+        #     self.ide.mainContainer.reload_file)
+        self.shortSplitHorizontal.activated.connect(lambda: self.ide.mainContainer.split_tab(True))
+        # self.connect(self.shortSplitHorizontal, SIGNAL("activated()"),
+        #     lambda: self.ide.mainContainer.split_tab(True))
+        self.shortSplitVertical.activated.connect(lambda: self.ide.mainContainer.split_tab(False))
+        # self.connect(self.shortSplitVertical, SIGNAL("activated()"),
+        #     lambda: self.ide.mainContainer.split_tab(False))
+        self.shortNew.activated.connect(self.ide.mainContainer.add_editor)
+        # self.connect(self.shortNew, SIGNAL("activated()"),
+        #     self.ide.mainContainer.add_editor)
+        self.shortNewProject.activated.connect(self.ide.explorer.create_new_project)
+        # self.connect(self.shortNewProject, SIGNAL("activated()"),
+        #     self.ide.explorer.create_new_project)
+        self.shortHideMisc.activated.connect(self.view_misc_visibility)
+        # self.connect(self.shortHideMisc, SIGNAL("activated()"),
+        #     self.view_misc_visibility)
+        self.shortHideEditor.activated.connect(self.view_main_visibility)
+        # self.connect(self.shortHideEditor, SIGNAL("activated()"),
+        #     self.view_main_visibility)
+        self.shortHideExplorer.activated.connect(self.view_explorer_visibility)
+        # self.connect(self.shortHideExplorer, SIGNAL("activated()"),
+        #     self.view_explorer_visibility)
+        self.shortHideAll.activated.connect(self.hide_all)
+        # self.connect(self.shortHideAll, SIGNAL("activated()"),
+        #     self.hide_all)
+        self.shortFullscreen.activated.connect(self.fullscreen_mode)
+        # self.connect(self.shortFullscreen, SIGNAL("activated()"),
+        #     self.fullscreen_mode)
+        self.shortOpen.activated.connect(self.ide.mainContainer.open_file)
+        # self.connect(self.shortOpen, SIGNAL("activated()"),
+        #     self.ide.mainContainer.open_file)
+        self.shortOpenProject.activated.connect(self.open_project)
+        # self.connect(self.shortOpenProject, SIGNAL("activated()"),
+        #     self.open_project)
+        self.shortCloseTab.activated.connect(self.ide.mainContainer.close_tab)
+        # self.connect(self.shortCloseTab, SIGNAL("activated()"),
+        #     self.ide.mainContainer.close_tab)
+        self.shortSave.activated.connect(self.ide.mainContainer.save_file)
+        # self.connect(self.shortSave, SIGNAL("activated()"),
+        #     self.ide.mainContainer.save_file)
+        self.shortSaveProject.activated.connect(self.save_project)
+        # self.connect(self.shortSaveProject, SIGNAL("activated()"),
+        #     self.save_project)
+        self.shortPrint.activated.connect(self.print_file)
+        # self.connect(self.shortPrint, SIGNAL("activated()"),
+        #     self.print_file)
+        self.shortFind.activated.connect(self.ide.status.show)
+        # self.connect(self.shortFind, SIGNAL("activated()"),
+        #     self.ide.status.show)
+        self.shortFindPrevious.activated.connect(self.ide.status._searchWidget.find_previous)
+        # self.connect(self.shortFindPrevious, SIGNAL("activated()"),
+        #     self.ide.status._searchWidget.find_previous)
+        self.shortFindNext.activated.connect(self.ide.status._searchWidget.find_next)
+        # self.connect(self.shortFindNext, SIGNAL("activated()"),
+        #     self.ide.status._searchWidget.find_next)
+        self.shortFindWithWord.activated.connect(self.ide.status.show_with_word)
+        # self.connect(self.shortFindWithWord, SIGNAL("activated()"),
+        #     self.ide.status.show_with_word)
+        self.shortFindReplace.activated.connect(self.ide.status.show_replace)
+        # self.connect(self.shortFindReplace, SIGNAL("activated()"),
+        #     self.ide.status.show_replace)
+        self.shortRunFile.activated.connect(self.execute_file)
+        # self.connect(self.shortRunFile, SIGNAL("activated()"),
+        #     self.execute_file)
+        self.shortRunProject.activated.connect(self.execute_project)
+        # self.connect(self.shortRunProject, SIGNAL("activated()"),
+        #     self.execute_project)
+        self.shortSwitchFocus.activated.connect(self.switch_focus)
+        # self.connect(self.shortSwitchFocus, SIGNAL("activated()"),
+        #     self.switch_focus)
+        self.shortStopExecution.activated.connect(self.kill_execution)
+        # self.connect(self.shortStopExecution, SIGNAL("activated()"),
+        #     self.kill_execution)
+        self.shortIndentLess.activated.connect(self.editor_indent_less)
+        # self.connect(self.shortIndentLess, SIGNAL("activated()"),
+        #     self.editor_indent_less)
+        self.shortComment.activated.connect(self.editor_comment)
+        # self.connect(self.shortComment, SIGNAL("activated()"),
+        #     self.editor_comment)
+        self.shortUncomment.activated.connect(self.editor_uncomment)
+        # self.connect(self.shortUncomment, SIGNAL("activated()"),
+        #     self.editor_uncomment)
+        self.shortHelp.activated.connect(self.ide.mainContainer.show_python_doc)
+        # self.connect(self.shortHelp, SIGNAL("activated()"),
+        #     self.ide.mainContainer.show_python_doc)
+        self.shortImport.activated.connect(self.import_from_everywhere)
+        # self.connect(self.shortImport, SIGNAL("activated()"),
+        #     self.import_from_everywhere)
+        self.shortFindInFiles.activated.connect(self.ide.misc.show_find_in_files_widget)
+        # self.connect(self.shortFindInFiles, SIGNAL("activated()"),
+        #     self.ide.misc.show_find_in_files_widget)
+        self.shortMoveUp.activated.connect(self.editor_move_up)
+        # self.connect(self.shortMoveUp, SIGNAL("activated()"),
+        #     self.editor_move_up)
+        self.shortMoveDown.activated.connect(self.editor_move_down)
+        # self.connect(self.shortMoveDown, SIGNAL("activated()"),
+        #     self.editor_move_down)
+        self.shortRemove.activated.connect(self.editor_remove_line)
+        # self.connect(self.shortRemove, SIGNAL("activated()"),
+        #     self.editor_remove_line)
+        self.shortDuplicate.activated.connect(self.editor_duplicate)
+        # self.connect(self.shortDuplicate, SIGNAL("activated()"),
+        #     self.editor_duplicate)
+        self.shortOpenLastTabOpened.activated.connect(self.reopen_last_tab)
+        # self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
+        #     self.reopen_last_tab)
+        self.shortChangeTab.activated.connect(self.ide.mainContainer.change_tab)
+        # self.connect(self.shortChangeTab, SIGNAL("activated()"),
+        #     self.ide.mainContainer.change_tab)
+        self.shortChangeTabReverse.activated.connect(self.ide.mainContainer.change_tab_reverse)
+        # self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
+        #     self.ide.mainContainer.change_tab_reverse)
+        self.shortMoveTabToRight.activated.connect(self.move_tab)
+        # self.connect(self.shortMoveTabToRight, SIGNAL("activated()"),
+        #     self.move_tab)
+        self.shortMoveTabToLeft.activated.connect(lambda: self.move_tab(next=False))
+        # self.connect(self.shortMoveTabToLeft, SIGNAL("activated()"),
+        #     lambda: self.move_tab(next=False))
+        self.shortShowCodeNav.activated.connect(self.ide.mainContainer.show_navigation_buttons)
+        # self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
+        #     self.ide.mainContainer.show_navigation_buttons)
+        self.shortAddBookmark.activated.connect(self._add_bookmark_breakpoint)
+        # self.connect(self.shortAddBookmark, SIGNAL("activated()"),
+        #     self._add_bookmark_breakpoint)
+        self.shortShowPasteHistory.activated.connect(self.ide.central.lateralPanel.combo.showPopup)
+        # self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
+        #     self.ide.central.lateralPanel.combo.showPopup)
+        self.shortCopyHistory.activated.connect(self._copy_history)
+        # self.connect(self.shortCopyHistory, SIGNAL("activated()"),
+        #     self._copy_history)
+        self.shortPasteHistory.activated.connect(self._paste_history)
+        # self.connect(self.shortPasteHistory, SIGNAL("activated()"),
+        #     self._paste_history)
+        self.shortHighlightWord.activated.connect(self.editor_highlight_word)
+        # self.connect(self.shortHighlightWord, SIGNAL("activated()"),
+        #     self.editor_highlight_word)
+        self.shortChangeSplitFocus.activated.connect(self.ide.mainContainer.change_split_focus)
+        # self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
+        #     self.ide.mainContainer.change_split_focus)
+        self.shortMoveTabSplit.activated.connect(self.move_tab_to_next_split)
+        # self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
+        #     self.move_tab_to_next_split)
+        self.shortChangeTabVisibility.activated.connect(self.ide.mainContainer.change_tabs_visibility)
+        # self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
+        #     self.ide.mainContainer.change_tabs_visibility)
 
         key = Qt.Key_1
         for i in range(10):
@@ -287,31 +350,41 @@ class __Actions(QObject):
             else:
                 short = TabShortcuts(QKeySequence(Qt.ALT + key), self.ide, i)
             key += 1
-            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+            # self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+            short.activated.connect(self._change_tab_index)
         short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self.ide, 10)
-        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        # self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        short.activated.connect(self._change_tab_index)
 
         #Connect SIGNALs from other objects
-        self.connect(self.ide.mainContainer._tabMain,
-            SIGNAL("runFile()"), self.execute_file)
-        self.connect(self.ide.mainContainer._tabSecondary,
-            SIGNAL("runFile()"), self.execute_file)
-        self.connect(self.ide.mainContainer._tabMain,
-            SIGNAL("addToProject(QString)"), self._add_file_to_project)
-        self.connect(self.ide.mainContainer._tabSecondary,
-            SIGNAL("addToProject(QString)"), self._add_file_to_project)
-        self.connect(self.ide.mainContainer,
-            SIGNAL("openProject(QString)"), self.open_project)
+        self.ide.mainContainer._tabMain.runFile.connect(self.execute_file)
+        # self.connect(self.ide.mainContainer._tabMain,
+        #     SIGNAL("runFile()"), self.execute_file)
+        self.ide.mainContainer._tabSecondary.runFile.connect(self.execute_file)
+        # self.connect(self.ide.mainContainer._tabSecondary,
+        #     SIGNAL("runFile()"), self.execute_file)
+        self.ide.mainContainer._tabMain.addToProject.connect(self._add_file_to_project)
+        # self.connect(self.ide.mainContainer._tabMain,
+        #     SIGNAL("addToProject(QString)"), self._add_file_to_project)
+        self.ide.mainContainer._tabSecondary.addToProject.connect(self._add_file_to_project)
+        # self.connect(self.ide.mainContainer._tabSecondary,
+        #     SIGNAL("addToProject(QString)"), self._add_file_to_project)
+        self.ide.mainContainer.openProject.connect(self.open_project)
+        # self.ide.mainContainer.openProject.connect(self.)
+        # self.connect(self.ide.mainContainer,
+        #     SIGNAL("openProject(QString)"), self.open_project)
 
         # Not Configurable Shortcuts
         self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
             self.ide.status)
         self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
             self.ide.misc)
-        self.connect(self._shortEscStatus, SIGNAL("activated()"),
-            self.ide.status.hide_status)
-        self.connect(self._shortEscMisc, SIGNAL("activated()"),
-            self.ide.misc.hide)
+        self._shortEscStatus.activated.connect(self.ide.status.hide_status)
+        # self.connect(self._shortEscStatus, SIGNAL("activated()"),
+        #     self.ide.status.hide_status)
+        self._shortEscMisc.activated.connect(self.ide.misc.hide)
+        # self.connect(self._shortEscMisc, SIGNAL("activated()"),
+        #     self.ide.misc.hide)
 
     def update_shortcuts(self):
         """If the user update the key binded to any shortcut, update them."""
@@ -584,15 +657,16 @@ class __Actions(QObject):
         """Execute the current file."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         #emit a signal for plugin!
-        self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
+        # self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
+        self.fileExecuted.emit(editorWidget.ID)
         if editorWidget:
             self.ide.mainContainer.save_file(editorWidget)
             ext = file_manager.get_file_extension(editorWidget.ID)
             #TODO: Remove the IF statment with polymorphism using Handler
             if ext == 'py':
                 self.ide.misc.run_application(editorWidget.ID)
-            elif ext == 'html':
-                self.ide.misc.render_web_page(editorWidget.ID)
+            # elif ext == 'html':
+            #     self.ide.misc.render_web_page(editorWidget.ID)
 
     def execute_project(self):
         """Execute the project marked as Main Project."""
@@ -604,7 +678,8 @@ class __Actions(QObject):
             self.save_project()
             path = self.ide.explorer.get_actual_project()
             #emit a signal for plugin!
-            self.emit(SIGNAL("projectExecuted(QString)"), path)
+            self.projectExecuted.emit(path)
+            # self.emit(SIGNAL("projectExecuted(QString)"), path)
 
             # load our jutsus!
             project = json_manager.read_ninja_project(path)

@@ -16,11 +16,11 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QObject
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QTextCursor
+from PyQt5.QtGui import QKeySequence
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QObject
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -36,47 +36,47 @@ class MenuEdit(QObject):
         QObject.__init__(self)
 
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
-            (self.trUtf8("Undo (%s+Z)") % settings.OS_KEY))
+            (self.tr("Undo (%s+Z)") % settings.OS_KEY))
         redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),
-            (self.trUtf8("Redo (%s)") % resources.get_shortcut("Redo").toString(
+            (self.tr("Redo (%s)") % resources.get_shortcut("Redo").toString(
                     QKeySequence.NativeText)))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
-            (self.trUtf8("&Cut (%s+X)") % settings.OS_KEY))
+            (self.tr("&Cut (%s+X)") % settings.OS_KEY))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),
-            (self.trUtf8("&Copy (%s+C)") % settings.OS_KEY))
+            (self.tr("&Copy (%s+C)") % settings.OS_KEY))
         pasteAction = menuEdit.addAction(QIcon(resources.IMAGES['paste']),
-            (self.trUtf8("&Paste (%s+V)") % settings.OS_KEY))
+            (self.tr("&Paste (%s+V)") % settings.OS_KEY))
         menuEdit.addSeparator()
         findAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            (self.trUtf8("Find (%s)") % resources.get_shortcut("Find").toString(
+            (self.tr("Find (%s)") % resources.get_shortcut("Find").toString(
                     QKeySequence.NativeText)))
         findReplaceAction = menuEdit.addAction(
             QIcon(resources.IMAGES['findReplace']),
-            (self.trUtf8("Find/Replace (%s)") %
+            (self.tr("Find/Replace (%s)") %
                 resources.get_shortcut("Find-replace").toString(
                     QKeySequence.NativeText)))
         findWithWordAction = menuEdit.addAction(
-            (self.trUtf8("Find using word under cursor (%s)") %
+            (self.tr("Find using word under cursor (%s)") %
                 resources.get_shortcut("Find-with-word").toString(
                     QKeySequence.NativeText)))
         findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            (self.trUtf8("Find in Files (%s)") %
+            (self.tr("Find in Files (%s)") %
                 resources.get_shortcut("Find-in-files").toString(
                     QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
-            (self.trUtf8("Code Locator (%s)") %
+            (self.tr("Code Locator (%s)") %
                 resources.get_shortcut("Code-locator").toString(
                     QKeySequence.NativeText)))
         menuEdit.addSeparator()
         upperAction = menuEdit.addAction(
-            self.trUtf8("Convert selected Text to: UPPER"))
+            self.tr("Convert selected Text to: UPPER"))
         lowerAction = menuEdit.addAction(
-            self.trUtf8("Convert selected Text to: lower"))
+            self.tr("Convert selected Text to: lower"))
         titleAction = menuEdit.addAction(
-            self.trUtf8("Convert selected Text to: Title Word"))
+            self.tr("Convert selected Text to: Title Word"))
         menuEdit.addSeparator()
         prefAction = menuEdit.addAction(QIcon(resources.IMAGES['pref']),
-            self.trUtf8("Preference&s"))
+            self.tr("Preference&s"))
 
         self.toolbar_items = {
             'undo': undoAction,
@@ -89,25 +89,39 @@ class MenuEdit(QObject):
             'find-files': findInFilesAction,
             'code-locator': locatorAction}
 
-        self.connect(cutAction, SIGNAL("triggered()"), self._editor_cut)
-        self.connect(copyAction, SIGNAL("triggered()"), self._editor_copy)
-        self.connect(pasteAction, SIGNAL("triggered()"), self._editor_paste)
-        self.connect(redoAction, SIGNAL("triggered()"), self._editor_redo)
-        self.connect(undoAction, SIGNAL("triggered()"), self._editor_undo)
-        self.connect(upperAction, SIGNAL("triggered()"), self._editor_upper)
-        self.connect(lowerAction, SIGNAL("triggered()"), self._editor_lower)
-        self.connect(titleAction, SIGNAL("triggered()"), self._editor_title)
-        self.connect(findAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show)
-        self.connect(findWithWordAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show_with_word)
-        self.connect(findReplaceAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show_replace)
-        self.connect(findInFilesAction, SIGNAL("triggered()"),
-            self._show_find_in_files)
-        self.connect(locatorAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show_locator)
-        self.connect(prefAction, SIGNAL("triggered()"), self._show_preferences)
+        cutAction.triggered.connect(self._editor_cut)
+        # self.connect(cutAction, SIGNAL("triggered()"), self._editor_cut)
+        copyAction.triggered.connect(self._editor_copy)
+        # self.connect(copyAction, SIGNAL("triggered()"), self._editor_copy)
+        pasteAction.triggered.connect(self._editor_paste)
+        # self.connect(pasteAction, SIGNAL("triggered()"), self._editor_paste)
+        redoAction.triggered.connect(self._editor_redo)
+        # self.connect(redoAction, SIGNAL("triggered()"), self._editor_redo)
+        undoAction.triggered.connect(self._editor_undo)
+        # self.connect(undoAction, SIGNAL("triggered()"), self._editor_undo)
+        upperAction.triggered.connect(self._editor_upper)
+        # self.connect(upperAction, SIGNAL("triggered()"), self._editor_upper)
+        lowerAction.triggered.connect(self._editor_lower)
+        # self.connect(lowerAction, SIGNAL("triggered()"), self._editor_lower)
+        titleAction.triggered.connect(self._editor_title)
+        # self.connect(titleAction, SIGNAL("triggered()"), self._editor_title)
+        findAction.triggered.connect(status_bar.StatusBar().show)
+        # self.connect(findAction, SIGNAL("triggered()"),
+        #     status_bar.StatusBar().show)
+        findWithWordAction.triggered.connect(status_bar.StatusBar().show_with_word)
+        # self.connect(findWithWordAction, SIGNAL("triggered()"),
+        #     status_bar.StatusBar().show_with_word)
+        findReplaceAction.triggered.connect(status_bar.StatusBar().show_replace)
+        # self.connect(findReplaceAction, SIGNAL("triggered()"),
+        #     status_bar.StatusBar().show_replace)
+        findInFilesAction.triggered.connect(self._show_find_in_files)
+        # self.connect(findInFilesAction, SIGNAL("triggered()"),
+        #     self._show_find_in_files)
+        locatorAction.triggered.connect(status_bar.StatusBar().show_locator)
+        # self.connect(locatorAction, SIGNAL("triggered()"),
+        #     status_bar.StatusBar().show_locator)
+        prefAction.triggered.connect(self._show_preferences)
+        # self.connect(prefAction, SIGNAL("triggered()"), self._show_preferences)
 
     def _editor_upper(self):
         editorWidget = main_container.MainContainer().get_actual_editor()

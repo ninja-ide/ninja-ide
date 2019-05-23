@@ -21,7 +21,7 @@ from __future__ import unicode_literals
 # Import this before Qt to set the correct API
 import ninja_ide  # lint:ok
 
-from PyQt4.QtGui import QPlainTextEdit
+from PyQt5.QtGui import QPlainTextEdit
 
 
 class FakeExplorer(object):

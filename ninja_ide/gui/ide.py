@@ -19,26 +19,27 @@ from __future__ import unicode_literals
 
 import sys
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QMainWindow
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QSplashScreen
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QToolTip
-from PyQt4.QtGui import QFont
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QLibraryInfo
-from PyQt4.QtCore import QLocale
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QCoreApplication
-from PyQt4.QtCore import QTranslator
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QTextCodec
-from PyQt4.QtCore import QSizeF
-from PyQt4.QtCore import QPointF
-from PyQt4.QtNetwork import QLocalServer
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QSplashScreen
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets import QToolTip
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QLibraryInfo
+from PyQt5.QtCore import QLocale
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QTranslator
+# from PyQt5.QtCore import SIGNAL
+# from PyQt5.QtCore import QTextCodec
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QSizeF
+from PyQt5.QtCore import QPointF
+from PyQt5.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide.core import plugin_manager
@@ -97,6 +98,8 @@ class __IDE(QMainWindow):
 # goingDown()
 ###############################################################################
 
+    goingDown = pyqtSignal()
+
     def __init__(self, start_server=False):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
@@ -110,8 +113,9 @@ class __IDE(QMainWindow):
         if start_server:
             self.s_listener = QLocalServer()
             self.s_listener.listen("ninja_ide")
-            self.connect(self.s_listener, SIGNAL("newConnection()"),
-                self._process_connection)
+            self.s_listener.newConnection.connect(self._process_connection)
+            # self.connect(self.s_listener, SIGNAL("newConnection()"),
+            #     self._process_connection)
 
         #Profile handler
         self.profile = None
@@ -139,8 +143,9 @@ class __IDE(QMainWindow):
 
         #Install Shortcuts after the UI has been initialized
         self.actions.install_shortcuts(self)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.actions.update_explorer)
+        self.mainContainer.currentTabChanged.connect(self.actions.update_explorer)
+        # self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+        #     self.actions.update_explorer)
 
         #Menu
         menubar = self.menuBar()
@@ -181,19 +186,25 @@ class __IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
-        self.connect(self._menuFile, SIGNAL("openFile(QString)"),
-            self.mainContainer.open_file)
-        self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
-            self.show_status_message)
-        self.connect(self.mainContainer,
-            SIGNAL("recentTabsModified(QStringList)"),
-            self._menuFile.update_recent_files)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.actions.update_migration_tips)
-        self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
-            self.actions.update_migration_tips)
-        self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
-            self.actions.update_migration_tips)
+        self._menuFile.openFile.connect(self.mainContainer.open_file)
+        # self.connect(self._menuFile, SIGNAL("openFile(QString)"),
+        #     self.mainContainer.open_file)
+        self.mainContainer.fileSaved.connect(self.show_status_message)
+        # self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
+        #     self.show_status_message)
+        self.mainContainer.recentTabsModified.connect(self._menuFile.update_recent_files)
+        # self.connect(self.mainContainer,
+        #     SIGNAL("recentTabsModified(QStringList)"),
+        #     self._menuFile.update_recent_files)
+        self.mainContainer.currentTabChanged.connect(self.actions.update_migration_tips)
+        # self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+        #     self.actions.update_migration_tips)
+        self.mainContainer.updateFileMetadata.connect(self.actions.update_migration_tips)
+        # self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
+        #     self.actions.update_migration_tips)
+        self.mainContainer.migrationAnalyzed.connect(self.actions.update_migration_tips)
+        # self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
+        #     self.actions.update_migration_tips)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -243,62 +254,81 @@ class __IDE(QMainWindow):
         QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         #Create Main Container to manage Tabs
         self.mainContainer = main_container.MainContainer(self)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.change_window_title)
-        self.connect(self.mainContainer,
-            SIGNAL("locateFunction(QString, QString, bool)"),
-            self.actions.locate_function)
-        self.connect(self.mainContainer,
-            SIGNAL("navigateCode(bool, int)"),
-            self.actions.navigate_code_history)
-        self.connect(self.mainContainer,
-            SIGNAL("addBackItemNavigation()"),
-            self.actions.add_back_item_navigation)
-        self.connect(self.mainContainer, SIGNAL("updateFileMetadata()"),
-            self.actions.update_explorer)
-        self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
-            self.actions.update_explorer)
-        self.connect(self.mainContainer, SIGNAL("openPreferences()"),
-            self._show_preferences)
-        self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),
-            self._dont_show_start_page_again)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.status.handle_tab_changed)
+        self.mainContainer.currentTabChanged.connect(self.change_window_title)
+        # self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+        #     self.change_window_title)
+        self.mainContainer.locateFunction.connect(self.actions.locate_function)
+        # self.connect(self.mainContainer,
+        #     SIGNAL("locateFunction(QString, QString, bool)"),
+        #     self.actions.locate_function)
+        self.mainContainer.navigateCode.connect(self.actions.navigate_code_history)
+        # self.connect(self.mainContainer,
+        #     SIGNAL("navigateCode(bool, int)"),
+        #     self.actions.navigate_code_history)
+        self.mainContainer.addBackItemNavigation.connect(self.actions.add_back_item_navigation)
+        # self.connect(self.mainContainer,
+        #     SIGNAL("addBackItemNavigation()"),
+        #     self.actions.add_back_item_navigation)
+        self.mainContainer.updateFileMetadata.connect(self.actions.update_explorer)
+        # self.connect(self.mainContainer, SIGNAL("updateFileMetadata()"),
+        #     self.actions.update_explorer)
+        self.mainContainer.updateLocator.connect(self.actions.update_explorer)
+        # self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
+        #     self.actions.update_explorer)
+        self.mainContainer.openPreferences.connect(self._show_preferences)
+        # self.connect(self.mainContainer, SIGNAL("openPreferences()"),
+        #     self._show_preferences)
+        self.mainContainer.dontOpenStartPage.connect(self._dont_show_start_page_again)
+        # self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),
+        #     self._dont_show_start_page_again)
+        self.mainContainer.currentTabChanged.connect(self.status.handle_tab_changed)
+        # self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+        #     self.status.handle_tab_changed)
         # When close the last tab cleanup
-        self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
-            self._last_tab_closed)
+        self.mainContainer.allTabsClosed.connect(self._last_tab_closed)
+        # self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
+        #     self._last_tab_closed)
         # Update symbols
-        self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
-            self.status.explore_file_code)
+        self.mainContainer.updateLocator.connect(self.status.explore_file_code)
+        # self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
+        #     self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
-        self.connect(self.central, SIGNAL("splitterCentralRotated()"),
-            self.explorer.rotate_tab_position)
-        self.connect(self.explorer, SIGNAL("updateLocator()"),
-            self.status.explore_code)
-        self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
-            self.actions.editor_go_to_line)
-        self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
-            self.actions.close_files_from_project)
+        self.central.splitterCentralRotated.connect(self.explorer.rotate_tab_position)
+        # self.connect(self.central, SIGNAL("splitterCentralRotated()"),
+        #     self.explorer.rotate_tab_position)
+        self.explorer.updateLocator.connect(self.status.explore_code)
+        # self.connect(self.explorer, SIGNAL("updateLocator()"),
+        #     self.status.explore_code)
+        self.explorer.goToDefinition.connect(self.actions.editor_go_to_line)
+        # self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
+        #     self.actions.editor_go_to_line)
+        self.explorer.projectClosed.connect(self.actions.close_files_from_project)
+        # self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
+        #     self.actions.close_files_from_project)
         #Create Misc Bottom Container
+
         self.misc = misc_container.MiscContainer(self)
-        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
-            self.misc.show_find_occurrences)
+        self.mainContainer.findOcurrences.connect(self.misc.show_find_occurrences)
+        # self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
+        #     self.misc.show_find_occurrences)
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
         centralWidget.insert_bottom_container(self.misc)
         if self.explorer.count() == 0:
             centralWidget.change_explorer_visibility(force_hide=True)
-        self.connect(self.mainContainer,
-            SIGNAL("cursorPositionChange(int, int)"),
-            self.central.lateralPanel.update_line_col)
+        self.mainContainer.cursorPositionChanged.connect(self.central.lateralPanel.update_line_col)
+        # self.connect(self.mainContainer,
+        #     SIGNAL("cursorPositionChange(int, int)"),
+        #     self.central.lateralPanel.update_line_col)
         # TODO: Change current symbol on move
         #self.connect(self.mainContainer,
             #SIGNAL("cursorPositionChange(int, int)"),
             #self.explorer.update_current_symbol)
-        self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
-            self.central.enable_follow_mode_scrollbar)
+        self.mainContainer.enabledFollowMode.connect(self.central.enable_follow_mode_scrollbar)
+        # self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
+        #     self.central.enable_follow_mode_scrollbar)
 
         if settings.SHOW_START_PAGE:
             self.mainContainer.show_start_page()
@@ -326,8 +356,9 @@ class __IDE(QMainWindow):
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
         current_file, recent_files=None):
         self.__project_to_open = len(projects)
-        self.connect(self.explorer, SIGNAL("projectOpened(QString)"),
-            self._set_editors_project_data)
+        self.explorer.projectOpened.connect(self._set_editors_project_data)
+        # self.connect(self.explorer, SIGNAL("projectOpened(QString)"),
+        #     self._set_editors_project_data)
         self.explorer.open_session_projects(projects, notIDEStart=False)
         self.mainContainer.open_files(filesTab1, notIDEStart=False)
         self.mainContainer.open_files(filesTab2, mainTab=False,
@@ -340,8 +371,9 @@ class __IDE(QMainWindow):
     def _set_editors_project_data(self):
         self.__project_to_open -= 1
         if self.__project_to_open == 0:
-            self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
-                self._set_editors_project_data)
+            self.explorer.projectOpened.disconnect(self._set_editors_project_data)
+            # self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
+            #     self._set_editors_project_data)
             self.mainContainer.update_editor_project()
 
     def open_file(self, filename):
@@ -469,7 +501,8 @@ class __IDE(QMainWindow):
                 self.mainContainer.save_all()
             if val == QMessageBox.Cancel:
                 event.ignore()
-        self.emit(SIGNAL("goingDown()"))
+        # self.emit(SIGNAL("goingDown()"))
+        self.goingDown.emit()
         self.save_settings()
         completion_daemon.shutdown_daemon()
         #close python documentation server (if running)
@@ -530,7 +563,7 @@ def start(filenames=None, projects_path=None,
         app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)
-    QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
+    # QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     #Translator
     #qsettings = QSettings()

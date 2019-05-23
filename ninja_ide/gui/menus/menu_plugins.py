@@ -16,8 +16,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import QObject
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide.gui import central_widget
 from ninja_ide.gui.dialogs import plugins_manager
@@ -35,10 +35,13 @@ class MenuPlugins(QObject):
         languagesAction = menuPlugins.addAction(self.tr("Languages Manager"))
         menuPlugins.addSeparator()
 
-        self.connect(manageAction, SIGNAL("triggered()"), self._show_manager)
-        self.connect(skinsAction, SIGNAL("triggered()"), self._show_themes)
-        self.connect(languagesAction, SIGNAL("triggered()"),
-            self._show_languages)
+        manageAction.triggered.connect(self._show_manager)
+        skinsAction.triggered.connect(self._show_themes)
+        languagesAction.triggered.connect(self._show_languages)
+        # self.connect(manageAction, SIGNAL("triggered()"), self._show_manager)
+        # self.connect(skinsAction, SIGNAL("triggered()"), self._show_themes)
+        # self.connect(languagesAction, SIGNAL("triggered()"),
+        #     self._show_languages)
 
     def _show_manager(self):
         manager = plugins_manager.PluginsManagerWidget(

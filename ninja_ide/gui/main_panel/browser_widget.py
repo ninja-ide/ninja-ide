@@ -19,12 +19,12 @@ from __future__ import unicode_literals
 
 import time
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtWebKit import QWebView
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QUrl
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtWebKit import QWebView
 
 from ninja_ide.core import file_manager
 from ninja_ide.gui.main_panel import itab_item

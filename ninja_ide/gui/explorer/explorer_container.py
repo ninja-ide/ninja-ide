@@ -19,17 +19,18 @@ from __future__ import unicode_literals
 
 import os
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QIcon
 
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QDateTime
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -44,7 +45,7 @@ from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 
 try:
-    from PyQt4.QtWebKit import QWebInspector
+    from PyQt5.QtWebKit import QWebInspector
 except:
     settings.WEBINSPECTOR_SUPPORTED = False
 
@@ -76,6 +77,10 @@ class __ExplorerContainer(QTabWidget):
     """
 
 ###############################################################################
+    updateLocator = pyqtSignal()
+    projectClosed = pyqtSignal(str)
+    goToDefinition = pyqtSignal(int)
+    projectOpened = pyqtSignal(str)
 
     def __init__(self, parent=None):
         QTabWidget.__init__(self, parent)
@@ -124,30 +129,39 @@ class __ExplorerContainer(QTabWidget):
         if not self._treeProjects:
             self._treeProjects = tree_projects_widget.TreeProjectsWidget()
             self.addTab(self._treeProjects, self.tr('Projects'))
-            self.connect(self._treeProjects, SIGNAL("runProject()"),
-                         self.__ide.actions.execute_project)
-            self.connect(self.__ide, SIGNAL("goingDown()"),
-                         self._treeProjects.shutdown)
-            self.connect(self._treeProjects,
-                         SIGNAL("addProjectToConsole(QString)"),
-                         self.__ide.actions.add_project_to_console)
-            self.connect(self._treeProjects,
-                         SIGNAL("removeProjectFromConsole(QString)"),
-                         self.__ide.actions.remove_project_from_console)
+            self._treeProjects.runProject.connect(self.__ide.actions.execute_project)
+            # self.connect(self._treeProjects, SIGNAL("runProject()"),
+            #              self.__ide.actions.execute_project)
+            self.__ide.goingDown.connect(self._treeProjects.shutdown)
+            # self.connect(self.__ide, SIGNAL("goingDown()"),
+            #              self._treeProjects.shutdown)
+            self._treeProjects.addProjectToConsole.connect(self.__ide.actions.add_project_to_console)
+            # self.connect(self._treeProjects,
+            #              SIGNAL("addProjectToConsole(QString)"),
+            #              self.__ide.actions.add_project_to_console)
+            self._treeProjects.removeProjectFromConsole.connect(self.__ide.actions.remove_project_from_console)
+            # self.connect(self._treeProjects,
+            #              SIGNAL("removeProjectFromConsole(QString)"),
+            #              self.__ide.actions.remove_project_from_console)
 
             def close_project_signal():
-                self.emit(SIGNAL("updateLocator()"))
+                # self.emit(SIGNAL("updateLocator()"))
+                self.updateLocator.emit()
 
             def close_files_related_to_closed_project(project):
                 if project:
-                    self.emit(SIGNAL("projectClosed(QString)"), project)
-            self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
-                         close_project_signal)
-            self.connect(self._treeProjects, SIGNAL("refreshProject()"),
-                         close_project_signal)
-            self.connect(self._treeProjects,
-                         SIGNAL("closeFilesFromProjectClosed(QString)"),
-                         close_files_related_to_closed_project)
+                    # self.emit(SIGNAL("projectClosed(QString)"), project)
+                    self.projectClosed.emit(project)
+            self._treeProjects.closeProject.connect(close_project_signal)
+            # self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
+            #              close_project_signal)
+            self._treeProjects.refreshProject.connect(close_project_signal)
+            # self.connect(self._treeProjects, SIGNAL("refreshProject()"),
+            #              close_project_signal)
+            self._treeProjects.closeFilesFromProjectClosed.connect(close_files_related_to_closed_project)
+            # self.connect(self._treeProjects,
+            #              SIGNAL("closeFilesFromProjectClosed(QString)"),
+            #              close_files_related_to_closed_project)
 
     def add_tab_symbols(self):
         if not self._treeSymbols:
@@ -155,9 +169,11 @@ class __ExplorerContainer(QTabWidget):
             self.addTab(self._treeSymbols, self.tr('Symbols'))
 
             def _go_to_definition(lineno):
-                self.emit(SIGNAL("goToDefinition(int)"), lineno)
-            self.connect(self._treeSymbols, SIGNAL("goToDefinition(int)"),
-                         _go_to_definition)
+                # self.emit(SIGNAL("goToDefinition(int)"), lineno)
+                self.goToDefinition.emit(lineno)
+            self._treeSymbols.goToDefinition.connect(_go_to_definition)
+            # self.connect(self._treeSymbols, SIGNAL("goToDefinition(int)"),
+            #              _go_to_definition)
 
     def update_current_symbol(self, line, col):
         """Select the proper item in the symbols list."""
@@ -172,17 +188,20 @@ class __ExplorerContainer(QTabWidget):
         if not self._inspector:
             self._inspector = WebInspector(self)
             self.addTab(self._inspector, self.tr("Web Inspector"))
-            self.connect(self._inspector.btnDock, SIGNAL("clicked()"),
-                         self._dock_inspector)
+            self._inspector.btnDock.clicked.connect(self._dock_inspector)
+            # self.connect(self._inspector.btnDock, SIGNAL("clicked()"),
+            #              self._dock_inspector)
 
     def add_tab_errors(self):
         if not self._listErrors:
             self._listErrors = errors_lists.ErrorsWidget()
             self.addTab(self._listErrors, self.tr("Errors"))
-            self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
-                         self.__ide.mainContainer.reset_pep8_warnings)
-            self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
-                         self.__ide.mainContainer.reset_lint_warnings)
+            self._listErrors.pep8Activated.connect(self.__ide.mainContainer.reset_pep8_warnings)
+            # self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
+            #              self.__ide.mainContainer.reset_pep8_warnings)
+            self._listErrors.linkActivated.connect(self.__ide.mainContainer.reset_lint_warnings)
+            # self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
+            #              self.__ide.mainContainer.reset_lint_warnings)
 
     def remove_tab_migration(self):
         if self._listMigration:
@@ -277,12 +296,14 @@ class __ExplorerContainer(QTabWidget):
                 self._treeProjects.loading_project(folderName)
                 thread = ui_tools.ThreadProjectExplore()
                 self._thread_execution[folderName] = thread
-                self.connect(thread,
-                             SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                             self._callback_open_project)
-                self.connect(thread,
-                             SIGNAL("finished()"),
-                             self._unmute_tree_signals_clean_threads)
+                thread.folderDataAcquired.connect(self._callback_open_project)
+                # self.connect(thread,
+                #              SIGNAL("folderDataAcquired(PyQt_PyObject)"),
+                #              self._callback_open_project)
+                thread.finished.connect(self._unmute_tree_signals_clean_threads)
+                # self.connect(thread,
+                #              SIGNAL("finished()"),
+                #              self._unmute_tree_signals_clean_threads)
                 thread.open_folder(folderName)
             else:
                 self._treeProjects._set_current_project(folderName)
@@ -313,8 +334,10 @@ class __ExplorerContainer(QTabWidget):
 
         self._treeProjects.load_project(structure, path)
         self.save_recent_projects(path)
-        self.emit(SIGNAL("projectOpened(QString)"), path)
-        self.emit(SIGNAL("updateLocator()"))
+        self.projectOpened.emit(path)
+        # self.emit(SIGNAL("projectOpened(QString)"), path)
+        # self.emit(SIGNAL("updateLocator()"))
+        self.updateLocator.emit()
 
     def create_new_project(self):
         if not self._treeProjects:
@@ -341,6 +364,7 @@ class __ExplorerContainer(QTabWidget):
     def get_project_given_filename(self, filename):
         projects = self.get_opened_projects()
         for project in projects:
+            # print(project, "LALALA")
             if filename.startswith(project.path):
                 return project
         return None

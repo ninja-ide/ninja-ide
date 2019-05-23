@@ -23,7 +23,7 @@ import sys
 # Import this before Qt to set the correct API
 import ninja_ide  # lint:ok
 
-from PyQt4.QtGui import QApplication
+from PyQt5.QtGui import QApplication
 
 from ninja_ide.gui import status_bar
 from ninja_ide.gui.main_panel import main_container

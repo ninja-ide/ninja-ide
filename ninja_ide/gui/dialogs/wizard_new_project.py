@@ -20,24 +20,24 @@ from __future__ import absolute_import
 import os
 import sys
 
-from PyQt4.QtGui import QWizard
-from PyQt4.QtGui import QWizardPage
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QDirModel
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QWizard
+from PyQt5.QtWidgets import QWizardPage
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QDirModel
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings

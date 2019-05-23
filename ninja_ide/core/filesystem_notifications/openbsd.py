@@ -1,6 +1,6 @@
 # -*- coding: utf-8 *-*
 from ninja_ide.core.filesystem_notifications import base_watcher
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import SIGNAL
 
 
 class NinjaFileSystemWatcher(base_watcher.BaseWatcher):

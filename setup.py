@@ -46,11 +46,11 @@ import ninja_ide
 # This modules can't be easy installed
 # Syntax: [(module, url of the tutorial)...]
 if sys.platform == 'win32':
-    NEEDED_MODULES = [("PyQt4",
+    NEEDED_MODULES = [("PyQt5",
         "http://www.riverbankcomputing.co.uk/software/pyqt/intro"),
         ('win32con', "http://sourceforge.net/projects/pywin32/files/pywin32/")]
 else:
-    NEEDED_MODULES = [("PyQt4",
+    NEEDED_MODULES = [("PyQt5",
         "http://www.riverbankcomputing.co.uk/software/pyqt/intro"), ]
 
 

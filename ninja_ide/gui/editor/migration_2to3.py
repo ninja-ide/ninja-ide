@@ -20,7 +20,7 @@ from __future__ import unicode_literals
 import os
 import subprocess
 
-from PyQt4.QtCore import QThread
+from PyQt5.QtCore import QThread
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings

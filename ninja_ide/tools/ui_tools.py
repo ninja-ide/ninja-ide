@@ -19,41 +19,42 @@ from __future__ import absolute_import
 import os
 import math
 
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QKeyEvent
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QMovie
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QLinearGradient
-from PyQt4.QtGui import QTableWidgetItem
-from PyQt4.QtGui import QAbstractItemView
-from PyQt4.QtGui import QPrinter
-from PyQt4.QtGui import QPrintPreviewDialog
-from PyQt4.QtGui import QPalette
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QPen
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QTreeWidget
-from PyQt4.QtGui import QTreeWidgetItem
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QTimeLine
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QMovie
+from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtGui import QLinearGradient
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QAbstractItemView
+from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtPrintSupport import QPrintPreviewDialog
+from PyQt5.QtGui import QPalette
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QPen
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal
+# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QTimeLine
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -141,6 +142,8 @@ class ThreadExecution(QThread):
 
 
 class ThreadProjectExplore(QThread):
+    folderDataRefreshed = pyqtSignal("PyQt_PyObject")
+    folderDataAcquired = pyqtSignal("PyQt_PyObject")
 
     def __init__(self):
         super(ThreadProjectExplore, self).__init__()
@@ -179,7 +182,8 @@ class ThreadProjectExplore(QThread):
                 [None, None])[1] is not None):
             folderStructure[self._folder_path][1].sort()
             values = (self._folder_path, self._item, folderStructure)
-            self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
+            # self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
+            self.folderDataRefreshed.emit(values)
 
     def _thread_open_project(self):
         try:
@@ -192,11 +196,13 @@ class ThreadProjectExplore(QThread):
             else:
                 structure = file_manager.open_project(self._folder_path)
 
-            self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                      (self._folder_path, structure))
+            self.folderDataAcquired.emit((self._folder_path, structure))
+            # self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
+            #           (self._folder_path, structure))
         except:
-            self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                      (self._folder_path, None))
+            self.folderDataAcquired.emit((self._folder_path, None))
+            # self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
+            #           (self._folder_path, None))
 
 
 ###############################################################################
@@ -515,7 +521,7 @@ class LineEditButton(object):
 
     def __init__(self, lineEdit, operation, icon=None):
         hbox = QHBoxLayout(lineEdit)
-        hbox.setMargin(0)
+        hbox.setContentsMargins(0, 0, 0, 0)
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(lineEdit)
@@ -531,7 +537,7 @@ class ComboBoxButton(object):
     def __init__(self, combo, operation, icon=None):
         hbox = QHBoxLayout(combo)
         hbox.setDirection(hbox.RightToLeft)
-        hbox.setMargin(0)
+        hbox.setContentsMargins(0, 0, 0, 0)
         combo.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(combo)
@@ -547,7 +553,7 @@ class LineEditCount(QObject):
     def __init__(self, lineEdit):
         QObject.__init__(self)
         hbox = QHBoxLayout(lineEdit)
-        hbox.setMargin(0)
+        hbox.setContentsMargins(0, 0, 0, 0)
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         self.counter = QLabel(lineEdit)

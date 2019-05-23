@@ -18,9 +18,9 @@
 import os
 import sys
 
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFileInfo
-from PyQt4.QtCore import QSettings
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFileInfo
+from PyQt5.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.dependencies import pep8mod
@@ -38,8 +38,8 @@ OS_KEY = "Ctrl"
 FONT_FAMILY = 'Monospace'
 FONT_SIZE = 11
 if sys.platform == "darwin":
-    from PyQt4.QtGui import QKeySequence
-    from PyQt4.QtCore import Qt
+    from PyQt5.QtGui import QKeySequence
+    from PyQt5.QtCore import Qt
 
     FONT_FAMILY = 'Monaco'
     FONT_SIZE = 11

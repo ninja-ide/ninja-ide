@@ -21,13 +21,13 @@ from __future__ import unicode_literals
 
 import re
 
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QTextCharFormat
-from PyQt4.QtGui import QFont
-from PyQt4.QtGui import QSyntaxHighlighter
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QRegExp
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QTextCharFormat
+from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QSyntaxHighlighter
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QRegExp
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings

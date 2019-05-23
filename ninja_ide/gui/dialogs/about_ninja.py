@@ -19,14 +19,14 @@ from __future__ import absolute_import
 
 import webbrowser
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+# from PyQt5.QtCore import SIGNAL
 
 import ninja_ide
 from ninja_ide import resources
@@ -75,10 +75,12 @@ and handles all kinds of situations thanks to its rich extensibility.""")))
                 (ninja_ide.__source__, ninja_ide.__source__))
         vbox.addWidget(link_source)
 
-        self.connect(link_ninja, SIGNAL("linkActivated(QString)"),
-            self.link_activated)
-        self.connect(link_source, SIGNAL("linkActivated(QString)"),
-            self.link_activated)
+        link_ninja.linkActivated.connect(self.link_activated)
+        link_source.linkActivated.connect(self.link_activated)
+        # self.connect(link_ninja, SIGNAL("linkActivated(QString)"),
+        #     self.link_activated)
+        # self.connect(link_source, SIGNAL("linkActivated(QString)"),
+        #     self.link_activated)
 
     def link_activated(self, link):
         webbrowser.open(str(link))

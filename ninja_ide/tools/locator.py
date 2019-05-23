@@ -23,27 +23,27 @@ try:
 except:
     import queue as Queue  # lint:ok
 
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QTextStream
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QBrush
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QFrame
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtWidgets import QStyle
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QTextStream
+# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.gui.explorer import explorer_container
@@ -86,9 +86,12 @@ class Locator(QObject):
     def __init__(self):
         QObject.__init__(self)
         self._thread = LocateThread()
-        self.connect(self._thread, SIGNAL("finished()"), self._load_results)
-        self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
-        self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+        self._thread.finished.connect(self._load_results)
+        self._thread.finished.connect(self._cleanup)
+        # self.connect(self._thread, SIGNAL("finished()"), self._load_results)
+        # self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
+        # self._thread.terminated
+        # self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
 
     def _cleanup(self):
         self._thread.wait()
@@ -433,8 +436,9 @@ class CodeLocatorWidget(QWidget):
         hLocator.addWidget(self._completer)
         hLocator.addWidget(self._btnGo)
 
-        self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
-        self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+        self._thread.finished.connect(self._cleanup)
+        # self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
+        # self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
 
     def _cleanup(self):
         self._thread.wait()
@@ -530,12 +534,13 @@ class LocateCompleter(QLineEdit):
         self._filterData = [None, None, None, None]
         self._line_jump = -1
 
-        self.connect(self, SIGNAL("textChanged(QString)"),
-                     self.set_prefix)
-
-        self.connect(self.frame.listWidget,
-                     SIGNAL("itemPressed(QListWidgetItem*)"),
-                     self._go_to_location)
+        self.textChanged.connect(self.set_prefix)
+        # self.connect(self, SIGNAL("textChanged(QString)"),
+        #              self.set_prefix)
+        self.frame.listWidget.itemPressed.connect(self._go_to_location)
+        # self.connect(self.frame.listWidget,
+        #              SIGNAL("itemPressed(QListWidgetItem*)"),
+        #              self._go_to_location)
 
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""

@@ -17,9 +17,9 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QVBoxLayout
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QVBoxLayout
 
 from ninja_ide.core import plugin_manager
 

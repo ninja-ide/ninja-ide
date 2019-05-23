@@ -17,15 +17,15 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QTabWidget
+from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QPushButton
+# from PyQt5.QtCore import SIGNAL
 
 
 class PluginErrorDialog(QDialog):
