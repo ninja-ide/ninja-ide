@@ -100,33 +100,48 @@ class MenuView(QObject):
             'zoom-in': zoomInAction,
             'zoom-out': zoomOutAction}
 
+        self.hideConsoleAction.triggered.connect(self.__ide.actions.view_misc_visibility)
         # self.connect(self.hideConsoleAction, SIGNAL("triggered()"),
         #     self.__ide.actions.view_misc_visibility)
+        self.hideEditorAction.triggered.connect(self.__ide.actions.view_main_visibility)
         # self.connect(self.hideEditorAction, SIGNAL("triggered()"),
         #     self.__ide.actions.view_main_visibility)
+        self.hideExplorerAction.triggered.connect(self.__ide.actions.view_explorer_visibility)
         # self.connect(self.hideExplorerAction, SIGNAL("triggered()"),
         #     self.__ide.actions.view_explorer_visibility)
+        self.hideAllAction.triggered.connect(self.__ide.actions.hide_all)
         # self.connect(self.hideAllAction, SIGNAL("triggered()"),
         #     self.__ide.actions.hide_all)
+        self.fullscreenAction.triggered.connect(self.__ide.actions.fullscreen_mode)
         # self.connect(self.fullscreenAction, SIGNAL("triggered()"),
         #     self.__ide.actions.fullscreen_mode)
 
+        splitTabHAction.triggered.connect(lambda: self.__ide.mainContainer.split_tab(True))
         # self.connect(splitTabHAction, SIGNAL("triggered()"),
         #     lambda: self.__ide.mainContainer.split_tab(True))
+        splitTabVAction.triggered.connect(lambda: self.__ide.mainContainer.split_tab(False))
         # self.connect(splitTabVAction, SIGNAL("triggered()"),
         #     lambda: self.__ide.mainContainer.split_tab(False))
+        followModeAction.triggered.connect(self.__ide.mainContainer.show_follow_mode)
         # QObject.connect(followModeAction, SIGNAL("triggered()"),
         #     self.__ide.mainContainer.show_follow_mode)
+        zoomInAction.triggered.connect(self.zoom_in_editor)
         # self.connect(zoomInAction, SIGNAL("triggered()"),
         #     self.zoom_in_editor)
+        zoomOutAction.triggered.connect(self.zoom_out_editor)
         # self.connect(zoomOutAction, SIGNAL("triggered()"),
         #     self.zoom_out_editor)
+        fadeInAction.triggered.connect(self._fade_in)
         # self.connect(fadeInAction, SIGNAL("triggered()"), self._fade_in)
+        fadeOutAction.triggered.connect(self._fade_out)
         # self.connect(fadeOutAction, SIGNAL("triggered()"), self._fade_out)
+        self.hideToolbarAction.triggered.connect(self._hide_show_toolbar)
         # self.connect(self.hideToolbarAction, SIGNAL("triggered()"),
         #     self._hide_show_toolbar)
+        groupTabsAction.triggered.connect(self.__ide.actions.group_tabs_together)
         # self.connect(groupTabsAction, SIGNAL("triggered()"),
         #     self.__ide.actions.group_tabs_together)
+        deactivateGroupTabsAction.triggered.connect(self.__ide.actions.deactivate_tabs_groups)
         # self.connect(deactivateGroupTabsAction, SIGNAL("triggered()"),
         #     self.__ide.actions.deactivate_tabs_groups)
 

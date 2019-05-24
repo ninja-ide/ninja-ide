@@ -109,6 +109,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.__init__(self)
         itab_item.ITabItem.__init__(self)
         #Config Editor
+        self.setCursorWidth(settings.CURSOR_WIDTH)
         self.set_flags()
         self.__lines_count = None
 
@@ -265,6 +266,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setTabStopWidth(tab_size)
         if self._mini:
             self._mini.setTabStopWidth(tab_size)
+
+    def set_cursor_width(self, width):
+        self.setCursorWidth(width)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)

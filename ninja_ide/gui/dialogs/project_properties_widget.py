@@ -81,8 +81,10 @@ class ProjectProperties(QDialog):
 
         vbox.addLayout(hbox)
 
-        self.connect(self.btnCancel, SIGNAL("clicked()"), self.close)
-        self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
+        self.btnCancel.clicked.connect(self.close)
+        # self.connect(self.btnCancel, SIGNAL("clicked()"), self.close)
+        self.btnSave.clicked.connect(self.save_properties)
+        # self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
         if self.projectData.name.text().strip() == '':
@@ -302,15 +304,20 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.txtVenvPath, 9, 1)
         grid.addWidget(self.btnVenvPath, 9, 2)
 
-        self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
-        self.connect(self.btnPythonPath, SIGNAL("clicked()"),
-            self._load_python_path)
-        self.connect(self.btnVenvPath, SIGNAL("clicked()"),
-            self._load_python_venv)
-        self.connect(self.btnPreExec, SIGNAL("clicked()"),
-            self.select_pre_exec_script)
-        self.connect(self.btnPostExec, SIGNAL("clicked()"),
-            self.select_post_exec_script)
+        self.btnBrowse.clicked.connect(self.select_file)
+        # self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
+        self.btnPythonPath.clicked.connect(self._load_python_path)
+        # self.connect(self.btnPythonPath, SIGNAL("clicked()"),
+        #     self._load_python_path)
+        self.btnVenvPath.clicked.connect(self._load_python_venv)
+        # self.connect(self.btnVenvPath, SIGNAL("clicked()"),
+        #     self._load_python_venv)
+        self.btnPreExec.clicked.connect(self.select_pre_exec_script)
+        # self.connect(self.btnPreExec, SIGNAL("clicked()"),
+        #     self.select_pre_exec_script)
+        self.btnPostExec.clicked.connect(self.select_post_exec_script)
+        # self.connect(self.btnPostExec, SIGNAL("clicked()"),
+        #     self.select_post_exec_script)
 
     def _load_python_path(self):
         path = QFileDialog.getOpenFileName(

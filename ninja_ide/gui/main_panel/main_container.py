@@ -537,8 +537,8 @@ class __MainContainer(QSplitter):
             extensions = ';;'.join(
                 ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
-            fileNames = list(QFileDialog.getOpenFileNames(self,
-                self.tr("Open File"), directory, extensions))
+            fileNames = QFileDialog.getOpenFileNames(self,
+                self.tr("Open File"), directory, extensions)[0]
         else:
             fileNames = [filename]
         if not fileNames:
@@ -849,14 +849,15 @@ class __MainContainer(QSplitter):
             self.move_to_open("Start Page")
 
     def show_python_doc(self):
-        if sys.platform == 'win32':
-            self.docPage = browser_widget.BrowserWidget(
-                'http://docs.python.org/')
-            self.add_tab(self.docPage, self.tr("Python Documentation"))
-        else:
-            process = runner.start_pydoc()
-            self.docPage = browser_widget.BrowserWidget(process[1], process[0])
-            self.add_tab(self.docPage, self.tr("Python Documentation"))
+        # if sys.platform == 'win32':
+        #     self.docPage = browser_widget.BrowserWidget(
+        #         'http://docs.python.org/')
+        #     self.add_tab(self.docPage, self.tr("Python Documentation"))
+        # else:
+        #     process = runner.start_pydoc()
+        #     self.docPage = browser_widget.BrowserWidget(process[1], process[0])
+        #     self.add_tab(self.docPage, self.tr("Python Documentation"))
+        pass
 
     def editor_jump_to_line(self, lineno=None):
         """Jump to line *lineno* if it is not None

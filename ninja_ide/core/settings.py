@@ -135,6 +135,7 @@ MARGIN_LINE = 80
 SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
 SHOW_TABS_AND_SPACES = True
+CURSOR_WIDTH = 1
 
 BRACES = {'{': '}',
           '[': ']',
@@ -347,6 +348,7 @@ def pep8mod_update_margin_line_length(new_margin_line):
 def load_settings():
     qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     #Globals
+    global CURSOR_WIDTH
     global TOOLBAR_AREA
     global LANGUAGE
     global SHOW_START_PAGE
@@ -502,6 +504,8 @@ def load_settings():
         'preferences/editor/centerOnScroll', True, type=bool)
     parentheses = qsettings.value('preferences/editor/parentheses', True,
                                   type=bool)
+    CURSOR_WIDTH = qsettings.value('preferences/editor/cursorWidth', 1, type=int)
+
     if not parentheses:
         del BRACES['(']
     brackets = qsettings.value('preferences/editor/brackets', True, type=bool)

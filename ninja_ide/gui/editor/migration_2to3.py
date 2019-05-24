@@ -57,7 +57,7 @@ class MigrationTo3(QThread):
             parsing_adds = False
             try:
                 output = subprocess.check_output(self._command + [self._path])
-                output = output.split('\n')
+                output = output.decode().split('\n')
             except OSError:
                 settings.VALID_2TO3 = False
                 return

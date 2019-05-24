@@ -70,10 +70,11 @@ class MenuAbout(QObject):
         webbrowser.open(resources.BUGS_PAGE)
 
     def show_plugins_doc(self):
-        bugsPage = browser_widget.BrowserWidget(resources.PLUGINS_DOC,
-            parent=main_container.MainContainer())
-        main_container.MainContainer().add_tab(
-            bugsPage, self.tr("How to Write NINJA-IDE plugins"))
+        # bugsPage = browser_widget.BrowserWidget(resources.PLUGINS_DOC,
+        #     parent=main_container.MainContainer())
+        # main_container.MainContainer().add_tab(
+        #     bugsPage, self.tr("How to Write NINJA-IDE plugins"))
+        pass
 
     def _show_about_qt(self):
         QMessageBox.aboutQt(main_container.MainContainer(),

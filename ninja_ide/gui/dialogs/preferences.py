@@ -924,7 +924,6 @@ class EditorGeneral(QWidget):
         if scheme == self.current_scheme:
             return
         editorWidget = main_container.MainContainer().get_actual_editor()
-        print(editorWidget)
         if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 resources.COLOR_SCHEME)
@@ -1104,6 +1103,10 @@ class EditorConfiguration(QWidget):
         self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
         formFeatures.addWidget(self._checkForDocstrings, 14, 1, 1, 2,
             alignment=Qt.AlignTop)
+        formFeatures.addWidget(QLabel(self.tr("Cursor width: ")), 15, 1, 1, 2)
+        self._spin_cursor_width = QSpinBox()
+        self._spin_cursor_width.setValue(settings.CURSOR_WIDTH)
+        formFeatures.addWidget(self._spin_cursor_width, 16, 1, 1, 2)
 
         vbox.addWidget(groupBoxFeatures)
         vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
@@ -1178,11 +1181,14 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('checkForDocstrings',
             self._checkForDocstrings.isChecked())
         settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
+        settings.CURSOR_WIDTH = self._spin_cursor_width.value()
+        qsettings.setValue('cursorWidth', settings.CURSOR_WIDTH)
         qsettings.endGroup()
         qsettings.endGroup()
         action = actions.Actions()
         action.reset_editor_flags()
         action.call_editors_function("set_tab_usage")
+        action.call_editors_function("set_cursor_width", settings.CURSOR_WIDTH)
         if settings.USE_TABS:
             settings.pep8mod_add_ignore("W191")
         else:
