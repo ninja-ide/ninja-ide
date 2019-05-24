@@ -492,10 +492,10 @@ class __IDE(QMainWindow):
                 self.mainContainer.check_for_unsaved_tabs()):
             unsaved_files = self.mainContainer.get_unsaved_files()
             txt = '\n'.join(unsaved_files)
-            val = QMessageBox.question(self,
-                self.tr("Some changes were not saved"),
-                (self.tr("%s\n\nDo you want to save them?") % txt),
-                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+            val = QMessageBox.question(
+                self, self.tr("Some changes were not saved"),
+                self.tr("%s\n\nDo you want to save them?" % txt),
+                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
             if val == QMessageBox.Yes:
                 #Saves all open files
                 self.mainContainer.save_all()

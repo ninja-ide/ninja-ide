@@ -516,7 +516,6 @@ def _create_scheme():
 
 def load_syntax(syntax):
     context = _create_scheme() or {}
-
     partition_scanner = PartitionScanner(syntax.get("partitions", []))
 
     scanners = {}

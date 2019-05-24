@@ -39,11 +39,13 @@ def get_completions_per_type(object_dir):
     if not object_dir:
         return {}
     result = {'attributes': [], 'modules': [], 'functions': [], 'classes': []}
-    type_assign = {types.ClassType: 'classes',
-                   types.FunctionType: 'functions',
-                   types.MethodType: 'functions',
-                   types.ModuleType: 'modules',
-                   types.LambdaType: 'functions'}
+    type_assign = {
+        type: 'classes',
+        types.FunctionType: 'functions',
+        types.MethodType: 'functions',
+        types.ModuleType: 'modules',
+        types.LambdaType: 'functions'
+    }
 
     for attr in object_dir:
         obj = None
@@ -54,13 +56,14 @@ def get_completions_per_type(object_dir):
             logger.error('Could not load symbol: %r', ex)
             return {}
 
-        if type(obj) in (types.ClassType, types.TypeType):
+        if type(obj) in (type,):
             # Look for the highest __init__ in the class chain.
             obj = _find_constructor(obj)
         elif isinstance(obj, types.MethodType):
             # bit of a hack for methods - turn it into a function
             # but we drop the "self" param.
-            obj = obj.im_func
+            print(dir(obj), obj)
+            # obj = obj.im_func
 
         # Not Show functions args, but we will use this for showing doc
 #        if type(obj) in [types.FunctionType, types.LambdaType]:

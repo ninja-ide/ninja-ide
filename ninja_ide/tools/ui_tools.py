@@ -51,7 +51,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QSize
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
-# from PyQt5.QtCore import SIGNAL
 from PyQt5.QtCore import QThread
 from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import QTimeLine
@@ -123,6 +122,8 @@ class LoadingItem(QLabel):
 
 class ThreadExecution(QThread):
 
+    executionFinished = pyqtSignal(object)
+
     def __init__(self, functionInit=None, args=None, kwargs=None):
         super(ThreadExecution, self).__init__()
         QThread.__init__(self)
@@ -136,8 +137,9 @@ class ThreadExecution(QThread):
     def run(self):
         if self.execute:
             self.result = self.execute(*self.args, **self.kwargs)
-        self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
-                  self.signal_return)
+        self.executionFinished.emit(self.signal_return)
+        # self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
+        #           self.signal_return)
         self.signal_return = None
 
 
@@ -351,12 +353,14 @@ class AddToProject(QDialog):
         self.loading_projects(pathProjects)
         self._thread_execution = ThreadExecution(
             self._thread_load_projects, args=[pathProjects])
-        self.connect(self._thread_execution,
-                     SIGNAL("finished()"), self._callback_load_project)
+        self._thread_execution.finished.connect(self._callback_load_project)
+        # self.connect(self._thread_execution,
+        #              SIGNAL("finished()"), self._callback_load_project)
         self._thread_execution.start()
-
-        self.connect(btnCancel, SIGNAL("clicked()"), self.close)
-        self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)
+        btnCancel.clicked.connect(self.close)
+        # self.connect(btnCancel, SIGNAL("clicked()"), self.close)
+        btnAdd.clicked.connect(self._select_path)
+        # self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)
 
     def loading_projects(self, projects):
         for project in projects:
@@ -467,12 +471,17 @@ class ProfilesLoader(QDialog):
         vbox.addWidget(self.contentList)
         vbox.addLayout(hbox)
 
-        self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
-                     self.load_profile_content)
-        self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
-        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_profile)
-        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
-        self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_profile)
+        self.profileList.itemSelectionChanged.connect(self.load_profile_content)
+        # self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
+        #              self.load_profile_content)
+        self.btnOpen.clicked.connect(self.open_profile)
+        # self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
+        self.btnUpdate.clicked.connect(self.save_profile)
+        # self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_profile)
+        self.btnCreate.clicked.connect(self.create_profile)
+        # self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
+        self.btnDelete.clicked.connect(self.delete_profile)
+        # self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_profile)
 
     def load_profile_content(self):
         item = self.profileList.currentItem()
@@ -604,8 +613,9 @@ class LineEditTabCompleter(QLineEdit):
         else:
             actionCompletion = QAction(
                 self.tr("Set completion type to: Inline Completion"), self)
-        self.connect(actionCompletion, SIGNAL("triggered()"),
-                     self.change_completion_type)
+        actionCompletion.triggered.connect(self.change_completion_type)
+        # self.connect(actionCompletion, SIGNAL("triggered()"),
+        #              self.change_completion_type)
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertAction(popup_menu.actions()[0], actionCompletion)
 

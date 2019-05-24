@@ -120,7 +120,7 @@ class MenuFile(QObject):
             'close-file': closeAction,
             'close-projects': closeProjectsAction}
 
-        newAction.triggered.connect(ide.mainContainer.add_editor)
+        newAction.triggered.connect(lambda: ide.mainContainer.add_editor())
         # self.connect(newAction, SIGNAL("triggered()"),
         #     ide.mainContainer.add_editor)
         newProjectAction.triggered.connect(ide.explorer.create_new_project)

@@ -25,12 +25,13 @@ import copy
 import zipfile
 import traceback
 #lint:disable
-try:
-    from urllib.request import urlopen
-    from urllib.error import URLError
-except ImportError:
-    from urllib2 import urlopen
-    from urllib2 import URLError
+from urllib.request import urlopen, URLError
+# try:
+#     from urllib.request import urlopen
+#     from urllib.error import URLError
+# except ImportError:
+#     from urllib2 import urlopen
+#     from urllib2 import URLError
 #lint:enable
 
 from ninja_ide import resources
@@ -393,10 +394,16 @@ def _availables_plugins(url):
     """
     Return the availables plugins from an url in NINJA-IDE web page
     """
+    import json
     try:
-        descriptor = urlopen(url)
-        plugins = json_manager.read_json_from_stream(descriptor)
+        descriptor = urlopen(url).read().decode('utf8')
+        # plugins = json_manager.parse(descriptor)
+        plugins = json.loads(descriptor)
         return plugins
+        # descriptor = urlopen(url)
+        # print(descriptor, type(descriptor))
+        # plugins = json_manager.read_json_from_stream(descriptor)
+        # return plugins
     except URLError:
         return {}
 

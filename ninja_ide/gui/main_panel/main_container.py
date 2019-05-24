@@ -313,10 +313,8 @@ class __MainContainer(QSplitter):
         tab_from.update_current_widget()
 
     def add_editor(self, fileName="", project=None, tabIndex=None,
-        syntax=None, use_open_highlight=False):
-
-        project_obj = self._parent.explorer.get_project_given_filename(
-            fileName)
+                   syntax=None, use_open_highlight=False):
+        project_obj = self._parent.explorer.get_project_given_filename(fileName)
         editorWidget = editor.create_editor(fileName=fileName, project=project,
             syntax=syntax, use_open_highlight=use_open_highlight,
             project_obj=project_obj)

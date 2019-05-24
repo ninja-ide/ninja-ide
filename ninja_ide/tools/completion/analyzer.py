@@ -259,9 +259,10 @@ class Analyzer(object):
             if isinstance(arg, ast.Tuple):
                 self._parse_tuple_in_func_arg(arg, function, symbol.lineno)
                 continue
-            elif arg.id == 'self':
+
+            elif arg.arg == 'self':
                 continue
-            assign = model.Assign(arg.id)
+            assign = model.Assign(arg.arg)
             data_type = (model.late_resolution, None)
             if defaults:
                 data_type = defaults.pop()
@@ -304,12 +305,12 @@ class Analyzer(object):
             if data_type != model.late_resolution:
                 type_value = None
             function.add_return(lineno, data_type, line_content, type_value)
-        elif symbol.__class__ in (ast.If, ast.For, ast.TryExcept):
+        elif symbol.__class__ in (ast.If, ast.For, ast.Try):
             for sym in symbol.body:
                 self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.orelse:
                 self._search_recursive_for_types(function, else_item, parent)
-        elif symbol.__class__ is ast.TryFinally:
+        elif symbol.__class__ is ast.Try:
             for sym in symbol.body:
                 self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.finalbody:

@@ -362,7 +362,7 @@ class SidebarWidget(QWidget):
             xofs = self.width() - self.foldArea
             font_metrics = QFontMetrics(self.edit.document().defaultFont())
             fh = font_metrics.lineSpacing()
-            ys = event.posF().y()
+            ys = event.pos().y()
             lineNumber = 0
 
             if event.pos().x() > xofs:

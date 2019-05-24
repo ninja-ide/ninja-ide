@@ -22,10 +22,8 @@
 import re
 import token as tkn
 from tokenize import generate_tokens, TokenError
-try:
-    from StringIO import StringIO
-except:
-    from io import StringIO, BytesIO  # lint:ok
+
+from io import StringIO
 
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
@@ -90,8 +88,8 @@ class CodeCompletion(object):
         token_code = []
         try:
             print(code)
-            # for tkn_type, tkn_str, pos, _, line, in generate_tokens(BytesIO(code).readline):
-            #     token_code.append((tkn_type, tkn_str, pos, line))
+            for tkn_type, tkn_str, pos, _, line, in generate_tokens(StringIO(code.decode()).readline):
+                token_code.append((tkn_type, tkn_str, pos, line))
         except TokenError:
             #This is an expected situation, where i don't want to do anything
             #possible an unbalanced brace like: func(os.p| (| = cursor-end)
@@ -114,7 +112,7 @@ class CodeCompletion(object):
         previous_line = ('', '')
         keep_exploring = True
         iterate = reversed(token_code)
-        line = iterate.next()
+        line = next(iterate)
         while keep_exploring:
             is_indented = line[3].startswith(' ')
             is_definition = line[1] in ('def', 'class')
@@ -135,7 +133,7 @@ class CodeCompletion(object):
                 keep_exploring = False
             previous_line = line[1]
             try:
-                line = iterate.next()
+                line = next(iterate)
             except StopIteration:
                 keep_exploring = False
         return scopes
@@ -146,7 +144,7 @@ class CodeCompletion(object):
         iterate = reversed(token_code)
         while keep_iter:
             try:
-                value = iterate.next()
+                value = next(iterate)
                 if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
                     keep_iter = False
                 tokens.append(value)
@@ -248,9 +246,9 @@ class CodeCompletion(object):
             data = {'attributes': result['type']['attributes'],
                     'functions': result['type']['functions']}
         else:
-            clazzes = sorted(set(self.patClass.findall(code)))
-            funcs = sorted(set(self.patFunction.findall(code)))
-            attrs = sorted(set(self.patWords.split(code)))
+            clazzes = sorted(set(self.patClass.findall(code.decode())))
+            funcs = sorted(set(self.patFunction.findall(code.decode())))
+            attrs = sorted(set(self.patWords.split(code.decode())))
             if final_word in attrs:
                 attrs.remove(final_word)
             if attr_name in attrs:

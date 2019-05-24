@@ -364,7 +364,6 @@ class __ExplorerContainer(QTabWidget):
     def get_project_given_filename(self, filename):
         projects = self.get_opened_projects()
         for project in projects:
-            # print(project, "LALALA")
             if filename.startswith(project.path):
                 return project
         return None

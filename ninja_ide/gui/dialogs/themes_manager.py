@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import json
 #lint:disable
 try:
     from urllib.request import urlopen
@@ -69,10 +70,13 @@ class ThemesManagerWidget(QDialog):
         self.downloadItems = []
 
         #Load Themes with Thread
-        self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
+        btnReload.clicked.connect(self._reload_themes)
+        # self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
-        self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
-        self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        self._thread.finished.connect(self.load_skins_data)
+        # self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
+        btn_close.clicked.connect(self.close)
+        # self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self._reload_themes()
 
     def _reload_themes(self):
@@ -102,8 +106,9 @@ class ThemesManagerWidget(QDialog):
 
     def execute_thread(self):
         try:
-            descriptor_schemes = urlopen(resources.SCHEMES_URL)
-            schemes = json_manager.parse(descriptor_schemes)
+            descriptor_schemes = urlopen(resources.SCHEMES_URL).read().decode('utf8')
+            # schemes = json_manager.parse(descriptor_schemes)
+            schemes = json.loads(descriptor_schemes)
             schemes = [(d['name'], d['download']) for d in schemes]
             local_schemes = self.get_local_schemes()
             schemes = [schemes[i] for i in range(len(schemes)) if
@@ -126,9 +131,9 @@ class ThemesManagerWidget(QDialog):
     def download(self, url, folder):
         fileName = os.path.join(folder, os.path.basename(url))
         try:
-            content = urlopen(url)
+            content = urlopen(url).read().decode('utf8')
             f = open(fileName, 'w')
-            f.write(content.read())
+            f.write(content)
             f.close()
         except URLError:
             return
@@ -151,7 +156,8 @@ class SchemeWidget(QWidget):
         vbox.addWidget(btnUninstall)
         self._table.setColumnWidth(0, 200)
 
-        self.connect(btnUninstall, SIGNAL("clicked()"), self._download_scheme)
+        btnUninstall.clicked.connect(self._download_scheme)
+        # self.connect(btnUninstall, SIGNAL("clicked()"), self._download_scheme)
 
     def _download_scheme(self):
         schemes = ui_tools.remove_get_selected_items(self._table,

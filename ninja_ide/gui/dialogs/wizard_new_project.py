@@ -262,9 +262,10 @@ class PageProjectType(QWizardPage):
         self.listWidget.addItems(types)
         self.listWidget.setCurrentRow(0)
 
-        self.connect(self.listWidget,
-            SIGNAL("itemClicked(QListWidgetItem *)"),
-            self.load_pages)
+        self.listWidget.itemClicked.connect(self.load_pages)
+        # self.connect(self.listWidget,
+        #     SIGNAL("itemClicked(QListWidgetItem *)"),
+        #     self.load_pages)
 
     def validatePage(self):
         self._wizard.option = self.listWidget.currentItem().text()
@@ -344,11 +345,14 @@ class PageProjectProperties(QWizardPage):
         gbox.addWidget(self.cboLicense, 3, 1)
         gbox.addLayout(vPlace, 4, 1)
         #Signal
-        self.connect(self.btnExamine, SIGNAL('clicked()'), self.load_folder)
-        self.connect(self.vbtnExamine, SIGNAL('clicked()'),
-            self.load_folder_venv)
-        self.connect(self.txtName, SIGNAL('textChanged(const QString&)'),
-            lambda: self.emit(SIGNAL("completeChanged()")))
+        self.btnExamine.clicked.connect(self.load_folder)
+        # self.connect(self.btnExamine, SIGNAL('clicked()'), self.load_folder)
+        self.vbtnExamine.clicked.connect(self.load_folder_venv)
+        # self.connect(self.vbtnExamine, SIGNAL('clicked()'),
+        #     self.load_folder_venv)
+        self.txtName.textChanged.connect(self.completeChanged.emit)
+        # self.connect(self.txtName, SIGNAL('textChanged(const QString&)'),
+        #     lambda: self.emit(SIGNAL("completeChanged()")))
 
     def isComplete(self):
         name = self.txtName.text().strip()
@@ -358,7 +362,8 @@ class PageProjectProperties(QWizardPage):
     def load_folder(self):
         self.txtPlace.setText(QFileDialog.getExistingDirectory(
             self, self.tr("New Project Folder")))
-        self.emit(SIGNAL("completeChanged()"))
+        # self.emit(SIGNAL("completeChanged()"))
+        self.completeChanged.emit()
 
     def load_folder_venv(self):
         self.vtxtPlace.setText(QFileDialog.getExistingDirectory(

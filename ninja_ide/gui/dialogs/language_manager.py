@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import json
 #lint:disable
 try:
     from urllib.request import urlopen
@@ -107,8 +108,9 @@ class LanguagesManagerWidget(QDialog):
 
     def execute_thread(self):
         try:
-            descriptor_languages = urlopen(resources.LANGUAGES_URL)
-            languages = json_manager.parse(descriptor_languages)
+            descriptor_languages = urlopen(resources.LANGUAGES_URL).read().decode('utf8')
+            # languages = json_manager.parse(descriptor_languages)
+            languages = json.loads(descriptor_languages)
             languages = [[name, languages[name]] for name in languages]
             local_languages = self.get_local_languages()
             languages = [languages[i] for i in range(len(languages)) if

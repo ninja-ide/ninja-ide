@@ -110,8 +110,10 @@ class PreferencesWidget(QDialog):
         vbox.addWidget(self._tabs)
         vbox.addLayout(gridFooter)
 
-        self.connect(self._btnSave, SIGNAL("clicked()"), self._save)
-        self.connect(self._btnCancel, SIGNAL("clicked()"), self._cancel)
+        self._btnSave.clicked.connect(self._save)
+        # self.connect(self._btnSave, SIGNAL("clicked()"), self._save)
+        self._btnCancel.clicked.connect(self._cancel)
+        # self.connect(self._btnCancel, SIGNAL("clicked()"), self._cancel)
 
     def _cancel(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
@@ -226,10 +228,12 @@ class GeneralConfiguration(QWidget):
         vbox.addWidget(groupBoxReset)
 
         #Signals
-        self.connect(self._btnWorkspace,
-            SIGNAL("clicked()"), self._load_workspace)
-        self.connect(self._btnReset,
-            SIGNAL('clicked()'), self._reset_preferences)
+        self._btnWorkspace.clicked.connect(self._load_workspace)
+        # self.connect(self._btnWorkspace,
+        #     SIGNAL("clicked()"), self._load_workspace)
+        self._btnReset.clicked.connect(self._reset_preferences)
+        # self.connect(self._btnReset,
+        #     SIGNAL('clicked()'), self._reset_preferences)
 
     def _load_workspace(self):
         path = QFileDialog.getExistingDirectory(
@@ -384,8 +388,9 @@ class GeneralExecution(QWidget):
         vbox.addWidget(groupExecution)
 
         #Signals
-        self.connect(self._btnPythonPath,
-            SIGNAL("clicked()"), self._load_python_path)
+        self._btnPythonPath.clicked.connect(self._load_python_path)
+        # self.connect(self._btnPythonPath,
+        #     SIGNAL("clicked()"), self._load_python_path)
 
     def _load_python_path(self):
         path = QFileDialog.getOpenFileName(self, self.tr("Select Python Path"))
@@ -547,18 +552,24 @@ class InterfaceTab(QWidget):
         vbox.addWidget(groupBoxLang)
 
         #Signals
-        self.connect(self._btnCentralRotate, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_central_rotate)
-        self.connect(self._btnPanelsRotate, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_misc_rotate)
-        self.connect(self._btnCentralOrientation, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_central_orientation)
-        self.connect(self._btnItemAdd, SIGNAL("clicked()"),
-            self.toolbar_item_added)
-        self.connect(self._btnItemRemove, SIGNAL("clicked()"),
-            self.toolbar_item_removed)
-        self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
-            self.toolbar_items_default)
+        self._btnCentralRotate.clicked.connect(central_widget.CentralWidget().splitter_central_rotate)
+        # self.connect(self._btnCentralRotate, SIGNAL('clicked()'),
+        #     central_widget.CentralWidget().splitter_central_rotate)
+        self._btnPanelsRotate.clicked.connect(central_widget.CentralWidget().splitter_misc_rotate)
+        # self.connect(self._btnPanelsRotate, SIGNAL('clicked()'),
+        #     central_widget.CentralWidget().splitter_misc_rotate)
+        self._btnCentralOrientation.clicked.connect(central_widget.CentralWidget().splitter_central_orientation)
+        # self.connect(self._btnCentralOrientation, SIGNAL('clicked()'),
+        #     central_widget.CentralWidget().splitter_central_orientation)
+        self._btnItemAdd.clicked.connect(self.toolbar_item_added)
+        # self.connect(self._btnItemAdd, SIGNAL("clicked()"),
+        #     self.toolbar_item_added)
+        self._btnItemRemove.clicked.connect(self.toolbar_item_removed)
+        # self.connect(self._btnItemRemove, SIGNAL("clicked()"),
+        #     self.toolbar_item_removed)
+        self._btnDefaultItems.clicked.connect(self.toolbar_items_default)
+        # self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
+        #     self.toolbar_items_default)
 
     def toolbar_item_added(self):
         data = self._comboToolbarItems.itemData(
@@ -862,16 +873,19 @@ class EditorGeneral(QWidget):
         vbox.addWidget(groupBoxScheme)
 
         #Signals
-        self.connect(self._btnEditorFont,
-            SIGNAL("clicked()"), self._load_editor_font)
-        self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
-            self._preview_style)
+        self._btnEditorFont.clicked.connect(self._load_editor_font)
+        # self.connect(self._btnEditorFont,
+        #     SIGNAL("clicked()"), self._load_editor_font)
+        self._listScheme.itemSelectionChanged.connect(self._preview_style)
+        # self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
+        #     self._preview_style)
 
     def showEvent(self, event):
         super(EditorGeneral, self).showEvent(event)
         self.thread_callback = ui_tools.ThreadExecution(self._get_editor_skins)
-        self.connect(self.thread_callback, SIGNAL("finished()"),
-            self._show_editor_skins)
+        self.thread_callback.finished.connect(self._show_editor_skins)
+        # self.connect(self.thread_callback, SIGNAL("finished()"),
+        #     self._show_editor_skins)
         self.thread_callback.start()
 
     def _get_editor_skins(self):
@@ -910,6 +924,7 @@ class EditorGeneral(QWidget):
         if scheme == self.current_scheme:
             return
         editorWidget = main_container.MainContainer().get_actual_editor()
+        print(editorWidget)
         if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 resources.COLOR_SCHEME)
@@ -996,8 +1011,9 @@ class EditorConfiguration(QWidget):
         self._checkUseTabs = QCheckBox(
             self.tr("Use Tabs."))
         self._checkUseTabs.setChecked(settings.USE_TABS)
-        self.connect(self._checkUseTabs, SIGNAL("stateChanged(int)"),
-            self._change_tab_spaces)
+        self._checkUseTabs.stateChanged.connect(self._change_tab_spaces)
+        # self.connect(self._checkUseTabs, SIGNAL("stateChanged(int)"),
+        #     self._change_tab_spaces)
         formFeatures.addWidget(self._checkUseTabs, 1, 2, alignment=Qt.AlignTop)
         if settings.USE_TABS:
             self._spin.setSuffix(self.tr("  (tab size)"))
@@ -1030,13 +1046,15 @@ class EditorConfiguration(QWidget):
         self._checkErrors.setChecked(settings.FIND_ERRORS)
         formFeatures.addWidget(self._checkErrors, 5, 1, 1, 2,
             alignment=Qt.AlignTop)
-        self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
-            self._disable_show_errors)
+        self._checkErrors.stateChanged.connect(self._disable_show_errors)
+        # self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
+        #     self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
             self.tr("Show Tool tip information about the errors."))
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
-        self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
-            self._enable_errors_inline)
+        self._showErrorsOnLine.stateChanged.connect(self._enable_errors_inline)
+        # self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
+        #     self._enable_errors_inline)
         formFeatures.addWidget(self._showErrorsOnLine, 6, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
@@ -1044,13 +1062,15 @@ class EditorConfiguration(QWidget):
         self._checkStyle.setChecked(settings.CHECK_STYLE)
         formFeatures.addWidget(self._checkStyle, 7, 1, 1, 2,
             alignment=Qt.AlignTop)
-        self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
-            self._disable_check_style)
+        self._checkStyle.stateChanged.connect(self._disable_check_style)
+        # self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
+        #     self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
             self.tr("Show Tool tip information about the PEP8 errors."))
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
-        self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
-            self._enable_check_inline)
+        self._checkStyleOnLine.stateChanged.connect(self._enable_check_inline)
+        # self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
+        #     self._enable_check_inline)
         formFeatures.addWidget(self._checkStyleOnLine, 8, 2, 1, 1, Qt.AlignTop)
         # Python3 Migration
         self._showMigrationTips = QCheckBox(
@@ -1415,153 +1435,207 @@ class EditorSchemeDesigner(QWidget):
         frame.setLayout(vbox)
         scrollArea.setWidget(frame)
 
-        self.connect(self.txtKeyword, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnKeyword, self.txtKeyword.text()))
-        self.connect(self.txtOperator, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnOperator, self.txtOperator.text()))
-        self.connect(self.txtBrace, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnBrace, self.txtBrace.text()))
-        self.connect(self.txtDefinition, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnDefinition, self.txtDefinition.text()))
-        self.connect(self.txtString, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnString, self.txtString.text()))
-        self.connect(self.txtString2, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnString2, self.txtString2.text()))
-        self.connect(self.txtSpaces, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnSpaces, self.txtSpaces.text()))
-        self.connect(self.txtExtras, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnExtras, self.txtExtras.text()))
-        self.connect(self.txtComment, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnComment, self.txtComment.text()))
-        self.connect(self.txtProperObject, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnProperObject, self.txtProperObject.text()))
-        self.connect(self.txtNumbers, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnNumbers,
-                self.txtNumbers.text()))
-        self.connect(self.txtEditorText, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnEditorText, self.txtEditorText.text()))
-        self.connect(self.txtEditorBackground, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnEditorBackground,
-                self.txtEditorBackground.text()))
-        self.connect(self.txtEditorSelectionColor,
-            SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnEditorSelectionColor,
-                self.txtEditorSelectionColor.text()))
-        self.connect(self.txtEditorSelectionBackground,
-            SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnEditorSelectionBackground,
-                self.txtEditorSelectionBackground.text()))
-        self.connect(self.txtCurrentLine, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnCurrentLine, self.txtCurrentLine.text()))
-        self.connect(self.txtSelectedWord, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnSelectedWord, self.txtSelectedWord.text()))
-        self.connect(self.txtFoldArea, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnFoldArea, self.txtFoldArea.text()))
-        self.connect(self.txtFoldArrow, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnFoldArrow, self.txtFoldArrow.text()))
-        self.connect(self.txtLinkNavigate, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnLinkNavigate, self.txtLinkNavigate.text()))
-        self.connect(self.txtBraceBackground, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnBraceBackground,
-                self.txtBraceBackground.text()))
-        self.connect(self.txtBraceForeground, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnBraceForeground,
-                self.txtBraceForeground.text()))
-        self.connect(self.txtErrorUnderline, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnErrorUnderline,
-                self.txtErrorUnderline.text()))
-        self.connect(self.txtPep8Underline, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(
-                btnPep8Underline, self.txtPep8Underline.text()))
-        self.connect(self.txtSidebarBackground, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnSidebarBackground,
-                self.txtSidebarBackground.text()))
-        self.connect(self.txtSidebarForeground, SIGNAL("textChanged(QString)"),
-            lambda: self.apply_button_style(btnSidebarForeground,
-                self.txtSidebarForeground.text()))
+        self.txtKeyword.textChanged.connect(lambda: self.apply_button_style(btnKeyword, self.txtKeyword.text()))
+        # self.connect(self.txtKeyword, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnKeyword, self.txtKeyword.text()))
+        self.txtOperator.textChanged.connect(lambda: self.apply_button_style(btnOperator, self.txtOperator.text()))
+        # self.connect(self.txtOperator, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnOperator, self.txtOperator.text()))
+        self.txtBrace.textChanged.connect(lambda: self.apply_button_style(btnBrace, self.txtBrace.text()))
+        # self.connect(self.txtBrace, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnBrace, self.txtBrace.text()))
+        self.txtDefinition.textChanged.connect(lambda: self.apply_button_style(btnDefinition, self.txtDefinition.text()))
+        # self.connect(self.txtDefinition, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnDefinition, self.txtDefinition.text()))
+        self.txtString.textChanged.connect(lambda: self.apply_button_style(btnString, self.txtString.text()))
+        # self.connect(self.txtString, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnString, self.txtString.text()))
+        self.txtString2.textChanged.connect(lambda: self.apply_button_style(btnString2, self.txtString2.text()))
+        # self.connect(self.txtString2, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnString2, self.txtString2.text()))
+        self.txtSpaces.textChanged.connect(lambda: self.apply_button_style(btnSpaces, self.txtSpaces.text()))
+        # self.connect(self.txtSpaces, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnSpaces, self.txtSpaces.text()))
+        self.txtExtras.textChanged.connect(lambda: self.apply_button_style(btnExtras, self.txtExtras.text()))
+        # self.connect(self.txtExtras, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnExtras, self.txtExtras.text()))
+        self.txtComment.textChanged.connect(lambda: self.apply_button_style(btnComment, self.txtComment.text()))
+        # self.connect(self.txtComment, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnComment, self.txtComment.text()))
+        self.txtProperObject.textChanged.connect(lambda: self.apply_button_style(btnProperObject, self.txtProperObject.text()))
+        # self.connect(self.txtProperObject, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnProperObject, self.txtProperObject.text()))
+        self.txtNumbers.textChanged.connect(lambda: self.apply_button_style(btnNumbers, self.txtNumbers.text()))
+        # self.connect(self.txtNumbers, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnNumbers,
+        #         self.txtNumbers.text()))
+        self.txtEditorText.textChanged.connect(lambda: self.apply_button_style(btnEditorText, self.txtEditorText.text()))
+        # self.connect(self.txtEditorText, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnEditorText, self.txtEditorText.text()))
+        self.txtEditorBackground.textChanged.connect(lambda: self.apply_button_style(btnEditorBackground, self.txtEditorBackground.text()))
+        # self.connect(self.txtEditorBackground, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnEditorBackground,
+        #         self.txtEditorBackground.text()))
+        self.txtEditorSelectionColor.textChanged.connect(lambda: self.apply_button_style(btnEditorSelectionColor, self.txtEditorSelectionColor.text()))
+        # self.connect(self.txtEditorSelectionColor,
+        #     SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnEditorSelectionColor,
+        #         self.txtEditorSelectionColor.text()))
+        self.txtEditorSelectionBackground.textChanged.connect(lambda: self.apply_button_style(btnEditorSelectionBackground, self.txtEditorSelectionBackground.text()))
+        # self.connect(self.txtEditorSelectionBackground,
+        #     SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnEditorSelectionBackground,
+        #         self.txtEditorSelectionBackground.text()))
+        self.txtCurrentLine.textChanged.connect(lambda: self.apply_button_style(btnCurrentLine, self.txtCurrentLine.text()))
+        # self.connect(self.txtCurrentLine, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnCurrentLine, self.txtCurrentLine.text()))
+        self.txtSelectedWord.textChanged.connect(lambda: self.apply_button_style(btnSelectedWord, self.txtSelectedWord.text()))
+        # self.connect(self.txtSelectedWord, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnSelectedWord, self.txtSelectedWord.text()))
+        self.txtFoldArea.textChanged.connect(lambda: self.apply_button_style(btnFoldArea, self.txtFoldArea.text()))
+        # self.connect(self.txtFoldArea, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnFoldArea, self.txtFoldArea.text()))
+        self.txtFoldArrow.textChanged.connect(lambda: self.apply_button_style(btnFoldArrow, self.txtFoldArrow.text()))
+        # self.connect(self.txtFoldArrow, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnFoldArrow, self.txtFoldArrow.text()))
+        self.txtLinkNavigate.textChanged.connect(lambda: self.apply_button_style(btnLinkNavigate, self.txtLinkNavigate.text()))
+        # self.connect(self.txtLinkNavigate, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnLinkNavigate, self.txtLinkNavigate.text()))
+        self.txtBraceBackground.textChanged.connect(lambda: self.apply_button_style(btnBraceBackground, self.txtBraceBackground.text()))
+        # self.connect(self.txtBraceBackground, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnBraceBackground,
+        #         self.txtBraceBackground.text()))
+        self.txtBraceForeground.textChanged.connect(lambda: self.apply_button_style(btnBraceForeground, self.txtBraceForeground.text()))
+        # self.connect(self.txtBraceForeground, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnBraceForeground,
+        #         self.txtBraceForeground.text()))
+        self.txtErrorUnderline.textChanged.connect(lambda: self.apply_button_style(btnErrorUnderline, self.txtErrorUnderline.text()))
+        # self.connect(self.txtErrorUnderline, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnErrorUnderline,
+        #         self.txtErrorUnderline.text()))
+        self.txtPep8Underline.textChanged.connect(lambda: self.apply_button_style(btnPep8Underline, self.txtPep8Underline.text()))
+        # self.connect(self.txtPep8Underline, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(
+        #         btnPep8Underline, self.txtPep8Underline.text()))
+        self.txtSidebarBackground.textChanged.connect(lambda: self.apply_button_style(btnSidebarBackground, self.txtSidebarBackground.text()))
+        # self.connect(self.txtSidebarBackground, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnSidebarBackground,
+        #         self.txtSidebarBackground.text()))
+        self.txtSidebarForeground.textChanged.connect(lambda: self.apply_button_style(btnSidebarForeground, self.txtSidebarForeground.text()))
+        # self.connect(self.txtSidebarForeground, SIGNAL("textChanged(QString)"),
+        #     lambda: self.apply_button_style(btnSidebarForeground,
+        #         self.txtSidebarForeground.text()))
 
-        self.connect(btnKeyword, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtKeyword, btnKeyword))
-        self.connect(btnOperator, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtOperator, btnOperator))
-        self.connect(btnBrace, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBrace, btnBrace))
-        self.connect(btnDefinition, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtDefinition, btnDefinition))
-        self.connect(btnString, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtString, btnString))
-        self.connect(btnString2, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtString2, btnString2))
-        self.connect(btnSpaces, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSpaces, btnSpaces))
-        self.connect(btnExtras, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtExtras, btnExtras))
-        self.connect(btnComment, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtComment, btnComment))
-        self.connect(btnProperObject, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtProperObject, btnProperObject))
-        self.connect(btnNumbers, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtNumbers, btnNumbers))
-        self.connect(btnEditorText, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorText, btnEditorText))
-        self.connect(btnEditorBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorBackground,
-                btnEditorBackground))
-        self.connect(btnEditorSelectionColor, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorSelectionColor,
-                btnEditorSelectionColor))
-        self.connect(btnEditorSelectionBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorSelectionBackground,
-                btnEditorSelectionBackground))
-        self.connect(btnCurrentLine, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtCurrentLine, btnCurrentLine))
-        self.connect(btnSelectedWord, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSelectedWord, btnSelectedWord))
-        self.connect(btnFoldArea, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtFoldArea, btnFoldArea))
-        self.connect(btnFoldArrow, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtFoldArrow, btnFoldArrow))
-        self.connect(btnLinkNavigate, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtLinkNavigate, btnLinkNavigate))
-        self.connect(btnBraceBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBraceBackground,
-                btnBraceBackground))
-        self.connect(btnBraceForeground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBraceForeground,
-                btnBraceForeground))
-        self.connect(btnErrorUnderline, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtErrorUnderline,
-                btnErrorUnderline))
-        self.connect(btnPep8Underline, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtPep8Underline, btnPep8Underline))
-        self.connect(btnSidebarBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSidebarBackground,
-                btnSidebarBackground))
-        self.connect(btnSidebarForeground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSidebarForeground,
-                btnSidebarForeground))
+        btnKeyword.clicked.connect(lambda: self._pick_color(self.txtKeyword, btnKeyword))
+        # self.connect(btnKeyword, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtKeyword, btnKeyword))
+        btnOperator.clicked.connect(lambda: self._pick_color(self.txtOperator, btnOperator))
+        # self.connect(btnOperator, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtOperator, btnOperator))
+        btnBrace.clicked.connect(lambda: self._pick_color(self.txtBrace, btnBrace))
+        # self.connect(btnBrace, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtBrace, btnBrace))
+        btnDefinition.clicked.connect(lambda: self._pick_color(self.txtDefinition, btnDefinition))
+        # self.connect(btnDefinition, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtDefinition, btnDefinition))
+        btnString.clicked.connect(lambda: self._pick_color(self.txtString, btnString))
+        # self.connect(btnString, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtString, btnString))
+        btnString2.clicked.connect(lambda: self._pick_color(self.txtString2, btnString2))
+        # self.connect(btnString2, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtString2, btnString2))
+        btnSpaces.clicked.connect(lambda: self._pick_color(self.txtSpaces, btnSpaces))
+        # self.connect(btnSpaces, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtSpaces, btnSpaces))
+        btnExtras.clicked.connect(lambda: self._pick_color(self.txtExtras, btnExtras))
+        # self.connect(btnExtras, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtExtras, btnExtras))
+        btnComment.clicked.connect(lambda: self._pick_color(self.txtComment, btnComment))
+        # self.connect(btnComment, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtComment, btnComment))
+        btnProperObject.clicked.connect(lambda: self._pick_color(self.txtProperObject, btnProperObject))
+        # self.connect(btnProperObject, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtProperObject, btnProperObject))
+        btnNumbers.clicked.connect(lambda: self._pick_color(self.txtNumbers, btnNumbers))
+        # self.connect(btnNumbers, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtNumbers, btnNumbers))
+        btnEditorText.clicked.connect(lambda: self._pick_color(self.txtEditorText, btnEditorText))
+        # self.connect(btnEditorText, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtEditorText, btnEditorText))
+        btnEditorBackground.clicked.connect(lambda: self._pick_color(self.txtEditorBackground, btnEditorBackground))
+        # self.connect(btnEditorBackground, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtEditorBackground,
+        #         btnEditorBackground))
+        btnEditorSelectionColor.clicked.connect(lambda: self._pick_color(self.txtEditorSelectionColor, btnEditorSelectionColor))
+        # self.connect(btnEditorSelectionColor, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtEditorSelectionColor,
+        #         btnEditorSelectionColor))
+        btnEditorSelectionBackground.clicked.connect(lambda: self._pick_color(self.txtEditorSelectionBackground, btnEditorSelectionBackground))
+        # self.connect(btnEditorSelectionBackground, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtEditorSelectionBackground,
+        #         btnEditorSelectionBackground))
+        btnCurrentLine.clicked.connect(lambda: self._pick_color(self.txtCurrentLine, btnCurrentLine))
+        # self.connect(btnCurrentLine, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtCurrentLine, btnCurrentLine))
+        btnSelectedWord.clicked.connect(lambda: self._pick_color(self.txtSelectedWord, btnSelectedWord))
+        # self.connect(btnSelectedWord, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtSelectedWord, btnSelectedWord))
+        btnFoldArea.clicked.connect(lambda: self._pick_color(self.txtFoldArea, btnFoldArea))
+        # self.connect(btnFoldArea, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtFoldArea, btnFoldArea))
+        btnFoldArrow.clicked.connect(lambda: self._pick_color(self.txtFoldArrow, btnFoldArrow))
+        # self.connect(btnFoldArrow, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtFoldArrow, btnFoldArrow))
+        btnLinkNavigate.clicked.connect(lambda: self._pick_color(self.txtLinkNavigate, btnLinkNavigate))
+        # self.connect(btnLinkNavigate, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtLinkNavigate, btnLinkNavigate))
+        btnBraceBackground.clicked.connect(lambda: self._pick_color(self.txtBraceBackground, btnBraceBackground))
+        # self.connect(btnBraceBackground, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtBraceBackground,
+        #         btnBraceBackground))
+        btnBraceForeground.clicked.connect(lambda: self._pick_color(self.txtBraceForeground, btnBraceForeground))
+        # self.connect(btnBraceForeground, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtBraceForeground,
+        #         btnBraceForeground))
+        btnErrorUnderline.clicked.connect(lambda: self._pick_color(self.txtErrorUnderline, btnErrorUnderline))
+        # self.connect(btnErrorUnderline, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtErrorUnderline,
+        #         btnErrorUnderline))
+        btnPep8Underline.clicked.connect(lambda: self._pick_color(self.txtPep8Underline, btnPep8Underline))
+        # self.connect(btnPep8Underline, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtPep8Underline, btnPep8Underline))
+        btnSidebarBackground.clicked.connect(lambda: self._pick_color(self.txtSidebarBackground, btnSidebarBackground))
+        # self.connect(btnSidebarBackground, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtSidebarBackground,
+        #         btnSidebarBackground))
+        btnSidebarForeground.clicked.connect(lambda: self._pick_color(self.txtSidebarForeground, btnSidebarForeground))
+        # self.connect(btnSidebarForeground, SIGNAL("clicked()"),
+        #     lambda: self._pick_color(self.txtSidebarForeground,
+        #         btnSidebarForeground))
 
         # Connect Buttons
         for i in range(0, 26):
             item = grid.itemAtPosition(i, 1).widget()
             btn = grid.itemAtPosition(i, 2).widget()
-            self.connect(item, SIGNAL("returnPressed()"),
-                self._preview_style)
+            # self.connect(item, SIGNAL("returnPressed()"),
+            #     self._preview_style)
+            item.returnPressed.connect(self._preview_style)
             self.apply_button_style(btn, item.text())
 
-        self.connect(btnSaveScheme, SIGNAL("clicked()"), self.save_scheme)
+        # self.connect(btnSaveScheme, SIGNAL("clicked()"), self.save_scheme)
+        btnSaveScheme.clicked.connect(self.save_scheme)
 
     def _apply_line_edit_style(self):
         self.txtKeyword.setText(resources.CUSTOM_SCHEME.get('keyword',
@@ -1777,8 +1851,10 @@ class ThemeChooser(QWidget):
         vbox.addLayout(hbox)
         self._refresh_list()
 
-        self.connect(self.btn_preview, SIGNAL("clicked()"), self.preview_theme)
-        self.connect(self.btn_delete, SIGNAL("clicked()"), self.delete_theme)
+        self.btn_preview.clicked.connect(self.preview_theme)
+        # self.connect(self.btn_preview, SIGNAL("clicked()"), self.preview_theme)
+        self.btn_delete.clicked.connect(self.delete_theme)
+        # self.connect(self.btn_delete, SIGNAL("clicked()"), self.delete_theme)
 
     def delete_theme(self):
         if self.list_skins.currentRow() != 0:
@@ -1869,10 +1945,12 @@ class ThemeDesigner(QWidget):
         vbox.addWidget(self.edit_qss)
         vbox.addLayout(hbox2)
 
-        self.connect(self.btn_apply, SIGNAL("clicked()"),
-            self.apply_stylesheet)
-        self.connect(self.btn_save, SIGNAL("clicked()"),
-            self.save_stylesheet)
+        self.btn_apply.clicked.connect(self.apply_stylesheet)
+        # self.connect(self.btn_apply, SIGNAL("clicked()"),
+        #     self.apply_stylesheet)
+        self.btn_save.clicked.connect(self.save_stylesheet)
+        # self.connect(self.btn_save, SIGNAL("clicked()"),
+        #     self.save_stylesheet)
 
     def showEvent(self, event):
         if not self.edit_qss.document().isModified():
