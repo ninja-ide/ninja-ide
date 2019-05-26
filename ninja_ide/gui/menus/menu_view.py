@@ -98,7 +98,8 @@ class MenuView(QObject):
             'splith': splitTabHAction,
             'follow-mode': followModeAction,
             'zoom-in': zoomInAction,
-            'zoom-out': zoomOutAction}
+            'zoom-out': zoomOutAction
+        }
 
         self.hideConsoleAction.triggered.connect(self.__ide.actions.view_misc_visibility)
         # self.connect(self.hideConsoleAction, SIGNAL("triggered()"),

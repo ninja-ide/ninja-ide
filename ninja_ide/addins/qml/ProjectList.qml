@@ -4,7 +4,7 @@ Rectangle {
     id: root
 
     property alias _projects: listProjects
-
+    color: "#1e1e1e"
     signal markAsFavorite(string path, bool value)
     signal openProject(string path)
     signal removeProject(string path)
@@ -16,6 +16,7 @@ Rectangle {
             width: root.width; height: 50
             property string _name: name
             property string _path: path
+            property bool current: ListView.isCurrentItem
 
             ListView.onRemove: SequentialAnimation {
                 PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
@@ -51,18 +52,20 @@ Rectangle {
 
             Rectangle {
                 id: texts
-                color: "transparent"
+//                color: "#1e1e1e"
                 height: item.height
                 width: item.width - imgFavorite.width - imgDelete.width - 60
                 anchors.left: imgFavorite.right
                 anchors.leftMargin: 10
                 anchors.top: parent.top
                 anchors.topMargin: 5
+                color: item.current ? "#333" : "#1e1e1e"
                 Column {
                     id: col
                     anchors.fill: parent
-                    Text { text: 'NAME: ' + name; width: texts.width; elide: Text.ElideMiddle }
-                    Text { text: 'PATH: ' + path; width: texts.width; elide: Text.ElideMiddle }
+                    anchors.margins: 10
+                    Text { text: 'NAME: ' + name; width: texts.width; elide: Text.ElideMiddle; color: "white" }
+                    Text { text: 'PATH: ' + path; width: texts.width; elide: Text.ElideMiddle; color: "gray" }
                 }
 
                 MouseArea {
@@ -106,7 +109,8 @@ Rectangle {
         focus: true
         model: ListModel {}
         delegate: contactDelegate
-        highlight: Rectangle { color: "lightsteelblue"; radius: 5; width: (root.width - 10) }
+
+//        highlight: Rectangle { color: "lightsteelblue"; radius: 5; width: (root.width - 10) }
 
         Keys.onReturnPressed: {
             var path = listProjects.model.get(listProjects.currentIndex).path;

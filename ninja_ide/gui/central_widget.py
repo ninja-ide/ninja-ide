@@ -29,7 +29,6 @@ from PyQt5.QtWidgets import QSplitter
 from PyQt5.QtWidgets import QScrollBar
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
-# from PyQt5.QtCore import SIGNAL
 from PyQt5.QtCore import QSettings
 
 from ninja_ide import resources

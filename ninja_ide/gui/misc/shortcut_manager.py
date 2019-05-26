@@ -199,7 +199,9 @@ class ShortcutConfiguration(QWidget):
             "change-tab-visibility": self.tr(
                 "Show/Hide the Tabs in the Editor Area."),
             "Highlight-Word": self.tr(
-                "Highlight occurrences for word under cursor")
+                "Highlight occurrences for word under cursor"),
+            "Zoom-in": self.tr("Increment font size"),
+            "Zoom-out": self.tr("Decrement font size")
         }
 
         self.shortcut_dialog = ShortcutDialog(self)

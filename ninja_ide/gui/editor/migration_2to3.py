@@ -34,8 +34,7 @@ class MigrationTo3(QThread):
         self._path = ''
         self.migration_data = {}
         if settings.IS_WINDOWS and settings.PYTHON_PATH_CONFIGURED_BY_USER:
-            tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH),
-                'Tools', 'Scripts', '2to3.py')
+            tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH), 'Tools', 'Scripts', '2to3.py')
             self._command = [settings.PYTHON_PATH, tool_path]
         else:
             self._command = ['2to3']

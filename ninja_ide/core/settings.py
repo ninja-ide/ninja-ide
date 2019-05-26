@@ -23,7 +23,7 @@ from PyQt5.QtCore import QFileInfo
 from PyQt5.QtCore import QSettings
 
 from ninja_ide import resources
-from ninja_ide.dependencies import pep8mod
+from ninja_ide.dependencies import pycodestylemod
 
 
 ###############################################################################
@@ -96,7 +96,7 @@ NOTIFY_UPDATES = True
 HIDE_TOOLBAR = False
 SHOW_STATUS_NOTIFICATIONS = True
 
-PYTHON_PATH = "python"
+PYTHON_PATH = "python3"
 PYTHON_PATH_CONFIGURED_BY_USER = False
 EXECUTION_OPTIONS = ""
 
@@ -308,8 +308,8 @@ def use_platform_specific_eol():
 def pep8mod_refresh_checks():
     """
     Force to reload all checks in pep8mod.py
-    """
-    pep8mod.refresh_checks()
+#     """
+#     pep8mod.refresh_checks()
 
 
 def pep8mod_add_ignore(ignore_code):
@@ -319,7 +319,7 @@ def pep8mod_add_ignore(ignore_code):
         pep8mod_add_ignore('W191')
         'W1919': 'indentation contains tabs'
     """
-    pep8mod.options.ignore.append(ignore_code)
+#     pep8mod.options.ignore.append(ignore_code)
 
 
 def pep8mod_remove_ignore(ignore_code):
@@ -329,16 +329,16 @@ def pep8mod_remove_ignore(ignore_code):
         pep8mod_remove_ignore('W191')
         'W1919': 'indentation contains tabs'
     """
-    if ignore_code in pep8mod.options.ignore:
-        pep8mod.options.ignore.remove(ignore_code)
+#     if ignore_code in pep8mod.options.ignore:
+#         pep8mod.options.ignore.remove(ignore_code)
 
 
 def pep8mod_update_margin_line_length(new_margin_line):
     """
     Patch pep8mod.py to update the margin line length with a new value
     """
-    pep8mod.MAX_LINE_LENGTH = new_margin_line
-    pep8mod.options.max_line_length = new_margin_line
+#     pep8mod.MAX_LINE_LENGTH = new_margin_line
+#     pep8mod.options.max_line_length = new_margin_line
 
 ###############################################################################
 # LOAD SETTINGS

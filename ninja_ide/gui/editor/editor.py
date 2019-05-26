@@ -46,11 +46,12 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QMimeData
 from PyQt5.QtCore import Qt
-
+from PyQt5.QtGui import QKeySequence
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools.completion import completer_widget
+from ninja_ide.gui.editor import indenter
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import syntax_highlighter
@@ -131,6 +132,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.highlighter = None
         self.syncDocErrorsSignal = False
         self._selected_word = ''
+        self._indenter = indenter.PythonIndenter(self)
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
@@ -160,8 +162,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             Qt.Key_QuoteDbl: self.__quot_completion}
 
         self.postKeyPress = {
-            Qt.Key_Enter: self.__auto_indent,
-            Qt.Key_Return: self.__auto_indent,
+            # Qt.Key_Enter: self.__auto_indent,
+            # Qt.Key_Return: self.__auto_indent,
             Qt.Key_BracketLeft: self.__complete_braces,
             Qt.Key_BraceLeft: self.__complete_braces,
             Qt.Key_ParenLeft: self.__complete_braces,
@@ -262,10 +264,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
-        tab_size = self.pos_margin / settings.MARGIN_LINE * self.indent
-        self.setTabStopWidth(tab_size)
+        # tab_size = self.pos_margin / settings.MARGIN_LINE * self.indent
+        # self.setTabStopWidth(tab_size)
+        width = self.fontMetrics().width(' ') * self._indenter.width
+        self.setTabStopWidth(width)
         if self._mini:
-            self._mini.setTabStopWidth(tab_size)
+            self._mini.setTabStopWidth(width)
 
     def set_cursor_width(self, width):
         self.setCursorWidth(width)
@@ -278,9 +282,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.pep8.check_style()
         if settings.SHOW_MIGRATION_TIPS:
             self.migration.check_style()
-        if not python3:
-            if settings.FIND_ERRORS:
-                self.errors.check_errors()
+        # if not python3:
+        if settings.FIND_ERRORS:
+            self.errors.check_errors()
 
     def _add_line_increment(self, lines, blockModified, diference):
         def _inner_increment(line):
@@ -414,7 +418,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter = syntax_highlighter.SyntaxHighlighter(
                 self.document(),
                 parts_scanner, code_scanner, formats,
-                errors=self.errors, pep8=self.pep8, migration=self.migration)
+                errors=self.errors, pep8=self.pep8)
             if self._mini:
                 self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
                     self._mini.document(), parts_scanner,
@@ -423,8 +427,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if self.highlighter is None or isinstance(self.highlighter,
            highlighter.EmpyHighlighter):
             self.highlighter = highlighter.Highlighter(self.document(),
-                None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
-                self.migration)
+                None, resources.CUSTOM_SCHEME, self.errors, self.pep8)
         if not syntaxLang:
             ext = file_manager.get_file_extension(self.ID)
             self.highlighter.apply_highlight(
@@ -470,15 +473,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter = syntax_highlighter.SyntaxHighlighter(
                 self.document(),
                 parts_scanner, code_scanner, formats,
-                errors=self.errors, pep8=self.pep8, migration=self.migration)
+                errors=self.errors, pep8=self.pep8)
             if self._mini:
                 self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
                     self._mini.document(), parts_scanner,
                     code_scanner, formats)
         elif lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
-                self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
-                self.migration)
+                self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8)
             if self._mini:
                 self._mini.highlighter = highlighter.Highlighter(
                     self._mini.document(),
@@ -875,20 +877,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.moveCursor(QTextCursor.Right)
                 return True
 
-    def __auto_indent(self, event):
-        text = self.textCursor().block().previous().text()
-        spaces = helpers.get_indentation(text, self.indent, self.useTabs)
-        self.textCursor().insertText(spaces)
-        if text != '' and text == ' ' * len(text):
-            self.moveCursor(QTextCursor.Up)
-            self.moveCursor(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-            self.textCursor().removeSelectedText()
-            self.moveCursor(QTextCursor.Down)
-        elif settings.COMPLETE_DECLARATIONS:
-            helpers.check_for_assistance_completion(self, text)
-        cursor = self.textCursor()
-        cursor.setPosition(cursor.position())
-        self.setTextCursor(cursor)
+    # def __auto_indent(self, event):
+    #     text = self.textCursor().block().previous().text()
+    #     spaces = helpers.get_indentation(text, self.indent, self.useTabs)
+    #     self.textCursor().insertText(spaces)
+    #     if text != '' and text == ' ' * len(text):
+    #         self.moveCursor(QTextCursor.Up)
+    #         self.moveCursor(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+    #         self.textCursor().removeSelectedText()
+    #         self.moveCursor(QTextCursor.Down)
+    #     elif settings.COMPLETE_DECLARATIONS:
+    #         helpers.check_for_assistance_completion(self, text)
+    #     cursor = self.textCursor()
+    #     cursor.setPosition(cursor.position())
+    #     self.setTextCursor(cursor)
 
     def complete_declaration(self):
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
@@ -902,7 +904,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor.insertBlock()
         if not at_block_end:
             self.moveCursor(QTextCursor.Down)
-        self.__auto_indent(None)
+        # self.__auto_indent(None)
 
     def __complete_braces(self, event):
         """Complete () [] and {} using a mild inteligence to see if corresponds
@@ -964,6 +966,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
 
+    def __enter__(self):
+        self.textCursor().beginEditBlock()
+
+    def __exit__(self, a, b, c):
+        self.textCursor().endEditBlock()
+
     def keyPressEvent(self, event):
         #Completer pre key event
         # if self.completer.process_pre_key_event(event):
@@ -975,7 +983,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.keyPressed.emit(event)
             return
         self.selected_text = self.textCursor().selectedText()
-
+        if event.matches(QKeySequence.InsertParagraphSeparator):
+            # cursor = self.textCursor()
+            # if not self.inside_string_or_comment(cursor):
+            self._indenter.indent_block(self.textCursor())
+            if settings.COMPLETE_DECLARATIONS:
+                text = self.textCursor().block().previous().text()
+                helpers.check_for_assistance_completion(self, text)
+            return
         QPlainTextEdit.keyPressEvent(self, event)
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)

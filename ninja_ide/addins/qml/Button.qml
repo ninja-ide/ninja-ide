@@ -7,14 +7,14 @@ Rectangle {
 
     signal clicked
 
-    radius: 10
-    border.color: "gray"
-    border.width: 2
-    gradient: Gradient {
-         GradientStop { id: stop1; position: 0.0; color: "#570000" }
-         GradientStop { id: stop2; position: 1.0; color: "#881f1f" }
-     }
-
+    radius: 3
+//    border.color: "gray"
+//    border.width: 2
+//    gradient: Gradient {
+//         GradientStop { id: stop1; position: 0.0; color: "#262626" }
+//         GradientStop { id: stop2; position: 1.0; color: "#343434" }
+//     }
+    color: "#282828"
     Text {
         id: txtButton
         anchors.centerIn: parent
@@ -26,21 +26,21 @@ Rectangle {
     states: [
         State {
             name: "ENTERED"
-            PropertyChanges { target: stop1; color: "gray" }
+            PropertyChanges { target: button; color: "#333" }
         },
         State {
             name: "EXITED"
-            PropertyChanges { target: stop1; color: "#570000" }
+            PropertyChanges { target: button; color: "#282828" }
         },
         State {
             name: "PRESSED"
-            PropertyChanges { target: stop2; color: "#3d0000" }
-            PropertyChanges { target: stop1; color: "#631717" }
+            PropertyChanges { target: button; color: "#111" }
+//            PropertyChanges { target: stop1; color: "#383838" }
         },
         State {
             name: "RELEASED"
-            PropertyChanges { target: stop1; color: "#570000" }
-            PropertyChanges { target: stop2; color: "#881f1f" }
+            PropertyChanges { target: button; color: "#282828" }
+//            PropertyChanges { target: stop2; color: "#343434" }
         }
      ]
 

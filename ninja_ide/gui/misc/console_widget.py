@@ -31,7 +31,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QEvent
 from PyQt5.QtCore import QProcess
 from PyQt5.QtCore import QRegExp
-# from PyQt5.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -109,17 +108,11 @@ class ConsoleWidget(QPlainTextEdit):
             parts_scanner, code_scanner, formats)
 
         self.cursorPositionChanged.connect(self.highlight_current_line)
-        # self.connect(self, SIGNAL("cursorPositionChanged()"),
-        #     self.highlight_current_line)
         self.highlight_current_line()
 
         self._proc = QProcess(self)
         self._proc.readyReadStandardOutput.connect(self._python_path_detected)
-        # self.connect(self._proc, SIGNAL("readyReadStandardOutput()"),
-        #     self._python_path_detected)
         self._proc.error.connect(self.process_error)
-        # self.connect(self._proc, SIGNAL("error(QProcess::ProcessError)"),
-        #     self.process_error)
         self._add_system_path_for_frozen()
 
     def _add_system_path_for_frozen(self):
@@ -170,19 +163,11 @@ class ConsoleWidget(QPlainTextEdit):
         self.popup_menu.addAction(actionCopyConsoleContent)
 
         actionCut.triggered.connect(self.cut)
-        # self.connect(actionCut, SIGNAL("triggered()"), self._cut)
         actionCopy.triggered.connect(self.copy)
-        # self.connect(actionCopy, SIGNAL("triggered()"), self.copy)
         actionPaste.triggered.connect(self._paste)
-        # self.connect(actionPaste, SIGNAL("triggered()"), self._paste)
         actionClean.triggered.connect(self._clean_console)
-        # self.connect(actionClean, SIGNAL("triggered()"), self._clean_console)
         actionCopyHistory.triggered.connect(self._copy_history)
-        # self.connect(actionCopyHistory, SIGNAL("triggered()"),
-        #     self._copy_history)
         actionCopyConsoleContent.triggered.connect(self._copy_console_content)
-        # self.connect(actionCopyConsoleContent, SIGNAL("triggered()"),
-        #     self._copy_console_content)
 
     def _cut(self):
         event = QKeyEvent(QEvent.KeyPress, Qt.Key_X, Qt.ControlModifier, "x")

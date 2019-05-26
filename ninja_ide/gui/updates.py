@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-import urllib
+import json
+from urllib.request import urlopen
 import webbrowser
 from distutils import version
 
@@ -115,8 +116,8 @@ class ThreadUpdates(QThread):
     def run(self):
         try:
             #Check for IDE Updates
-            ninja_version = urllib.urlopen(resources.UPDATES_URL)
-            ide = json_manager.parse(ninja_version)
+            ninja_version = urlopen(resources.UPDATES_URL).read().decode('utf8')
+            ide = json.loads(ninja_version)
         except:
             ide = {}
             logger.info('no connection available')

@@ -26,7 +26,6 @@ from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QSpacerItem
 from PyQt5.QtWidgets import QSizePolicy
-# from PyQt5.QtCore import SIGNAL
 # from PyQt5.QtWebKit import QWebPage
 
 from ninja_ide import resources
@@ -108,18 +107,9 @@ class __MiscContainer(QWidget):
         hbox.addWidget(btn_close)
 
         self._btnConsole.clicked.connect(lambda: self._item_changed(0))
-        # self.connect(self._btnConsole, SIGNAL("clicked()"),
-        #     lambda: self._item_changed(0))
         self._btnRun.clicked.connect(lambda: self._item_changed(1))
-        # self.connect(self._btnRun, SIGNAL("clicked()"),
-        #     lambda: self._item_changed(1))
-        # self.connect(self._btnWeb, SIGNAL("clicked()"),
-        #     lambda: self._item_changed(2))
         self._btnFind.clicked.connect(lambda: self._item_changed(2))
-        # self.connect(self._btnFind, SIGNAL("clicked()"),
-        #     lambda: self._item_changed(3))
         btn_close.clicked.connect(self.hide)
-        # self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
     def gain_focus(self):
         self._console.setFocus()
@@ -184,7 +174,6 @@ class __MiscContainer(QWidget):
         index = self.stack.count() - 1
         func = lambda: self._item_changed(index)
         button.clicked.connect(func)
-        # self.connect(button, SIGNAL("clicked()"), func)
         self.__toolbar.addWidget(button)
 
 

@@ -57,7 +57,7 @@ class MiniMap(QPlainTextEdit):
             self.goe = QGraphicsOpacityEffect()
             self.setGraphicsEffect(self.goe)
             self.goe.setOpacity(settings.MINIMAP_MIN_OPACITY)
-            self.animation = QPropertyAnimation(self.goe, "opacity")
+            self.animation = QPropertyAnimation(self.goe, b"opacity")
 
         self.slider = SliderArea(self)
         self.slider.show()

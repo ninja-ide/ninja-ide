@@ -162,6 +162,8 @@ class __Actions(QObject):
             self.ide)
         self.shortChangeTabVisibility = QShortcut(
             short("change-tab-visibility"), self.ide)
+        self.short_zoom_in = QShortcut(short("Zoom-in"), self.ide)
+        self.short_zoom_out = QShortcut(short("Zoom-out"), self.ide)
 
         #Connect Shortcuts Signals
         self.shortNavigateBack.activated.connect(lambda: self.__navigate_with_keyboard(False))
@@ -341,7 +343,8 @@ class __Actions(QObject):
         self.shortChangeTabVisibility.activated.connect(self.ide.mainContainer.change_tabs_visibility)
         # self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
         #     self.ide.mainContainer.change_tabs_visibility)
-
+        self.short_zoom_in.activated.connect(self.zoom_in)
+        self.short_zoom_out.activated.connect(self.zoom_out)
         key = Qt.Key_1
         for i in range(10):
             if sys.platform == "darwin":
@@ -747,6 +750,16 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             helpers.uncomment(editorWidget)
+
+    def zoom_in(self):
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.zoom_in()
+
+    def zoom_out(self):
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.zoom_out()
 
     def editor_insert_horizontal_line(self):
         """Insert an horizontal lines of comment symbols."""

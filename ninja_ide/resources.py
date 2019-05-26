@@ -242,7 +242,7 @@ COLOR_SCHEME = {
     "properObject": "#6EC7D7",
     "numbers": "#F8A008",
     "spaces": "#7b7b7b",
-    "extras": "#c5c8c6",
+    "extras": "#fdb269",
     "editor-background": "#1d1f21",
     "editor-selection-color": "#000000",
     "editor-selection-background": "#aaaaaa",
@@ -337,7 +337,10 @@ SHORTCUTS = {
     "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "move-tab-to-next-split": QKeySequence(Qt.SHIFT + Qt.Key_F10),
     "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
-    "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}
+    "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down),
+    "Zoom-in": QKeySequence(Qt.CTRL + Qt.Key_Plus),
+    "Zoom-out": QKeySequence(Qt.CTRL + Qt.Key_Minus)
+}
 
 CUSTOM_SHORTCUTS = {}
 

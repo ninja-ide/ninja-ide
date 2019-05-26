@@ -22,6 +22,7 @@ import webbrowser
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -75,8 +76,16 @@ and handles all kinds of situations thanks to its rich extensibility.""")))
                 (ninja_ide.__source__, ninja_ide.__source__))
         vbox.addWidget(link_source)
 
+        h = QHBoxLayout()
+        h.addStretch(1)
+        btn_close = QPushButton(self.tr("Ok"))
+        h.addWidget(btn_close)
+        vbox.addLayout(h)
+
         link_ninja.linkActivated.connect(self.link_activated)
         link_source.linkActivated.connect(self.link_activated)
+
+        btn_close.clicked.connect(self.close)
         # self.connect(link_ninja, SIGNAL("linkActivated(QString)"),
         #     self.link_activated)
         # self.connect(link_source, SIGNAL("linkActivated(QString)"),

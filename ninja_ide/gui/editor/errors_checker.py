@@ -18,10 +18,11 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import re
-try:
-    import compiler
-except ImportError:
-    print('Errors checker not working in Python3')
+import _ast
+# try:
+#     import compiler
+# except ImportError:
+#     print('Errors checker not working in Python3')
 
 from PyQt5.QtCore import QThread
 
@@ -61,14 +62,19 @@ class ErrorsChecker(QThread):
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
+            self.reset()
+            source = self._editor.get_text()
+            if self._encoding is not None:
+                source = source.encode(self._encoding)
             try:
-                self.reset()
-                source = self._editor.get_text()
-                if self._encoding is not None:
-                    source = source.encode(self._encoding)
-                parseResult = compiler.parse(source)
-                lint_checker = checker.Checker(parseResult, self._path,
-                                               builtins=self._builtins)
+                tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
+            except SyntaxError as reason:
+                if reason.text is None:
+                    print("ERROR")
+                else:
+                    self.errorsSummary[reason.lineno - 1] = reason.args[0]
+            else:
+                lint_checker = checker.Checker(tree, self._path)
                 for m in lint_checker.messages:
                     lineno = m.lineno - 1
                     if lineno not in self.errorsSummary:
@@ -77,24 +83,40 @@ class ErrorsChecker(QThread):
                         message = self.errorsSummary[lineno]
                         message += [m.message % m.message_args]
                     self.errorsSummary[lineno] = message
-            except Exception as reason:
-                message = ''
-                if hasattr(reason, 'msg'):
-                    message = reason.msg
-                else:
-                    message = reason.message
+            # try:
+            #     self.reset()
+            #     source = self._editor.get_text()
+            #     if self._encoding is not None:
+            #         source = source.encode(self._encoding)
+            #     parseResult = compiler.parse(source)
+            #     lint_checker = checker.Checker(parseResult, self._path,
+            #                                    builtins=self._builtins)
+            #     for m in lint_checker.messages:
+            #         lineno = m.lineno - 1
+            #         if lineno not in self.errorsSummary:
+            #             message = [m.message % m.message_args]
+            #         else:
+            #             message = self.errorsSummary[lineno]
+            #             message += [m.message % m.message_args]
+            #         self.errorsSummary[lineno] = message
+            # except Exception as reason:
+            #     message = ''
+            #     if hasattr(reason, 'msg'):
+            #         message = reason.msg
+            #     else:
+            #         message = reason.message
 
-                if hasattr(reason, 'lineno') and reason.lineno:
-                    self.errorsSummary[reason.lineno - 1] = [message]
-                else:
-                    self.errorsSummary[0] = [message]
-            finally:
-                ignored_range, ignored_lines = self._get_ignore_range()
-                to_remove = [x for x in self.errorsSummary
-                             for r in ignored_range if r[0] < x < r[1]]
-                to_remove += ignored_lines
-                for line in to_remove:
-                    self.errorsSummary.pop(line, None)
+            #     if hasattr(reason, 'lineno') and reason.lineno:
+            #         self.errorsSummary[reason.lineno - 1] = [message]
+            #     else:
+            #         self.errorsSummary[0] = [message]
+            # finally:
+            #     ignored_range, ignored_lines = self._get_ignore_range()
+            #     to_remove = [x for x in self.errorsSummary
+            #                  for r in ignored_range if r[0] < x < r[1]]
+            #     to_remove += ignored_lines
+            #     for line in to_remove:
+            #         self.errorsSummary.pop(line, None)
         else:
             self.reset()
 

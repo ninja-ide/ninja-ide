@@ -18,7 +18,6 @@
 from __future__ import absolute_import
 
 #import fsevents
-#from PyQt5.QtCore import SIGNAL
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.filesystem_notifications.darwin')

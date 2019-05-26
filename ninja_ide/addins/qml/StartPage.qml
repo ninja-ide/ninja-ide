@@ -5,16 +5,15 @@ Rectangle {
 
     property int _padding: (mainArea.width / 4)
     property bool compressed: true
-
     signal markAsFavorite(string pat, bool value)
     signal openProject(string path)
     signal removeProject(string path)
     signal openPreferences
-
-    gradient: Gradient {
-         GradientStop { position: 0.0; color: "#1e1e1e" }
-         GradientStop { position: 1.0; color: "#a4a4a4" }
-     }
+    color: "#1e1e1e"
+//    gradient: Gradient {
+//         GradientStop { position: 0.0; color: "#1e1e1e" }
+//         GradientStop { position: 1.0; color: "#a4a4a4" }
+//     }
 
     onWidthChanged: {
         if(root.width < 500){
@@ -34,14 +33,13 @@ Rectangle {
 
     Rectangle {
         id: mainArea
-        color: "white"
+        color: "#1e1e1e"
         anchors.fill: parent
-        radius: 10
-        anchors.margins: parent.height / 14
         smooth: true
+        anchors.margins: 60
         Image {
             id: logo
-            source: "img/ninja-ide.png"
+            source: "img/logo_black.png"
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.leftMargin: root.compressed ? 10 : root.get_padding(logo);
@@ -55,7 +53,7 @@ Rectangle {
             anchors.top: logo.bottom
             anchors.leftMargin: root.compressed ? 10 : root.get_padding(txtWelcome);
             anchors.topMargin: 15
-            color: "#2f2d2d"
+            color: "#ffffff"
             text: "Welcome!"
             font.bold: true
             font.pointSize: 45
@@ -70,8 +68,10 @@ Rectangle {
             anchors.top: txtWelcome.bottom
             anchors.leftMargin: root.compressed ? 10 : root.get_padding(txtDescription);
             anchors.topMargin: 10
+            color: "#ffffff"
             text: "NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specially designed to build Python Applications. NINJA-IDE provides tools to simplify the Python-software development and handles all kinds of situations thanks to its rich extensibility."
             wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
         }
 
         Column {
@@ -105,7 +105,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.rightMargin: root.get_padding(txtProjects);
             anchors.topMargin: 30
-            color: "#2f2d2d"
+            color: "#ffffff"
             text: "Recent Projects:"
             font.bold: true
             font.pointSize: 30
@@ -128,38 +128,38 @@ Rectangle {
         }
     }
 
+    Text {
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            bottomMargin: 15
+            leftMargin: 10
+        }
+
+        color: "#ffffff"
+        text: "Copyright © 2011-2013 NINJA-IDE under GPLv3 License agreements"
+        renderType: Text.NativeRendering
+    }
+
     Row {
         spacing: 10
+        anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: 5
-        anchors.rightMargin: parent.height / 14
-
+        anchors.margins: 10
         Text {
             text: "Powered by:"
             color: "white"
-            style: Text.Raised
-            styleColor: "black"
-            height: logoPy.height
             verticalAlignment: Text.AlignVCenter
+            height: python.height
         }
         Image {
-            id: logoPy
-            source: "img/powered_py.png"
+            id: python
+            source: "img/python-logo.png"
         }
         Image {
-            id: logoQt
-            source: "img/powered_qt.png"
+            id: bwqt
+            source: "img/bwqt.png"
         }
-    }
-
-    Text {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.leftMargin: parent.height / 14
-        anchors.bottomMargin: 5
-        color: "black"
-        text: "Copyright © 2011-2013 NINJA-IDE under GPLv3 License agreements"
     }
 
     function get_padding(item){
