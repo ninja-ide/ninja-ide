@@ -559,8 +559,8 @@ def start(filenames=None, projects_path=None,
     app.processEvents()
 
     # Set the cursor to unblinking
-    if sys.platform != 'win32':
-        app.setCursorFlashTime(0)
+    # if sys.platform != 'win32':
+    #     app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)
     # QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))

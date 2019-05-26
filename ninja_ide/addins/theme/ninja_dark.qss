@@ -90,46 +90,6 @@ OutputWidget {
     selection-background-color: #437DCD;
 }
 
-QScrollBar:vertical{
-    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-        stop: 0 #212121,stop: 1.0 #323232);
-    width: 10px;
-}
-QScrollBar:horizontal{
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #212121,stop: 1.0 #323232);
-    height: 10px;
-}
-QScrollBar::handle:vertical{
-    padding: 2px;
-    min-height: 50px;
-    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-        stop: 0 #585858,stop: 1.0 #404040);
-    border-radius: 5px;
-    border: 1px solid #191919;
-}
-
-QScrollBar::handle:horizontal{
-    padding: 2px;
-    min-width: 50px;
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #585858,stop: 1.0 #404040);
-    border-radius: 5px;
-    border: 1px solid #191919;
-}
-
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical,
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical,
-QScrollBar::add-line:horizontal,
-QScrollBar::sub-line:horizontal,
-QScrollBar::add-page:horizontal,
-QScrollBar::sub-page:horizontal{
-    background: none;
-    border: none;
-}
-
 QLineEdit, QSpinBox, QDoubleSpinBox {
     color: #444;
     background: #ddd;
@@ -539,4 +499,57 @@ QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top center; /* position at the top center */
     padding: 5 10px;
+}
+
+QToolTip {
+    background-color: #1e1e1e;
+    border: 1px solid lightblue;
+    border-radius: 3px;
+    color: white;
+}
+QSplitter::handle {
+    background-color: #161719;
+    border: 0px solid transparent;
+    height: 2px;
+}
+
+QSplitter:handle:hover {
+    background: gray;
+}
+
+QScrollBar:horizontal {
+    background-color: #1d1f21;
+    height: 10px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #333;
+    min-height: 20px;
+}
+
+QScrollBar:vertical {
+    background-color: #1d1f21   ;
+    width: 16px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #333;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:pressed,
+QScrollBar::handle:horizontal:pressed {
+    background-color: #555;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal{
+    background: none;
+    border: none;
 }
