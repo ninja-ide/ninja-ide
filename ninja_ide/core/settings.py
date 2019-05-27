@@ -218,7 +218,7 @@ LANGS = []
 SHOW_PROJECT_EXPLORER = True
 SHOW_SYMBOLS_LIST = True
 SHOW_WEB_INSPECTOR = False
-SHOW_ERRORS_LIST = False
+SHOW_ERRORS_LIST = True
 SHOW_MIGRATION_LIST = True
 
 #Symbols handler per language (file extension)
@@ -530,7 +530,7 @@ def load_settings():
     SHOW_WEB_INSPECTOR = qsettings.value(
         'preferences/interface/showWebInspector', False, type=bool)
     SHOW_ERRORS_LIST = qsettings.value(
-        'preferences/interface/showErrorsList', False, type=bool)
+        'preferences/interface/showErrorsList', True, type=bool)
     SHOW_MIGRATION_LIST = qsettings.value(
         'preferences/interface/showMigrationList', True, type=bool)
     #Bookmarks and Breakpoints

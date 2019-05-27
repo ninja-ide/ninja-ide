@@ -199,7 +199,7 @@ class __ExplorerContainer(QTabWidget):
             self._listErrors.pep8Activated.connect(self.__ide.mainContainer.reset_pep8_warnings)
             # self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
             #              self.__ide.mainContainer.reset_pep8_warnings)
-            self._listErrors.linkActivated.connect(self.__ide.mainContainer.reset_lint_warnings)
+            self._listErrors.lintActivated.connect(self.__ide.mainContainer.reset_lint_warnings)
             # self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
             #              self.__ide.mainContainer.reset_lint_warnings)
 

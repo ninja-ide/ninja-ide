@@ -26,7 +26,7 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QSpacerItem
 from PyQt5.QtWidgets import QSizePolicy
 from PyQt5.QtCore import Qt
-# from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.gui.main_panel import main_container
@@ -42,6 +42,9 @@ class ErrorsWidget(QWidget):
     lintActivated(bool)
     """
 ###############################################################################
+
+    pep8Activated = pyqtSignal(bool)
+    lintActivated = pyqtSignal(bool)
 
     def __init__(self):
         QWidget.__init__(self)
@@ -76,14 +79,18 @@ class ErrorsWidget(QWidget):
         vbox.addLayout(hbox_pep8)
         vbox.addWidget(self.listPep8)
 
-        self.connect(self.listErrors, SIGNAL("itemSelectionChanged()"),
-            self.errors_selected)
-        self.connect(self.listPep8, SIGNAL("itemSelectionChanged()"),
-            self.pep8_selected)
-        self.connect(self.btn_lint_activate, SIGNAL("clicked()"),
-            self._turn_on_off_lint)
-        self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
-            self._turn_on_off_pep8)
+        self.listErrors.itemSelectionChanged.connect(self.errors_selected)
+        # self.connect(self.listErrors, SIGNAL("itemSelectionChanged()"),
+        #     self.errors_selected)
+        self.listPep8.itemSelectionChanged.connect(self.pep8_selected)
+        # self.connect(self.listPep8, SIGNAL("itemSelectionChanged()"),
+        #     self.pep8_selected)
+        self.btn_lint_activate.clicked.connect(self._turn_on_off_lint)
+        # self.connect(self.btn_lint_activate, SIGNAL("clicked()"),
+        #     self._turn_on_off_lint)
+        self.btn_pep8_activate.clicked.connect(self._turn_on_off_pep8)
+        # self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
+        #     self._turn_on_off_pep8)
 
     def _turn_on_off_lint(self):
         """Change the status of the lint checker state."""
@@ -92,7 +99,8 @@ class ErrorsWidget(QWidget):
             self.btn_lint_activate.setText(self.tr("Lint: ON"))
         else:
             self.btn_lint_activate.setText(self.tr("Lint: OFF"))
-        self.emit(SIGNAL("lintActivated(bool)"), settings.FIND_ERRORS)
+        # self.emit(SIGNAL("lintActivated(bool)"), settings.FIND_ERRORS)
+        self.lintActivated.emit(settings.FIND_ERRORS)
 
     def _turn_on_off_pep8(self):
         """Change the status of the lint checker state."""
@@ -101,7 +109,8 @@ class ErrorsWidget(QWidget):
             self.btn_pep8_activate.setText(self.tr("PEP8: ON"))
         else:
             self.btn_pep8_activate.setText(self.tr("PEP8: OFF"))
-        self.emit(SIGNAL("pep8Activated(bool)"), settings.CHECK_STYLE)
+        # self.emit(SIGNAL("pep8Activated(bool)"), settings.CHECK_STYLE)
+        self.pep8Activated.emit(settings.CHECK_STYLE)
 
     def errors_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
