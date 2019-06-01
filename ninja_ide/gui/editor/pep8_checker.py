@@ -18,6 +18,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QTimer
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
@@ -37,13 +38,13 @@ class Pep8Checker(QThread):
         if not self.isRunning():
             self._path = self._editor.ID
             self._encoding = self._editor.encoding
-            self.start()
+            QTimer.singleShot(1000, self.start)
+            # self.start()
 
     def reset(self):
         self.pep8checks = {}
 
     def run(self):
-        self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
@@ -51,7 +52,7 @@ class Pep8Checker(QThread):
                 self.reset()
                 source = self._editor.get_text()
                 pep8_style = pycodestylemod.StyleGuide(parse_argv=False, config_file='', checker_class=CustomChecker)
-                temp_data = pep8_style.input_file(self._path, lines=source.splitlines())
+                temp_data = pep8_style.input_file(self._path, lines=source.splitlines(True))
                 # source_lines = source.split('\n')
                 for line, col, code, text in temp_data:
                     message = '[PEP8]: %s' % text

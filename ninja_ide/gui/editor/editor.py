@@ -280,11 +280,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._mini.set_code(self.toPlainText())
         if settings.CHECK_STYLE:
             self.pep8.check_style()
-        if settings.SHOW_MIGRATION_TIPS:
-            self.migration.check_style()
+        # if settings.SHOW_MIGRATION_TIPS:
+        #     self.migration.check_style()
         # if not python3:
-        if settings.FIND_ERRORS:
-            self.errors.check_errors()
+        # if settings.FIND_ERRORS:
+        #     self.errors.check_errors()
 
     def _add_line_increment(self, lines, blockModified, diference):
         def _inner_increment(line):

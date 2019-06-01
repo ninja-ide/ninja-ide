@@ -735,7 +735,7 @@ class __MainContainer(QSplitter):
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
             save_folder = self._get_save_folder(editorWidget.ID)
             fileName = QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), save_folder, filters)
+                self._parent, self.tr("Save File"), save_folder, filters)[0]
             if not fileName:
                 return False
 
