@@ -139,6 +139,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #For Highlighting in document
         self.extraSelections = []
         self.wordSelection = []
+
+        self._rulers = [79, 120, 130]
+
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
@@ -537,7 +540,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
         self.document().setDefaultFont(font)
-        self._update_margin_line(font)
+        # self._update_margin_line(font)
 
     def jump_to_line(self, lineno=None):
         """
@@ -591,7 +594,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size += 2
             font.setPointSize(size)
         self.setFont(font)
-        self._update_margin_line(font)
+        # self._update_margin_line(font)
 
     def zoom_out(self):
         font = self.document().defaultFont()
@@ -600,7 +603,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size -= 2
             font.setPointSize(size)
         self.setFont(font)
-        self._update_margin_line(font)
+        # self._update_margin_line(font)
 
     def _update_margin_line(self, font=None):
         if not font:
@@ -1013,13 +1016,23 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def paintEvent(self, event):
         super(Editor, self).paintEvent(event)
         if settings.SHOW_MARGIN_LINE:
-            painter = QPainter()
-            painter.begin(self.viewport())
-            painter.setPen(QColor('#FE9E9A'))
-            offset = self.contentOffset()
-            painter.drawLine(self.pos_margin + offset.x(), 0,
-                self.pos_margin + offset.x(), self.viewport().height())
-            painter.end()
+            painter = QPainter(self.viewport())
+            painter.setPen(QColor("#FE9E9A"))
+            fm = QFontMetricsF(self.document().defaultFont())
+            doc_margin = self.document().documentMargin()
+            offset = self.contentOffset().x() + doc_margin
+            rect = self.viewport().rect()
+            for ruler in self._rulers:
+                if ruler <= 0 or ruler >= rect.width():
+                    continue
+                x = round(fm.width(" ") * ruler) + offset
+                painter.drawLine(x, rect.top(), x, rect.bottom())
+        #     painter.begin(self.viewport())
+        #     painter.setPen(QColor('#FE9E9A'))
+        #     offset = self.contentOffset()
+        #     painter.drawLine(self.pos_margin + offset.x(), 0,
+        #         self.pos_margin + offset.x(), self.viewport().height())
+        #     painter.end()
 
     def wheelEvent(self, event, forward=True):
         if event.modifiers() == Qt.ControlModifier:

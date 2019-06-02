@@ -137,7 +137,7 @@ Rectangle {
         }
 
         color: "#ffffff"
-        text: "Copyright © 2011-2013 NINJA-IDE under GPLv3 License agreements"
+        text: "Copyright © 2011-2019 NINJA-IDE under GPLv3 License agreements"
         renderType: Text.NativeRendering
     }
 
