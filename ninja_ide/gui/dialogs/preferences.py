@@ -1021,10 +1021,13 @@ class EditorConfiguration(QWidget):
         #Margin Line
         formFeatures.addWidget(QLabel(self.tr("Margin Line:")), 2, 0,
             Qt.AlignRight)
-        self._spinMargin = QSpinBox()
-        self._spinMargin.setMaximum(200)
-        self._spinMargin.setValue(settings.MARGIN_LINE)
-        formFeatures.addWidget(self._spinMargin, 2, 1, alignment=Qt.AlignTop)
+        self._line_margin = QLineEdit()
+        self._line_margin.setText(",".join(map(str, settings.MARGIN_LINE)))
+        # self._spinMargin = QSpinBox()
+        # self._spinMargin.setMaximum(200)
+        # self._spinMargin.setValue(settings.MARGIN_LINE)
+        # formFeatures.addWidget(self._spinMargin, 2, 1, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._line_margin, 2, 1, alignment=Qt.AlignTop)
         self._checkShowMargin = QCheckBox(self.tr("Show Margin Line"))
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         formFeatures.addWidget(self._checkShowMargin, 2, 2,
@@ -1143,10 +1146,11 @@ class EditorConfiguration(QWidget):
         endOfLine = self._checkEndOfLine.isChecked()
         qsettings.setValue('platformEndOfLine', endOfLine)
         settings.USE_PLATFORM_END_OF_LINE = endOfLine
-        margin_line = self._spinMargin.value()
+        # margin_line = self._spinMargin.value()
+        margin_line = list(map(int, self._line_margin.text().split(",")))
         qsettings.setValue('marginLine', margin_line)
         settings.MARGIN_LINE = margin_line
-        settings.pep8mod_update_margin_line_length(margin_line)
+        # settings.pep8mod_update_margin_line_length(margin_line)
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
         settings.UNDERLINE_NOT_BACKGROUND = \
@@ -1194,7 +1198,7 @@ class EditorConfiguration(QWidget):
         else:
             settings.pep8mod_remove_ignore("W191")
         settings.pep8mod_refresh_checks()
-        main_container.MainContainer().update_editor_margin_line()
+        # main_container.MainContainer().update_editor_margin_line()
 
 
 class EditorCompletion(QWidget):

@@ -131,7 +131,7 @@ ALLOW_WORD_WRAP = False
 INDENT = 4
 # by default Unix (\n) is used
 USE_PLATFORM_END_OF_LINE = False
-MARGIN_LINE = 80
+MARGIN_LINE = [79]
 SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
 SHOW_TABS_AND_SPACES = True
@@ -462,8 +462,8 @@ def load_settings():
 
     USE_PLATFORM_END_OF_LINE = qsettings.value(
         'preferences/editor/platformEndOfLine', False, type=bool)
-    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 80,
-                                  type=int)
+    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', [79],
+                                  type=list)
     pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)

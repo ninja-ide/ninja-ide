@@ -140,8 +140,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.extraSelections = []
         self.wordSelection = []
 
-        self._rulers = [79, 120, 130]
-
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
@@ -1022,7 +1020,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             doc_margin = self.document().documentMargin()
             offset = self.contentOffset().x() + doc_margin
             rect = self.viewport().rect()
-            for ruler in self._rulers:
+            for ruler in settings.MARGIN_LINE:
                 if ruler <= 0 or ruler >= rect.width():
                     continue
                 x = round(fm.width(" ") * ruler) + offset
