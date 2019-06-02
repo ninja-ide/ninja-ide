@@ -1147,7 +1147,7 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('platformEndOfLine', endOfLine)
         settings.USE_PLATFORM_END_OF_LINE = endOfLine
         # margin_line = self._spinMargin.value()
-        margin_line = list(map(int, self._line_margin.text().split(",")))
+        margin_line = self._line_margin.text().split(",")
         qsettings.setValue('marginLine', margin_line)
         settings.MARGIN_LINE = margin_line
         # settings.pep8mod_update_margin_line_length(margin_line)

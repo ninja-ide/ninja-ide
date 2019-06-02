@@ -284,8 +284,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         # if settings.SHOW_MIGRATION_TIPS:
         #     self.migration.check_style()
         # if not python3:
-        # if settings.FIND_ERRORS:
-        #     self.errors.check_errors()
+        if settings.FIND_ERRORS:
+            self.errors.check_errors()
 
     def _add_line_increment(self, lines, blockModified, diference):
         def _inner_increment(line):
@@ -1021,6 +1021,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             offset = self.contentOffset().x() + doc_margin
             rect = self.viewport().rect()
             for ruler in settings.MARGIN_LINE:
+                ruler = int(ruler)
                 if ruler <= 0 or ruler >= rect.width():
                     continue
                 x = round(fm.width(" ") * ruler) + offset
@@ -1075,6 +1076,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         (block.blockNumber()) in self.errors.errorsSummary:
             message = '\n'.join(
                 self.errors.errorsSummary[block.blockNumber()])
+            # message = self.errors.errorsSummary[block.blockNumber()]
             QToolTip.showText(self.mapToGlobal(position),
                 message, self)
         elif settings.SHOW_MIGRATION_TIPS and \

@@ -19,19 +19,13 @@ from __future__ import unicode_literals
 
 import re
 import _ast
-# try:
-#     import compiler
-# except ImportError:
-#     print('Errors checker not working in Python3')
 
 from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QTimer
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
-try:
-    from ninja_ide.dependencies.pyflakes_mod import checker
-except ImportError:
-    print('Errors checker not working in Python3')
+from ninja_ide.dependencies.pyflakes_mod import checker
 
 
 class ErrorsChecker(QThread):
@@ -52,13 +46,12 @@ class ErrorsChecker(QThread):
         if not self.isRunning():
             self._path = self._editor.ID
             self._encoding = self._editor.encoding
-            self.start()
+            QTimer.singleShot(1000, self.start)
 
     def reset(self):
         self.errorsSummary = {}
 
     def run(self):
-        self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
@@ -70,9 +63,9 @@ class ErrorsChecker(QThread):
                 tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
             except SyntaxError as reason:
                 if reason.text is None:
-                    print("ERROR")
+                    print("[Error] %s" % reason)
                 else:
-                    self.errorsSummary[reason.lineno - 1] = reason.args[0]
+                    self.errorsSummary[reason.lineno - 1] = [reason.args[0]]
             else:
                 lint_checker = checker.Checker(tree, self._path)
                 for m in lint_checker.messages:
