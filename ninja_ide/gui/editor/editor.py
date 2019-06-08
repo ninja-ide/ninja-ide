@@ -586,21 +586,23 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.setTextCursor(cursor)
 
     def zoom_in(self):
-        font = self.document().defaultFont()
-        size = font.pointSize()
-        if size < settings.FONT_MAX_SIZE:
-            size += 2
-            font.setPointSize(size)
-        self.setFont(font)
+        self.zoomIn(1)
+        # font = self.document().defaultFont()
+        # size = font.pointSize()
+        # if size < settings.FONT_MAX_SIZE:
+        #     size += 2
+        #     font.setPointSize(size)
+        # self.setFont(font)
         # self._update_margin_line(font)
 
     def zoom_out(self):
-        font = self.document().defaultFont()
-        size = font.pointSize()
-        if size > settings.FONT_MIN_SIZE:
-            size -= 2
-            font.setPointSize(size)
-        self.setFont(font)
+        self.zoomOut(1)
+        # font = self.document().defaultFont()
+        # size = font.pointSize()
+        # if size > settings.FONT_MIN_SIZE:
+        #     size -= 2
+        #     font.setPointSize(size)
+        # self.setFont(font)
         # self._update_margin_line(font)
 
     def _update_margin_line(self, font=None):
@@ -1033,14 +1035,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #         self.pos_margin + offset.x(), self.viewport().height())
         #     painter.end()
 
-    def wheelEvent(self, event, forward=True):
+    def wheelEvent(self, event):
         if event.modifiers() == Qt.ControlModifier:
-            if event.delta() == 120:
+            if event.angleDelta().y() == 120:
                 self.zoom_in()
-            elif event.delta() == -120:
+            elif event.angleDelta().y() == -120:
                 self.zoom_out()
             event.ignore()
-        QPlainTextEdit.wheelEvent(self, event)
+        # QPlainTextEdit.wheelEvent(self, event)
 
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()
