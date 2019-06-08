@@ -16,15 +16,13 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 #Based in pycomplete emacs module.
 
-from __future__ import absolute_import
+# from __future__ import absolute_import
 
 import sys
+import ast
 import types
 #import inspect
-try:
-    import StringIO
-except:
-    import io as StringIO  # lint:ok
+import io as StringIO  # lint:ok
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.tools.completion.completer')
@@ -120,40 +118,38 @@ def get_all_completions(s, imports=None):
     dlocals = {}
     #FIXXXXXXXXXXXXXXXX
     #return {}
-
     _import_modules(imports, globals())
-
     dots = s.rsplit('.', 1)
-
     sym = None
     for i in range(1, len(dots)):
-        s = '.'.join(dots[:i])
-        if not s:
+        string = ".".join(dots[:i])
+        if not string:
             continue
         try:
             try:
-                if s.startswith('PyQt5.') and s.endswith(')'):
-                    s = s[:s.rindex('(')]
-                sym = eval(s, globals(), dlocals)
+                if string.startswith('PyQt5.') and string.endswith(')'):
+                    string = string[:string.rindex('(')]
+
+                sym = eval(string, dlocals, {})
             except NameError:
                 try:
-                    sym = __import__(s, globals(), dlocals, [])
+                    sym = __import__(string, globals(), dlocals, [])
                 except ImportError:
-                    if s.find('(') != -1 and s[-1] == ')':
-                        s = s[:s.index('(')]
-                    sym = eval(s, globals(), dlocals)
+                    if string.find('(') != -1 and string[-1] == ')':
+                        string = string[:string.index('(')]
+                    sym = eval(string, globals(), dlocals)
                 except AttributeError:
                     try:
-                        sym = __import__(s, globals(), dlocals, [])
+                        sym = __import__(string, globals(), dlocals, [])
                     except ImportError:
                         pass
         except (AttributeError, NameError, TypeError, SyntaxError):
             return {}
     if sym is not None:
-        var = s
-        s = dots[-1]
+        var = string
+        string = dots[-1]
         return get_completions_per_type(["%s.%s" % (var, k) for k in
-                                         dir(sym) if k.startswith(s)])
+                                         dir(sym) if k.startswith(string)])
     return {}
 
 

@@ -55,14 +55,14 @@ def expand_attribute(attribute):
 class Analyzer(object):
 
     __mapping = {
-        _ast.Tuple: '__builtin__.tuple',
-        _ast.List: '__builtin__.list',
-        _ast.ListComp: '__builtin__.list',
-        _ast.Str: '__builtin__.str',
-        _ast.Dict: '__builtin__.dict',
-        _ast.Num: '__builtin__.int',
-        '_ast.Float': '__builtin__.float',
-        '_ast.Bool': '__builtin__.bool',
+        _ast.Tuple: 'tuple',
+        _ast.List: 'list',
+        _ast.ListComp: 'list',
+        _ast.Str: 'str',
+        _ast.Dict: 'dict',
+        _ast.Num: 'int',
+        '_ast.Float': 'float',
+        '_ast.Bool': 'bool',
         _ast.Call: model.late_resolution,
         _ast.Name: model.late_resolution,
         _ast.Attribute: model.late_resolution,
@@ -242,11 +242,11 @@ class Analyzer(object):
 #            function.decorators.append(decorator.id)
         if symbol.args.vararg is not None:
             assign = model.Assign(symbol.args.vararg)
-            assign.add_data(symbol.lineno, '__builtin__.list', None, None)
+            assign.add_data(symbol.lineno, 'list', None, None)
             function.args[assign.name] = assign
         if symbol.args.kwarg is not None:
             assign = model.Assign(symbol.args.kwarg)
-            assign.add_data(symbol.lineno, '__builtin__.dict', None, None)
+            assign.add_data(symbol.lineno, 'dict', None, None)
             function.args[assign.name] = assign
         #We store the arguments to compare with default backwards
         defaults = []

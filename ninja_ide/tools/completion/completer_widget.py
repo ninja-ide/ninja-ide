@@ -88,6 +88,7 @@ class CodeCompletionWidget(QFrame):
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
+
         if new_row < self.completion_list.count():
             self.completion_list.setCurrentRow(new_row)
         else:

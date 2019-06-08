@@ -283,7 +283,7 @@ class Module(Structure):
         return result
 
     def get_imports(self):
-        module_imports = ['import __builtin__']
+        module_imports = ['import __builtins__']
         for name in self.imports:
             module_imports.append(self.imports[name].line_content)
         return module_imports

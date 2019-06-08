@@ -87,7 +87,6 @@ class CodeCompletion(object):
         # TODO Optimization, only iterate until the previous line of a class??
         token_code = []
         try:
-            print(code)
             for tkn_type, tkn_str, pos, _, line, in generate_tokens(StringIO(code.decode()).readline):
                 token_code.append((tkn_type, tkn_str, pos, line))
         except TokenError:
