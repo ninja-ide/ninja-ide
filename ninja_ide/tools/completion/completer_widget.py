@@ -233,7 +233,7 @@ class CodeCompletionWidget(QFrame):
         if not self.isVisible() or self._editor.lang != "python":
             return False
         skip = self._key_operations.get(event.key(), lambda: False)()
-        self._key_operations.get(event.modifiers(), lambda: False)()
+        # self._key_operations.get(event.modifiers(), lambda: False)()
         if skip is None:
             skip = False
         return skip

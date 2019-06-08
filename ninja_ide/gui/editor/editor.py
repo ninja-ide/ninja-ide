@@ -145,7 +145,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._braces = None
         self.__encoding = None
         #Completer
-        # self.completer = completer_widget.CodeCompletionWidget(self)
+        self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
         self.just_saved = False
@@ -753,7 +753,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
-        # self.completer.hide_completer()
+        self.completer.hide_completer()
         super(Editor, self).focusOutEvent(event)
 
     def resizeEvent(self, event):
@@ -975,8 +975,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def keyPressEvent(self, event):
         #Completer pre key event
-        # if self.completer.process_pre_key_event(event):
-        #     return
+        if self.completer.process_pre_key_event(event):
+            return
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
             #emit a signal then plugings can do something
@@ -997,7 +997,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
         #Completer post key event
-        # self.completer.process_post_key_event(event)
+        self.completer.process_post_key_event(event)
 
         #emit a signal then plugings can do something
         # self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
@@ -1111,8 +1111,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.mouseMoveEvent(self, event)
 
     def mousePressEvent(self, event):
-        # if self.completer.isVisible():
-        #     self.completer.hide_completer()
+        if self.completer.isVisible():
+            self.completer.hide_completer()
         if event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
