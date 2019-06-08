@@ -1042,7 +1042,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             elif event.angleDelta().y() == -120:
                 self.zoom_out()
             event.ignore()
-        # QPlainTextEdit.wheelEvent(self, event)
+        else:
+            QPlainTextEdit.wheelEvent(self, event)
 
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()
