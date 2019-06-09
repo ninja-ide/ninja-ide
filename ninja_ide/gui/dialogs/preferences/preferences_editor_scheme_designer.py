@@ -23,21 +23,21 @@ import copy
 from getpass import getuser
 from string import ascii_letters
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QScrollArea
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QColorDialog
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtGui import QDialog
+from PyQt5.QtGui import QGridLayout
+from PyQt5.QtGui import QVBoxLayout
+from PyQt5.QtGui import QHBoxLayout
+from PyQt5.QtGui import QScrollArea
+from PyQt5.QtGui import QFrame
+from PyQt5.QtGui import QPushButton
+from PyQt5.QtGui import QMessageBox
+from PyQt5.QtGui import QLineEdit
+from PyQt5.QtGui import QLabel
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColorDialog
+from PyQt5.QtGui import QGroupBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 from ninja_ide import translations
 from ninja_ide import resources

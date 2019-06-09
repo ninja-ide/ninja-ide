@@ -18,11 +18,11 @@ from __future__ import absolute_import
 
 from tempfile import mkdtemp
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtWebKit import QWebView
-from PyQt4.QtCore import QUrl
-from PyQt4.QtWebKit import QWebSettings
+from PyQt5.QtGui import QWidget
+from PyQt5.QtGui import QVBoxLayout
+from PyQt5.QtWebKit import QWebView
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebKit import QWebSettings
 
 
 class WebRender(QWidget):

@@ -72,7 +72,8 @@ try:
 except:
     from pip.utils import get_installed_distributions
 #lint:enable
-from PyQt4.QtCore import QObject, SIGNAL, QThread
+from PyQt5.QtCore import QObject, QThread
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}

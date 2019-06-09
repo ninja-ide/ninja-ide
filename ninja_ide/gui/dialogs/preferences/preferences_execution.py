@@ -208,21 +208,21 @@ preferences.Preferences.register_configuration(
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QGroupBox
-from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QDirModel
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QDir
+from PyQt5.QtGui import QWidget
+from PyQt5.QtGui import QVBoxLayout
+from PyQt5.QtGui import QGroupBox
+from PyQt5.QtGui import QCheckBox
+from PyQt5.QtGui import QHBoxLayout
+from PyQt5.QtGui import QFileDialog
+from PyQt5.QtGui import QLineEdit
+from PyQt5.QtGui import QPushButton
+from PyQt5.QtGui import QLabel
+from PyQt5.QtGui import QComboBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QCompleter
+from PyQt5.QtGui import QDirModel
+from PyQt5.QtCore import SIGNAL
+from PyQt5.QtCore import QDir
 
 from ninja_ide import translations
 from ninja_ide.core import settings

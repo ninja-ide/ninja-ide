@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>. #
 import os
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL, QThread
+from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.Watcher')

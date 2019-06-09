@@ -15,15 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QPen
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QBrush
-from PyQt4.QtCore import QPropertyAnimation
-from PyQt4.QtGui import QGraphicsOpacityEffect
-from PyQt4.QtCore import Qt
-from PyQt4.Qsci import QsciScintilla
+from PyQt5.QtGui import QFrame
+from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPen
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QBrush
+from PyQt5.QtCore import QPropertyAnimation
+from PyQt5.QtGui import QGraphicsOpacityEffect
+from PyQt5.QtCore import Qt
+from PyQt5.Qsci import QsciScintilla
 
 from ninja_ide.core import settings
 from ninja_ide import resources

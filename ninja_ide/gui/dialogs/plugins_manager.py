@@ -24,29 +24,29 @@ from copy import copy
 from distutils import version
 import os
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QFormLayout
-from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QTextBrowser
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QTableWidget
-from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QDirModel
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import QDir
+from PyQt5.QtGui import QWidget
+from PyQt5.QtGui import QFormLayout
+from PyQt5.QtGui import QFileDialog
+from PyQt5.QtGui import QDialog
+from PyQt5.QtGui import QLabel
+from PyQt5.QtGui import QTextBrowser
+from PyQt5.QtGui import QPushButton
+from PyQt5.QtGui import QTableWidget
+from PyQt5.QtGui import QTabWidget
+from PyQt5.QtGui import QPlainTextEdit
+from PyQt5.QtGui import QLineEdit
+from PyQt5.QtGui import QVBoxLayout
+from PyQt5.QtGui import QHBoxLayout
+from PyQt5.QtGui import QSpacerItem
+from PyQt5.QtGui import QSizePolicy
+from PyQt5.QtGui import QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QCompleter
+from PyQt5.QtGui import QDirModel
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal as SIGNAL
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QDir
 
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager

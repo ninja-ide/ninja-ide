@@ -18,9 +18,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 #from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager

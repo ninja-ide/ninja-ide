@@ -28,16 +28,16 @@ except:
     from io import StringIO
 #lint:enable
 
-#from PyQt4.QtGui import QToolTip
-from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtGui import QMenu
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QKeySequence
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QMimeData
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QTimer
+#from PyQt5.QtGui import QToolTip
+from PyQt5.QtGui import QAction
+from PyQt5.QtGui import QInputDialog
+from PyQt5.QtGui import QMenu
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import pyqtSignal as SIGNAL
+from PyQt5.QtCore import QMimeData
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -50,7 +50,7 @@ from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import document_map
 from ninja_ide.extensions import handlers
 
-from PyQt4.Qsci import QsciScintilla  # , QsciCommand
+from PyQt5.Qsci import QsciScintilla  # , QsciCommand
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.editor.editor')

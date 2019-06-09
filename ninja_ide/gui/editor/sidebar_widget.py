@@ -19,16 +19,16 @@ from __future__ import absolute_import
 import math
 import re
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QLinearGradient
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QPolygonF
-from PyQt4.QtGui import QFontMetrics
-from PyQt4.QtGui import QPainter
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QPointF
+from PyQt5.QtGui import QWidget
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QLinearGradient
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QPolygonF
+from PyQt5.QtGui import QFontMetrics
+from PyQt5.QtGui import QPainter
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QPointF
 
 from ninja_ide import resources
 from ninja_ide.core import settings

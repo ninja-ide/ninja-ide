@@ -20,8 +20,8 @@ from __future__ import unicode_literals
 import os
 import subprocess
 
-from PyQt4.QtCore import QThread
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtCore import QThread
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager

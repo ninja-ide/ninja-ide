@@ -16,18 +16,18 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtGui import QDialog
+from PyQt5.QtGui import QVBoxLayout
+from PyQt5.QtGui import QHBoxLayout
+from PyQt5.QtGui import QLabel
+from PyQt5.QtGui import QListWidget
+from PyQt5.QtGui import QPushButton
+from PyQt5.QtGui import QSpacerItem
+from PyQt5.QtGui import QSizePolicy
+from PyQt5.QtCore import QSettings
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QSize
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings

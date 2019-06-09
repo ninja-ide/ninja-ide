@@ -20,7 +20,7 @@ from __future__ import absolute_import
 import os
 import sys
 
-from PyQt4.QtCore import QObject
+from PyQt5.QtCore import QObject
 
 from ninja_ide.tools.logger import NinjaLogger
 

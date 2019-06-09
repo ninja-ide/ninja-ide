@@ -18,12 +18,12 @@
 import collections
 import random
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QColor
-from PyQt4.QtDeclarative import QDeclarativeView
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt5.QtGui import QDialog
+from PyQt5.QtGui import QVBoxLayout
+from PyQt5.QtGui import QColor
+from PyQt5.QtDeclarative import QDeclarativeView
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 from ninja_ide import translations
 from ninja_ide.tools import ui_tools
