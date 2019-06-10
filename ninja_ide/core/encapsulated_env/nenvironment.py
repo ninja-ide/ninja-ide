@@ -23,6 +23,8 @@ import os
 import sys
 
 from virtualenv import create_environment
+from PyQt5.QtCore import QObject, QThread
+from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 #This is here only for reference purposes
 #def create_environment(home_dir, site_packages=False, clear=False,
@@ -72,8 +74,6 @@ try:
 except:
     from pip.utils import get_installed_distributions
 #lint:enable
-from PyQt5.QtCore import QObject, QThread
-from PyQt5.QtCore import pyqtSignal as SIGNAL
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}

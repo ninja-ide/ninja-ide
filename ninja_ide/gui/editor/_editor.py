@@ -28,7 +28,7 @@ except:
     from io import StringIO
 #lint:enable
 
-#from PyQt5.QtGui import QToolTip
+# from PyQt5.QtGui import QToolTip
 from PyQt5.QtGui import QAction
 from PyQt5.QtGui import QInputDialog
 from PyQt5.QtGui import QMenu
