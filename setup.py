@@ -140,7 +140,7 @@ setup(
         ]
     },
     packages=find_packages(exclude=["ninja_tests", "debian"]),
-    scripts=["ninja-ide.py"],
+    scripts=["ninja-ide"],
     cmdclass={"install": CustomInstall}
 )
 

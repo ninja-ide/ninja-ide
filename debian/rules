@@ -1,0 +1,13 @@
+#!/usr/bin/make -f
+SHELL=sh -e
+export DH_VERBOSE=1
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_auto_test:
+
+override_dh_auto_clean:
+	dh_auto_clean
+	find . -name "__pycache__" -exec rm -rf {} +
+	rm -rf build

@@ -1,0 +1,27 @@
+Source: ninja-ide
+Section: devel
+Priority: optional
+Maintainer: Gabriel 'gabo' Acosta <gabriel.acosta@ninja-ide.org>
+Build-Depends: debhelper (>= 10), dh-python, python3-all
+Standards-Version: 4.0.1
+X-Python3-Version: >= 3.4
+Homepage: http://ninja-ide.org/
+
+Package: ninja-ide
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3-pyqt5, python3-pyqt5.qtquick
+Description: Integrated Development Environment (IDE) for Python
+ NINJA-IDE is a cross-platform integrated development environment (IDE).
+ It currently features:
+  .
+  * code editor: NINJA-IDE provides a complete code editor with highlighting
+    for several languages, code completion, code assistant for imports,
+    navigation, etc.
+  .
+  * project management: NINJA-IDE allows one to manage Python projects
+    automatically, saving descriptive information about them and letting the
+    user perform file-management-related tasks in the IDE itself.
+  .
+  * high extensibility: you can create plugins for several purposes, and they
+    can be completely integrated within the IDE, increasing the available
+    features.

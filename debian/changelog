@@ -1,0 +1,52 @@
+ninja-ide (2.4) unstable; urgency=medium
+
+  * Port to Python3 and Qt5.
+
+ -- Gabriel Acosta <gabriel.acosta@ninja-ide.org>  Mon, 17 Jun 2019 21:31:27 -0300
+
+ninja-ide (2.3+r597~saucy1) saucy; urgency=low
+
+  * Auto build.
+
+ -- Diego Sarmentero <diego.sarmentero@canonical.com>  Mon, 08 Jul 2013 11:25:23 +0000
+
+ninja-ide (2.0~b-2ubuntu0~precise) precise; urgency=low
+
+  * Stable builds
+
+ -- Guillermo Gonzalez <guillermo.gonzalez@canonical.com>  Tue, 19 Jun 2012 11:17:01 -0300
+
+ninja-ide (2.0~b-2ubuntu0+3~natty) natty; urgency=low
+
+  * add ninja-ide.desktop
+
+ -- Guillermo Gonzalez <guillermo.gonzalez@canonical.com>  Fri, 11 Nov 2011 13:31:34 -0300
+
+ninja-ide (2.0~b-2ubuntu0+2~natty) natty; urgency=low
+
+  * Override PyQt4 with python-qt4
+
+ -- Guillermo Gonzalez <guillermo.gonzalez@canonical.com>  Fri, 11 Nov 2011 11:16:16 -0300
+
+ninja-ide (2.0~b-2ubuntu0+1~natty) natty; urgency=low
+
+  * Daily build package for ubuntu:
+    - fold 00 and 02 patches
+
+ -- Guillermo Gonzalez <guillermo.gonzalez@canonical.com>  Fri, 11 Nov 2011 09:56:57 -0300
+
+ninja-ide (2.0~b-2) unstable; urgency=low
+
+  [ Margarita Manterola ]
+  * Removed unneeded dependencies.
+
+  [ David Paleino ]
+  * Drop requirement on python << 2.7
+
+ -- David Paleino <dapal@debian.org>  Thu, 29 Sep 2011 09:20:53 +0200
+
+ninja-ide (2.0~b-1) unstable; urgency=low
+
+  * Initial release (Closes: #613980)
+
+ -- David Paleino <dapal@debian.org>  Sat, 24 Sep 2011 23:45:42 +0200
