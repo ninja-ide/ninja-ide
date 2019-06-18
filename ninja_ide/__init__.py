@@ -57,7 +57,6 @@ and more enjoyable.
 # START
 ###############################################################################
 
-
 def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail

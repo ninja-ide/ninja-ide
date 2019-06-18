@@ -22,6 +22,19 @@
 ###############################################################################
 
 from __future__ import absolute_import
+import os
+import sys
+
+INSTALL_DIR = "@ INSTALLED_BASE_DIR @"
+
+if os.path.exists(INSTALL_DIR):
+    project = INSTALL_DIR
+else:
+    project = os.path.abspath(os.path.dirname(os.path.realpath(sys.argv[0])))
+print(project)
+if project not in sys.path:
+    sys.path.insert(0, project)
+
 
 import ninja_ide
 
