@@ -73,7 +73,7 @@ class CustomInstall(install):
             dst_desktop = os.path.join(self._custom_apps_dir, src_desktop)
             with open(src_desktop, 'r') as f:
                 content = f.read()
-            icon = os.path.join(self._custom_data_dir, "icon.png")
+            icon = os.path.join(self._custom_data_dir, "ninja_ide", "img", "icon.png")
             content = content.replace('@ INSTALLED_ICON @', icon)
             with open(dst_desktop, 'w') as f:
                 f.write(content)
