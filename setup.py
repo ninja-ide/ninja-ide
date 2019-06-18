@@ -47,7 +47,7 @@ class CustomInstall(install):
     """
     Custom installation class on package files.
 
-    It copies all the files into the "PREFIX/share/pireal" dir.
+    It copies all the files into the "PREFIX/share/ninja-ide" dir.
     """
 
     def run(self):

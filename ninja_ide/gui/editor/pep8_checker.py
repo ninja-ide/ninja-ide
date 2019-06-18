@@ -56,7 +56,7 @@ class Pep8Checker(QThread):
                 # source_lines = source.split('\n')
                 for line, col, code, text in temp_data:
                     message = '[PEP8]: %s' % text
-                    self.pep8checks[line] = [message]
+                    self.pep8checks[line - 1] = [message]
                     # print(source_lines[line - 1])
             except Exception as reason:
                 print("Checker not finished: {}".format(reason))
