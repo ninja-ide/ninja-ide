@@ -9,7 +9,10 @@ Homepage: http://ninja-ide.org/
 
 Package: ninja-ide
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-pyqt5, python3-pyqt5.qtquick
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-pyqt5,
+ python3-pyqt5.qtquick,
+ qml-module-qtquick2
 Description: Integrated Development Environment (IDE) for Python
  NINJA-IDE is a cross-platform integrated development environment (IDE).
  It currently features:

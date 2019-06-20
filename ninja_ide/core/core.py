@@ -31,9 +31,9 @@ def run_ninja():
     if sys.platform != 'win32' and sys.platform != 'darwin':
         try:
             import ctypes
-            libc = ctypes.CDLL('libc.so.6')
-            procname = 'ninja-ide'
-            libc.prctl(15, '%s\0' % procname, 0, 0, 0)
+            libc = ctypes.cdll.LoadLibrary('libc.so.6')
+            # Set the application name
+            libc.prctl(15, b"ninja-ide\0", 0, 0, 0)
         except:
             print("The process couldn't be renamed'")
     #Set the application name
