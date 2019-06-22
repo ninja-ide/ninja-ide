@@ -462,8 +462,7 @@ def load_settings():
 
     USE_PLATFORM_END_OF_LINE = qsettings.value(
         'preferences/editor/platformEndOfLine', False, type=bool)
-    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', [79],
-                                  type=list)
+    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', [79])
     pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)
