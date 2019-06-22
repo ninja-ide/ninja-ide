@@ -96,7 +96,7 @@ class __MiscContainer(QWidget):
         hbox.addWidget(self.__toolbar)
         self.__toolbar.addWidget(self._btnConsole)
         self.__toolbar.addWidget(self._btnRun)
-        self.__toolbar.addWidget(self._btnWeb)
+        # self.__toolbar.addWidget(self._btnWeb)
         self.__toolbar.addWidget(self._btnFind)
         self.__toolbar.addSeparator()
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
