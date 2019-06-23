@@ -104,7 +104,11 @@ class BaseIndenter(object):
     def line_indent(self, line):
         """Returns the indentation level of `line`"""
 
-        return self._neditor.line_indent(line)
+        if line == -1:
+            line = self._neditor.textCursor().blockNumber() + 1
+        text = self._neditor.document().findBlockByNumber(line).text()
+        indentation = len(text) - len(text.lstrip())
+        return indentation
 
     def _compute_indent(self, cursor):
         raise NotImplementedError
