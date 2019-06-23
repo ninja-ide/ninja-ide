@@ -585,8 +585,16 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 lineno).position())
             self.setTextCursor(cursor)
 
+    def zoom(self, delta: int):
+        font = self.document().defaultFont()
+        previous_point_size = font.pointSize()
+        new_point_size = int(max(1, previous_point_size + delta))
+        if new_point_size != previous_point_size:
+            font.setPointSize(new_point_size)
+            self.set_font(font.family(), font.pointSize())
+
     def zoom_in(self):
-        self.zoomIn(1)
+        self.zoom(1)
         # font = self.document().defaultFont()
         # size = font.pointSize()
         # if size < settings.FONT_MAX_SIZE:
@@ -596,7 +604,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         # self._update_margin_line(font)
 
     def zoom_out(self):
-        self.zoomOut(1)
+        self.zoom(-1)
         # font = self.document().defaultFont()
         # size = font.pointSize()
         # if size > settings.FONT_MIN_SIZE:
