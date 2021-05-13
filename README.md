@@ -22,7 +22,7 @@ You can clone this repo and simply execute:
 $ git clone git://github.com/ninja-ide/ninja-ide.git
 $ cd ninja-ide
 $ pip install requirements.py
-# python ninja-ide.py
+$ python ninja-ide.py
 ```
 
 Piece of cake, huh?
