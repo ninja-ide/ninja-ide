@@ -68,39 +68,15 @@ class CentralWidget(QWidget):
         tools_dock = IDE.get_service("tools_dock")
         vbox.addWidget(tools_dock.buttons_widget)
         main_container.addLayout(vbox)
-        # main_container.addWidget(self._splitter_base)
         IDE.register_service("central_container", self)
 
-        # vbox = QVBoxLayout(self)
-        # vbox.setContentsMargins(0, 0, 0, 0)
-        # vbox.setSpacing(0)
         # # This variables are used to save the splitter sizes before hide
-        # self.lateral_panel = LateralPanel()
 
         # self._add_functions = {
-        #     "central": self._insert_widget_inside,
-        #     "lateral": self._insert_widget_base,
-        # }
-        # self._items = {}
 
-        # hbox = QHBoxLayout()
-        # hbox.setContentsMargins(0, 0, 0, 0)
-        # hbox.setSpacing(0)
-        # toolbar = ui_tools.ToolBar(self)
-        # hbox.addWidget(toolbar)
         # # Create Splitters to divide the UI 3 regions
-        # self._splitter_base = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
-        # self._splitter_base.setOpaqueResize(True)
-        # self._splitter_inside = dynamic_splitter.DynamicSplitter(Qt.Vertical)
-        # self._splitter_inside.setOpaqueResize(True)
-        # self._splitter_base.addWidget(self._splitter_inside)
 
         # # Add to Main Layout
-        # hbox.addWidget(self._splitter_base)
-        # vbox.addLayout(hbox)
-        # tool = IDE.get_service('tools_dock')
-        # vbox.addWidget(tool.buttons_widget)
-        # IDE.register_service('central_container', self)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -140,7 +116,6 @@ class CentralWidget(QWidget):
     def hide_all(self):
         """ Hide/Show all the containers except the editor """
 
-        # tools_dock = IDE.get_service('tools_dock')
         toolbar = IDE.get_service('toolbar')
         if (self.lateral_panel.isVisible() or toolbar.isVisible()):
             if self.lateral_panel:
@@ -155,12 +130,6 @@ class CentralWidget(QWidget):
 
     def showEvent(self, event):
         super(CentralWidget, self).showEvent(event)
-        # if bin(settings.UI_LAYOUT)[-1] == '1':
-        #    self.splitter_base_rotate()
-        # if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
-        #    self.splitter_inside_rotate()
-        # if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
-        #    self.splitter_base_orientation()
         # Rearrange widgets on Window
         qsettings = IDE.ninja_settings()
         # Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
@@ -230,23 +199,15 @@ class LateralPanel(QWidget):
         self.vbox = QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 0, 0, 0)
         self.vbox.setSpacing(0)
-        # hbox = QHBoxLayout()
-        # hbox.setContentsMargins(0, 0, 0, 0)
-        # hbox.setSpacing(0)
-        # self.combo = QComboBox()
         # ui_tools.ComboBoxButton(self.combo, self.combo.clear,
         #    self.style().standardPixmap(self.style().SP_TrashIcon))
         # FIXME: translations
         # self.combo.setToolTip("Select the item from the Paste "
-        #    "History list.\nYou can Copy items into this list with: "
         #    "%s\nor Paste them using: {}".format(
         #        resources.get_shortcut("History-Copy").toString(
         #            QKeySequence.NativeText),
         #        resources.get_shortcut("History-Paste").toString(
         #            QKeySequence.NativeText)))
-        # self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        # hbox.addWidget(self.combo)
-        # self.vbox.addLayout(hbox)
 
     def add_component(self, widget):
         self.vbox.insertWidget(0, widget)
@@ -254,14 +215,9 @@ class LateralPanel(QWidget):
 
     def add_new_copy(self, copy):
         pass
-        # self.combo.insertItem(0, copy)
-        # self.combo.setCurrentIndex(0)
-        # if self.combo.count() > settings.COPY_HISTORY_BUFFER:
-        #    self.combo.removeItem(self.combo.count() - 1)
 
     def get_paste(self):
         pass
-        # return self.combo.currentText()
 
 
 central = CentralWidget()

@@ -68,5 +68,4 @@ class ExtraSelection(QTextEdit.ExtraSelection):
         self.format.setProperty(QTextFormat.OutlinePen, QPen(QColor(color)))
 
     def set_full_width(self):
-        # self.cursor.clearSelection()
         self.format.setProperty(QTextFormat.FullWidthSelection, True)

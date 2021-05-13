@@ -76,8 +76,8 @@ def _parse_class(symbol, with_docstrings):
                 'members': {
                     'attributes': result['attributes'],
                     'functions': result['functions']
-                    }
                 }
+            }
             docstring.update(result['docstring'])
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)

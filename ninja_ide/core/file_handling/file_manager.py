@@ -83,8 +83,7 @@ def create_init_file_complete(folderName):
     patClass = re.compile('^class .+')
     patExt = re.compile('.+\\.py')
     files = os.listdir(folderName)
-    files = list(filter(patExt.match, files))
-    files.sort()
+    files = sorted(filter(patExt.match, files))
     imports_ = []
     for f in files:
         read = open(os.path.join(folderName, f), 'r')
@@ -129,7 +128,7 @@ def file_exists(path, fileName=''):
 
 def _search_coding_line(txt):
     """Search a pattern like this: # -*- coding: utf-8 -*-."""
-    coding_pattern = "coding[:=]\s*([-\w.]+)"
+    coding_pattern = "coding[:=]\\s*([-\\w.]+)"
     pat_coding = re.search(coding_pattern, txt)
     if pat_coding and pat_coding.groups()[0] != 'None':
         return pat_coding.groups()[0]
@@ -352,7 +351,7 @@ def show_containing_folder(path):
         program = "explorer.exe"
         param.append("/select,")
         param.append(QtCore.QDir.toNativeSeparators(
-                    file_info.canonicalFilePath()))
+            file_info.canonicalFilePath()))
     elif settings.IS_MAC_OS:
         program = "open"
         param.append("-R")

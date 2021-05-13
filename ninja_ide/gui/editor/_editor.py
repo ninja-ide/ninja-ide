@@ -21,14 +21,11 @@ import re
 import bisect
 
 from tokenize import generate_tokens, TokenError
-#lint:disable
 try:
     from StringIO import StringIO
-except:
+except BaseException:
     from io import StringIO
-#lint:enable
 
-#from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMenu
@@ -41,8 +38,6 @@ from PyQt4.QtCore import QTimer
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-#from ninja_ide.core.file_handling import file_manager
-##from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
@@ -60,9 +55,9 @@ BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
 
 class Editor(QsciScintilla):
 
-###############################################################################
-# EDITOR SIGNALS
-###############################################################################
+    ###############################################################################
+    # EDITOR SIGNALS
+    ###############################################################################
     """
     modificationChanged(bool)
     fileSaved(QPlainTextEdit)
@@ -84,8 +79,8 @@ class Editor(QsciScintilla):
         self._first_visible_line = 0
         self.patFold = re.compile(
             r"(\s)*\"\"\"|(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
-            "(\s)*else:|(\s)*elif |(\s)*for |"
-            "(\s)*try:|(\s)*except:|(\s)*except |(.)*\($")
+            "(\\s)*else:|(\\s)*elif |(\\s)*for |"
+            "(\\s)*try:|(\\s)*except:|(\\s)*except |(.)*\\($")
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
         self.setCaretLineVisible(True)
@@ -193,7 +188,7 @@ class Editor(QsciScintilla):
         if self.lexer is not None:
             self.setLexer(self.lexer)
 
-        #Config Editor
+        # Config Editor
         self._mini = None
         if settings.SHOW_MINIMAP:
             self._load_minimap(settings.SHOW_MINIMAP)
@@ -204,7 +199,7 @@ class Editor(QsciScintilla):
 
         self._last_block_position = 0
         self.set_flags()
-        #FIXME this lang should be guessed in the same form as lexer.
+        # FIXME this lang should be guessed in the same form as lexer.
         self.lang = highlighter.get_lang(self._neditable.extension())
         self._cursor_line = self._cursor_index = -1
         self.__lines_count = 0
@@ -216,19 +211,18 @@ class Editor(QsciScintilla):
         self.__positions = []  # Caret positions
         self.SCN_CHARADDED.connect(self._on_char_added)
 
-        #FIXME these should be language bound
+        # FIXME these should be language bound
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
         self.set_font(settings.FONT)
         self._selected_word = ''
-        self._patIsWord = re.compile('\w+')
-        #Completer
-        #self.completer = completer_widget.CodeCompletionWidget(self)
-        #Dict functions for KeyPress
+        self._patIsWord = re.compile('\\w+')
+        # Completer
+        # Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Backspace: self.__backspace,
             Qt.Key_Enter: self.__ignore_extended_line,
             Qt.Key_Return: self.__ignore_extended_line,
-            #Qt.Key_Colon: self.__retreat_to_keywords,
+            # Qt.Key_Colon: self.__retreat_to_keywords,
             Qt.Key_BracketRight: self.__brace_completion,
             Qt.Key_BraceRight: self.__brace_completion,
             Qt.Key_ParenRight: self.__brace_completion,
@@ -258,7 +252,7 @@ class Editor(QsciScintilla):
                      self._update_file_metadata)
 
         self.load_project_config()
-        #Context Menu Options
+        # Context Menu Options
         self.__actionFindOccurrences = QAction(self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
                      self._find_occurrences)
@@ -276,13 +270,13 @@ class Editor(QsciScintilla):
             ninjaide,
             SIGNAL("ns_preferences_editor_showIndentationGuide(PyQt_PyObject)"),
             self.set_flags)
-        #TODO: figure it out it doesn´t work if gets shown after init
+        # TODO: figure it out it doesn´t work if gets shown after init
         self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
-            self._load_minimap)
+                     SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
+                     self._load_minimap)
         self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_docmapShow(PyQt_PyObject)"),
-            self._load_docmap)
+                     SIGNAL("ns_preferences_editor_docmapShow(PyQt_PyObject)"),
+                     self._load_docmap)
         self.connect(
             ninjaide,
             SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
@@ -297,16 +291,14 @@ class Editor(QsciScintilla):
             self._show_line_numbers)
         self.connect(ninjaide,
                      SIGNAL(
-            "ns_preferences_editor_errorsUnderlineBackground(PyQt_PyObject)"),
-                self._change_indicator_style)
-        #self.connect(
-            #ninjaide,
-            #SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
-            #self.restyle)
-        #self.connect(
-            #ninjaide,
-            #SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
-            #lambda: self.restyle())
+                         "ns_preferences_editor_errorsUnderlineBackground(PyQt_PyObject)"),
+                     self._change_indicator_style)
+        # self.connect(
+        # ninjaide,
+        # self.restyle)
+        # self.connect(
+        # ninjaide,
+        # lambda: self.restyle())
 
         self.additional_builtins = None
         # Set the editor after initialization
@@ -352,11 +344,6 @@ class Editor(QsciScintilla):
         return self.isModified()
 
     def _configure_keybindings(self):
-        #commands = self.standardCommands()
-        #command = commands.find(QsciCommand.LineDuplicate)
-        #command.setKey()
-        #command.setAlternateKey(0)
-        #print dir(QsciScintilla)
         self.SendScintilla(QsciScintilla.SCI_ASSIGNCMDKEY,
                            QsciScintilla.SCI_HOMEDISPLAY, Qt.Key_Home)
 
@@ -516,11 +503,11 @@ class Editor(QsciScintilla):
                 self.SCN_ZOOM.connect(self._mini.slider.update_position)
                 self._mini.setDocument(self.document())
                 self._mini.setLexer(self.lexer)
-                #FIXME: register syntax
+                # FIXME: register syntax
                 self._mini.show()
             self._mini.adjust_to_parent()
         elif self._mini is not None:
-            #FIXME: lost doc pointer?
+            # FIXME: lost doc pointer?
             self._mini.shutdown()
             self._mini.deleteLater()
             self._mini = None
@@ -533,21 +520,7 @@ class Editor(QsciScintilla):
         elif self._docmap is not None:
             self._docmap.deleteLater()
             self._docmap = None
-    #def __retreat_to_keywords(self, event):
-        #"""Unindent some kind of blocks if needed."""
-        #previous_text = unicode(self.textCursor().block().previous().text())
-        #current_text = unicode(self.textCursor().block().text())
-        #previous_spaces = helpers.get_indentation(previous_text)
-        #current_spaces = helpers.get_indentation(current_text)
-
-        #if len(previous_spaces) < len(current_spaces):
-            #last_word = helpers.get_first_keyword(current_text)
-
-            #if last_word in self.allows_less_indentation:
-                #helpers.clean_line(self)
-
-                #spaces_diff = len(current_spaces) - len(previous_spaces)
-                #self.textCursor().insertText(current_text[spaces_diff:])
+        # """Unindent some kind of blocks if needed."""
 
     def __get_encoding(self):
         """Get the current encoding of 'utf-8' otherwise."""
@@ -600,58 +573,6 @@ class Editor(QsciScintilla):
                 self.bookmarks, lineNumber, diference, atLineStart)
             if not self._neditable.new_document:
                 settings.BOOKMARKS[self._neditable.file_path] = self._bookmarks
-
-    #def restyle(self, syntaxLang=None):
-        #self.apply_editor_style()
-        #if self.lang == 'python':
-            #parts_scanner, code_scanner, formats = \
-                #syntax_highlighter.load_syntax(python_syntax.syntax)
-            #self.highlighter = syntax_highlighter.SyntaxHighlighter(
-                #self.document(),
-                #parts_scanner, code_scanner, formats, self._neditable)
-            #if self._mini:
-                #self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
-                    #self._mini.document(), parts_scanner,
-                    #code_scanner, formats)
-            #return
-        #if self.highlighter is None or isinstance(self.highlighter,
-           #highlighter.EmpyHighlighter):
-            #self.highlighter = highlighter.Highlighter(
-                #self.document(),
-                #None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
-                #self.migration)
-        #if not syntaxLang:
-            #ext = file_manager.get_file_extension(self.file_path)
-            #self.highlighter.apply_highlight(
-                #settings.EXTENSIONS.get(ext, 'python'),
-                #resources.CUSTOM_SCHEME)
-            #if self._mini:
-                #self._mini.highlighter.apply_highlight(
-                    #settings.EXTENSIONS.get(ext, 'python'),
-                    #resources.CUSTOM_SCHEME)
-        #else:
-            #self.highlighter.apply_highlight(
-                #syntaxLang, resources.CUSTOM_SCHEME)
-            #if self._mini:
-                #self._mini.highlighter.apply_highlight(
-                    #syntaxLang, resources.CUSTOM_SCHEME)
-        #self._sidebarWidget.repaint()
-
-    #def register_syntax(self, lang='', syntax=None):
-        #self.lang = settings.EXTENSIONS.get(lang, 'python')
-        #sr = IDE.get_service("syntax_registry")
-        #this_syntax = sr.get_syntax_for(self.lang)
-
-        #if this_syntax is not None:
-            #parts_scanner, code_scanner, formats = \
-                #syntax_highlighter.load_syntax(this_syntax)
-            #self.highlighter = syntax_highlighter.SyntaxHighlighter(
-                #self.document(),
-                #parts_scanner, code_scanner, formats, self._neditable)
-            #if self._mini:
-                #self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
-                    #self._mini.document(), parts_scanner,
-                    #code_scanner, formats, self._neditable)
 
     def _show_line_numbers(self):
         self.setMarginsFont(self.__font)
@@ -868,7 +789,6 @@ class Editor(QsciScintilla):
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
-        #self.completer.hide_completer()
         self._first_visible_line = int(
             self.SendScintilla(QsciScintilla.SCI_GETFIRSTVISIBLELINE))
         self._cursor_line, self._cursor_index = self.getCursorPosition()
@@ -907,7 +827,7 @@ class Editor(QsciScintilla):
         line, index = self.getCursorPosition()
         text = self.text(line)
         cursor_position = index
-        #QT silently fails on invalid position, ergo breaks when EOF < begin
+        # QT silently fails on invalid position, ergo breaks when EOF < begin
         while ((index + begin) == index) and begin > 0:
             begin -= 1
             index = cursor_position + begin
@@ -1016,12 +936,12 @@ class Editor(QsciScintilla):
                 (token_buffer[2][0] == brace) and (token_buffer[0][0] in
                                                    ("def", "class")):
             self.insertAt("):", line, index)
-            #are we in presence of a function?
-            #TODO: IMPROVE THIS AND GENERALIZE IT WITH INTELLISENSEI
+            # are we in presence of a function?
+            # TODO: IMPROVE THIS AND GENERALIZE IT WITH INTELLISENSEI
             if token_buffer[0][0] == "def":
                 symbols_handler = handlers.get_symbols_handler('py')
                 split_source = self.text().split("\n")
-                indent = re.match('^\s+', str(split_source[line]))
+                indent = re.match('^\\s+', str(split_source[line]))
                 indentation = (indent.group() + " " * self._indent
                                if indent is not None else " " * self._indent)
                 new_line = "%s%s" % (indentation, 'pass')
@@ -1079,12 +999,10 @@ class Editor(QsciScintilla):
                            reset_pos, reset_pos)
 
     def keyPressEvent(self, event):
-        #Completer pre key event
-        #if self.completer.process_pre_key_event(event):
-            #return
-        #On Return == True stop the execution of this method
+        # Completer pre key event
+        # On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
-            #emit a signal so that plugins can do their thing
+            # emit a signal so that plugins can do their thing
             self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
             return
         self.selected_text = self.selectedText()
@@ -1110,10 +1028,9 @@ class Editor(QsciScintilla):
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
-        #Completer post key event
-        #self.completer.process_post_key_event(event)
+        # Completer post key event
 
-        #emit a signal so that plugins can do their thing
+        # emit a signal so that plugins can do their thing
         self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
 
     def keyReleaseEvent(self, event):
@@ -1166,13 +1083,7 @@ class Editor(QsciScintilla):
         popup_menu.insertMenu(popup_menu.actions()[0], menu_lint)
         popup_menu.insertAction(popup_menu.actions()[0],
                                 self.__actionFindOccurrences)
-        #add extra menus (from Plugins)
-        #lang = file_manager.get_file_extension(self.file_path)
-        #extra_menus = self.EXTRA_MENU.get(lang, None)
-        #if extra_menus:
-            #popup_menu.addSeparator()
-            # for menu in extra_menus:
-                #popup_menu.addMenu(menu)
+        # add extra menus (from Plugins)
         # show menu
         popup_menu.exec_(event.globalPos())
 
@@ -1209,8 +1120,6 @@ class Editor(QsciScintilla):
         super(Editor, self).mouseMoveEvent(event)
 
     def mousePressEvent(self, event):
-        #if self.completer.isVisible():
-            #self.completer.hide_completer()
         super(Editor, self).mousePressEvent(event)
         if event.modifiers() == Qt.ControlModifier:
             self.go_to_definition()
@@ -1223,11 +1132,6 @@ class Editor(QsciScintilla):
         if line != self._last_block_position:
             self._last_block_position = line
             self.emit(SIGNAL("currentLineChanged(int)"), line)
-
-    # def mouseReleaseEvent(self, event):
-        # super(Editor, self).mouseReleaseEvent(event)
-        # if event.button() == Qt.LeftButton:
-        #    self.highlight_selected_word()
 
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:
@@ -1331,12 +1235,6 @@ class Editor(QsciScintilla):
 
 
 def create_editor(neditable):
-    # has_editor = neditable.editor is not None
     editor = Editor(neditable)
-    # ext = neditable.nfile.file_ext()
-    # if not has_editor or syntax:
-    #    editor.register_syntax(ext, syntax)
-    # else:
-    #    editor.highlighter = neditable.editor.highlighter
 
     return editor

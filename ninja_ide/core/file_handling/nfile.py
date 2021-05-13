@@ -137,8 +137,6 @@ class NFile(QObject):
                 self.__mtime = current_mtime
                 self.fileChanged.emit()
         # FIXME: for swap file
-        # else:
-        #     self.fileRemoved.emit()
 
     def has_write_permission(self):
         if not self._exists():
@@ -160,7 +158,7 @@ class NFile(QObject):
             signal_handler = SignalFlowControl()
             self.willAttachToExistingFile.emit(signal_handler, new_path)
             if signal_handler.stopped():
-                    return
+                return
         self._file_path = new_path
         self.gotAPath.emit(self)
         return self._file_path
@@ -222,7 +220,6 @@ class NFile(QObject):
         # watching
         if self.__watcher is not None:
             if new_path:
-                # self.__watcher.removePath(self.__watcher.files()[0])
                 self.__watcher.addPath(self._file_path)
             else:
                 self.__watcher.addPath(save_path)

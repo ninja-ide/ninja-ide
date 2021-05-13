@@ -102,7 +102,6 @@ class NVirtualFileSystem(QObject):
 
     def __add_file(self, nfile):
         nfile.fileClosing['QString', bool].connect(self.__closed_file)
-        # nfile.willMove.connect(lambda _, old, new: self.__closed_file(old))
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         self.__tree[nfile.file_path] = nfile
         for each_path in existing_paths:

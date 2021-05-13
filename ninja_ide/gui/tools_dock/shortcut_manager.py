@@ -44,8 +44,8 @@ class TreeResult(QTreeWidget):
     def __init__(self):
         QTreeWidget.__init__(self)
         self.setHeaderLabels((translations.TR_PROJECT_DESCRIPTION,
-            translations.TR_SHORTCUT))
-        #columns width
+                              translations.TR_SHORTCUT))
+        # columns width
         self.setColumnWidth(0, 175)
         self.header().setStretchLastSection(True)
         self.setSortingEnabled(True)
@@ -62,24 +62,24 @@ class ShortcutDialog(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.keys = 0
-        #Keyword modifiers!
+        # Keyword modifiers!
         self.keyword_modifiers = (Qt.Key_Control, Qt.Key_Meta, Qt.Key_Shift,
-            Qt.Key_Alt, Qt.Key_Menu)
-        #main layout
+                                  Qt.Key_Alt, Qt.Key_Menu)
+        # main layout
         main_vbox = QVBoxLayout(self)
         self.line_edit = QLineEdit()
         self.line_edit.setReadOnly(True)
-        #layout for buttons
+        # layout for buttons
         buttons_layout = QHBoxLayout()
         ok_button = QPushButton(translations.TR_ACCEPT)
         cancel_button = QPushButton(translations.TR_CANCEL)
-        #add widgets
+        # add widgets
         main_vbox.addWidget(self.line_edit)
         buttons_layout.addWidget(ok_button)
         buttons_layout.addWidget(cancel_button)
         main_vbox.addLayout(buttons_layout)
         self.line_edit.installEventFilter(self)
-        #buttons signals
+        # buttons signals
         self.connect(ok_button, SIGNAL("clicked()"), self.save_shortcut)
         self.connect(cancel_button, SIGNAL("clicked()"), self.close)
 
@@ -99,11 +99,11 @@ class ShortcutDialog(QDialog):
         return False
 
     def keyPressEvent(self, evt):
-        #modifier can not be used as shortcut
+        # modifier can not be used as shortcut
         if evt.key() in self.keyword_modifiers:
             return
 
-        #save the key
+        # save the key
         if evt.key() == Qt.Key_Backtab and evt.modifiers() & Qt.ShiftModifier:
             self.keys = Qt.Key_Tab
         else:
@@ -117,7 +117,7 @@ class ShortcutDialog(QDialog):
             self.keys += Qt.ALT
         if evt.modifiers() & Qt.MetaModifier:
             self.keys += Qt.META
-        #set the keys
+        # set the keys
         self.set_shortcut(QKeySequence(self.keys).toString())
 
 
@@ -188,8 +188,8 @@ class ShortcutConfiguration(QWidget):
             "Show-Paste-History": translations.TR_SHOW_CLIPBOARD_HISTORY,
             "History-Copy": translations.TR_COPY_TO_HISTORY,
             "History-Paste": translations.TR_PASTE_FROM_HISTORY,
-            #"change-split-focus":
-                #translations.TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS,
+            # "change-split-focus":
+            # translations.TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS,
             "Add-Bookmark-or-Breakpoint": translations.TR_INSERT_BREAKPOINT,
             "move-tab-to-next-split": translations.TR_MOVE_TAB_TO_NEXT_SPLIT,
             "change-tab-visibility": translations.TR_SHOW_TABS_IN_EDITOR,
@@ -197,31 +197,31 @@ class ShortcutConfiguration(QWidget):
         }
 
         self.shortcut_dialog = ShortcutDialog(self)
-        #main layout
+        # main layout
         main_vbox = QVBoxLayout(self)
-        #layout for buttons
+        # layout for buttons
         buttons_layout = QVBoxLayout()
-        #widgets
+        # widgets
         self.result_widget = TreeResult()
         load_defaults_button = QPushButton(translations.TR_LOAD_DEFAULTS)
-        #add widgets
+        # add widgets
         main_vbox.addWidget(self.result_widget)
         buttons_layout.addWidget(load_defaults_button)
         main_vbox.addLayout(buttons_layout)
         main_vbox.addWidget(QLabel(
             translations.TR_SHORCUTS_IN_MENUS_REFRESH_ON_RESTART))
-        #load data!
+        # load data!
         self.result_widget.setColumnWidth(0, 400)
         self._load_shortcuts()
-        #signals
-        #open the set shortcut dialog
+        # signals
+        # open the set shortcut dialog
         self.connect(self.result_widget,
-            SIGNAL("itemDoubleClicked(QTreeWidgetItem*, int)"),
-                self._open_shortcut_dialog)
-        #load defaults shortcuts
+                     SIGNAL("itemDoubleClicked(QTreeWidgetItem*, int)"),
+                     self._open_shortcut_dialog)
+        # load defaults shortcuts
         self.connect(load_defaults_button, SIGNAL("clicked()"),
-            self._load_defaults_shortcuts)
-        #one shortcut has changed
+                     self._load_defaults_shortcuts)
+        # one shortcut has changed
         self.connect(self.shortcut_dialog, SIGNAL('shortcutChanged'),
                      self._shortcut_changed)
 
@@ -249,8 +249,8 @@ class ShortcutConfiguration(QWidget):
                 itmseq = top_item.text(1)
                 if keystr == itmseq:
                     val = QMessageBox.warning(self,
-                        translations.TR_SHORCUTS_ALREADY_ON_USE,
-                            QMessageBox.Yes, QMessageBox.No)
+                                              translations.TR_SHORCUTS_ALREADY_ON_USE,
+                                              QMessageBox.Yes, QMessageBox.No)
                     if val == QMessageBox.Yes:
                         top_item.setText(1, "")
                         return True
@@ -289,20 +289,20 @@ class ShortcutConfiguration(QWidget):
     def _load_shortcuts(self):
         for action in resources.CUSTOM_SHORTCUTS:
             shortcut_action = resources.get_shortcut(action)
-            #populate the tree widget
+            # populate the tree widget
             tree_data = [self.shortcuts_text[action],
-                shortcut_action.toString(QKeySequence.NativeText), action]
+                         shortcut_action.toString(QKeySequence.NativeText), action]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def _load_defaults_shortcuts(self):
-        #clean custom shortcuts and UI widget
+        # clean custom shortcuts and UI widget
         resources.clean_custom_shortcuts()
         self.result_widget.clear()
         for name, action in list(resources.SHORTCUTS.items()):
             shortcut_action = action
-            #populate the tree widget
+            # populate the tree widget
             tree_data = [self.shortcuts_text[name],
-                shortcut_action.toString(QKeySequence.NativeText), name]
+                         shortcut_action.toString(QKeySequence.NativeText), name]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

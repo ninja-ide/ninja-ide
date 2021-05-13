@@ -30,10 +30,10 @@ try:
         from ninja_ide.core.file_handling.filesystem_notifications import linux
         source = linux
     else:
-        #Aything we do not have a clue how to handle
+        # Aything we do not have a clue how to handle
         from ninja_ide.core.file_handling.filesystem_notifications import openbsd
         source = openbsd
-except:
+except BaseException:
     from ninja_ide.core.file_handling.filesystem_notifications import openbsd
     source = openbsd
 

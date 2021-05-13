@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 
 from threading import Thread
 import win32con
@@ -29,7 +30,6 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.windows')
 DEBUG = logger.debug
 
-from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 ADDED = base_watcher.ADDED
 DELETED = base_watcher.DELETED
 REMOVE = base_watcher.REMOVE
@@ -37,19 +37,19 @@ RENAME = base_watcher.RENAME
 MODIFIED = base_watcher.MODIFIED
 
 ACTIONS = {
-  1: ADDED,
-  2: DELETED,
-  3: MODIFIED,
-  4: RENAME,
-  5: RENAME
+    1: ADDED,
+    2: DELETED,
+    3: MODIFIED,
+    4: RENAME,
+    5: RENAME
 }
 
 # Thanks to Claudio Grondi for the correct set of numbers
 FILE_LIST_DIRECTORY = 0x0001
 
 watchmask = win32con.FILE_NOTIFY_CHANGE_FILE_NAME | \
-            win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | \
-            win32con.FILE_NOTIFY_CHANGE_DIR_NAME
+    win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | \
+    win32con.FILE_NOTIFY_CHANGE_DIR_NAME
 
 
 def listdir(path):
@@ -60,8 +60,8 @@ def listdir(path):
         for each_file in files:
             yield os.path.join(each_folder, each_file)
 
-#Credit on this workaround for the shortsightness of windows developers goes
-#to Malthe Borch http://pypi.python.org/pypi/MacFSEvents
+# Credit on this workaround for the shortsightness of windows developers goes
+# to Malthe Borch http://pypi.python.org/pypi/MacFSEvents
 
 
 class FileEventCallback(object):
@@ -88,7 +88,7 @@ class FileEventCallback(object):
                 for name in listdir(path):
                     try:
                         current[name] = self.pulentastack(os.path.join(path,
-                                                                        name))
+                                                                       name))
                     except OSError:
                         pass
             except OSError:
@@ -140,7 +140,7 @@ class FileEventCallback(object):
             for filename in files:
                 try:
                     entry[filename] = self.pulentastack(os.path.join(root,
-                                                                    filename))
+                                                                     filename))
                 except OSError:
                     continue
             for directory in dirs:
@@ -151,7 +151,7 @@ class FileEventCallback(object):
             for name in listdir(os.path.join(root, path)):
                 try:
                     refs[path][name] = self.pulentastack(os.path.join(path,
-                                                                        name))
+                                                                      name))
                 except OSError:
                     pass
 
@@ -173,15 +173,15 @@ class ThreadedFSWatcher(Thread):
 
     def run(self):
         hDir = win32file.CreateFileW(
-                self._watch_path,
-                FILE_LIST_DIRECTORY,
-                win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE,
-                None,
-                win32con.OPEN_EXISTING,
-                win32con.FILE_FLAG_BACKUP_SEMANTICS |
-                win32con.FILE_FLAG_OVERLAPPED,
-                None
-            )
+            self._watch_path,
+            FILE_LIST_DIRECTORY,
+            win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE,
+            None,
+            win32con.OPEN_EXISTING,
+            win32con.FILE_FLAG_BACKUP_SEMANTICS |
+            win32con.FILE_FLAG_OVERLAPPED,
+            None
+        )
         while self._windows_sucks_flag:
             buf = win32file.AllocateReadBuffer(1024)
             win32file.ReadDirectoryChangesW(
@@ -193,11 +193,11 @@ class ThreadedFSWatcher(Thread):
                 win32con.FILE_NOTIFY_CHANGE_SIZE |
                 win32con.FILE_NOTIFY_CHANGE_LAST_WRITE,
                 self._overlapped
-              )
+            )
             result_stack = {}
             rc = win32event.WaitForMultipleObjects((self._wait_stop,
-                                         self._overlapped.hEvent),
-                                         0, win32event.INFINITE)
+                                                    self._overlapped.hEvent),
+                                                   0, win32event.INFINITE)
             if rc == win32event.WAIT_OBJECT_0:
                 # Stop event
                 break
@@ -210,7 +210,7 @@ class ThreadedFSWatcher(Thread):
                 if action in ACTIONS:
                     full_filename = os.path.join(self._watch_path, afile)
                     result_stack.setdefault(full_filename,
-                                         []).append(ACTIONS.get(action))
+                                            []).append(ACTIONS.get(action))
             keys = list(result_stack.keys())
             while len(keys):
                 key = keys.pop(0)

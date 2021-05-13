@@ -36,7 +36,7 @@ class ITabItem(object):
             self.newDocument = False
 
     ID = property(lambda self: self.get_id(), lambda self,
-        fileName: self.set_id(fileName))
+                  fileName: self.set_id(fileName))
 
     def __eq__(self, path):
         """Compares if the path (str) received is equal to the id"""
@@ -44,7 +44,7 @@ class ITabItem(object):
 
     @classmethod
     def add_extra_menu(cls, menu, lang="py"):
-        if not lang in cls.EXTRA_MENU:
+        if lang not in cls.EXTRA_MENU:
             cls.EXTRA_MENU[lang] = []
 
         cls.EXTRA_MENU[lang].append(menu)

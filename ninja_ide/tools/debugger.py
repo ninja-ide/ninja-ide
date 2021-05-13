@@ -24,7 +24,7 @@ class Debugger(bdb.Bdb):
     def __init__(self, breakpoints):
         bdb.Bdb.__init__(self)
 
-        #Apply breakpoints
+        # Apply breakpoints
         for bp in breakpoints:
             self.set_break(bp[0], bp[1])
 

@@ -78,7 +78,6 @@ NINJA_THEMES_DOWNLOAD = os.path.join(EXTENSIONS_PATH, "theme")
 
 NINJA_THEMES = os.path.join(PRJ_PATH, "extensions", "theme")
 
-# NINJA_THEME = os.path.join(PRJ_PATH, "extensions", "theme", "ninja_dark.qss")
 NINJA_QSS = os.path.join(PRJ_PATH, "extensions", "theme", "qss")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
@@ -156,7 +155,6 @@ SHORTCUTS = {
     "print-file": QKeySequence(Qt.CTRL + Qt.Key_P),
     "redo": QKeySequence(Qt.CTRL + Qt.Key_Y),
     "comment": QKeySequence(Qt.CTRL + Qt.Key_Slash),
-    # "uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_G),
     "horizontal-line": QKeySequence(),
     "title-comment": QKeySequence(),
     "indent-less": QKeySequence(Qt.SHIFT + Qt.Key_Tab),

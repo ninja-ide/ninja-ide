@@ -35,8 +35,6 @@ class LintArea(side_area.SideArea):
         self.__messages = {}
 
     def __update(self, checkers):
-        # self.__checkers = checkers
-        # print(self.__checkers)
         self.__checkers = checkers
 
     def mouseMoveEvent(self, event):

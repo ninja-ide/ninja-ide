@@ -144,7 +144,6 @@ class ConsoleWidget(base_editor.BaseEditor):
                 syntax.scanners,
                 syntax.context
             )
-        #     self._highlighter = Highlighter(self.document(), syntax)
         self._indenter = indenter.load_indenter(self, lang="python")
         # Sidebar
         self.sidebar = ConsoleSideBar(self)

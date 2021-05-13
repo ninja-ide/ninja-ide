@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-# import os
 import collections
 
 from PyQt5.QtWidgets import QMainWindow
@@ -34,30 +33,20 @@ from PyQt5.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide import translations
-# from ninja_ide.core import plugin_manager
-# from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling import nfilesystem
-# from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import nsettings
 from ninja_ide.core import ipc
 from ninja_ide.core import interpreter_service
 
 from ninja_ide.gui import actions
-# from ninja_ide.gui import updates
 from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
-# from ninja_ide.gui.dialogs import schemes_manager
-# from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs.preferences import preferences
-# from ninja_ide.gui.dialogs import traceback_widget
-# from ninja_ide.gui.dialogs import python_detect_dialog
-# from ninja_ide.gui.dialogs import plugins_store
 from ninja_ide.tools import ui_tools
-# from ninja_ide.tools.completion import completion_daemon
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -96,7 +85,6 @@ class IDE(QMainWindow):
     __IDEMENUS = {}
     __IDETOOLBAR = {}
     # CONNECTIONS structure:
-    # ({'target': service_name, 'signal_name': string, 'slot': function_obj},)
     # On modify add: {connected: True}
     __instance = None
     __created = False
@@ -108,7 +96,6 @@ class IDE(QMainWindow):
         QToolTip.setFont(QFont(settings.FONT.family(), 10))
         # Load the size and the position of the main window
         self.load_window_geometry()
-        # self.__project_to_open = 0
         # Editables
         self.__neditables = {}
         # Filesystem
@@ -122,59 +109,23 @@ class IDE(QMainWindow):
         # Opacity
         self.opacity = settings.MAX_OPACITY
         # ToolBar
-        # self.toolbar = QToolBar(self)
-        # if settings.IS_MAC_OS:
-        #     self.toolbar.setIconSize(QSize(36, 36))
-        # else:
-        #     self.toolbar.setIconSize(QSize(24, 24))
-        # self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
-        # self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         # # Set toggleViewAction text and tooltip
-        # self.toggleView = self.toolbar.toggleViewAction()
-        # self.toggleView.setText(translations.TR_TOOLBAR_VISIBILITY)
-        # self.toggleView.setToolTip(translations.TR_TOOLBAR_VISIBILITY)
-        # self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
-        # if settings.HIDE_TOOLBAR:
-        #     self.toolbar.hide()
         # Notificator
         self.notification = notification.Notification(self)
 
         # Plugin Manager
         # CHECK ACTIVATE PLUGINS SETTING
-        # services = {
-        #    'editor': plugin_services.MainService(),
-        #    'toolbar': plugin_services.ToolbarService(self.toolbar),
-        #    'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
-        #    'menuApp': plugin_services.MenuAppService(None),
-        #    'explorer': plugin_services.ExplorerService(),
         #    'misc': plugin_services.MiscContainerService(self.misc)}
-        # serviceLocator = plugin_manager.ServiceLocator(services)
-        # serviceLocator = plugin_manager.ServiceLocator(None)
         # self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
         #                                                   serviceLocator)
-        # self.plugin_manager.discover()
         # load all plugins!
-        # self.plugin_manager.load_all()
 
         # Tray Icon
-        # self.trayIcon = updates.TrayIconUpdates(self)
-        # self.trayIcon.closeTrayIcon.connect(self._close_tray_icon)
-        # self.trayIcon.show()
 
         # TODO:
-        # key = Qt.Key_1
-        # for i in range(10):
-        #    if settings.IS_MAC_OS:
-        #        short = ui_tools.TabShortcuts(
         #            QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
-        #    else:
-        #        short = ui_tools.TabShortcuts(
         #            QKeySequence(Qt.ALT + key), self, i)
-        #    key += 1
-        #    short.activated.connect(self._change_tab_index)
-        # short = ui_tools.TabShortcuts(
         #       QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
-        # short.activated.connect(self._change_tab_index)
 
         # Register menu categories
         IDE.register_bar_category(translations.TR_MENU_FILE, 100)
@@ -188,7 +139,6 @@ class IDE(QMainWindow):
         ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
         self.register_service("ide", self)
         self.register_service("interpreter", self.interpreter)
-        # self.register_service('toolbar', self.toolbar)
         self.register_service("filesystem", self.filesystem)
         self.toolbar = IDE.get_service("toolbar")
         # Register signals connections
@@ -225,20 +175,10 @@ class IDE(QMainWindow):
             }
         )
         self.register_signals('ide', connections)
-        # connections = (
         #    {'target': 'main_container',
-        #     'signal_name': 'openPreferences()',
-        #     'slot': self.show_preferences},
         #    {'target': 'main_container',
-        #     'signal_name': 'allTabsClosed()',
-        #     'slot': self._last_tab_closed},
         #    {'target': 'explorer_container',
-        #     'signal_name': 'changeWindowTitle(QString)',
-        #     'slot': self.change_window_title},
         #    {'target': 'explorer_container',
-        #     'signal_name': 'projectClosed(QString)',
-        #     'slot': self.close_project},
-        #    )
         # Central Widget MUST always exists
         self.central = IDE.get_service('central_container')
         self.setCentralWidget(self.central)
@@ -353,8 +293,6 @@ class IDE(QMainWindow):
 
                     # print("Falta conectar {} a {}".format(signal_name,
                     #                                      slot.__name__))
-                    # self.connect(target, SIGNAL(signal_name), slot)
-                    # connection['connected'] = True
 
     @classmethod
     def register_shortcut(cls, shortcut_name, shortcut, action=None):
@@ -465,8 +403,6 @@ class IDE(QMainWindow):
         self.interpreter.set_interpreter(path)
 
     def load_interpreters(self):
-        # ds = self.data_settings()
-        # settings.PYTHON_EXEC = ds.value("ide/interpreter")
         self.interpreter.load()
 
     @classmethod
@@ -488,13 +424,7 @@ class IDE(QMainWindow):
         self.trayIcon.hide()
         self.trayIcon.deleteLater()
 
-    # def _change_tab_index(self):
     #    """Change the tabs of the current TabWidget using alt+numbers."""
-    #    widget = QApplication.focusWidget()
-    #    shortcut_index = getattr(widget, 'shortcut_index', None)
-    #    if shortcut_index:
-    #        obj = self.sender()
-    #        shortcut_index(obj.index)
 
     def _process_connection(self):
         """Read the ipc input from another instance of ninja."""
@@ -548,10 +478,6 @@ class IDE(QMainWindow):
     def show_preferences(self):
         """Open the Preferences Dialog."""
         pref = preferences.Preferences(self)
-        # main_container = IDE.get_service("main_container")
-        # if main_container:
-        #    main_container.show_dialog(pref)
-        # else:
         pref.setModal(True)
         pref.show()
 
@@ -569,34 +495,11 @@ class IDE(QMainWindow):
         if current_file:
             main_container.open_file(current_file)
         self.filesAndProjectsLoaded.emit()
-        # projects_explorer = IDE.get_service('projects_explorer')
-        # if main_container and files:
-        #    for fileData in files:
-        #        if file_manager.file_exists(fileData[0]):
-        #            mtime = os.stat(fileData[0]).st_mtime
-        #            ignore_checkers = (mtime == fileData[2])
-        #            line, col = fileData[1][0], fileData[1][1]
         #            main_container.open_file(fileData[0], line, col,
         #                                     ignore_checkers=ignore_checkers)
-        #    if current_file:
-        #        main_container.open_file(current_file)
-        # if projects_explorer and projects:
-        #    projects_explorer.load_session_projects(projects)
 
-    # def _set_editors_project_data(self):
-    #     self.__project_to_open -= 1
-    #     if self.__project_to_open == 0:
     #         self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
     #             self._set_editors_project_data)
-    #         self.mainContainer.update_editor_project()
-
-    # def open_file(self, filename):
-    #     if filename:
-    #         self.mainContainer.open_file(filename)
-
-    # def open_project(self, project):
-    #     if project:
-    #         self.actions.open_project(project)
 
     def __get_session(self):
         return self._session
@@ -667,37 +570,20 @@ class IDE(QMainWindow):
         return qsettings
 
     # @classmethod
-    # def ninja_settings(cls, qobject=None):
     #    qsettings = nsettings.NSettings(resources.SETTINGS_PATH, qobject,
     #                                    prefix="ns")
-    #    if cls.__created:
     #        qsettings.valueChanged['PyQt_PyObject',
     #                               'QString',
     #                               'PyQt_PyObject'].connect(
     #                                   cls.__instance._settings_value_changed)
-    #    return qsettings
 
     # @classmethod
-    # def data_settings(cls):
     #    qsettings = nsettings.NSettings(resources.DATA_SETTINGS_PATH,
     #                                    prefix="ds")
-    #    if cls.__created:
     #        qsettings.valueChanged['PyQt_PyObject',
     #                               'QString',
     #                               'PyQt_PyObject'].connect(
     #                                   cls.__instance._settings_value_changed)
-    #    return qsettings
-
-    # def _settings_value_changed(self, qobject, key, value):
-        # signal_name = "%s(PyQt_PyObject)" % key.replace("/", "_")
-        # signal_name = "%s" % key.replace("/", "_")
-    #    print(qobject, key)
-        # callback = getattr(self, signal_name, None)
-        # if hasattr(callback, "__call__"):
-        #    callback()
-        # print(signal_name, value)
-        # self.emit(SIGNAL(signal_name), value)
-        # print("Falta emitir {}".format(signal_name))
 
     def save_settings(self):
         """
@@ -710,10 +596,7 @@ class IDE(QMainWindow):
         data_settings = IDE.data_settings()
         ninja_settings = IDE.ninja_settings()
         # Remove swap files
-        # for editable in self.__neditables.values():
-        #     if editable.swap_file is not None:
         #         # A new file does not have a swap file
-        #         editable.swap_file._file_closed()
 
         if data_settings.value("ide/loadFiles", True):
             # Get opened projects
@@ -748,32 +631,9 @@ class IDE(QMainWindow):
             ninja_settings.setValue("window/maximized", False)
             ninja_settings.setValue("window/size", self.size())
             ninja_settings.setValue("window/pos", self.pos())
-        # qsettings = IDE.ninja_settings()
-        # data_qsettings = IDE.data_settings()
-        # main_container = self.get_service("main_container")
-        # editor_widget = None
-        # if main_container:
-        #    editor_widget = main_container.get_current_editor()
-        # current_file = ''
-        # if editor_widget is not None:
-        #    current_file = editor_widget.file_path
-        # if qsettings.value('preferences/general/loadFiles', True, type=bool):
-        #    openedFiles = self.filesystem.get_files()
-        #    projects_obj = self.filesystem.get_projects()
-        #    projects = [projects_obj[proj].path for proj in projects_obj]
-        #    data_qsettings.setValue('lastSession/projects', projects)
-        #    files_info = []
-        #    for path in openedFiles:
-        #        editable = self.__neditables.get(openedFiles[path])
-        #        if editable is not None and editable.is_dirty:
-        #            stat_value = 0
-        #        else:
-        #            stat_value = os.stat(path).st_mtime
         #        files_info.append([path,
         #                          editable.editor.cursor_position,
         #                          stat_value])
-        #    data_qsettings.setValue('lastSession/openedFiles', files_info)
-        #    if current_file is not None:
         #        data_qsettings.setValue(
         # 'lastSession/currentFile', current_file)
         recent_files = main_container.last_opened_files
@@ -787,14 +647,11 @@ class IDE(QMainWindow):
         #                   settings.BREAKPOINTS)
 
         # Session
-        # if self._session is not None:
-        #     val = QMessageBox.question(
         #         self,
         #         translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
         #         (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
         #             {'session': self.Session}),
         #         QMessageBox.Yes, QMessageBox.No)
-        #     if val == QMessageBox.Yes:
         #         session_manager.SessionsManager.save_session_data(
         #             self.Session, self)
         # qsettings.setValue('preferences/general/toolbarArea',
@@ -804,14 +661,11 @@ class IDE(QMainWindow):
 
     def activate_profile(self):
         """Show the Session Manager dialog."""
-        # profilesLoader = session_manager.SessionsManager(self)
-        # profilesLoader.show()
         # pass
         self._session_manager.show()
 
     def deactivate_profile(self):
         """Close the Session Session."""
-        # self.Session = None
         pass
 
     def load_window_geometry(self):
@@ -842,58 +696,25 @@ class IDE(QMainWindow):
 
     def closeEvent(self, event):
         """Saves some global settings before closing."""
-        # if self.s_listener:
-        #    self.s_listener.close()
-        # _unsaved_files = self._get_unsaved_files()
-        # if settings.CONFIRM_EXIT and _unsaved_files:
-        #     dialog = unsaved_files.UnsavedFilesDialog(_unsaved_files, self)
-        #     if dialog.exec_() == QDialog.Rejected:
-        #         event.ignore()
-        #         return
-        # else:
-        #     self._save_unsaved_files(_unsaved_files)
         self.save_settings()
         self.goingDown.emit()
         # close python documentation server (if running)
-        # main_container.close_python_doc()
         # Shutdown PluginManager
-        # self.plugin_manager.shutdown()
-        # completion_daemon.shutdown_daemon()
         super(IDE, self).closeEvent(event)
 
-    # def notify_plugin_errors(self):
     #     # TODO: Check if the Plugin Error dialog can be improved
-    #     errors = self.plugin_manager.errors
-    #     if errors:
-    #         plugin_error_dialog = traceback_widget.PluginErrorDialog()
-    #         for err_tuple in errors:
-    #             plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
     #         # show the dialog
-    #         plugin_error_dialog.exec_()
 
     def show_message(self, message, duration=1800):
         """Show status message."""
         self.notification.set_message(message, duration)
         self.notification.show()
 
-    # def show_plugins_store(self):
     #     """Open the Plugins Manager to install/uninstall plugins."""
-    #     store = plugins_store.PluginsStore(self)
-    #     main_container = IDE.get_service("main_container")
-    #     if main_container:
-    #         main_container.show_dialog(store)
-    #     else:
-    #         store.show()
 
-    # def show_languages(self):
     #     """Open the Language Manager to install/uninstall languages."""
-    #     manager = language_manager.LanguagesManagerWidget(self)
-    #     manager.show()
 
-    # def show_schemes(self):
     #     """Open the Schemes Manager to install/uninstall schemes."""
-    #     manager = schemes_manager.SchemesManagerWidget(self)
-    #     manager.show()
 
     def show_about_qt(self):
         """Show About Qt Dialog."""
@@ -904,10 +725,5 @@ class IDE(QMainWindow):
         about = about_ninja.AboutNinja(self)
         about.show()
 
-    # def show_python_detection(self):
     #     """Show Python detection dialog for windows."""
     #     # TODO: Notify the user when no python version could be found
-    #     suggested = settings.detect_python_path()
-    #     if suggested:
-    #         dialog = python_detect_dialog.PythonDetectDialog(suggested, self)
-    #         dialog.show()

@@ -135,9 +135,6 @@ class ProjectTreeColumn(QDialog):
         # self.connect(ide, SIGNAL("goingDown()"),
         #    self.tree_projects.shutdown)
 
-        # def close_project_signal():
-        #    self.emit(SIGNAL("updateLocator()"))
-
     def install_tab(self):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
@@ -193,9 +190,6 @@ class ProjectTreeColumn(QDialog):
             self.add_project(project)
             self.save_recent_projects(folderName)
             # FIXME: show editor area?
-            # main_container = IDE.get_service('main_container')
-            # if main_container:
-            #    main_container.show_editor_area()
             if len(self.projects) > 1:
                 title = "%s (%s)" % (
                     translations.TR_TAB_PROJECTS, len(self.projects))
@@ -276,7 +270,6 @@ class ProjectTreeColumn(QDialog):
             self._combo_project.setCurrentIndex(index)
 
         # FIXME: improve?
-        # if len(self.projects) == 1:
         #     self._combo_project.currentIndexChanged[int].connect(
         #         self._change_current_project)
 
@@ -443,13 +436,9 @@ class ProjectTreeColumn(QDialog):
         # show the menu!
         menu.exec_(QCursor.pos())
 
-        # if self.current_tree._added_to_console:
-        #    actionRemoveFromConsole = menu.addAction(
         #        translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
         #    self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
         #                 self.current_tree._remove_project_from_console)
-        # else:
-        #    actionAdd2Console = menu.addAction(
         #        translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
         #    self.connect(actionAdd2Console, SIGNAL("triggered()"),
         #                 self.current_tree._add_project_to_console)
@@ -514,7 +503,6 @@ class TreeProjectsWidget(QTreeView):
         self.__format_tree()
 
         self.setStyleSheet("QTreeView{ show-decoration-selected: 1;}")
-
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self._menu_context_tree)
@@ -665,7 +653,6 @@ class TreeProjectsWidget(QTreeView):
         if not path:
             path = self.project.path
         try:
-            # file_manager.create_init_file_complete(path)
             file_manager.create_init_file(path)
         except file_manager.NinjaFileExistsException as reason:
             QMessageBox.information(self, translations.TR_CREATE_INIT_FAIL,
@@ -698,16 +685,8 @@ class TreeProjectsWidget(QTreeView):
             ninjaide = IDE.get_service("ide")
             current_nfile = ninjaide.get_or_create_nfile(path)
             current_nfile.delete()
-            # path = file_manager.create_path(path)
-            # print(path)
-            # main_container = ide_srv = IDE.get_service('main_container')
-            # if main_container and main_container.is_open(path):
-            #    main_container.close_deleted_file(path)
             # FIXME: Manage the deletion signal instead of main container
             # fiddling here
-            # ide_srv = IDE.get_service('ide')
-            # current_nfile = ide_srv.get_or_create_nfile(path)
-            # current_nfile.delete()
 
     def _delete_folder(self):
         # FIXME: We need nfilesystem support for this
@@ -792,11 +771,7 @@ class TreeProjectsWidget(QTreeView):
         """Show or Hide the filesize information on TreeProjectWidget"""
         self.showColumn(1) if self.isColumnHidden(1) else self.hideColumn(1)
 
-    # def _edit_ui_file(self):
-        # path = self.model().filePath(self.currentIndex())
-        # pathForFile = "file://%s" % path
         # #open the correct program to edit Qt UI files!
-        # QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
 
     def _execute_project(self):
         tools_dock = IDE.get_service('tools_dock')

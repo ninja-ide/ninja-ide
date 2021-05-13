@@ -88,10 +88,9 @@ class Theme(QWidget):
         self.list_skins.clear()
         self.list_skins.addItem("Default")
 
-        files = [file_manager.get_file_name(filename) for filename in
-                 file_manager.get_files_from_folder(
-                     resources.NINJA_THEME_DOWNLOAD, "qss")]
-        files.sort()
+        files = sorted([file_manager.get_file_name(filename) for filename in
+                        file_manager.get_files_from_folder(
+            resources.NINJA_THEME_DOWNLOAD, "qss")])
         self.list_skins.addItems(files)
 
         if settings.NINJA_SKIN in files:

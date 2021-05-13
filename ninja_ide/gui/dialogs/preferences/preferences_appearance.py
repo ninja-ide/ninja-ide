@@ -34,5 +34,3 @@ class Appearance(QWidget):
 #    'APPEARANCE',
 #    Appearance,
 #    "Appearance",
-#    preferences.SECTIONS['APPEARANCE']
-# )

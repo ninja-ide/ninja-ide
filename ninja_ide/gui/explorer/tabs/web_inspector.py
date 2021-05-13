@@ -25,7 +25,7 @@ from ninja_ide.gui.ide import IDE
 
 try:
     from PyQt4.QtWebKit import QWebInspector
-except:
+except BaseException:
     settings.WEBINSPECTOR_SUPPORTED = False
 
 

@@ -64,7 +64,6 @@ class LocatorWidget(QDialog):
         self.locate_symbols = locator.LocateSymbolsThread()
         self.locate_symbols.finished.connect(self._cleanup)
         # FIXME: invalid signal
-        # self.locate_symbols.terminated.connect(self._cleanup)
         # Hide locator with Escape key
         shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
         shortEscMisc.activated.connect(self.hide)
@@ -230,7 +229,7 @@ class LocatorWidget(QDialog):
                 self.tempLocations = [x for x in self.tempLocations
                                       if x.type == filterOptions[index] and
                                       x.comparison.lower().find(
-                                        filterOptions[index + 1].lower()) > -1]
+                                          filterOptions[index + 1].lower()) > -1]
         return index + 2
 
     def _filter_this_file(self, filterOptions, index):

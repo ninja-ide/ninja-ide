@@ -35,8 +35,8 @@ from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
 
 
-#based on: http://john.nachtimwald.com/2009/08/15/qtextedit-with-line-numbers/
-#(MIT license)
+# based on: http://john.nachtimwald.com/2009/08/15/qtextedit-with-line-numbers/
+# (MIT license)
 
 
 class SidebarWidget(QWidget):
@@ -51,9 +51,9 @@ class SidebarWidget(QWidget):
         self.downArrowIcon = QPixmap()
         self.pat = re.compile(
             r"(\s)*\"\"\"|(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
-            "(\s)*else:|(\s)*elif |(\s)*for |"
-            "(\s)*try:|(\s)*except:|(\s)*except |(\s)*#begin-fold:")
-        self.patNotPython = re.compile('(\s)*#begin-fold:|(.)*{')
+            "(\\s)*else:|(\\s)*elif |(\\s)*for |"
+            "(\\s)*try:|(\\s)*except:|(\\s)*except |(\\s)*#begin-fold:")
+        self.patNotPython = re.compile('(\\s)*#begin-fold:|(.)*{')
         self.patComment = re.compile(r"(\s)*\"\"\"")
         self._endDocstringBlocks = []
         self.foldedBlocks = []
@@ -128,7 +128,7 @@ class SidebarWidget(QWidget):
 
     def _find_fold_closing(self, block):
         text = block.text()
-        pat = re.compile('(\s)*#begin-fold:')
+        pat = re.compile('(\\s)*#begin-fold:')
         patBrace = re.compile('(.)*{$')
         if pat.match(text):
             return self._find_fold_closing_label(block)
@@ -138,7 +138,7 @@ class SidebarWidget(QWidget):
             return self._find_fold_closing_docstring(block)
 
         spaces = helpers.get_leading_spaces(text)
-        pat = re.compile('^\s*$|^\s*#')
+        pat = re.compile('^\\s*$|^\\s*#')
         block = block.next()
         while block.isValid():
             text2 = block.text()
@@ -156,7 +156,7 @@ class SidebarWidget(QWidget):
         text = block.text()
         label = text.split(':')[1]
         block = block.next()
-        pat = re.compile('\s*#end-fold:' + label)
+        pat = re.compile('\\s*#end-fold:' + label)
         while block.isValid():
             if pat.match(block.text()):
                 return block.blockNumber() + 1
@@ -281,7 +281,7 @@ class SidebarWidget(QWidget):
 
         self.highest_line = line_count
 
-        #Code Folding
+        # Code Folding
         if self.foldArea != self.rightArrowIcon.width():
             polygon = QPolygonF()
 
@@ -321,7 +321,7 @@ class SidebarWidget(QWidget):
         while block.isValid():
             position = self.edit.blockBoundingGeometry(
                 block).topLeft() + viewport_offset
-            #Check if the position of the block is outside of the visible area
+            # Check if the position of the block is outside of the visible area
             if position.y() > page_bottom:
                 break
 
@@ -338,7 +338,7 @@ class SidebarWidget(QWidget):
                     else:
                         painter.drawPixmap(xofs, round(position.y()),
                                            self.downArrowIcon)
-            #Add Bookmarks and Breakpoint
+            # Add Bookmarks and Breakpoint
             if block.blockNumber() in self.breakpoints:
                 linear_gradient = QLinearGradient(
                     xofs, round(position.y()),
@@ -381,8 +381,8 @@ class SidebarWidget(QWidget):
             # check if block is a docstring
             if self.patComment.match(block.text()):
                 fold_docstring_open = not fold_docstring_open
-                #if we are closing the docstring block we add it's line number,
-                #so we can skip it later
+                # if we are closing the docstring block we add it's line number,
+                # so we can skip it later
                 if not fold_docstring_open:
                     self._endDocstringBlocks.append(block.blockNumber())
             block = block.next()

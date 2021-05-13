@@ -112,8 +112,6 @@ class _MenuBar(QObject):
             self.add_root(category, root_weight=categories[category])
         # EACH ITEM menu should be obtained from ide.get_menuitems()
         # which is going to return a dict with:
-        # key: QAction or QMenu
-        # value: (category[string], weight[int])
         # QAction/QMenu, and ask something like "instanceof" for those
         # objects to see if we should execute an addMenu or addAction to
         # the MenuBar.

@@ -50,9 +50,6 @@ class MainSelector(QWidget):
         vbox.setSpacing(0)
         vbox.addWidget(view)
 
-        # self._root.open[int].connect(lambda i: self.changeCurrent.emit(i))
-        # self._root.open[int].connect(self._clean_removed)
-        # self._root.ready.connect(lambda: self.ready.emit())
         # self._root.animationCompleted.connect(
         #    lambda: self.animationCompleted.emit())
 
@@ -68,7 +65,6 @@ class MainSelector(QWidget):
         self._root.close_selector()
 
     def start_animation(self):
-        # self._root.start_animation()
         self._root.forceActiveFocus()
 
     def open_item(self, index):

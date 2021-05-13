@@ -133,11 +133,8 @@ class SymbolHighlighter(base.Extension):
         complementary = self.__get_complementary_symbol(symbol)
         for block, column, char in generator:
             # Check if current position are inside a comment or string
-            # cursor = QTextCursor(block)
             # Because positionInBlock() = cursor.position() - block.position()
             # and positionInBlock() = column, then "setPositionInBlock":
-            # cursor.setPosition(column + block.position())
-            # if self._neditor.inside_string_or_comment(cursor):
             #     continue
             if char == complementary:
                 count -= 1

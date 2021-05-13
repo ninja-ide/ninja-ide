@@ -32,18 +32,19 @@ class PluginPreferences(QWidget):
     """
     Plugins section widget in NINJA-IDE Preferences
     """
+
     def __init__(self):
         QWidget.__init__(self)
         self.plugin_manager = plugin_manager.PluginManager()
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
-        #load widgets
+        # load widgets
         self._load_widgets()
 
     def _load_widgets(self):
         logger.info("Loading plugins preferences widgets")
-        #Collect the preferences widget for each active plugin
+        # Collect the preferences widget for each active plugin
         for plugin in self.plugin_manager.get_active_plugins():
             plugin_name = plugin.metadata.get('name')
             try:
@@ -52,7 +53,7 @@ class PluginPreferences(QWidget):
                     self._tabs.addTab(preferences_widget, plugin_name)
             except Exception as reason:
                 logger.error("Unable to add the preferences widget (%s): %s",
-                    plugin_name, reason)
+                             plugin_name, reason)
                 continue
 
     def save(self):
@@ -62,5 +63,5 @@ class PluginPreferences(QWidget):
                 self._tabs.widget(i).save()
             except Exception as reason:
                 logger.error("Unable to save preferences (%s): %s",
-                    self._tabs.tabText(i), reason)
+                             self._tabs.tabText(i), reason)
                 continue

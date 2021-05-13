@@ -35,7 +35,6 @@ TR_SAVE_SELECTED = tr("NINJA-IDE", "Save Selected")
 TR_UNDO = tr("NINJA-IDE", "Undo")
 TR_REDO = tr("NINJA-IDE", "Redo")
 TR_COMMENT = tr("NINJA-IDE", "Toggle Comment")
-# TR_UNCOMMENT = tr("NINJA-IDE", "Uncomment")
 TR_INSERT_TITLE_COMMENT = tr("NINJA-IDE", "Insert Comment Title")
 TR_INDENT_MORE = tr("NINJA-IDE", "Indent More")
 TR_INDENT_LESS = tr("NINJA-IDE", "Indent Less")
@@ -604,7 +603,6 @@ TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION = tr(
 TR_PREFERENCES_EDITOR_CONFIG_END_AT_LAST_LINE = tr(
     "NINJA-IDE",
     "Stop Scrolling At Last Line")
-# TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING = tr(
 #    "NINJA-IDE",
 #    "Remove Trailing Spaces and\nAdd Last Line Automatically")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES = tr(
@@ -768,17 +766,8 @@ TR_COMPLETE_CHARS = tr("NINJA-IDE", "Matching Characters")
 TR_COMPLETE_BRACKETS = tr("NINJA-IDE", "Complete brackets")
 TR_COMPLETE_QUOTES = tr("NINJA-IDE", "Complete Quotes")
 
-# TR_PREF_EDITOR_COMPLETE = tr("NINJA-IDE", "Complete:")
-# TR_PREF_EDITOR_PARENTHESES = tr("NINJA-IDE", "Parentheses:")
-# TR_PREF_EDITOR_KEYS = tr("NINJA-IDE", "Keys:")
-# TR_PREF_EDITOR_BRACKETS = tr("NINJA-IDE", "Brackets:")
-# TR_PREF_EDITOR_SIMPLE_QUOTES = tr("NINJA-IDE", "Simple Quotes:")
-# TR_PREF_EDITOR_DOUBLE_QUOTES = tr("NINJA-IDE", "Double Quotes:")
-# TR_PREF_EDITOR_COMPLETE_DECLARATIONS = tr(
 #    "NINJA-IDE", "Complete Declarations\n"
 #    "(execute the opposite action with: {0}).")
-# TR_PREF_EDITOR_CODE_COMPLETION = tr("NINJA-IDE", "Code Completion:")
-# TR_PREF_EDITOR_ACTIVATE_COMPLETION = tr(
 #    "NINJA-IDE",
 #    "Activate Code Completion With: \".\"")
 
@@ -884,7 +873,6 @@ TR_APPLY_CHANGES = tr("NINJA-IDE", "Apply changes")
 TR_SAVE_BEFORE_APPLY = tr("NINJA-IDE", "Save the file before applying changes")
 
 
-# from_import_dialog
 TR_INSERT_AT_LINE = tr("NINJA-IDE", "Insert at line")
 TR_WITH_COMMENT = tr("NINJA-IDE", "with comment")
 TR_ADD = tr("NINJA-IDE", "Add")

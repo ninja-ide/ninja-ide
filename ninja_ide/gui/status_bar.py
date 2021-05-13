@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QShortcut
-# from PyQt5.QtWidgets import QCheckBox
 
 from PyQt5.QtGui import QKeySequence
 

@@ -56,14 +56,14 @@ class AboutNinja(QDialog):
         hbox.addWidget(self.lblIcon)
 
         lblTitle = QLabel(
-                '<h1>NINJA-IDE</h1>\n<i>Ninja-IDE Is Not Just Another IDE<i>')
+            '<h1>NINJA-IDE</h1>\n<i>Ninja-IDE Is Not Just Another IDE<i>')
         lblTitle.setTextFormat(Qt.RichText)
         lblTitle.setAlignment(Qt.AlignLeft)
         hbox.addWidget(lblTitle)
         vbox.addLayout(hbox)
         # Add description
         vbox.addWidget(QLabel(
-self.tr("""NINJA-IDE (from: "Ninja Is Not Just Another IDE"), is a
+            self.tr("""NINJA-IDE (from: "Ninja Is Not Just Another IDE"), is a
 cross-platform integrated development environment specifically
 designed to build Python Applications.
 
@@ -73,14 +73,14 @@ situations thanks to its rich extensibility.""")))
         vbox.addWidget(QLabel(self.tr("Version: %s") % ninja_ide.__version__))
         link_ninja = QLabel(
             self.tr('Website: <a href="%s"><span style=" '
-                'text-decoration: underline; color:#ff9e21;">'
-                '%s</span></a>') %
-                (ninja_ide.__url__, ninja_ide.__url__))
+                    'text-decoration: underline; color:#ff9e21;">'
+                    '%s</span></a>') %
+            (ninja_ide.__url__, ninja_ide.__url__))
         vbox.addWidget(link_ninja)
         link_source = QLabel(
             self.tr('Source Code: <a href="%s"><span style=" '
-            'text-decoration: underline; color:#ff9e21;">%s</span></a>') %
-                (ninja_ide.__source__, ninja_ide.__source__))
+                    'text-decoration: underline; color:#ff9e21;">%s</span></a>') %
+            (ninja_ide.__source__, ninja_ide.__source__))
         vbox.addWidget(link_source)
 
         hbox2 = QHBoxLayout()

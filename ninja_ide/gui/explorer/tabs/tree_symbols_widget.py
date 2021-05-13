@@ -79,7 +79,6 @@ class TreeSymbolsWidget(QDialog):
             self._menu_context_tree)
         # self.connect(
         #    self,
-        #    SIGNAL("customContextMenuRequested(const QPoint &)"),
         #    self._menu_context_tree)
         # self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
         #             self._item_collapsed)
@@ -111,13 +110,11 @@ class TreeSymbolsWidget(QDialog):
         u_class_attr = menu.addAction(
             translations.TR_UNFOLD_CLASSES_AND_ATTRIBUTES)
         menu.addSeparator()
-        # save_state = menu.addAction(self.tr("Save State"))
 
         # self.connect(f_all, SIGNAL("triggered()"),
         #             lambda: self.tree.collapseAll())
         # self.connect(u_all, SIGNAL("triggered()"),
         #             lambda: self.tree.expandAll())
-        # self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
         # self.connect(u_class_method, SIGNAL("triggered()"),
         #             self._unfold_class_method)
         # self.connect(u_class_attr, SIGNAL("triggered()"),
@@ -182,7 +179,6 @@ class TreeSymbolsWidget(QDialog):
 
     def _save_symbols_state(self):
         """Method to Save a persistent Symbols state"""
-        # filename = self.actualSymbols[0]
         # TODO: persist self.collapsedItems[filename] in QSettings
         pass
 
@@ -278,8 +274,6 @@ class TreeSymbolsWidget(QDialog):
                 item.isClass = True
                 tooltip = self.create_tooltip(claz, line_number)
                 item.setToolTip(0, tooltip)
-                # item.setIcon(0, ui_tools.colored_icon(":img/class", "#FFCC80"))
-                # item.setIcon(0, ui_tools.get_icon('class', '#FFCC80'))
                 item.setIcon(0, self.__icons["class"])
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz]['members'],
@@ -341,7 +335,6 @@ class TreeSymbolsWidget(QDialog):
         """On Close event handling"""
 
         self.dockWidget.emit(self)
-        # self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()
 
 

@@ -185,7 +185,6 @@ class ProposalView(QListView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFont(settings.FONT)
-        # self.setFrameStyle(QFrame.NoFrame)
         self.setUniformItemSizes(True)
         self.setSelectionBehavior(QAbstractItemView.SelectItems)
         self.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -301,7 +300,6 @@ class ProposalWidget(QFrame):
         self._proposal_view = ProposalView()
         self.setFrameStyle(self._proposal_view.frameStyle())
         self._proposal_view.setFrameStyle(QFrame.NoFrame)
-        # self._proposal_view.setItemDelegate(ProposalDelegate())
 
         self._proposal_view.installEventFilter(self)
         vbox.addWidget(self._proposal_view)

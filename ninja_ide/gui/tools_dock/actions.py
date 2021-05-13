@@ -2,22 +2,11 @@
 
 from ninja_ide import translations
 
-#{
-#"shortcut": "Change-Tab",
-#"action": ("text", "Image [string for ninja, Int for qt, None for nothing]"),
-#"connect": "function_name"
-#}
+# "connect": "function_name"
 
 ACTIONS = (
-    # {
-    #     "shortcut": "Find-in-files",
-    #     "action": {
-    #         "text": translations.TR_FIND_IN_FILES,
-    #         "section": (translations.TR_MENU_EDIT, None),
     #         "weight": 240
-    #     },
     #     "connect": "show_find_in_files_widget"
-    # },
     {
         "shortcut": "run-file",
         "action": {
@@ -57,13 +46,6 @@ ACTIONS = (
         },
         "connect": "kill_application"
     },
-    # {
-    #     "shortcut": "hide-misc",
-    #     "action": {
-    #         "text": translations.TR_TOOLS_VISIBILITY,
-    #         "section": (translations.TR_MENU_VIEW, None),
     #         "weight": 100
-    #     },
     #     "connect": "change_visibility"
-    # },
 )

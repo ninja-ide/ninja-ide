@@ -29,7 +29,6 @@ from PyQt5.QtCore import QDir
 from PyQt5.QtCore import QFileInfo
 
 from ninja_ide import resources
-# from ninja_ide.dependencies import pycodestyle
 
 
 ###############################################################################
@@ -79,7 +78,7 @@ def detect_python_path():
             file_path = os.path.join(folder, "python.exe")
             if ("python" in folder.lower()) and os.path.exists(file_path):
                 suggested.append(file_path)
-    except:
+    except BaseException:
         print("Detection couldnt be executed")
     finally:
         return suggested
@@ -98,18 +97,14 @@ AUTOSAVE_DELAY = 1500
 # 0: Disable
 # 1: Enable
 # 2: Alternative Dir
-# SWAP_FILE = 1
-# SWAP_FILE_INTERVAL = 15  # seconds
 
 MAX_OPACITY = TOOLBAR_AREA = 1
-# MIN_OPACITY = 0.3
 
 # UI LAYOUT
 # 001 : Central Rotate
 # 010 : Panels Rotate
 # 100 : Central Orientation
 NOTIFICATION_ON_SAVE = True
-# UI_LAYOUT = NOTIFICATION_POSITION = 0
 
 LANGUAGE = EXECUTION_OPTIONS = ""
 
@@ -168,7 +163,6 @@ TOOLBAR_ITEMS_DEFAULT = [
 ]
 
 # hold the toolbar actions added by plugins
-# TOOLBAR_ITEMS_PLUGINS = LAST_OPENED_FILES = []
 
 NINJA_SKIN = 'Dark'
 LAST_OPENED_FILES = []
@@ -208,30 +202,16 @@ MARGIN_LINE = 79
 MARGIN_LINE_BACKGROUND = False  # The background after the column limit
 
 BRACE_MATCHING = True
-# BRACES = {'{': '}', '[': ']', '(': ')'}
-# QUOTES = {'"': '"', "'": "'"}
 
-# FONT_MAX_SIZE = 28
-# FONT_MIN_SIZE = 6
 MAX_REMEMBER_EDITORS = 50
-# MAX_REMEMBER_TABS = 50
-# COPY_HISTORY_BUFFER = 20
 
-# IGNORE_PEP8_LIST = []
 CHECK_STYLE = FIND_ERRORS = True
-# FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = False
-# CODE_COMPLETION = COMPLETE_DECLARATIONS = SHOW_MIGRATION_TIPS = True
-# UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = AND_AT_LAST_LINE = True
 # Widgets on side area of editor
 SHOW_LINE_NUMBERS = True
 SHOW_TEXT_CHANGES = True
-# SHOW_TEXT_CHANGE_AREA = True
-# SHOW_LINT_AREA = True
 
 SYNTAX = {}
 EXTENSIONS = {}
-# BREAKPOINTS = {}
-# BOOKMARKS = {}
 
 # 0: Always ask
 # 1: Reload
@@ -242,18 +222,9 @@ RELOAD_FILE = 0
 # CHECKERS
 ###############################################################################
 
-# CHECK_FOR_DOCSTRINGS = True
-
-
 ###############################################################################
 # MINIMAP
 ###############################################################################
-
-# SHOW_MINIMAP = False
-# MINIMAP_MAX_OPACITY = 0.8
-# MINIMAP_MIN_OPACITY = 0.1
-# SIZE_PROPORTION = 0.17
-
 
 ###############################################################################
 # FILE MANAGER
@@ -292,12 +263,6 @@ LANGUAGE_MAP = {
 # PROJECTS DATA
 ###############################################################################
 
-# PROJECT_TYPES = {'Python': None}
-# PROJECT_TYPES = {}
-
-# LANGS = []
-
-
 ###############################################################################
 # EXPLORER
 ###############################################################################
@@ -334,44 +299,34 @@ def get_supported_extensions_filter():
     return ";;".join(sorted(filters))
 
 
-# def set_project_type_handler(project_type, project_type_handler):
 #     """
 #     Set a project type handler for the given project_type
 #     """
 #     global PROJECT_TYPES
-#     PROJECT_TYPES[project_type] = project_type_handler
 
 
-# def get_project_type_handler(project_type):
 #     """
 #     Returns the handler for the given project_type
 #     """
 #     global PROJECT_TYPES
-#     return PROJECT_TYPES.get(project_type)
 
 
-# def get_all_project_types():
 #     """
 #     Returns the availables project types
 #     """
 #     global PROJECT_TYPES
-#     return list(PROJECT_TYPES.keys())
 
 
-# def add_toolbar_item_for_plugins(toolbar_action):
 #     """
 #     Add a toolbar action set from some plugin
 #     """
 #     global TOOLBAR_ITEMS_PLUGINS
-#     TOOLBAR_ITEMS_PLUGINS.append(toolbar_action)
 
 
-# def get_toolbar_item_for_plugins():
 #     """
 #     Returns the toolbar actions set by plugins
 #     """
 #     global TOOLBAR_ITEMS_PLUGINS
-#     return TOOLBAR_ITEMS_PLUGINS
 
 
 def use_platform_specific_eol():
@@ -383,44 +338,28 @@ def use_platform_specific_eol():
 ###############################################################################
 
 
-# def pycodestylemod_refresh_checks():
 #    """
 #    Force to reload all checks in pep8mod.py
 #    """
-#    # pep8mod.refresh_checks()
 
 
-# def pycodestylemod_add_ignore(ignore_code):
 #    """
 #    Patch pycodestyle.py to ignore a given check by code
 #    EXAMPLE:
-#        pycodestylemod_add_ignore('W191')
 #        'W1919': 'indentation contains tabs'
 #    """
-#    if ignore_code not in pycodestylemod.DEFAULT_IGNORE:
-#        default_ignore = pycodestylemod.DEFAULT_IGNORE.split(',')
-#        default_ignore.append(ignore_code)
-#        pycodestylemod.DEFAULT_IGNORE = ','.join(default_ignore)
 
 
-# def pycodestylemod_remove_ignore(ignore_code):
 #    """
 #     Patch pycodestylemod.py to remove the ignore of a give check
 #    EXAMPLE:
-#        pycodestylemod_remove_ignore('W191')
 #        'W1919': 'indentation contains tabs'
 #    """
-#    if ignore_code in pycodestylemod.DEFAULT_IGNORE:
-#        default_ignore = pycodestylemod.DEFAULT_IGNORE.split(',')
-#        default_ignore.remove(ignore_code)
-#        pycodestylemod.DEFAULT_IGNORE = ','.join(default_ignore)
 
 
-# def pycodestylemod_update_margin_line_length(new_margin_line):
 #    """
 #    Patch pycodestylemod.py to update the margin line length with a new value
 #    """
-#    pycodestylemod.MAX_LINE_LENGTH = new_margin_line
 
 ###############################################################################
 # LOAD SETTINGS
@@ -535,70 +474,34 @@ def load_settings():
     #                               type=int)
     # LANGUAGE = qsettings.value('preferences/interface/language', '',
     #                           type='QString')
-    # SHOW_START_PAGE = qsettings.value(
     #    'preferences/general/showStartPage', True, type=bool)
     # CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
     #                               True, type=bool)
-    # UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     PYTHON_EXEC = qsettings.value('execution/pythonExec',
                                   sys.executable, type=str)
-    # PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
     #    'preferences/execution/pythonExecConfigured', False, type=bool)
-    # SWAP_FILE = qsettings.value("ide/swapFile", 1, type=int)
-    # SWAP_FILE_INTERVAL = qsettings.value("ide/swapFileInterval", 15, type=int)
 
     NINJA_SKIN = qsettings.value("ide/interface/skin", "Dark", type=str)
-    # sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     RELOAD_FILE = qsettings.value("ide/reloadSetting", 0, type=int)
     CUSTOM_SCREEN_RESOLUTION = qsettings.value(
         "ide/interface/customScreenResolution", "", type=str)
     HDPI = qsettings.value("ide/interface/autoHdpi", False, type=bool)
     # Fix later
-    # try:
-    # for key in sessionDict:
-    #    session_list = sessionDict[key]
-    #    files = []
-    #    if session_list:
-    #        files = [item for item in session_list[0]]
-    #    temp_files = []
-    #    for file_ in files:
-    #        file_data = file_
-    #        if len(file_data) > 0:
-    #            temp_files.append((file_data[0], file_data[1], file_data[2]))
-    #    files = temp_files
-    #    projects = []
-    #    if len(session_list) > 1:
-    #        projects = [item for item in session_list[1]]
-    #    SESSIONS[key] = (files, projects)
     # TODO
-    # toolbar_items = [item for item in list(qsettings.value(
-        # 'preferences/interface/toolbar', []))]
-    # if toolbar_items:
-        # TOOLBAR_ITEMS = toolbar_items
+    # 'preferences/interface/toolbar', []))]
     # EXECUTION OPTIONS
     EXECUTION_OPTIONS = qsettings.value(
         'execution/executionOptions', defaultValue='', type=str)
-    # extensions = [item for item in tuple(qsettings.value(
     #    'preferences/general/supportedExtensions', []))]
-    # if extensions:
-    #    SUPPORTED_EXTENSIONS = extensions
     WORKSPACE = qsettings.value("ide/workspace", "", type=str)
     # Editor
-    # SHOW_MINIMAP = qsettings.value(
     #    'preferences/editor/minimapShow', False, type=bool)
-    # MINIMAP_MAX_OPACITY = float(qsettings.value(
     #    'preferences/editor/minimapMaxOpacity', 0.8, type=float))
-    # MINIMAP_MIN_OPACITY = float(qsettings.value(
     #    'preferences/editor/minimapMinOpacity', 0.1, type=float))
-    # SIZE_PROPORTION = float(qsettings.value(
     #    'preferences/editor/minimapSizeProportion', 0.17, type=float))
-    # SHOW_DOCMAP = qsettings.value(
     #    'preferences/editor/docmapShow', True, type=bool)
-    # DOCMAP_SLIDER = qsettings.value(
     #    'preferences/editor/docmapSlider', False, type=bool)
-    # EDITOR_SCROLLBAR = qsettings.value(
     #    'preferences/editor/editorScrollBar', True, type=bool)
-    # DOCMAP_WIDTH = int(qsettings.value(
     #    'preferences/editor/docmapWidth', 15, type=int))
     HIGHLIGHT_CURRENT_LINE = qsettings.value(
         'editor/display/highlightCurrentLine', True, type=bool)
@@ -606,7 +509,6 @@ def load_settings():
         "editor/display/current_line_mode", 0, type=int)
     BRACE_MATCHING = qsettings.value(
         "editor/display/brace_matching", True, type=bool)
-    # DOCMAP_SEARCH_LINES = qsettings.value(
     #    'preferences/editor/docmapSearchLines', True, type=bool)
     INDENT = int(qsettings.value(
         'editor/behavior/indentation_width', 4, type=int))
@@ -620,33 +522,22 @@ def load_settings():
     MARGIN_LINE_BACKGROUND = qsettings.value(
         "editor/display/margin_line_background", False, type=bool)
     # FIXME:
-    # pycodestylemod_update_margin_line_length(MARGIN_LINE)
     SHOW_LINE_NUMBERS = qsettings.value(
         'editor/display/show_line_numbers', True, type=bool)
     SHOW_TEXT_CHANGES = qsettings.value(
         "editor/display/show_text_changes", True, type=bool)
     EDITOR_SCHEME = qsettings.value(
         "editor/general/scheme", "Ninja Dark", type=str)
-    # REMOVE_TRAILING_SPACES = qsettings.value(
     #    'preferences/editor/removeTrailingSpaces', True, type=bool)
-    # ADD_NEW_LINE_AT_EOF = qsettings.value(
     #    "preferences/editor/addNewLineAtEnd", True, type=bool)
-    # SHOW_TABS_AND_SPACES = qsettings.value(
     #    'preferences/editor/show_whitespaces', False, type=bool)
     USE_TABS = qsettings.value('editor/behavior/use_tabs', False, type=bool)
-    # HIDE_MOUSE_CURSOR = qsettings.value(
     #    "preferences/editor/hideMouseCursor", True, type=bool)
-    # SCROLL_WHEEL_ZOMMING = qsettings.value(
     #    "preferences/editor/scrollWheelZomming", True, type=bool)
     # FIXME:
-    # if USE_TABS:
-    #    pycodestylemod_add_ignore("W191")
-    #    pycodestylemod_refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
         'editor/display/allow_word_wrap', False, type=bool)
-    # COMPLETE_DECLARATIONS = qsettings.value(
     #    'preferences/editor/completeDeclarations', True, type=bool)
-    # UNDERLINE_NOT_BACKGROUND = qsettings.value(
     #    'preferences/editor/errorsUnderlineBackground', True, type=bool)
     font = qsettings.value('editor/general/default_font', None)
     if font:
@@ -655,16 +546,11 @@ def load_settings():
                                         True, type=bool)
     SHOW_INDENTATION_GUIDES = qsettings.value(
         "editor/display/show_indentation_guides", False, type=bool)
-    # IGNORE_PEP8_LIST = list(qsettings.value(
     #    'preferences/editor/defaultIgnorePep8', [], type='QStringList'))
     # FIXME:
-    # for ignore_code in IGNORE_PEP8_LIST:
-    #    pycodestylemod_add_ignore(ignore_code)
     FIND_ERRORS = qsettings.value(
         "editor/display/check_errors", True, type=bool)
-    # SHOW_MIGRATION_TIPS = qsettings.value(
     #    'preferences/editor/showMigrationTips', True, type=bool)
-    # ERRORS_HIGHLIGHT_LINE = qsettings.value(
     #    'preferences/editor/errorsInLine', True, type=bool)
     CHECK_STYLE = qsettings.value('editor/display/check_style',
                                   True, type=bool)
@@ -672,58 +558,29 @@ def load_settings():
         "editor/intellisense/autocomplete_brackets", True, type=bool)
     AUTOCOMPLETE_QUOTES = qsettings.value(
         "editor/intellisense/autocomplete_quotes", True, type=bool)
-    # CHECK_HIGHLIGHT_LINE = qsettings.value(
     #    'preferences/editor/checkStyleInline', True, type=bool)
-    # CODE_COMPLETION = qsettings.value(
     #    'preferences/editor/codeCompletion', True, type=bool)
-    # END_AT_LAST_LINE = qsettings.value(
     #    'preferences/editor/endAtLastLine', True, type=bool)
     # parentheses = qsettings.value('preferences/editor/parentheses', True,
     #                              type=bool)
-    # if not parentheses:
-    #    del BRACES['(']
-    # brackets = qsettings.value('preferences/editor/brackets', True, type=bool)
-    # if not brackets:
-    #    del BRACES['[']
-    # keys = qsettings.value('preferences/editor/keys', True, type=bool)
-    # if not keys:
-    #    del BRACES['{']
     # simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
     #                               True, type=bool)
-    # if not simpleQuotes:
-    #    del QUOTES["'"]
     # doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
     #                               True, type=bool)
-    # if not doubleQuotes:
-    #    del QUOTES['"']
     # Projects
-    # SHOW_PROJECT_EXPLORER = qsettings.value(
     #    'preferences/interface/showProjectExplorer', True, type=bool)
-    # SHOW_SYMBOLS_LIST = qsettings.value(
     #    'preferences/interface/showSymbolsList', True, type=bool)
     SHOW_WEB_INSPECTOR = qsettings.value(
         "interface/showWebInspector", False, type=bool)
     SHOW_ERRORS_LIST = qsettings.value(
         "interface/showErrorsList", True, type=bool)
-    # SHOW_MIGRATION_LIST = qsettings.value(
     #    'preferences/interface/showMigrationList', True, type=bool)
     # Bookmarks and Breakpoints
-    # bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
-    # for key in bookmarks:
-    #    if key:
-    #        BOOKMARKS[key] = [int(i) for i in tuple(bookmarks[key])]
-    # breakpoints = dict(qsettings.value('preferences/editor/breakpoints', {}))
-    # for key in breakpoints:
-    #    if key:
-    #         BREAKPOINTS[key] = [int(i) for i in tuple(breakpoints[key])]
     NOTIFICATION_ON_SAVE = qsettings.value(
         "editor/general/notificate_on_save", True, type=bool)
     # Checkers
-    # CHECK_FOR_DOCSTRINGS = qsettings.value(
     #    'preferences/editor/checkForDocstrings', False, type=bool)
-    # NOTIFICATION_POSITION = qsettings.value(
     #    'interface/notification_position', 1, type=int)
-    # NOTIFICATION_COLOR = qsettings.value(
     #    'preferences/general/notification_color', "#222", type='QString')
     LAST_CLEAN_LOCATOR = qsettings.value("ide/cleanLocator", None)
     from ninja_ide.extensions import handlers

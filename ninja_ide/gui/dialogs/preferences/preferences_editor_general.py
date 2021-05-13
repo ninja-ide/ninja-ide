@@ -53,7 +53,6 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
-# from ninja_ide.gui.dialogs.preferences import preferences_editor_scheme_designer
 from ninja_ide.tools import json_manager
 
 
@@ -112,23 +111,8 @@ class EditorGeneral(QWidget):
             self._combo_themes.addItem(scheme_name, colors)
         self.__current_scheme = settings.EDITOR_SCHEME
 
-        # self._list_view_scheme = QListView()
-        # schemes = json_manager.load_editor_schemes()
-        # from collections import namedtuple
-        # CategoryEntry = namedtuple('CategoryEntry', 'name color')
-        # list_of_categories = []
-        # for scheme_name, categories in schemes.items():
-        #     for category_name in categories.keys():
-        #         category = CategoryEntry(
         #             category_name,
-        #             categories[category_name]['color']
-        #         )
-        #         list_of_categories.append(category)
 
-        # model = ListModelScheme(list_of_categories)
-        # model.set_font(self._font)
-        # self._list_view_scheme.setModel(model)
-        # box.addWidget(self._list_view_scheme)
         # Add group widgets
         vbox.addWidget(group_typo)
         vbox.addWidget(group_scheme)

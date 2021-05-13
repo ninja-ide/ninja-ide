@@ -127,7 +127,6 @@ class SearchResultTreeView(QTreeView):
         super().__init__(parent)
         self._model = SearchResultModel(self)
         self.setModel(self._model)
-        # self.setItemDelegate(SearchResultDelegate())
         self.setIndentation(14)
         self.setUniformRowHeights(True)
         self.setExpandsOnDoubleClick(True)
@@ -312,7 +311,6 @@ class SearchResultDelegate(QItemDelegate):
         painter.fillRect(lineno_rect, brush)
         opt = option
         opt.font = settings.FONT  # FIXME: performance
-        # opt.displayAlignment = Qt.AlignRight | Qt.AlignVCenter
         opt.palette.setColor(color_group, QPalette.Text, Qt.darkGray)
         self.drawDisplay(painter, opt, lineno_rect, lineno_text)
         return lineno_width
@@ -394,7 +392,6 @@ class SearchResultModel(QAbstractItemModel):
     def clear(self):
         self.beginResetModel()
         self.root_item.clear_children()
-        # self.root_item = None
         self.endResetModel()
 
 

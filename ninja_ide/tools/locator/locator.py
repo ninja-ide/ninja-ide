@@ -23,7 +23,7 @@ import sqlite3
 import pickle
 try:
     import Queue
-except:
+except BaseException:
     import queue as Queue  # lint:ok
 
 from PyQt5.QtWidgets import QMessageBox
@@ -96,11 +96,8 @@ class GoToDefinition(QObject):
         super(GoToDefinition, self).__init__()
         self._thread = LocateSymbolsThread()
         self._thread.finished.connect(self._load_results)
-        # self.connect(self._thread, SIGNAL("finished()"), self._load_results)
         self._thread.finished.connect(self._cleanup)
-        # self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
         self._thread.terminated.connect(self._cleanup)
-        # self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
 
     def _cleanup(self):
         self._thread.wait()
@@ -373,7 +370,7 @@ class LocateSymbolsThread(QThread):
                 results = pickle.loads(data[2])
                 mapping_symbols[file_path] += results
                 return
-            except:
+            except BaseException:
                 print("ResultItem couldn't be loaded, let's analyze it again'")
         # obtain a symbols handler for this file extension
         lang = settings.LANGUAGE_MAP.get(file_ext)

@@ -16,14 +16,12 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-#lint:disable
 try:
     from urllib.request import urlopen
     from urllib.error import URLError
 except ImportError:
     from urllib2 import urlopen
     from urllib2 import URLError
-#lint:enable
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
@@ -68,7 +66,7 @@ class SchemesManagerWidget(QDialog):
         self._loading = True
         self.downloadItems = []
 
-        #Load Themes with Thread
+        # Load Themes with Thread
         self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
         self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
@@ -107,7 +105,7 @@ class SchemesManagerWidget(QDialog):
             schemes = [(d['name'], d['download']) for d in schemes]
             local_schemes = self.get_local_schemes()
             schemes = [schemes[i] for i in range(len(schemes)) if
-                os.path.basename(schemes[i][1]) not in local_schemes]
+                       os.path.basename(schemes[i][1]) not in local_schemes]
             self._schemes = schemes
         except URLError:
             self._schemes = []
@@ -144,7 +142,7 @@ class SchemeWidget(QWidget):
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table, [self.tr('Name'), self.tr('URL')],
-            self._schemes)
+                            self._schemes)
         btnUninstall = QPushButton(self.tr('Download'))
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)

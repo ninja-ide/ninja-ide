@@ -28,7 +28,7 @@ class HtmlIndenter(base.BaseIndenter):
     LANG = 'html'
     hang = False
     exempted_set = ('<!doctype html>', '<html>', '<!doctype>')
- 
+
     def _compute_indent(self, cursor):
         block = cursor.block()
         line, _ = self._neditor.cursor_position
@@ -58,7 +58,6 @@ class HtmlIndenter(base.BaseIndenter):
             self.width = INDENT
             return indent
 
-
     def _parse_text(self, last_line):
         # if it is a closing tag or a php
         if re.findall('[/|?]', last_line):
@@ -73,4 +72,3 @@ class HtmlIndenter(base.BaseIndenter):
             if re.findall(last_line, ele, 2):
                 self.width = 0
                 self.hang = False
-

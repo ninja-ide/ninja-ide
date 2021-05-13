@@ -14,8 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-# from __future__ import absolute_import
-# from __future__ import unicode_literals
 
 import bisect
 
@@ -52,7 +50,6 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 from ninja_ide.core.file_handling import file_manager
-# from ninja_ide.gui.main_panel import set_language
 
 
 class ComboEditor(QWidget):
@@ -77,9 +74,6 @@ class ComboEditor(QWidget):
         vbox.addWidget(self.bar)
 
         # Info bar
-        # self.info_bar = InfoBar(self)
-        # self.info_bar.setVisible(False)
-        # vbox.addWidget(self.info_bar)
 
         self.stacked = QStackedLayout()
         vbox.addLayout(self.stacked)
@@ -112,15 +106,12 @@ class ComboEditor(QWidget):
         # self.connect(self.bar, SIGNAL("recentTabsModified()"),
         #             lambda: self._main_container.recent_files_changed())
         # self.connect(self.bar.code_navigator.btnPrevious,
-        #                SIGNAL("clicked()"),
         #             lambda: self._navigate_code(False))
         # self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
         #             lambda: self._navigate_code(True))
 
     def _navigate_code(self, operation, forward=True):
         self._main_container.navigate_code_history(operation, forward)
-    #    op = self.bar.code_navigator.operation
-    #    self._main_container.navigate_code_history(val, op)
 
     def current_editor(self):
         return self.stacked.currentWidget()
@@ -158,9 +149,8 @@ class ComboEditor(QWidget):
             if self.__original:
                 editor = neditable.editor
             else:
-                # editor = neditable.editor.clone()
                 editor = self._main_container.create_editor_from_editable(
-                   neditable)
+                    neditable)
                 neditable.editor.link(editor)
 
             current_index = self.stacked.currentIndex()
@@ -204,7 +194,6 @@ class ComboEditor(QWidget):
     def unlink_editors(self):
         for index in range(self.stacked.count()):
             widget = self.stacked.widget(index)
-            # widget.setDocument(QsciDocument())
 
     def clone(self):
         combo = ComboEditor()
@@ -245,7 +234,6 @@ class ComboEditor(QWidget):
     def _close_file(self, neditable):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
-        # neditable.editor.completer.cc.unload_module()
         self.fileClosed.emit(neditable.nfile)
         layoutItem.widget().deleteLater()
 
@@ -333,7 +321,6 @@ class ComboEditor(QWidget):
             self._main_container.current_editor_changed(
                 neditable.file_path)
             self._load_symbols(neditable)
-            # self._show_file_in_explorer(neditable.file_path)
             neditable.update_checkers_display()
         else:
             self.bar.combo_files.setCurrentIndex(index)
@@ -437,7 +424,6 @@ class ComboEditor(QWidget):
 
     def closeEvent(self, event):
         self.about_to_close_combo_editor.emit()
-        # self.emit(SIGNAL("aboutToCloseComboEditor()"))
         super(ComboEditor, self).closeEvent(event)
 
     def reject(self):
@@ -473,12 +459,6 @@ class ActionBar(QFrame):
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(1, 0, 0, 0)
         hbox.setSpacing(1)
-
-        # self.lbl_checks = QLabel('')
-        # self.lbl_checks.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        # self.lbl_checks.setFixedWidth(48)
-        # self.lbl_checks.setVisible(False)
-        # hbox.addWidget(self.lbl_checks)
 
         self.combo_files = ComboFiles(self)
         self.combo_files.setObjectName("combotab")
@@ -538,13 +518,6 @@ class ActionBar(QFrame):
         hbox.addWidget(self.btn_close)
 
         # Added for set language
-        # self._setter_language = set_language.SetLanguageFile()
-
-    # def _on_lbl_position_clicked(self):
-    #    main_container = IDE.get_service("main_container")
-    #    editor_widget = main_container.get_current_editor()
-        # self._go_to_line_widget.set_line_count(editor_widget.line_count())
-        # self._go_to_line_widget.show()
 
     def resizeEvent(self, event):
         super(ActionBar, self).resizeEvent(event)
@@ -575,14 +548,6 @@ class ActionBar(QFrame):
 
         mo = Model(symbols)
         self.symbols_combo.setModel(mo)
-        # self.symbols_combo.clear()
-        # for symbol in symbols:
-        #    data = symbol[1]
-        #    if data[1] == 'f':
-        #        icon = QIcon(":img/function")
-        #    else:
-        #        icon = QIcon(":img/class")
-        #    self.symbols_combo.addItem(icon, data[0])
 
     def set_current_symbol(self, index):
         self.symbols_combo.setCurrentIndex(index + 1)
@@ -623,23 +588,18 @@ class ActionBar(QFrame):
         menu = QMenu()
         action_add = menu.addAction(translations.TR_ADD_TO_PROJECT)
         action_run = menu.addAction(translations.TR_RUN_FILE)
-        # menuSyntax = menu.addMenu(translations.TR_CHANGE_SYNTAX)
         action_show_folder = menu.addAction(
             translations.TR_SHOW_CONTAINING_FOLDER)
-        # self._create_menu_syntax(menuSyntax)
         menu.addSeparator()
         action_close = menu.addAction(translations.TR_CLOSE_FILE)
         action_close_all = menu.addAction(translations.TR_CLOSE_ALL_FILES)
         action_close_all_not_this = menu.addAction(
-           translations.TR_CLOSE_OTHER_FILES)
+            translations.TR_CLOSE_OTHER_FILES)
         menu.addSeparator()
-        # actionSplitH = menu.addAction(translations.TR_SPLIT_VERTICALLY)
-        # actionSplitV = menu.addAction(translations.TR_SPLIT_HORIZONTALLY)
-        # menu.addSeparator()
         action_copy_path = menu.addAction(
-           translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
+            translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
         action_show_file_in_explorer = menu.addAction(
-           translations.TR_SHOW_FILE_IN_EXPLORER)
+            translations.TR_SHOW_FILE_IN_EXPLORER)
         action_reopen = menu.addAction(translations.TR_REOPEN_FILE)
         action_undock = menu.addAction(translations.TR_UNDOCK_EDITOR)
 
@@ -648,8 +608,6 @@ class ActionBar(QFrame):
             action_reopen.setEnabled(False)
 
         # set language action
-        # menu_set_language = menu.addMenu(translations.TR_SET_LANGUAGE)
-        # self._set_list_languages(menu_set_language)
 
         # Connect actions
         action_close.triggered.connect(self.about_to_close_file)
@@ -672,11 +630,11 @@ class ActionBar(QFrame):
         menu.exec_(QCursor.pos())
 
     def _set_list_languages(self, menu_set_language):
-        for l in self._setter_language.get_list_of_language():
-            if l is None:
+        for lang in self._setter_language.get_list_of_language():
+            if lang is None:
                 continue
-            action = menu_set_language.addAction(l)
-            action.triggered.connect(lambda checked, language=l:
+            action = menu_set_language.addAction(lang)
+            action.triggered.connect(lambda checked, language=lang:
                                      self._set_language_action(language))
 
     def _set_language_action(self, language):
@@ -690,8 +648,7 @@ class ActionBar(QFrame):
 
     def _create_menu_syntax(self, menuSyntax):
         """Create Menu with the list of syntax supported."""
-        syntax = list(settings.SYNTAX.keys())
-        syntax.sort()
+        syntax = sorted(settings.SYNTAX.keys())
         for syn in syntax:
             menuSyntax.addAction(syn)
             # self.connect(menuSyntax, SIGNAL("triggered(QAction*)"),
@@ -767,7 +724,6 @@ class ActionBar(QFrame):
 
     def _split(self, orientation):
         print("emitir splitEditor")
-        # self.emit(SIGNAL("splitEditor(bool)"), orientation)
 
     def _copy_file_location(self):
         """Copy the path of the current opened file to the clipboard."""
@@ -845,7 +801,6 @@ class CodeNavigator(QWidget):
         super(CodeNavigator, self).__init__()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        # self.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         if settings.IS_MAC_OS:
@@ -928,17 +883,11 @@ class CodeNavigator(QWidget):
 
 class InfoBar(QFrame):
 
-    # reloadClicked = pyqtSignal()
-    # cancelClicked = pyqtSignal()
-    # recoverClicked = pyqtSignal()
-    # discardClicked = pyqtSignal()
-
     def __init__(self, parent=None):
         super().__init__(parent)
         pal = QPalette()
         pal.setColor(QPalette.Window, QColor("#6a6ea9"))
         pal.setColor(QPalette.WindowText, QColor("white"))
-        # self.setFrameStyle(QFrame.Panel | QFrame.Raised)
         self.setAutoFillBackground(True)
         self.setPalette(pal)
         self._state = "reload"
@@ -948,19 +897,10 @@ class InfoBar(QFrame):
         self._layout.addWidget(self._message)
         self._layout.addStretch(1)
         # # Reload buttons
-        # btn_reload = QPushButton("Reload")
-        # btn_cancel_reload = QPushButton("Cancel")
         # # Recovery buttons
-        # btn_discard = QPushButton("Discard")
-        # btn_recover = QPushButton("Recover")
 
         # self._buttons = {
-        #     "reload": [btn_reload, btn_cancel_reload],
         #     "recovery": [btn_recover, btn_discard]
-        # }
-        # for buttons in self._buttons.values():
-        #     for button in buttons:
-        #         button.clicked.connect(self.on_clicked)
 
     def set_message(self, msg):
         self._message.setText(msg)
@@ -971,32 +911,6 @@ class InfoBar(QFrame):
         if slot is not None:
             btn.clicked.connect(slot)
         return btn
-    # def on_clicked(self):
-    #     signal_name = "%sClicked" % self.sender().text().lower()
-    #     signal = getattr(self, signal_name)
-    #     signal.emit()
-    #     self.hide()
-
-    # def init(self, type_):
-    #     buttons = self._buttons.get(type_)
-    #     if self._state != type_:
-    #         for btn in self._buttons.get(self._state):
-    #             self._layout.removeWidget(btn)
-
-    #     self._layout.addStretch(1)
-    #     for btn in buttons:
-    #         self._layout.addWidget(btn)
-
-    # def show_message(self, msg_type="recovery"):
-    #     self.init(msg_type)
-    #     if msg_type == "reload":
-    #         text = translations.TR_FILE_MODIFIED_OUTSIDE
-    #     else:
-    #         text = "The file was not closed properly"
-    #     self._message.setText(text)
-    #     if not self.isVisible():
-    #         self.show()
-    #     self._state = msg_type
 
 
 class Model(QAbstractItemModel):

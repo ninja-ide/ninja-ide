@@ -37,9 +37,7 @@ class SymbolCompleter(object):
                 cursor.insertText(
                     '%s%s%s' % (char, cursor.selectedText(), complementary)
                 )
-                # self._neditor.setTextCursor(cursor)
                 event.accept()
-                # return
         right_char = self._neditor.get_right_character()
         if event.key() == Qt.Key_Backspace:
             cursor = self._neditor.textCursor()

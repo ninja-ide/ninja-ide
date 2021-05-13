@@ -4,20 +4,13 @@ from PyQt5.QtWidgets import QStyle
 
 from ninja_ide import translations
 
-#{
-#"shortcut": "Change-Tab",
-#"action": {'text': string,
-               #'image': [string for ninja, Int for qt, None for nothing],
-               #'section': string,
-               #'weight': int},
-#"connect": "function_name"
-#}
+# "connect": "function_name"
 
 
-#FIXME: add open recent projects
-#FIXME: add organize import
-#FIXME: add remove unused imports
-#FIXME: add extract method
+# FIXME: add open recent projects
+# FIXME: add organize import
+# FIXME: add remove unused imports
+# FIXME: add extract method
 
 """
 Actions included here are those that are associated with the main
@@ -34,17 +27,9 @@ the section determined by 1** and so forth.
 
 
 ACTIONS = (
-    # {
-    #    "shortcut": "show-selector",
-    #    "action": {
-    #        "text": translations.TR_SHOW_SELECTOR,
-    #        "image": "selector",
-    #        "section": (translations.TR_MENU_FILE, None),
     #        "weight": 500
-    #    },
     #    "connect": "show_selector"
 
-    # },
     {
         "shortcut": "new-file",
         "action": {
@@ -183,15 +168,8 @@ ACTIONS = (
         },
         "connect": "editor_toggle_comment"
     },
-    # {
-    #     "shortcut": "uncomment",
-    #     "action": {
-    #         "text": translations.TR_UNCOMMENT,
-    #         "section": (translations.TR_MENU_SOURCE, None),
     #         "weight": 140
-    #     },
     #     "connect": "editor_uncomment"
-    # },
     {
         "shortcut": "navigate-back",
         "connect": "navigate_back"

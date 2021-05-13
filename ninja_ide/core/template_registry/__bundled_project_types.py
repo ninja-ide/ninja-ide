@@ -149,7 +149,6 @@ class PythonProject(BaseProjectType):
                 line_interpreter.setEditable(True)
                 line_interpreter.addItems(utils.get_python())
                 box.addWidget(line_interpreter, 2, 1)
-                # from ninja_ide.utils import utils
                 choose_dir_action.triggered.connect(self._choose_dir)
                 self.line.setText(utils.get_home_dir())
 

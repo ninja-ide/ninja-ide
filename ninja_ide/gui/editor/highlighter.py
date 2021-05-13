@@ -233,7 +233,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
                 assert isinstance(
                     inside_scanner, Scanner), ("Scanner expected, "
                                                "got {!r}".format(
-                                                    inside_scanner))
+                                                   inside_scanner))
 
         self.formats = {}
         for f in formats:

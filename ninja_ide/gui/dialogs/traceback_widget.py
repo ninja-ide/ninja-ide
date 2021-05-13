@@ -36,6 +36,7 @@ class PluginErrorDialog(QDialog):
     """
     Dialog with tabs each tab is a python traceback
     """
+
     def __init__(self):
         QDialog.__init__(self)
         self.setWindowTitle(translations.TR_PLUGIN_ERROR_REPORT)
@@ -50,7 +51,7 @@ class PluginErrorDialog(QDialog):
         btnAccept.setMaximumWidth(100)
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
-        #signals
+        # signals
         self.connect(btnAccept, SIGNAL("clicked()"), self.close)
 
     def add_traceback(self, plugin_name, traceback_msg):

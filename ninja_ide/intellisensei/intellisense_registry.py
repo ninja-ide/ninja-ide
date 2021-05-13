@@ -67,7 +67,6 @@ class IntelliSense(QObject):
         QObject.__init__(self)
         self.__providers = {}
         self.__thread = None
-        # self._main_container = IDE.get_service("main_container")
 
         # Register service
         IDE.register_service("intellisense", self)

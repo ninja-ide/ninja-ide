@@ -545,7 +545,6 @@ class OutputWidget(QPlainTextEdit):
         """
         file_word_index = text.find('File')
         comma_min_index = text.find(',')
-        # comma_max_index = text.rfind(',')
         file_name = text[file_word_index + 6:comma_min_index - 1]
         lineno = text[comma_min_index + 7:].strip()
         return (file_name, lineno)

@@ -27,15 +27,12 @@ from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-# from ninja_ide.gui.ide import IDE
 from ninja_ide.dependencies import notimportchecker as nic
 from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
 from ninja_ide.gui.editor import helpers
-# from ninja_ide.tools import ui_tools
-# from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
 # TODO: limit results for performance
 
@@ -52,9 +49,7 @@ class NotImporterChecker(QThread):
 
         self.checker_icon = None
 
-        # ninjaide = IDE.get_service('ide')
         # self.connect(ninjaide,
-        #             SIGNAL("ns_preferences_editor_checkStyle(PyQt_PyObject)"),
         #             lambda: remove_pep8_checker())
         self.checkerCompleted.connect(self.refresh_display)
 
@@ -81,7 +76,6 @@ class NotImporterChecker(QThread):
         not_imports = dict()
         if file_ext in exts:
             self.reset()
-            # source = self._editor.text
             path = self._editor.file_path
             checker = nic.Checker(path)
             not_imports = checker.get_not_imports_on_file(
@@ -96,7 +90,7 @@ class NotImporterChecker(QThread):
                                 v)
                     else:
                         message = '[NOTIMP] {}: Dont exist'.format(
-                                values['mod_name'])
+                            values['mod_name'])
                     range_ = helpers.get_range(
                         self._editor, values['lineno'] - 1)
                     self.checks[values['lineno'] - 1].append(
@@ -109,9 +103,6 @@ class NotImporterChecker(QThread):
         return None
 
     def refresh_display(self):
-        # error_list = IDE.get_service('tab_errors')
-        # error_tree = IDE.get_service('errors_tree')
-        # error_tree.refresh(self.checks, self._path)
         """
         if error_list:
             error_list.refresh_pep8_list(self.checks)

@@ -16,11 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5.QtWidgets import QPlainTextEdit
-# from PyQt5.QtWidgets import QApplication
-# from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QAbstractSlider
-# from PyQt5.QtWidgets import QListView
-# from PyQt5.QtWidgets import QFrame
 
 from PyQt5.QtGui import QTextBlockUserData
 from PyQt5.QtGui import QTextDocument
@@ -297,7 +293,6 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
             percent = new_point_size / default_point_size * 100.0
             self.zoomChanged.emit(percent)
         # # Update all side widgets
-        # self.side_widgets.update_viewport()
 
     def reset_zoom(self):
         font = self.default_font
@@ -308,7 +303,6 @@ class BaseEditor(QPlainTextEdit, EditorMixin):
             # Emit signal for indicator
             self.zoomChanged.emit(100)
         # # Update all side widgets
-        # self.side_widgets.update_viewport()
 
     def remove_trailing_spaces(self):
         cursor = self.textCursor()

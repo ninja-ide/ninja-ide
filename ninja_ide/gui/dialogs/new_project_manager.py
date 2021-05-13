@@ -68,14 +68,8 @@ class NewProjectManager(QDialog):
             QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
         choose_button = button_box.button(QDialogButtonBox.Ok)
         choose_button.setText(translations.TR_CHOOSE)
-        # hbox2 = QHBoxLayout()
-        # cancel = QPushButton(translations.TR_CANCEL)
-        # choose = QPushButton(translations.TR_CHOOSE)
         # hbox2.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding,
         #                    QSizePolicy.Fixed))
-        # hbox2.addWidget(cancel)
-        # hbox2.addWidget(choose)
-        # vbox.addLayout(button_box)
         vbox.addWidget(button_box)
 
         self.template_registry = IDE.get_service("template_registry")
@@ -85,8 +79,6 @@ class NewProjectManager(QDialog):
 
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
-        # cancel.clicked.connect(self.close)
-        # choose.clicked.connect(self._start_wizard)
         self.list_projects.itemSelectionChanged.connect(
             self._project_selected)
         self.list_templates.itemSelectionChanged.connect(

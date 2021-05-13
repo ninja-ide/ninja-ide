@@ -19,28 +19,30 @@
 # Virtualenv bootstraping
 ###############################################################################
 
+from PyQt4.QtCore import QObject, SIGNAL, QThread
+from pip import main as pipmain
+from ninja_ide.resources import HOME_NINJA_PATH
 import os
 import sys
 
 from virtualenv import create_environment
 
-#This is here only for reference purposes
-#def create_environment(home_dir, site_packages=False, clear=False,
-#                       unzip_setuptools=False,
+# This is here only for reference purposes
+# def create_environment(home_dir, site_packages=False, clear=False,
 #                       prompt=None, search_dirs=None, never_download=False,
-#                       no_setuptools=False, no_pip=False, symlink=True):
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.encapsulated_env.nenvironement')
-#FIXME: Nothing is being printed, idk why
+# FIXME: Nothing is being printed, idk why
 DEBUG = logger.debug
 
 
 def debug(x):
     print(x)
+
+
 DEBUG = debug
 
-from ninja_ide.resources import HOME_NINJA_PATH
 NINJA_ENV_NAME = "venv"
 NINJA_ENV = os.path.join(HOME_NINJA_PATH, NINJA_ENV_NAME)
 NINJA_ENV_BIN = os.path.join(NINJA_ENV, "bin")
@@ -58,21 +60,17 @@ exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
      dict(__file__=NINJA_ENV_ACTIVATE))
 
 ###############################################################################
-from pip import main as pipmain
-#lint:disable
 try:
     from pip.backwardcompat import xmlrpclib
-except:
+except BaseException:
     if sys.version_info[0] >= 3:
         import xmlrpc
     else:
         import xmlrpclib
 try:
     from pip.util import get_installed_distributions
-except:
+except BaseException:
     from pip.utils import get_installed_distributions
-#lint:enable
-from PyQt4.QtCore import QObject, SIGNAL, QThread
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}
@@ -215,15 +213,15 @@ class PluginMetadata(QObject):
                    pypi=pypi)
 
     def __init__(self, name, summary, version, pypi, shallow=True, **kwargs):
-        #shallow attributes
+        # shallow attributes
         self.name = name
         self.summary = summary
         self.version = version
         self.pypi = pypi
 
-        #Set manually to bind in the ui after inflate
+        # Set manually to bind in the ui after inflate
         self.identifier = 0
-        #Inflated attributes (zeroed, declared here just for doc purposes)
+        # Inflated attributes (zeroed, declared here just for doc purposes)
         self.stable_version = ""
         self.author = ""  # used by store
         self.author_email = ""  # used by store
@@ -235,7 +233,7 @@ class PluginMetadata(QObject):
         self.keywords = ""  # used by store
         self.platform = ""
         self.download_url = ""  # used by store
-        #(list of classifier strings)
+        # (list of classifier strings)
         self.classifiers = []  # used by store
         self.requires = ""
         self.requires_dist = ""
@@ -246,10 +244,10 @@ class PluginMetadata(QObject):
         self.obsoletes = ""
         self.obsoletes_dist = ""
         self.project_url = ""
-        #(URL of the packages.python.org docs if they've been supplied)
+        # (URL of the packages.python.org docs if they've been supplied)
         self.docs_url = ""
 
-        #internal attributes
+        # internal attributes
         self.shallow = shallow
         super(PluginMetadata, self).__init__()
         if kwargs:
@@ -312,7 +310,7 @@ class BasePlugin(QObject):
         pass
 
 
-#This is how the directory structure should look
+# This is how the directory structure should look
 """
 ninja_ide/
     __init__.py

@@ -357,8 +357,6 @@ class FancyButton(QToolButton):
             selected_color = QColor("#090909")
             painter.fillRect(event.rect(), selected_color)
             painter.restore()
-        # fm = QFontMetrics(painter.font())
-        # rect = QRect(-3, 2, self.rect().width(), fm.height())
         rect = event.rect()
         icon_rect = QRect(0, 0, 22, 22)
         self.icon().paint(painter, icon_rect, Qt.AlignVCenter)
@@ -375,6 +373,7 @@ class FancyButton(QToolButton):
 ###############################################################################
 # Cool Tool Button
 ###############################################################################
+
 
 class CoolToolButton(QToolButton):
 
@@ -470,7 +469,7 @@ class CoolToolButton(QToolButton):
 class CheckableHeaderTable(QTableWidget):
     """ QTableWidget subclassed with QCheckBox on Header to select all items """
 
-    stateChanged=pyqtSignal(int, name="stateChanged")
+    stateChanged = pyqtSignal(int, name="stateChanged")
 
     def __init__(self, parent=None, *args):
         """ init CheckableHeaderTable and add custom widgets and connections """
@@ -501,7 +500,7 @@ def load_table(table, headers, data, checkFirstColumn=True):
                 item.setData(Qt.UserRole, row)
                 item.setCheckState(Qt.Unchecked)
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled |
-                    Qt.ItemIsUserCheckable)
+                              Qt.ItemIsUserCheckable)
             else:
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
@@ -512,7 +511,7 @@ def remove_get_selected_items(table, data):
     selected = []
     for i in range(rows):
         if table.item(pos - i, 0) is not None and \
-        table.item(pos - i, 0).checkState() == Qt.Checked:
+                table.item(pos - i, 0).checkState() == Qt.Checked:
             selected.append(data.pop(pos - i))
             table.removeRow(pos - i)
     return selected
@@ -522,10 +521,6 @@ class LoadingItem(QLabel):
 
     def __init__(self):
         super(LoadingItem, self).__init__()
-        #self.movie = QMovie(resources.IMAGES['loading'])
-        #self.setMovie(self.movie)
-        #self.movie.setScaledSize(QSize(16, 16))
-        #self.movie.start()
 
     def add_item_to_tree(self, folder, tree, item_type=None, parent=None):
         if item_type is None:
@@ -533,7 +528,7 @@ class LoadingItem(QLabel):
             item.setText(0, (self.tr('       LOADING: "%s"') % folder))
         else:
             item = item_type(parent,
-                (self.tr('       LOADING: "%s"') % folder), folder)
+                             (self.tr('       LOADING: "%s"') % folder), folder)
         tree.addTopLevelItem(item)
         tree.setItemWidget(item, 0, self)
         return item
@@ -545,7 +540,7 @@ class LoadingItem(QLabel):
 
 class ThreadExecution(QThread):
 
-    executionFinished = pyqtSignal(object,name="executionFinished")
+    executionFinished = pyqtSignal(object, name="executionFinished")
 
     def __init__(self, functionInit=None, args=None, kwargs=None):
         super(ThreadExecution, self).__init__()
@@ -599,7 +594,7 @@ class ThreadProjectExplore(QThread):
                 pass  # There is not much we can do at this point
 
         if folderStructure and (folderStructure.get(self._folder_path,
-                                                [None, None])[1] is not None):
+                                                    [None, None])[1] is not None):
             folderStructure[self._folder_path][1].sort()
             values = (self._folder_path, self._item, folderStructure)
             self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
@@ -608,7 +603,7 @@ class ThreadProjectExplore(QThread):
         try:
             project = json_manager.read_ninja_project(self._folder_path)
             extensions = project.get('supported-extensions',
-                settings.SUPPORTED_EXTENSIONS)
+                                     settings.SUPPORTED_EXTENSIONS)
             if extensions != settings.SUPPORTED_EXTENSIONS:
                 structure = file_manager.open_project_with_extensions(
                     self._folder_path, extensions)
@@ -616,10 +611,10 @@ class ThreadProjectExplore(QThread):
                 structure = file_manager.open_project(self._folder_path)
 
             self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                (self._folder_path, structure))
-        except:
+                      (self._folder_path, structure))
+        except BaseException:
             self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                (self._folder_path, None))
+                      (self._folder_path, None))
 
 
 ###############################################################################
@@ -772,7 +767,6 @@ class ComboBoxButton(object):
     def __init__(self, combo, operation, icon=None):
         hbox = QHBoxLayout(combo)
         hbox.setDirection(hbox.RightToLeft)
-        # hbox.setMargin(0)
         combo.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(combo)
@@ -824,7 +818,7 @@ class LineEditTabCompleter(QLineEdit):
         if (event.type() == QEvent.KeyPress) and (event.key() == Qt.Key_Tab):
             if self.completionType == QCompleter.InlineCompletion:
                 eventTab = QKeyEvent(QEvent.KeyPress,
-                    Qt.Key_End, Qt.NoModifier)
+                                     Qt.Key_End, Qt.NoModifier)
                 super(LineEditTabCompleter, self).event(eventTab)
             else:
                 completion = self.completer.currentCompletion()
@@ -846,11 +840,11 @@ class LineEditTabCompleter(QLineEdit):
             actionCompletion = QAction(
                 self.tr("Set completion type to: Inline Completion"), self)
         self.connect(actionCompletion, SIGNAL("triggered()"),
-            self.change_completion_type)
+                     self.change_completion_type)
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertAction(popup_menu.actions()[0], actionCompletion)
 
-        #show menu
+        # show menu
         popup_menu.exec_(event.globalPos())
 
     def change_completion_type(self):
@@ -1012,8 +1006,6 @@ def draw_icon(icon, rect, painter, icon_mode, shadow=False):
         blurred = QImage(tmp.size(), QImage.Format_ARGB32_Premultiplied)
         blur_painter = QPainter(blurred)
         blur_painter.end()
-
-        # tmp = blurred
 
         tmp_painter.begin(tmp)
         tmp_painter.setCompositionMode(QPainter.CompositionMode_SourceIn)

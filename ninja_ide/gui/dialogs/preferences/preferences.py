@@ -176,6 +176,7 @@ class Preferences(QDialog):
             config['subsections'] = subconfig
             Preferences.configuration[section] = config
 
+
 """
 from __future__ import absolute_import
 from __future__ import unicode_literals

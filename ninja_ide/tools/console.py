@@ -67,10 +67,7 @@ class Console(InteractiveConsole):
 
     def __init__(self):
         # InteractiveConsole.__init__(self,
-        #                            locals={
-        #                                'exit': ExitWrapper(),
         #                                'help': HelpWrapper()
-        #                            })
         super().__init__()
         self.stdout = sys.stdout
         self.stderr = sys.stderr

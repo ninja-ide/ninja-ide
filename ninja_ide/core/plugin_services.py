@@ -19,16 +19,12 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from PyQt4.QtCore import QObject
-#from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
-#from ninja_ide.gui.main_panel import main_container
-#from ninja_ide.gui import actions
-#from ninja_ide.gui.explorer import explorer_container
 
 
 ###############################################################################
@@ -50,22 +46,19 @@ class MainService(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        #self._main = main_container.MainContainer()
-        #self._action = actions.Actions()
-        #self._explorer = explorer_container.ExplorerContainer()
-        #Connect signals
-        #self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
-            #self._keyPressEvent)
-        #self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
-            #self._beforeFileSaved)
-        #self.connect(self._main, SIGNAL("fileSaved(QString)"),
-            #self._fileSaved)
-        #self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
-            #self._currentTabChanged)
-        #self.connect(self._action, SIGNAL("fileExecuted(QString)"),
-            #self._fileExecuted)
-        #self.connect(self._main, SIGNAL("fileOpened(QString)"),
-            #self._fileOpened)
+        # Connect signals
+        # self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
+        # self._keyPressEvent)
+        # self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
+        # self._beforeFileSaved)
+        # self.connect(self._main, SIGNAL("fileSaved(QString)"),
+        # self._fileSaved)
+        # self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
+        # self._currentTabChanged)
+        # self.connect(self._action, SIGNAL("fileExecuted(QString)"),
+        # self._fileExecuted)
+        # self.connect(self._main, SIGNAL("fileOpened(QString)"),
+        # self._fileOpened)
 
 ###############################################################################
 # Get main GUI Objects
@@ -93,21 +86,21 @@ class MainService(QObject):
         Returns the opened documents
         """
         documents_data = self._main.get_opened_documents()
-        #returns ONLY names!
+        # returns ONLY names!
         return [doc_data[0] for doc_list in documents_data
-                    for doc_data in doc_list]
+                for doc_data in doc_list]
 
     def get_project_owner(self, editorWidget=None):
         """
         Return the project where this file belongs, or an empty string.
         """
-        #if not editor try to get the current
+        # if not editor try to get the current
         if editorWidget is None:
             editorWidget = self._main.get_current_editor()
         belongs = ''
         if editorWidget is None:
             return belongs
-        #get the opened projects
+        # get the opened projects
         opened_projects_obj = self._explorer.get_opened_projects()
         for project in opened_projects_obj:
             if file_manager.belongs_to_folder(project.path, editorWidget.ID):
@@ -221,12 +214,12 @@ class MainService(QObject):
         self._main.open_files(self, files, mainTab=mainTab)
 
     def open_file(self, fileName='', cursorPosition=0,
-                    positionIsLineNumber=False):
+                  positionIsLineNumber=False):
         """
         Open a single file, if the file is already open it get focus
         """
         self._main.open_file(filename=fileName, cursorPosition=cursorPosition,
-                                positionIsLineNumber=positionIsLineNumber)
+                             positionIsLineNumber=positionIsLineNumber)
 
     def open_image(self, filename):
         """
@@ -284,6 +277,7 @@ class ToolbarService(QObject):
     """
     Interact with the Toolbar
     """
+
     def __init__(self, toolbar):
         QObject.__init__(self)
         self._toolbar = toolbar
@@ -301,6 +295,7 @@ class MenuAppService(QObject):
     """
     Interact with the Plugins Menu
     """
+
     def __init__(self, plugins_menu):
         QObject.__init__(self)
         self._plugins_menu = plugins_menu
@@ -318,47 +313,33 @@ class MenuAppService(QObject):
         self._plugins_menu.addAction(action)
 
 
-#class ProjectTypeService(QObject):
 #    """
 #    Interact with the New Project Wizard
 #    """
-#    def __init__(self):
-#        QObject.__init__(self)
 #
-#    def set_project_type_handler(self, project_type, project_type_handler):
 #        """
 #        Add a new Project Type and the handler for it
 #        example:
-#            foo_project_handler = FooProjectHandler(...)
-#            set_project_type_handler('Foo Project', foo_project_handler)
 #        Then 'Foo Project' will appear in the New Project wizard
 #            and foo_project_handler instance controls the wizard
 #
 #        Note: project_type_handler SHOULD have a special interface see
 #        ninja_ide.core.plugin_interfaces
 #        """
-#        settings.set_project_type_handler(project_type, project_type_handler)
 #
 #
-#class TreeSymbolsService(QObject):
 #    """
 #    Interact with the symbols tree
 #    """
-#    def __init__(self):
-#        QObject.__init__(self)
 #
-#    def set_symbols_handler(self, file_extension, symbols_handler):
 #        """
 #        Add a new Symbol's handler for the given file extension
 #        example:
-#            cpp_symbols_handler = CppSymbolHandler(...)
-#            set_symbols_handler('cpp', cpp_symbols_handler)
 #        Then all symbols in .cpp files will be handle by cpp_symbols_handler
 #
 #        Note: symbols_handler SHOULD have a special interface see
 #        ninja_ide.core.plugin_interfaces
 #        """
-#        settings.set_symbols_handler(file_extension, symbols_handler)
 
 
 class ExplorerService(QObject):
@@ -368,12 +349,10 @@ class ExplorerService(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        #self._explorer = explorer_container.ExplorerContainer()
-        #self._action = actions.Actions()
-        #self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
-            #self._projectOpened)
-        #self.connect(self._action, SIGNAL("projectExecuted(QString)"),
-            #self._projectExecuted)
+        # self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
+        # self._projectOpened)
+        # self.connect(self._action, SIGNAL("projectExecuted(QString)"),
+        # self._projectExecuted)
 
     def get_tree_projects(self):
         """
@@ -473,9 +452,9 @@ class ExplorerService(QObject):
         @scope: String with the menu scope (all, project, folder, file)
         """
         if scope is None:
-            #default behavior show ALL
+            # default behavior show ALL
             scope = plugin_util.ContextMenuScope(project=True, folder=True,
-                files=True)
+                                                 files=True)
         if self._explorer._treeProjects:
             self._explorer._treeProjects.add_extra_menu_by_scope(menu, scope)
 

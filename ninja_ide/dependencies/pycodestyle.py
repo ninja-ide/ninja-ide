@@ -124,7 +124,7 @@ HUNK_REGEX = re.compile(r'^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@.*$')
 STARTSWITH_DEF_REGEX = re.compile(r'^(async\s+def|def)')
 STARTSWITH_TOP_LEVEL_REGEX = re.compile(r'^(async\s+def\s+|def\s+|class\s+|@)')
 STARTSWITH_INDENT_STATEMENT_REGEX = re.compile(
-    r'^\s*({0})'.format('|'.join(s.replace(' ', '\s+') for s in (
+    r'^\s*({0})'.format('|'.join(s.replace(' ', '\\s+') for s in (
         'def', 'async def',
         'for', 'async for',
         'if', 'elif', 'else',
@@ -338,7 +338,6 @@ def extraneous_whitespace(logical_line):
         char = text.strip()
         found = match.start()
         if text == char + ' ':
-            # assert char in '([{'
             yield found + 1, "E201 whitespace after '%s'" % char
         elif line[found - 1] != ',':
             code = ('E202' if char in '}])' else 'E203')  # if char in ',;:'
@@ -1932,7 +1931,6 @@ class StandardReport(BaseReport):
             # write to same file.
             # flush() after print() to avoid buffer boundary.
             # Typical buffer size is 8192. line written safely when
-            # len(line) < 8192.
             sys.stdout.flush()
         return self.file_errors
 

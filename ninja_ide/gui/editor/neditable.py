@@ -69,7 +69,6 @@ class NEditable(QObject):
 
     def _on_file_removed_from_disk(self):
         # FIXME: maybe we should ask for save, save as...
-        # self._nfile.close()
         pass
 
     def extension(self):
@@ -110,7 +109,6 @@ class NEditable(QObject):
             self._nfile.start_watching()
             self.__editor.text = content
             self.__editor.document().setModified(False)
-            # self.create_swap_file()
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
             if not self.ignore_checkers:
@@ -193,8 +191,6 @@ class NEditable(QObject):
     def save_content(self, path=None, force=False):
         """Save the content of the UI to a file."""
 
-        # if self._swap_file is None:
-        #     self.create_swap_file()
         if self.__editor.is_modified or force:
             content = self.__editor.text
             nfile = self._nfile.save(content, path)

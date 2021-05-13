@@ -51,7 +51,6 @@ class FilesHandler(QWidget):
             "theme", resources.QML_COLORS)
         self.view.setResizeMode(QQuickWidget.SizeRootObjectToView)
         self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
-        # self.view.setClearColor(Qt.transparent)
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -165,7 +164,6 @@ class FilesHandler(QWidget):
 
         self._root.setMode(simple)
         super(FilesHandler, self).showEvent(event)
-        # self._root.show_animation()
         point = editor_widget.mapToGlobal(self.view.pos())
         self.move(point)
         # Trick
@@ -187,7 +185,6 @@ class FilesHandler(QWidget):
     def next_item(self):
         if not self.isVisible():
             self.show()
-        # self._root.next_item()
 
     def previous_item(self):
         if not self.isVisible():

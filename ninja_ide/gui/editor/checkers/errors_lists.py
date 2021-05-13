@@ -143,8 +143,6 @@ class ModelWarningsErrors(QAbstractItemModel):
                 return '<No Symbols>'
             return
 
-        # return self.__data[index.row() - 1]
-
         if role == Qt.DisplayRole:
             return self.__data[index.row() - 1][1][0]
         elif role == Qt.DecorationRole:

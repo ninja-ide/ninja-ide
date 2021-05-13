@@ -58,8 +58,7 @@ class MarkerWidget(side_area.SideWidget):
                 "bookmarks", b.lineno, "#8080ff")
 
     def _show_menu(self, line, menu):
-        set_breakpoint_action = menu.addAction(
-            "Set Breakpoint at: {}".format(line + 1))
+        #     "Set Breakpoint at: {}".format(line + 1))
         toggle_bookmark_action = menu.addAction("Toggle Bookmark")
         toggle_bookmark_action.triggered.connect(
             lambda: self._toggle_bookmark(line))
@@ -109,9 +108,6 @@ class MarkerWidget(side_area.SideWidget):
         size = QSize(font_metrics.height(), font_metrics.height())
         return size
 
-    # def enterEvent(self, event):
-    #     self.setCursor(Qt.PointingHandCursor)
-
     def mouseMoveEvent(self, event):
         cursor = self._neditor.cursorForPosition(event.pos())
         line = cursor.blockNumber()
@@ -119,26 +115,13 @@ class MarkerWidget(side_area.SideWidget):
         for book in bookmarks:
             if book.lineno == line and book.note:
                 QToolTip.showText(self.mapToGlobal(event.pos()), book.note)
-    #     if event.button() == Qt.LeftButton:
     #         # Get line number from position
-    #         y_pos = event.pos().y()
-    #         line = self._neditor.line_from_position(y_pos)
-    #         if line not in self.__bookmarks:
     #             # Add marker
-    #             self.__bookmarks.append(line)
-    #         else:
     #             # Remove marker
-    #             self.__bookmarks.remove(line)
-    #         self.repaint()
 
     def leaveEvent(self, event):
         self.__line_hovered = -1
         self.repaint()
-
-    # def mouseMoveEvent(self, event):
-    #     line = self._neditor.line_from_position(event.pos().y())
-    #     self.__line_hovered = line
-    #     self.repaint()
 
     def paintEvent(self, event):
         super().paintEvent(event)

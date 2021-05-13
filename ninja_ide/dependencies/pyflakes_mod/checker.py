@@ -4,6 +4,7 @@ Main module.
 Implement the central Checker class.
 Also, it models the Bindings and Scopes.
 """
+from ninja_ide.dependencies.pyflakes_mod import messages
 import __future__
 import doctest
 import os
@@ -30,8 +31,6 @@ except ImportError:     # Python 2.5
         # Patch the missing attribute 'decorator_list'
         ast.ClassDef.decorator_list = ()
         ast.FunctionDef.decorator_list = property(lambda s: s.decorators)
-
-from ninja_ide.dependencies.pyflakes_mod import messages
 
 
 if PY2:
@@ -183,6 +182,7 @@ class VariableKey(object):
 
     @ivar item: The variable AST object.
     """
+
     def __init__(self, item):
         self.name = item.id
 
@@ -656,7 +656,6 @@ class Checker(object):
         - `node` is the statement responsible for the change
         - `value` is the new value, a Binding instance
         """
-        # assert value.source in (node, node.parent):
         for scope in self.scopeStack[::-1]:
             if value.name in scope:
                 break

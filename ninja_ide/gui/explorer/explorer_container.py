@@ -248,8 +248,6 @@ class ExplorerContainer(dynamic_splitter.DynamicSplitter):
 
     def save_configuration(self):
 
-        # ninja_settings = IDE.ninja_settings()
-        # ninja_settings.setValue("explorer/tabs", self.__splitted_tabs)
         pass
 
 

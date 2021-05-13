@@ -141,7 +141,7 @@ class WorkerUpdates(QObject):
             ninja_version = urlopen(
                 resources.UPDATES_URL).read().decode('utf8')
             ide = json_manager.parse(ninja_version)
-        except:
+        except BaseException:
             ide = {}
             logger.info('no connection available')
         # Emit a singal with info

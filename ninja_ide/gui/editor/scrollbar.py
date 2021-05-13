@@ -62,11 +62,8 @@ class ScrollBarOverlay(QWidget):
         rect = self._nscrollbar.overlay_rect()
         sb_range = self._nscrollbar.get_scrollbar_range()
         sb_range = max(self.visible_range, sb_range)
-        # horizontal_margin = 3
-        # result_width = rect.width() - 2 * horizontal_margin + 1
         result_width = rect.width() / 3
         result_height = min(rect.height() / sb_range + 1, 4)
-        # x = rect.left() + horizontal_margin
         x = rect.center().x() - 1
         offset = rect.height() / sb_range * self.range_offset
         vertical_margin = ((rect.height() / sb_range) - result_height) / 2
@@ -77,7 +74,6 @@ class ScrollBarOverlay(QWidget):
             marker = self.cache[lineno]
             top = rect.top() + offset + vertical_margin + \
                 marker.position / sb_range * rect.height()
-            # bottom = top + result_height
             painter.fillRect(
                 x,
                 top,
@@ -159,7 +155,6 @@ class NScrollBar(QScrollBar):
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
-        # tooltip_position = event.globalPos() - QPoint(event.pos().x(), 0)
         from_line = self._neditor.first_visible_block().blockNumber() + 1
         to_line = self._neditor.last_visible_block().blockNumber()
         text = "<center>%d<br/>&#x2014;<br/>%d</center>"

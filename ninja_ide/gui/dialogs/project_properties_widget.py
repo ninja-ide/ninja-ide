@@ -387,16 +387,13 @@ class ProjectExecution(QWidget):
         self.txtVenvPath.setCompleter(self._dir_completer)
         self.txtVenvPath.setPlaceholderText(
             os.path.join(os.path.expanduser("~"), 'path', 'to', 'virtualenv'))
-        # self.btnVenvPath = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(translations.TR_PROJECT_VIRTUALENV), 9, 0)
         grid.addWidget(self.txtVenvPath, 9, 1)
-        # grid.addWidget(self.btnVenvPath, 9, 2)
 
         choose_main_file_action.triggered.connect(self.select_file)
         choose_interpreter.triggered.connect(self._load_python_path)
         choose_pre_exec.triggered.connect(self.select_pre_exec_script)
         choose_post_exec.triggered.connect(self.select_post_exec_script)
-        # self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
         # self.connect(self.btnPythonPath, SIGNAL("clicked()"),
         #             self._load_python_path)
         # self.connect(self.btnVenvPath, SIGNAL("clicked()"),

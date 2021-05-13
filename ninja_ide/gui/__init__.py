@@ -36,7 +36,6 @@ from ninja_ide.core.template_registry import bundled_project_types  # noqa
 ###########################################################################
 # Start Virtual Env that supports encapsulation of plugins
 ###########################################################################
-# from ninja_ide.core.encapsulated_env import nenvironment
 
 # Syntax
 from ninja_ide.gui.syntax_registry import syntax_registry  # noqa
@@ -76,22 +75,12 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     data_qsettings = ide.IDE.data_settings()
     # FIXME: handle this
     # Translator
-    # language = QLocale.system().name()
     # lang = qsettings.value('preferences/interface/language',
     #                       defaultValue=language, type='QString') + '.qm'
-    # lang_path = file_manager.create_path(resources.LANGS, lang)
-    # if file_manager.file_exists(lang_path):
-    #    settings.LANGUAGE = lang_path
-    # translator = QTranslator()
-    # if settings.LANGUAGE:
-    #    translator.load(settings.LANGUAGE)
-    #    app.installTranslator(translator)
 
-    #    qtTranslator = QTranslator()
     #    qtTranslator.load(
     #        "qt_" + language,
     #        QLibraryInfo.location(QLibraryInfo.TranslationsPath))
-    #    app.installTranslator(qtTranslator)
 
     # Loading Syntax
     _add_splash("Loading Syntax..")
@@ -122,16 +111,13 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     from ninja_ide.gui.explorer.tabs import tree_projects_widget  # noqa
     from ninja_ide.gui.explorer.tabs import tree_symbols_widget  # noqa
     from ninja_ide.gui.explorer.tabs import bookmark_manager  # noqa
-    # from ninja_ide.gui.explorer.tabs import web_inspector
     # Checkers
     from ninja_ide.gui.editor.checkers import errors_checker  # noqa
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
     # from ninja_ide.gui.editor.checkers import not_import_checker  # noqa
-    # from ninja_ide.gui.editor.checkers import migration_2to3
     # Preferences
     # from ninja_ide.gui.dialogs.preferences import preferences_general  # noqa
     # from ninja_ide.gui.dialogs.preferences import preferences_execution  # noqa
-    # # from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
     # from ninja_ide.gui.dialogs.preferences import preferences_interface  # noqa
     # from ninja_ide.gui.dialogs.preferences import preferences_editor_general  # noqa
     # from ninja_ide.gui.dialogs.preferences import preferences_editor_display  # noqa
@@ -139,15 +125,11 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     # from ninja_ide.gui.dialogs.preferences import preferences_editor_intellisense  # noqa
     from ninja_ide.intellisensei import intellisense_registry  # noqa
     from ninja_ide.intellisensei import python_intellisense  # noqa
-    # from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
-    # from ninja_ide.gui.dialogs.preferences import preferences_plugins
-    # from ninja_ide.gui.dialogs.preferences import preferences_theme
     from ninja_ide.gui.editor.checkers import errors_lists  # noqa
     from ninja_ide.gui.editor.checkers import errors_checker  # noqa
     from ninja_ide.gui.editor.checkers import pep8_checker  # noqa
 
     # Loading Shortcuts
-    # resources.load_shortcuts()
     # Loading GUI
     _add_splash("Loading GUI...")
     ninjaide = ide.IDE(start_server)
@@ -182,11 +164,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     except Exception:
         pass  # I really dont mind if this fails in any form
     # Load external plugins
-    # if extra_plugins:
-    #     ninjaide.load_external_plugins(extra_plugins)
     splash.finish(ninjaide)
-    # ninjaide.notify_plugin_errors()
-    # ninjaide.show_python_detection()
 
 
 def load_fonts():

@@ -32,9 +32,9 @@ from ninja_ide.core import settings
 logger = NinjaLogger(__name__)
 
 if settings.IS_WINDOWS:
-    _PYREGEX = re.compile("/^python(\d+(.\d+)?)?\.exe$/")
+    _PYREGEX = re.compile("/^python(\\d+(.\\d+)?)?\\.exe$/")
 else:
-    _PYREGEX = re.compile("^python(\d+(.\d+)?)?$")
+    _PYREGEX = re.compile("^python(\\d+(.\\d+)?)?$")
 
 # TODO: esto debería ser configurable
 _VENV_PATHS = [".virtualenvs"]

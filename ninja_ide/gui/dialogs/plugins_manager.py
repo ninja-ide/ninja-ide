@@ -83,7 +83,7 @@ def _get_plugin(plugin_name, plugin_list):
 def _format_for_table(plugins):
     """Take a list of plugins and format it for the table on the UI"""
     return [[data["name"], data["version"], data["description"],
-        data["authors"], data["home"]] for data in plugins]
+             data["authors"], data["home"]] for data in plugins]
 
 
 class PluginsManagerWidget(QDialog):
@@ -122,16 +122,16 @@ class PluginsManagerWidget(QDialog):
         self.connect(btnReload, SIGNAL("clicked()"), self._reload_plugins)
         self.thread = ThreadLoadPlugins(self)
         self.connect(self.thread, SIGNAL("finished()"),
-            self._load_plugins_data)
+                     self._load_plugins_data)
         self.connect(self.thread, SIGNAL("plugin_downloaded(PyQt_PyObject)"),
-            self._after_download_plugin)
+                     self._after_download_plugin)
         self.connect(self.thread,
-            SIGNAL("plugin_manually_installed(PyQt_PyObject)"),
-            self._after_manual_install_plugin)
+                     SIGNAL("plugin_manually_installed(PyQt_PyObject)"),
+                     self._after_manual_install_plugin)
         self.connect(self.thread, SIGNAL("plugin_uninstalled(PyQt_PyObject)"),
-            self._after_uninstall_plugin)
+                     self._after_uninstall_plugin)
         self.connect(self._txt_data, SIGNAL("anchorClicked(const QUrl&)"),
-            self._open_link)
+                     self._open_link)
         self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self.overlay.show()
         self._reload_plugins()
@@ -140,8 +140,8 @@ class PluginsManagerWidget(QDialog):
         """Takes data argument, format for HTML and display it"""
         plugin_description = data[2].replace('\n', '<br>')
         html = HTML_STYLE.format(name=data[0],
-            version=data[1], description=plugin_description,
-            author=data[3], link=data[4])
+                                 version=data[1], description=plugin_description,
+                                 author=data[3], link=data[4])
         self._txt_data.setHtml(html)
 
     def _open_link(self, url):
@@ -196,19 +196,19 @@ class PluginsManagerWidget(QDialog):
             self._tabs.clear()
             self._updatesWidget = UpdatesWidget(self, copy(self._updates))
             self._availableOficialWidget = AvailableWidget(self,
-                copy(self._oficial_available))
+                                                           copy(self._oficial_available))
             self._availableCommunityWidget = AvailableWidget(self,
-                copy(self._community_available))
+                                                             copy(self._community_available))
             self._installedWidget = InstalledWidget(self, copy(self._locals))
             self._tabs.addTab(self._availableOficialWidget,
-                translations.TR_OFFICIAL_AVAILABLE)
+                              translations.TR_OFFICIAL_AVAILABLE)
             self._tabs.addTab(self._availableCommunityWidget,
-                translations.TR_COMMUNITY_AVAILABLE)
+                              translations.TR_COMMUNITY_AVAILABLE)
             self._tabs.addTab(self._updatesWidget, translations.TR_UPDATE)
             self._tabs.addTab(self._installedWidget, translations.TR_INSTALLED)
             self._manualWidget = ManualInstallWidget(self)
             self._tabs.addTab(self._manualWidget,
-                translations.TR_MANUAL_INSTALL)
+                              translations.TR_MANUAL_INSTALL)
             self._loading = False
         self.overlay.hide()
         self.thread.wait()
@@ -219,7 +219,7 @@ class PluginsManagerWidget(QDialog):
         """
         self.overlay.show()
         self.thread.plug = plugs
-        #set the function to run in the thread
+        # set the function to run in the thread
         self.thread.runnable = self.thread.download_plugins_thread
         self.thread.start()
 
@@ -227,7 +227,7 @@ class PluginsManagerWidget(QDialog):
         """Install plugin from local zip."""
         self.overlay.show()
         self.thread.plug = plug
-        #set the function to run in the thread
+        # set the function to run in the thread
         self.thread.runnable = self.thread.manual_install_plugins_thread
         self.thread.start()
 
@@ -237,7 +237,7 @@ class PluginsManagerWidget(QDialog):
         """
         self.overlay.show()
         self.thread.plug = plugs
-        #set the function to run in the thread
+        # set the function to run in the thread
         self.thread.runnable = self.thread.uninstall_plugins_thread
         self.thread.start()
 
@@ -247,7 +247,7 @@ class PluginsManagerWidget(QDialog):
         """
         self.overlay.show()
         self.thread.plug = plugs
-        #set the function to run in the thread
+        # set the function to run in the thread
         self.thread.runnable = self.thread.update_plugin_thread
         self.thread.start()
 
@@ -281,15 +281,15 @@ class UpdatesWidget(QWidget):
         self._table.setAlternatingRowColors(True)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,
-            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
-            _format_for_table(updates))
+                            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
+                            _format_for_table(updates))
         btnUpdate = QPushButton(translations.TR_UPDATE)
         btnUpdate.setMaximumWidth(100)
         vbox.addWidget(btnUpdate)
 
         self.connect(btnUpdate, SIGNAL("clicked()"), self._update_plugins)
         self.connect(self._table, SIGNAL("itemSelectionChanged()"),
-            self._show_item_description)
+                     self._show_item_description)
 
     def _show_item_description(self):
         """Get current item if any and show plugin information"""
@@ -302,14 +302,14 @@ class UpdatesWidget(QWidget):
         """Iterate over the plugins list and update each one"""
         data = _format_for_table(self._updates)
         plugins = ui_tools.remove_get_selected_items(self._table, data)
-        #get the download link of each plugin
+        # get the download link of each plugin
         for p_row in plugins:
-            #search the plugin
+            # search the plugin
             for p_dict in self._updates:
                 if p_dict["name"] == p_row[0]:
                     p_data = p_dict
                     break
-            #append the downlod link
+            # append the downlod link
             p_row.append(p_data["download"])
         self._parent.update_plugin(plugins)
 
@@ -327,8 +327,8 @@ class AvailableWidget(QWidget):
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,
-            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
-            _format_for_table(available))
+                            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
+                            _format_for_table(available))
         self._table.setColumnWidth(0, 500)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
@@ -341,7 +341,7 @@ class AvailableWidget(QWidget):
 
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
         self.connect(self._table, SIGNAL("itemSelectionChanged()"),
-            self._show_item_description)
+                     self._show_item_description)
 
     def _show_item_description(self):
         """Get current item if any and show plugin information"""
@@ -354,16 +354,16 @@ class AvailableWidget(QWidget):
         """Iterate over the plugins list and download each one"""
         data = _format_for_table(self._available)
         plugins = ui_tools.remove_get_selected_items(self._table, data)
-        #get the download link of each plugin
+        # get the download link of each plugin
         for p_row in plugins:
-            #search the plugin
+            # search the plugin
             for p_dict in self._available:
                 if p_dict["name"] == p_row[0]:
                     p_data = p_dict
                     break
-            #append the downlod link
+            # append the downlod link
             p_row.append(p_data["download"])
-        #download
+        # download
         self._parent.download_plugins(plugins)
 
     def remove_item(self, plugin_name):
@@ -375,7 +375,7 @@ class AvailableWidget(QWidget):
         """Install external plugins"""
         if self._link.text().isEmpty():
             QMessageBox.information(self, translations.TR_EXTERNAL_PLUGIN,
-                translations.TR_URL_IS_MISSING + "...")
+                                    translations.TR_URL_IS_MISSING + "...")
             return
         plug = [
             file_manager.get_module_name(str(self._link.text())),
@@ -390,7 +390,7 @@ class AvailableWidget(QWidget):
         self._available += plugs
         data = _format_for_table(self._available)
         ui_tools.load_table(self._table,
-            (translations.TR_PROJECT_NAME, translations.TR_VERSION), data)
+                            (translations.TR_PROJECT_NAME, translations.TR_VERSION), data)
 
 
 class InstalledWidget(QWidget):
@@ -408,8 +408,8 @@ class InstalledWidget(QWidget):
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,
-            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
-            _format_for_table(installed))
+                            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
+                            _format_for_table(installed))
         self._table.setColumnWidth(0, 500)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
@@ -418,9 +418,9 @@ class InstalledWidget(QWidget):
         vbox.addWidget(btnUninstall)
 
         self.connect(btnUninstall, SIGNAL("clicked()"),
-            self._uninstall_plugins)
+                     self._uninstall_plugins)
         self.connect(self._table, SIGNAL("itemSelectionChanged()"),
-            self._show_item_description)
+                     self._show_item_description)
 
     def _show_item_description(self):
         """Get current item if any and show plugin information"""
@@ -439,7 +439,7 @@ class InstalledWidget(QWidget):
         self._installed += plugs
         data = _format_for_table(self._installed)
         ui_tools.load_table(self._table,
-            (translations.TR_PROJECT_NAME, translations.TR_VERSION), data)
+                            (translations.TR_PROJECT_NAME, translations.TR_VERSION), data)
 
     def _uninstall_plugins(self):
         """Take a plugin name as argument and uninstall it"""
@@ -453,8 +453,8 @@ class InstalledWidget(QWidget):
         while self._table.rowCount() > 0:
             self._table.removeRow(0)
         ui_tools.load_table(self._table,
-            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
-            self._installed)
+                            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
+                            self._installed)
 
 
 class ManualInstallWidget(QWidget):
@@ -486,7 +486,7 @@ class ManualInstallWidget(QWidget):
         hPath.addWidget(self._btnFilePath)
         vbox.addLayout(hPath)
         vbox.addSpacerItem(QSpacerItem(0, 1, QSizePolicy.Expanding,
-            QSizePolicy.Expanding))
+                                       QSizePolicy.Expanding))
 
         hbox = QHBoxLayout()
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
@@ -494,11 +494,11 @@ class ManualInstallWidget(QWidget):
         hbox.addWidget(self._btnInstall)
         vbox.addLayout(hbox)
 
-        #Signals
+        # Signals
         self.connect(self._btnFilePath,
-            SIGNAL("clicked()"), self._load_plugin_path)
+                     SIGNAL("clicked()"), self._load_plugin_path)
         self.connect(self._btnInstall, SIGNAL("clicked()"),
-            self.install_plugin)
+                     self.install_plugin)
 
     def _load_plugin_path(self):
         """Ask the user a plugin filename"""
@@ -528,9 +528,9 @@ class ThreadLoadPlugins(QThread):
     def __init__(self, manager):
         super(ThreadLoadPlugins, self).__init__()
         self._manager = manager
-        #runnable hold a function to call!
+        # runnable hold a function to call!
         self.runnable = self.collect_data_thread
-        #this attribute contains the plugins to download/update
+        # this attribute contains the plugins to download/update
         self.plug = None
 
     def run(self):
@@ -542,37 +542,37 @@ class ThreadLoadPlugins(QThread):
         """
         Collects plugins info from NINJA-IDE webservice interface
         """
-        #get availables OFICIAL plugins
+        # get availables OFICIAL plugins
         oficial_available = plugin_manager.available_oficial_plugins()
-        #get availables COMMUNITIES plugins
+        # get availables COMMUNITIES plugins
         community_available = plugin_manager.available_community_plugins()
-        #get locals plugins
+        # get locals plugins
         local_plugins = plugin_manager.local_plugins()
         updates = []
-        #Check por update the already installed plugin
+        # Check por update the already installed plugin
         for local_data in local_plugins:
             ava = None
             plug_oficial = _get_plugin(local_data["name"], oficial_available)
             plug_community = _get_plugin(local_data["name"],
-                community_available)
+                                         community_available)
             if plug_oficial:
                 ava = plug_oficial
                 oficial_available = [p for p in oficial_available
-                        if p["name"] != local_data["name"]]
+                                     if p["name"] != local_data["name"]]
             elif plug_community:
                 ava = plug_community
                 community_available = [p for p in community_available
-                        if p["name"] != local_data["name"]]
-            #check versions
+                                       if p["name"] != local_data["name"]]
+            # check versions
             if ava:
                 available_version = version.LooseVersion(str(ava["version"]))
             else:
                 available_version = version.LooseVersion('0.0')
             local_version = version.LooseVersion(str(local_data["version"]))
             if available_version > local_version:
-                #this plugin has an update
+                # this plugin has an update
                 updates.append(ava)
-        #set manager attributes
+        # set manager attributes
         self._manager._oficial_available = oficial_available
         self._manager._community_available = community_available
         self._manager._locals = local_plugins
@@ -653,7 +653,7 @@ class DependenciesHelpDialog(QDialog):
         btnAccept.setMaximumWidth(100)
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
-        #signals
+        # signals
         self.connect(btnAccept, SIGNAL("clicked()"), self.close)
 
         command_tmpl = "<%s>:\n%s\n"

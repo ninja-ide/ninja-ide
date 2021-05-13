@@ -81,10 +81,11 @@ class BaseNinjaLexer(object):
                 parent_lexer = each_parent
                 break
 
-        #FIXME This reverses colors while we find a way to do themes.
+        # FIXME This reverses colors while we find a way to do themes.
         c = parent_lexer.defaultColor(self, style).name()
         logger.debug(c)
-        reverse_color = "#" + "".join((hex(255 - int(x, 16)))[2:].zfill(2) for x in (c[1:3], c[3:5], c[5:7]))
+        reverse_color = "#" + "".join((hex(255 - int(x, 16)))
+                                      [2:].zfill(2) for x in (c[1:3], c[3:5], c[5:7]))
         return QColor(reverse_color)
 
     def defaultFont(self, style):
@@ -119,12 +120,14 @@ class PythonLexer(BaseNinjaLexer, QsciLexerPython):
 
 try:
     from PyQt4.Qsci import QsciLexerAVS
+
     class AVSLexer(BaseNinjaLexer, QsciLexerAVS):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
             super(AVSLexer, self).__init__(*args, **kwargs)
 except ImportError:
     AVSLexer = None
+
 
 class BashLexer (BaseNinjaLexer, QsciLexerBash):
     def __init__(self, *args, **kwargs):
@@ -161,14 +164,17 @@ class CSharpLexer (BaseNinjaLexer, QsciLexerCSharp):
         self._settings_colored = None
         super(CSharpLexer, self).__init__(*args, **kwargs)
 
+
 try:
     from PyQt4.Qsci import QsciLexerCoffeeScript
+
     class CoffeeScriptLexer (BaseNinjaLexer, QsciLexerCoffeeScript):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
             super(CoffeeScriptLexer, self).__init__(*args, **kwargs)
 except ImportError:
     CoffeeScriptLexer = None
+
 
 class DLexer (BaseNinjaLexer, QsciLexerD):
     def __init__(self, *args, **kwargs):
@@ -244,12 +250,14 @@ class OctaveLexer (BaseNinjaLexer, QsciLexerOctave):
 
 try:
     from PyQt4.Qsci import QsciLexerPO
+
     class POLexer (BaseNinjaLexer, QsciLexerPO):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
             super(POLexer, self).__init__(*args, **kwargs)
 except ImportError:
     POLexer = None
+
 
 class POVLexer (BaseNinjaLexer, QsciLexerPOV):
     def __init__(self, *args, **kwargs):

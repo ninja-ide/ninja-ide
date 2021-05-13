@@ -31,9 +31,9 @@ from ninja_ide.core.file_handling import file_manager
 
 class BrowserWidget(QWidget):
 
-###############################################################################
-# RecentProjectItem SIGNALS
-###############################################################################
+    ###############################################################################
+    # RecentProjectItem SIGNALS
+    ###############################################################################
     """
     openProject(QString)
     openPreferences()
@@ -45,7 +45,7 @@ class BrowserWidget(QWidget):
         QWidget.__init__(self, parent)
         self._process = process
         vbox = QVBoxLayout(self)
-        #Web Frame
+        # Web Frame
         self.webFrame = QWebView(self)
         self.webFrame.setAcceptDrops(False)
 

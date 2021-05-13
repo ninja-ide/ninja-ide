@@ -198,7 +198,7 @@ if __name__ == "__main__":
         if os.path.dirname(f) == '':
             c = Checker(os.path.join(
                 os.getcwd(), f)
-                        )
+            )
             checker_list[f] = c.get_not_imports_on_file(c.get_imports())
         else:
             c = Checker(f)

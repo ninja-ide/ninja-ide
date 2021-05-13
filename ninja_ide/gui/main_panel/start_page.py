@@ -68,12 +68,6 @@ class StartPage(QWidget):
         return shortcuts
 
     def load_items(self):
-        # dsettings = IDE.data_settings()
-        # recent_projects_dict = dict(dsettings.value('recentProjects', {}))
-        # for prj, values in recent_projects_dict.items():
-        #    prj_name = values["name"]
-        #    last_open = values["lastopen"]
-        #    self.root.addProject(prj_name, prj, last_open)
         self.root.forceActiveFocus()
         """
         # Connections
@@ -141,7 +135,6 @@ class StartPage(QWidget):
     """
 
     def __open_drop_files(self, files: str):
-
         """Open dragged files to Start Page"""
         files = files.split(',')  # FIXME: it's ok?
         main_container = IDE.get_service("main_container")

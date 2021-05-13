@@ -54,13 +54,13 @@ class ClassDiagram(QWidget, itab_item.ITabItem):
         actualProject = self.actions.ide.explorer.get_actual_project()
         arrClasses = self.actions._locator.get_classes_from_project(
             actualProject)
-        #FIXME:dirty need to fix
+        # FIXME:dirty need to fix
         self.mX = -400
         self.mY = -320
         self.hightestY = self.mY
         filesList = []
         for elem in arrClasses:
-            #loking for paths
+            # loking for paths
             filesList.append(elem[2])
         for path in set(filesList):
             self.create_class(path)
@@ -90,17 +90,17 @@ class ClassDiagram(QWidget, itab_item.ITabItem):
         classComponent.set_attributes_list(attr)
 
     def scale_view(self, scaleFactor):
-            factor = self.graphicView.transform().scale(
-                scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width()
+        factor = self.graphicView.transform().scale(
+            scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width()
 
-            if factor > 0.05 and factor < 15:
-                self.graphicView.scale(scaleFactor, scaleFactor)
+        if factor > 0.05 and factor < 15:
+            self.graphicView.scale(scaleFactor, scaleFactor)
 
     def keyPressEvent(self, event):
 
         taskList = {
-                  Qt.Key_Plus: lambda: self.scaleView(1.2),
-                  Qt.Key_Minus: lambda: self.scaleView(1 / 1.2)}
+            Qt.Key_Plus: lambda: self.scaleView(1.2),
+            Qt.Key_Minus: lambda: self.scaleView(1 / 1.2)}
         if(event.key() in taskList):
             taskList[event.key()]()
         else:

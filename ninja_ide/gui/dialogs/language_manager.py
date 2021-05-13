@@ -16,14 +16,12 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-#lint:disable
 try:
     from urllib.request import urlopen
     from urllib.error import URLError
 except ImportError:
     from urllib2 import urlopen
     from urllib2 import URLError
-#lint:enable
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QVBoxLayout
@@ -67,7 +65,7 @@ class LanguagesManagerWidget(QDialog):
         self._loading = True
         self.downloadItems = []
 
-        #Load Themes with Thread
+        # Load Themes with Thread
         btnReload.clicked.connect(self._reload_languages)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
         self._thread.finished.connect(self.load_languages_data)
@@ -85,7 +83,7 @@ class LanguagesManagerWidget(QDialog):
             self._tabs.clear()
             self._languageWidget = LanguageWidget(self, self._languages)
             self._tabs.addTab(self._languageWidget,
-                self.tr("Languages"))
+                              self.tr("Languages"))
             self._loading = False
         self.overlay.hide()
         self._thread.wait()
@@ -107,7 +105,7 @@ class LanguagesManagerWidget(QDialog):
             languages = [[name, languages[name]] for name in languages]
             local_languages = self.get_local_languages()
             languages = [languages[i] for i in range(len(languages)) if
-                os.path.basename(languages[i][1]) not in local_languages]
+                         os.path.basename(languages[i][1]) not in local_languages]
             self._languages = languages
         except URLError:
             self._languages = []
@@ -145,7 +143,7 @@ class LanguageWidget(QWidget):
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,
-            [self.tr('Language'), self.tr('URL')], self._languages)
+                            [self.tr('Language'), self.tr('URL')], self._languages)
         btnUninstall = QPushButton(self.tr('Download'))
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
@@ -156,5 +154,5 @@ class LanguageWidget(QWidget):
 
     def _download_language(self):
         languages = ui_tools.remove_get_selected_items(self._table,
-            self._languages)
+                                                       self._languages)
         self._parent.download_language(languages)

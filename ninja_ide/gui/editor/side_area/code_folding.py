@@ -92,7 +92,7 @@ class CharBaseFolding(BaseCodeFolding):
 
 class PythonCodeFolding(IndentationFolding):
     pattern = re.compile(
-        "\s*(def|class|with|if|else|elif|for|while|async).*:")
+        "\\s*(def|class|with|if|else|elif|for|while|async).*:")
 
     def is_foldable(self, text_or_block):
         if isinstance(text_or_block, QTextBlock):

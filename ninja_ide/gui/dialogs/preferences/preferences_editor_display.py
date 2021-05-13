@@ -187,16 +187,11 @@ class EditorDisplay(QWidget):
         qsettings.endGroup()
         qsettings.endGroup()
 
-        # editor = main_container.get_current_editor()
-        # if editor is not None:
-            # FIXME: improve
-        #    editor.show_whitespaces = settings.SHOW_TABS_AND_SPACES
+        # FIXME: improve
         #    editor.set_current_line_highlighter(
         #        settings.HIGHLIGHT_CURRENT_LINE)
         #    editor.set_current_line_highlighter_mode(
         #        settings.HIGHLIGHT_CURRENT_LINE_MODE)
-        #    editor.set_brace_matching(settings.BRACE_MATCHING)
-        #    editor.show_line_numbers(settings.SHOW_LINE_NUMBERS)
 
 
 preferences.Preferences.register_configuration(

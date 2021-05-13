@@ -36,12 +36,12 @@ def filter_data_type(data_types):
     values = [occurrences[key][0] for key in occurrences]
     maximum = max(values)
     data_type = [occurrences[key][1] for key in occurrences
-                if occurrences[key][0] == maximum]
+                 if occurrences[key][0] == maximum]
     return data_type[0]
 
 
 def remove_function_arguments(line):
-    #TODO: improve line analysis using tokenizer to get the lines of the text
+    # TODO: improve line analysis using tokenizer to get the lines of the text
     while line.find('(') != -1:
         start = line.find('(')
         end = line.find(')') + 1
@@ -57,15 +57,10 @@ class TypeData(object):
         self.lineno = lineno
         self.data_type = data_type
         self.line_content = line_content
-        #if data_type != late_resolution:
-            #oper = None
-        #self.operation = oper
-        #self.from_import = False
         if isinstance(data_type, str):
             self.is_native = True
         else:
             self.is_native = False
-        #self.can_resolve = True
 
     def get_data_type(self):
         return self.data_type
@@ -89,7 +84,6 @@ class Structure(object):
         self.functions[function.name] = function
 
     def add_attributes(self, attributes):
-        #attributes = {name: [(lineno, type),...]}
         for attribute in attributes:
             if attribute[0] in self.attributes:
                 assign = self.attributes[attribute[0]]
@@ -195,9 +189,11 @@ class Module(Structure):
         canonical_attrs = remove_function_arguments(child_attrs)
         if not scope:
             value = self.imports.get(main_attr,
-                self.attributes.get(main_attr,
-                self.functions.get(main_attr,
-                self.classes.get(main_attr, None))))
+                                     self.attributes.get(
+                                         main_attr,
+                                         self.functions.get(
+                                             main_attr,
+                                             self.classes.get(main_attr, None))))
             if value is not None and value.__class__ is not Clazz:
                 data_type = value.get_data_type()
                 result['found'], result['type'] = True, data_type
@@ -217,7 +213,7 @@ class Module(Structure):
         elif scope:
             scope_name = scope[0]
             structure = self.classes.get(scope_name,
-                self.functions.get(scope_name, None))
+                                         self.functions.get(scope_name, None))
             if structure is not None:
                 attrs = [main_attr] + canonical_attrs.split('.')
                 if len(attrs) > 1 and attrs[1] == '':
@@ -226,8 +222,8 @@ class Module(Structure):
                     structure, attrs, scope[1:])
                 if not result['found']:
                     value = self.imports.get(main_attr,
-                        self.attributes.get(main_attr,
-                        self.functions.get(main_attr, None)))
+                                             self.attributes.get(main_attr,
+                                                                 self.functions.get(main_attr, None)))
                     if value is not None:
                         data_type = value.get_data_type()
                         result['found'], result['type'] = True, data_type
@@ -258,7 +254,7 @@ class Module(Structure):
             return result
         attr = attrs[0]
         value = structure.attributes.get(attr,
-            structure.functions.get(attr, None))
+                                         structure.functions.get(attr, None))
         if value is None:
             return result
         data_type = value.get_data_type()
@@ -317,7 +313,6 @@ class Clazz(Structure):
         self.name = name
         self.bases = {}
         self._update_bases = []
-#        self.decorators = []
 
     def add_parent(self, parent):
         self._update_bases.append(parent)
@@ -359,14 +354,14 @@ class Clazz(Structure):
                         continue
                     assign = Assign(attr)
                     assign.add_data(0, parent_name + attr, '',
-                        parent_name + attr)
+                                    parent_name + attr)
                     attributes[attr] = assign
                 for func in data.get('functions', []):
                     if func[:2] == '__' and func[-2:] == '__':
                         continue
                     assign = Assign(func)
                     assign.add_data(0, parent_name + attr, '',
-                        parent_name + attr)
+                                    parent_name + attr)
                     functions[func] = assign
                 self.attributes.update(attributes)
                 self.functions.update(functions)
@@ -460,136 +455,21 @@ def expand_attribute(attribute):
     name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
     return name
 
+    # Decorators can be: Name, Call, Attributes
 
-#class Structure(object):
+    # We store the arguments to compare with default backwards
+    # TODO: In some cases we can have something like: a=os.path
+    # continue
+    # continue
 
-##   def __init__(self, parent=None):
-        #super(Module, self).__init__()
-        #self._parent = parent
-        #self.attributes = {}
-        #self.functions = {}
+    # """Parse the tuple inside a function argument call."""
 
-##   def create_function(self, symbol):
-        #return Function(symbol, self)
+    # type_value, line_content)
+    # continue
+    # data = (var.attr, symbol.lineno, data_type, line_content,
+    # type_value)
+    # data = (var.id, symbol.lineno, data_type, line_content,
+    # type_value)
 
-##   def create_attribute(self, symbol):
-        #pass
-
-##class Module(Structure):
-
-##   def __init__(self):
-        #super(Module, self).__init__()
-        #self.imports = {}
-        #self.clazzes = {}
-
-##   def create_class(self, symbol):
-        #return Clazz(symbol, self)
-
-##class Clazz(Structure):
-
-##   def __init__(self, symbol, parent):
-        #super(Clazz, self).__init__(parent)
-        #self.bases = {}
-        #for base in symbol.bases:
-            #if base == 'object':
-                #continue
-            #name = expand_attribute(base)
-            #value = self.bases.get(name, None)
-            #if value is None:
-                #self.bases[name] = value
-
-##   def close_class(self):
-        #return self._parent
-
-##class Function(Structure):
-
-##    def __init__(self, symbol, parent):
-        #super(Function, self).__init__(parent)
-        #self.name = symbol.name
-        #self.args = {}
-        #self.decorators = []
-        #self.return_type = []
-
-##        for decorator in symbol.decorator_list:
-            ##Decorators can be: Name, Call, Attributes
-            #self.decorators.append(decorator.id)
-
-##        if symbol.args.vararg is not None:
-            #assign = Assign(symbol.args.vararg)
-            #assign.add_data(symbol.lineno, '__builtin__.list', None, None)
-            #self.args[assign.name] = assign
-        #if symbol.args.kwarg is not None:
-            #assign = Assign(symbol.args.kwarg)
-            #assign.add_data(symbol.lineno, '__builtin__.dict', None, None)
-            #self.args[assign.name] = assign
-        ##We store the arguments to compare with default backwards
-        #defaults = []
-        #for value in symbol.args.defaults:
-            ##TODO: In some cases we can have something like: a=os.path
-            #type_value = value.__class__
-            #data_type = self.__mapping.get(type_value, None)
-            #defaults.append((data_type, type_value))
-        #for arg in reversed(symbol.args.args):
-            #if isinstance(arg, ast.Tuple):
-                #self._parse_tuple_in_func_arg(arg, symbol.lineno)
-                #continue
-            #elif arg.id == 'self':
-                #continue
-            #assign = Assign(arg.id)
-            #data_type = (late_resolution, None)
-            #if defaults:
-                #data_type = defaults.pop()
-            #assign.add_data(symbol.lineno, data_type[0], None, data_type[1])
-            #self.args[assign.name] = assign
-
-##    def _parse_tuple_in_func_arg(self, symbol_tuple, lineno=0):
-        #"""Parse the tuple inside a function argument call."""
-        #for item in symbol_tuple.elts:
-            #assign = Assign(item.id)
-            #data_type = (late_resolution, None)
-            #assign.add_data(lineno, data_type[0], None, data_type[1])
-            #self.args[assign.name] = assign
-
-##    def close_function(self):
-        #return self._parent
-
-##class Assign(object):
-
-##   def __init__(self, symbol, line_content=''):
-        #super(Assign, self).__init__()
-        #self.name = symbol.name
-        #self.data = []
-        #self.add_symbol(symbol, line_content)
-
-##   def add_symbol(self, symbol, line_content=''):
-        #for var in symbol.targets:
-            #type_value = symbol.value.__class__
-            #line_content = self.content[symbol.lineno - 1]
-            #if type_value in (_ast.Num, _ast.Name):
-                #type_value = self._assign_disambiguation(
-                    #type_value, line_content)
-                #if type_value is None:
-                    #continue
-            #data_type = self.__mapping.get(type_value, model.late_resolution)
-            #if var.__class__ == ast.Attribute:
-                #data = (var.attr, symbol.lineno, data_type, line_content,
-                    #type_value)
-                #attributes.append(data)
-            #elif var.__class__ == ast.Name:
-                #data = (var.id, symbol.lineno, data_type, line_content,
-                    #type_value)
-                #assigns.append(data)
-##            if type_value is ast.Call:
-##                self._process_expression(symbol.value)
-        #return (assigns, attributes)
-        ##info = TypeData(symbol.lineno, data_type, line_content)
-        ##if info not in self.data:
-            ##self.data.append(info)
-
-##   def get_data_type(self):
-        #possible = [d.data_type for d in self.data
-                    #if d.data_type is not late_resolution]
-        #if possible:
-            #return filter_data_type(possible)
-        #else:
-            #return None
+    # possible = [d.data_type for d in self.data
+    # if d.data_type is not late_resolution]

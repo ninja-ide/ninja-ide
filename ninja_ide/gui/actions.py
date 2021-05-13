@@ -17,14 +17,8 @@
 
 from ninja_ide import translations
 
-# {
-#   "shortcut": "Change-Tab",
-#   "action": {
 #       "text",
-#       "Image [string for ninja, Int for qt, None for nothing]"
-#   },
 #   "connect": "function_name"
-# }
 
 ACTIONS_CENTRAL = (
     {
@@ -37,26 +31,9 @@ ACTIONS_CENTRAL = (
         "connect": "change_lateral_visibility"
     },
 )
-# ACTIONS_CENTRAL = (
-#    {
-#    "shortcut": "Show-Paste-History",
 #    "connect": "show_copypaste_history_popup"
-#    },
-#    {
-#    "shortcut": "Hide-all",
-#    "action": {'text': translations.TR_ALL_VISIBILITY,
-#               'section': (translations.TR_MENU_VIEW, None),
-#               'weight': 120},
 #    "connect": "hide_all"
-#    },
-#    {
-#    "shortcut": "Hide-explorer",
-#    "action": {'text': translations.TR_EXPLORER_VISIBILITY,
-#               'section': (translations.TR_MENU_VIEW, None),
-#               'weight': 130},
 #    "connect": "change_lateral_visibility"
-#    },
-# )
 
 
 ACTIONS_STATUS = (
@@ -79,25 +56,9 @@ ACTIONS_STATUS = (
         "connect": "show_replace"
     }
 )
-#    "shortcut": "Find-with-word",
-#    "action": {'text': translations.TR_FIND_WORD_UNDER_CURSOR,
-#               'section': (translations.TR_MENU_EDIT, None),
-#               'weight': 220},
 #    "connect": "show_with_word"
-#    },
-#    {
-#       "shortcut": "Code-locator",
-#       "action": {'text': translations.TR_CODE_LOCATOR,
-#               'image': 'locator',
-#               'section': (translations.TR_MENU_EDIT, None),
-#               'weight': 230},
 #     "connect": "show_locator"
-#     },
-#    {
-#    "shortcut": "File-Opener",
 #    "connect": "show_file_opener"
-#    },
-# )
 
 
 ACTIONS_STATUS_SEARCH = (

@@ -39,24 +39,24 @@ syntax = {
     'scanner': {
         # FIXME: Underscores in numeric literals
         None: [
-            ('constant', "\\b_*[A-Z][_\d]*[A-Z][A-Z\d]*(_\w*)?\\b"),
-            ('function', "\w+(?=\ *?\()"),
-            ('hexnumber', '0[xX]\d+'),
+            ('constant', "\\b_*[A-Z][_\\d]*[A-Z][A-Z\\d]*(_\\w*)?\\b"),
+            ('function', "\\w+(?=\\ *?\\()"),
+            ('hexnumber', '0[xX]\\d+'),
             ('octnumber', '0[oO](_?[0-7])+'),
             ('binnumber', '0[bB][01]+'),
-            ('number', '(?<!\w)(\.?)(_?\d+)+(\.\d*)?[lL]?'),
-            ('decorator', "@\w+(\.\w+)?"),
+            ('number', '(?<!\\w)(\\.?)(_?\\d+)+(\\.\\d*)?[lL]?'),
+            ('decorator', "@\\w+(\\.\\w+)?"),
             ('definition',
-             ["(?<=def)\ +?\w+(?=\ *?\()",
-              "(?<=class)\ +?\w+(?=\ *?\()"]),
+             ["(?<=def)\\ +?\\w+(?=\\ *?\\()",
+              "(?<=class)\\ +?\\w+(?=\\ *?\\()"]),
             ('definitionname', 'class|def', '(^|[\x08\\W])', '[\x08\\W]'),
             ('proper_object', ['self'],
-             '(^|[^\\.\\w])??(?<!\w|\\.)',
+             '(^|[^\\.\\w])??(?<!\\w|\\.)',
              '[\\x08\\W]+?'),
             ('keyword', kwlist, '(^|[\x08\\W])',
              '[\x08\\W]'),
             ('builtin', dir(builtins),
-             '(^|[^\\.\\w])??(?<!\w|\\.)', '[\x08\\W]'),
+             '(^|[^\\.\\w])??(?<!\\w|\\.)', '[\x08\\W]'),
             ('operators', ['\\+', '\\=', '\\-', '\\<', '\\>', '\\!='])
         ]
     }

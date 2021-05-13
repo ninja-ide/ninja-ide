@@ -27,10 +27,10 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import introspection
 
 
-patIndent = re.compile('^\s+')
+patIndent = re.compile('^\\s+')
 pat_word = re.compile(r"^[\t ]*$|[^\s]+")
 patSymbol = re.compile(r'[^\w]')
-patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
+patIsLocalFunction = re.compile('(\\s)+self\\.(\\w)+\\(\\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
@@ -50,18 +50,18 @@ def get_leading_spaces(line):
 
 def get_range(editor, line, col=-1):
 
-        lineno = line
-        line_text = editor.line_text(lineno)
-        col_end = len(line_text)
-        col_start = col if col > -1 else 0
-        if col > -1:
-            match = pat_word.match(line_text[col:])
-            if match:
-                col_end = col_start + match.end()
-        else:
-            col_start = editor.line_indent(lineno)
+    lineno = line
+    line_text = editor.line_text(lineno)
+    col_end = len(line_text)
+    col_start = col if col > -1 else 0
+    if col > -1:
+        match = pat_word.match(line_text[col:])
+        if match:
+            col_end = col_start + match.end()
+    else:
+        col_start = editor.line_indent(lineno)
 
-        return col_start, col_end
+    return col_start, col_end
 
 
 def add_line_increment(lines, lineModified, diference, atLineStart=False):
@@ -159,7 +159,7 @@ def insert_debugging_prints(editorWidget):
         print_text = ""
         if result:
             print_text = "%s: " % result
-        #begin Undo feature
+        # begin Undo feature
         editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
         lstart, istart, lend, iend = editorWidget.getSelection()
         lines = lend - lstart
@@ -168,7 +168,7 @@ def insert_debugging_prints(editorWidget):
             indentation = get_indentation(editorWidget.text(pos))
             editorWidget.insertAt("%sprint('%s%i')\n" % (
                 indentation, print_text, i), pos, 0)
-        #end Undo feature
+        # end Undo feature
         editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
 
 
@@ -186,7 +186,7 @@ def remove_line(editorWidget):
         lines = (lend - lstart) + 1
         editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
         editorWidget.setCursorPosition(lstart, istart)
-        for l in range(lines):
+        for _ in range(lines):
             editorWidget.SendScintilla(editorWidget.SCI_LINEDELETE, 1)
         editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
     else:
@@ -200,7 +200,7 @@ def check_for_assistance_completion(editorWidget, line):
         source = source.encode(editorWidget.encoding)
         symbols = introspection.obtain_symbols(source)
         clazzName = [name for name in
-                     re.split("(\\s)*class(\\s)+|:|\(", line)
+                     re.split("(\\s)*class(\\s)+|:|\\(", line)
                      if name is not None and name.strip()][0]
         clazz_key = [item for item in symbols.get('classes', [])
                      if item.startswith(clazzName)]

@@ -44,7 +44,7 @@ def parse(descriptor):
     """Read the content of a json file and return a dict."""
     try:
         return json.loads(descriptor)
-    except:
+    except BaseException:
         logger.error("The file couldn't be parsed'")
         logger.error(descriptor)
     return {}

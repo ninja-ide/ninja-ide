@@ -16,25 +16,24 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 
 import os
 
 from PyQt4.QtCore import QThread
 from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
-                        IN_MODIFY, WatchManager, Notifier, ExcludeFilter
+    IN_MODIFY, WatchManager, Notifier, ExcludeFilter
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.linux')
 DEBUG = logger.debug
 
-from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 ADDED = base_watcher.ADDED
 DELETED = base_watcher.DELETED
 REMOVE = base_watcher.REMOVE
 RENAME = base_watcher.RENAME
 MODIFIED = base_watcher.MODIFIED
-#FIXME: For some reaseon the code below raises an import error with name ADDED
-#from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import ADDED, \
+# FIXME: For some reaseon the code below raises an import error with name ADDED
 #                                            DELETED, REMOVE, RENAME, MODIFIED
 
 mask = IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MODIFY
@@ -73,7 +72,7 @@ class QNotifier(QThread):
         self.event_queue = list()
         self._processor = processor
         self.notifier = Notifier(wm,
-                            NinjaProcessEvent(self.event_queue.append))
+                                 NinjaProcessEvent(self.event_queue.append))
         self.notifier.coalesce_events(True)
         self.keep_running = True
         QThread.__init__(self)
@@ -117,13 +116,13 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 notifier = QNotifier(wm, self._emit_signal_on_change)
                 notifier.start()
                 exclude = ExcludeFilter([os.path.join(path, folder)
-                    for folder in self._ignore_hidden])
+                                         for folder in self._ignore_hidden])
                 wm.add_watch(path, mask, rec=True, auto_add=True,
-                    exclude_filter=exclude)
+                             exclude_filter=exclude)
                 self.watching_paths[path] = notifier
             except (OSError, IOError):
                 pass
-                #Shit happens, most likely temp file
+                # Shit happens, most likely temp file
 
     def remove_watch(self, path):
         if path in self.watching_paths:

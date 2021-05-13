@@ -55,7 +55,7 @@ class SideWidget(QWidget):
         if self.isVisible():
             background_color = QColor(
                 resources.COLOR_SCHEME.get("editor.sidebar.background"))
-                # resources.get_color('SidebarBackground'))
+            # resources.get_color('SidebarBackground'))
             painter = QPainter(self)
             painter.fillRect(event.rect(), background_color)
 

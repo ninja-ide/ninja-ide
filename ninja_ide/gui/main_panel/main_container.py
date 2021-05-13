@@ -36,7 +36,6 @@ from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.dialogs import from_import_dialog
-# from ninja_ide.gui.main_panel import set_language
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import files_handler
 from ninja_ide.gui.main_panel.helpers import split_orientation
@@ -91,21 +90,13 @@ class _MainContainer(QWidget):
         IDE.register_service("main_container", self)
         # Register signals connections
         connections = (
-            # {
-            #     "target": "main_container",
-            #     "signal_name": "updateLocator",
             #     "slot": self._explore_code
-            # },
             {
                 "target": "filesystem",
                 "signal_name": "projectOpened",
                 "slot": self._explore_code
             },
-            # {
-            #     "target": "projects_explore",
-            #     "signal_name": "updateLocator",
             #     "slot": self._explore_code
-            # }
             {
                 "target": "filesystem",
                 "signal_name": "projectClosed",
@@ -118,7 +109,6 @@ class _MainContainer(QWidget):
         fhandler_short = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Tab), self)
         fhandler_short.activated.connect(self.show_files_handler)
         # Added for set language
-        # self._setter_language = set_language.SetLanguageFile()
 
     def install(self):
         ninjaide = IDE.get_service("ide")
@@ -131,7 +121,6 @@ class _MainContainer(QWidget):
         self.combo_area.fileClosed.connect(self._add_to_last_opened)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
-        # self.current_widget = self.combo_area
         # Code Locator
         self._code_locator = locator_widget.LocatorWidget(ninjaide)
 
@@ -140,7 +129,6 @@ class _MainContainer(QWidget):
         if recent_files is not None:
             self.__last_opened_files = recent_files
         ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
-        # self.fileSaved.connect(self._show_message_about_saved)
 
     def run_file(self, filepath):
         self.runFile.emit(filepath)
@@ -404,7 +392,6 @@ class _MainContainer(QWidget):
             if not extension:
                 filename = "%s.%s" % (filename, "py")
             editor_widget.neditable.save_content(path=filename, force=force)
-            # self._setter_language.set_language_from_extension(extension)
             self.fileSaved.emit(translations.TR_FILE_SAVED.format(filename))
             self.currentEditorChanged.emit(filename)
             return True
@@ -460,7 +447,6 @@ class _MainContainer(QWidget):
             pass
 
         editor_widget = self.create_editor_from_editable(editable)
-        # editor_widget.set_language()
         # Add the tab
         keep_index = (self.splitter.count() > 1 and
                       self.combo_area.stacked.count() > 0)
@@ -489,7 +475,6 @@ class _MainContainer(QWidget):
             item = (editor_widget.file_path, editor_widget.cursor_position)
             if item not in self.__code_back:
                 self.__code_back.append(item)
-                # self.__code_forward.clear()
 
     def _on_zoom_changed(self, zoom):
         text = "Zoom: {}%".format(str(zoom))

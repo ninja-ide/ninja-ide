@@ -19,9 +19,9 @@
 ###############################################################################
 # ABSTRACT CLASSES (This file contains useful interfaces for plugins)
 
-#We know, Python does not need interfaces, but this file is useful as
-#documentation. Is not mandatory inherit from these interfaces but you SHOULD
-#implement the methods inside them.
+# We know, Python does not need interfaces, but this file is useful as
+# documentation. Is not mandatory inherit from these interfaces but you SHOULD
+# implement the methods inside them.
 ###############################################################################
 
 
@@ -42,13 +42,13 @@ def implements(iface):
         """
         should_implement = set(dir(iface)).difference(set(dir(object)))
         should_implement = set(should for should in should_implement if
-                                not should.startswith("_"))
+                               not should.startswith("_"))
         not_implemented = should_implement.difference(set(dir(cls)))
         if len(not_implemented) > 0:
             raise MethodNotImplemented("Methods %s not implemented" %
-                                         ", ".join(not_implemented))
+                                       ", ".join(not_implemented))
         if cls.__name__ not in globals():
-            #if decorated a class is not in globals
+            # if decorated a class is not in globals
             globals()[cls.__name__] = cls
         return cls
     return implementsIA
@@ -60,14 +60,14 @@ class IProjectTypeHandler(object):
     Interface to create a Project type handler
     """
 
-    #mandatory
+    # mandatory
     def get_pages(self):
         """
         Returns a collection of QWizardPage
         """
         pass
 
-    #mandatory
+    # mandatory
     def on_wizard_finish(self, wizard):
         """
         Called when the user finish the wizard
@@ -101,7 +101,7 @@ class ISymbolsHandler:
      }
     """
 
-    #mandatory
+    # mandatory
     def obtain_symbols(self, source):
         """
         Returns the dict needed by the tree
@@ -114,7 +114,8 @@ class IPluginPreferences:
     """
     Interface for plugin preferences widget
     """
-    #mandatory
+    # mandatory
+
     def save(self):
         """
         Save the plugin data as NINJA-IDE settings

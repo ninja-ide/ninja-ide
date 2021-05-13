@@ -82,6 +82,3 @@ def discover_all(extensions_dir='.'):
             _file, path, descr = imp.find_module(module_name, [extensions_dir])
             if _file:
                 imp.load_module(module_name, _file, path, descr)
-
-
-# discover_all()

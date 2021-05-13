@@ -50,7 +50,7 @@ class SingleFileWatcher(QThread):
 
     def add_watch(self, file_to_watch):
         status = do_stat(file_to_watch)
-        #only add if the file still exists
+        # only add if the file still exists
         if (file_to_watch not in self._watches) and status:
             self._watches[file_to_watch] = do_stat(file_to_watch)
         elif not status:
@@ -83,11 +83,10 @@ class SingleFileWatcher(QThread):
 
 class BaseWatcher(QObject):
 
-###############################################################################
-# SIGNALS
-#
-# fileChanged(int, QString)  [added, deleted, modified, rename, remove]
-###############################################################################
+    ###############################################################################
+    # SIGNALS
+    #
+    ###############################################################################
 
     def __init__(self):
         super(BaseWatcher, self).__init__()
@@ -99,7 +98,7 @@ class BaseWatcher(QObject):
             self._single_file_watcher = \
                 SingleFileWatcher(self._emit_signal_on_change)
             self.connect(self._single_file_watcher,
-                SIGNAL("destroyed(QObject*)"), self.on_destroy)
+                         SIGNAL("destroyed(QObject*)"), self.on_destroy)
             self._single_file_watcher.start()
         self._single_file_watcher.add_watch(file_path)
 
@@ -121,4 +120,3 @@ class BaseWatcher(QObject):
 
     def _emit_signal_on_change(self, event, path):
         DEBUG("About to emit the signal" + repr(event))
-        #self.emit(SIGNAL("fileChanged(int, QString)"), event, path)

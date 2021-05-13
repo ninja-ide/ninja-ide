@@ -24,7 +24,6 @@ from PyQt5.QtWidgets import QFrame
 from PyQt5.QtWidgets import QToolTip
 
 from PyQt5.QtGui import QTextCursor
-# from PyQt5.QtGui import QTextDocument
 from PyQt5.QtGui import QFontMetrics
 from PyQt5.QtGui import QKeySequence
 
@@ -50,7 +49,6 @@ from ninja_ide.gui.editor.extensions import margin_line
 from ninja_ide.gui.editor.extensions import indentation_guides
 from ninja_ide.gui.editor.extensions import braces
 from ninja_ide.gui.editor.extensions import quotes
-# from ninja_ide.gui.editor.extensions import calltip
 # Side
 from ninja_ide.gui.editor.side_area import manager
 from ninja_ide.gui.editor.side_area import line_number_widget
@@ -125,7 +123,6 @@ class NEditor(base_editor.BaseEditor):
             quotes.AutocompleteQuotes)
         self.autocomplete_quotes(settings.AUTOCOMPLETE_QUOTES)
         # Calltips
-        # self.register_extension(calltip.CallTips)
         # Highlight word under cursor
         self.__word_occurrences = []
         self._highlight_word_timer = QTimer()
@@ -221,7 +218,6 @@ class NEditor(base_editor.BaseEditor):
 
     @pyqtSlot()
     def _on_cursor_position_changed(self):
-        # self.__clear_occurrences()
         line, col = self.cursor_position
         self.cursor_position_changed.emit(line, col)
         if line != self._last_line_position:
@@ -296,10 +292,6 @@ class NEditor(base_editor.BaseEditor):
             append(selection)
             # TODO: highlight results in scrollbar
             # FIXME: from settings
-            # line = selection.cursor.blockNumber()
-            # Marker = scrollbar.marker
-            # marker = Marker(line, resources.get_color("SearchResult"), 0)
-            # self._scrollbar.add_marker("find", marker)
         self._extra_selections.add("occurrences", selections)
 
     def clear_found_results(self):
@@ -339,8 +331,7 @@ class NEditor(base_editor.BaseEditor):
         append = selections.append  # Reduce name look-ups for better speed
         for items in checkers:
             checker, color, _ = items
-            lines = list(checker.checks.keys())
-            lines.sort()
+            lines = sorted(checker.checks.keys())
             for line in lines[:self._MAX_CHECKER_SELECTIONS]:
                 cursor = self.textCursor()
                 # Scrollbar marker
@@ -392,7 +383,6 @@ class NEditor(base_editor.BaseEditor):
         """Set font and update tab stop width"""
 
         super().setFont(font)
-        # self.font_antialiasing(settings.FONT_ANTIALIASING)
         self.side_widgets.resize()
         self.side_widgets.update_viewport()
         self._update_tab_stop_width()
@@ -517,7 +507,6 @@ class NEditor(base_editor.BaseEditor):
 
     def _go_to_definition_requested(self, cursor):
         text = self.word_under_cursor(cursor).selectedText()
-        # self._iassistant.definitions(text)
         if text and not self.inside_string_or_comment(cursor):
             self._iassistant.invoke("definitions")
 
@@ -650,7 +639,7 @@ class NEditor(base_editor.BaseEditor):
             if init:
                 return
             class_name = [name for name in
-                          re.split("(\\s)*class(\\s)+|:|\(", line_text)
+                          re.split("(\\s)*class(\\s)+|:|\\(", line_text)
                           if name is not None and name.strip()][0]
 
             line, col = self.cursor_position
@@ -711,11 +700,6 @@ class NEditor(base_editor.BaseEditor):
 
         # TODO: generalize it with triggers
         # TODO: shortcut
-        # force_completion = ctrl and event.key() == Qt.Key_Space
-        # if event.key() == Qt.Key_Period or force_completion:
-        #     if not self.inside_string_or_comment():
-        #         self._intellisense.invoke_completion()
-        #         self._intellisense.process("completions")
 
     def adjust_scrollbar_ranges(self):
         line_spacing = QFontMetrics(self.font()).lineSpacing()
@@ -788,7 +772,6 @@ class NEditor(base_editor.BaseEditor):
         clone.cursor_position = self.cursor_position
         for kind, selections in self._extra_selections.items():
             clone._extra_selections.add(kind, selections)
-        # clone.setDocument(self.document())
         clone.scrollbar().link(self._scrollbar)
 
     def comment_or_uncomment(self):
