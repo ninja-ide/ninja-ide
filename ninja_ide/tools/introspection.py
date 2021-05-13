@@ -14,7 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-import _ast
 import ast
 
 from ninja_ide.intellisensei.analyzer import model
@@ -27,12 +26,12 @@ logger_symbols = NinjaLogger(
     'ninja_ide.tools.introspection.obtaining_symbols')
 
 _map_type = {
-    _ast.Tuple: 'tuple',
-    _ast.List: 'list',
-    _ast.Str: 'str',
-    _ast.Dict: 'dict',
-    _ast.Num: 'int',
-    _ast.Call: 'function()',
+    ast.Tuple: 'tuple',
+    ast.List: 'list',
+    ast.Str: 'str',
+    ast.Dict: 'dict',
+    ast.Num: 'int',
+    ast.Call: 'function()',
 }
 
 
@@ -110,16 +109,16 @@ def _parse_function(symbol, with_docstrings):
         defaults.append(value)
     arguments = []
     for arg in reversed(symbol.args.args):
-        if not isinstance(arg, _ast.Name) or arg.id == "self":
+        if not isinstance(arg, ast.Name) or arg.id == "self":
             continue
         argument = arg.id
         if defaults:
             value = defaults.pop()
             arg_default = _map_type.get(value.__class__, None)
             if arg_default is None:
-                if isinstance(value, _ast.Attribute):
+                if isinstance(value, ast.Attribute):
                     arg_default = model.expand_attribute(value)
-                elif isinstance(value, _ast.Name):
+                elif isinstance(value, ast.Name):
                     arg_default = value.id
                 else:
                     arg_default = 'object'
@@ -291,16 +290,16 @@ def _parse_function_simplified(symbol, member_of=""):
         defaults.append(value)
     arguments = []
     for arg in reversed(symbol.args.args):
-        if not isinstance(arg, _ast.Name) or arg.id == "self":
+        if not isinstance(arg, ast.Name) or arg.id == "self":
             continue
         argument = arg.id
         if defaults:
             value = defaults.pop()
             arg_default = _map_type.get(value.__class__, None)
             if arg_default is None:
-                if isinstance(value, _ast.Attribute):
+                if isinstance(value, ast.Attribute):
                     arg_default = model.expand_attribute(value)
-                elif isinstance(value, _ast.Name):
+                elif isinstance(value, ast.Name):
                     arg_default = value.id
                 else:
                     arg_default = 'object'

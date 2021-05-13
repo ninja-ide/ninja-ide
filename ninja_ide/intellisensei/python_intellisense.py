@@ -18,17 +18,11 @@
 import os
 import sys
 
+# FIXME: when LSP works, delete this
+import jedi
+
 from ninja_ide.intellisensei import intellisense_registry
 from ninja_ide.tools.logger import NinjaLogger
-
-jedi_path = os.path.join(os.path.dirname(__file__))
-sys.path.insert(0, jedi_path)
-try:
-    from ninja_ide.intellisensei import jedi
-except ImportError:
-    jedi = None
-finally:
-    sys.path.remove(jedi_path)
 
 logger = NinjaLogger(__name__)
 
