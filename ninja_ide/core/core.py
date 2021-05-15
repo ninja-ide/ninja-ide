@@ -46,12 +46,12 @@ def run_ninja():
             print("The process couldn't be renamed'")
     filenames, projects_path, extra_plugins, linenos, log_level, log_file = \
         cliparser.parse()
-    
+
     # Create the QApplication object before using the
     # Qt modules to avoid warnings
     from ninja_ide.core import settings
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling, settings.HDPI)
-    
+
     app = QApplication(sys.argv)
     from ninja_ide import resources
     resources.create_home_dir_structure()
