@@ -42,4 +42,7 @@
     <qresource prefix="/help">
         <file alias="locator">images/help/help_locator.png</file>
     </qresource>
+    <qresource prefix="/font">
+        <file alias="awesome">fonts/font-awesome.ttf</file>
+    </qresource>
 </RCC>
