@@ -55,7 +55,6 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.ide')
-logger.setLevel(10)
 
 ###############################################################################
 # IDE: MAIN CONTAINER

@@ -14,31 +14,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-
-
-from __future__ import absolute_import
+"""
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute
+it under certain conditions; for details see LICENSE.txt.
+"""
 
 import argparse
 
-
-try:
-    # For Python2
-    str = unicode  # lint:ok
-except NameError:
-    # We are in Python3
-    pass
-
-usage = "$python ninja-ide.py <option, [option3...option n]>"
-
-epilog = ("This program comes with ABSOLUTELY NO WARRANTY."
-          "This is free software, and you are welcome to redistribute "
-          "it under certain conditions; for details see LICENSE.txt.")
+USAGE = "$python ninja-ide.py <option, [option3...option n]>"
 
 
 def _get_parser():
-    global usage, epilog
-
-    parser = argparse.ArgumentParser(description=usage, epilog=epilog)
+    parser = argparse.ArgumentParser(description=__doc__)
 
     parser.add_argument('file', metavar='file', type=str,
                         nargs='*', help='A file/s to edit', default=[])
@@ -52,9 +40,12 @@ def _get_parser():
     parser.add_argument('--plugin', metavar='plugin', type=str,
                         nargs='+', help='A plugin to load', default=[])
     parser.add_argument(
-        '--loglevel', help="Level to use for logging, "
-        "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'",
-        default=None, metavar="loglevel")
+        '-v',
+        '--verbose',
+        action='count',
+        default=1,
+        help='Level to use for logging (-v -vv -vvvv)'
+    )
     parser.add_argument('--logfile', help="A file path to log, special "
                         "words STDOUT or STDERR are accepted",
                         default=None, metavar="logfile")
@@ -66,25 +57,25 @@ def parse():
     extra_plugins = log_level = log_file = None
 
     try:
-        opts = _get_parser().parse_args()
+        args = _get_parser().parse_args()
 
-        filenames = opts.file \
-            if isinstance(opts.file, list) \
-            else [opts.file]
-        filenames += opts.files \
-            if hasattr(opts, 'files') \
+        filenames = args.file \
+            if isinstance(args.file, list) \
+            else [args.file]
+        filenames += args.files \
+            if hasattr(args, 'files') \
             else []
-        projects_path = opts.project \
-            if isinstance(opts.project, list) \
-            else [opts.project]
-        linenos = opts.lineno \
-            if hasattr(opts, 'lineno') \
-            else [opts.lineno]
-        extra_plugins = opts.plugin \
-            if isinstance(opts.plugin, list) \
-            else [opts.plugin]
-        log_level = opts.loglevel
-        log_file = opts.logfile
+        projects_path = args.project \
+            if isinstance(args.project, list) \
+            else [args.project]
+        linenos = args.lineno \
+            if hasattr(args, 'lineno') \
+            else [args.lineno]
+        extra_plugins = args.plugin \
+            if isinstance(args.plugin, list) \
+            else [args.plugin]
+        log_level = 40 - (10 * args.verbose) if args.verbose > 0 else 0
+        log_file = args.logfile
 
     except Exception as reason:
         print("Args couldn't be parsed.")

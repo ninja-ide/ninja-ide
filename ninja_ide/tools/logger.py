@@ -25,9 +25,7 @@ TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 class Logger(object):
-    """
-        General logger
-    """
+    """General logger"""
 
     def __init__(self):
         self._loggers = {}
@@ -48,12 +46,12 @@ class Logger(object):
         return self._loggers[modname]
 
     def dissable(self):
-        for each_log in list(self._loggers.values()):
+        for each_log in self._loggers.values():
             each_log.setLevel(logging.NOTSET)
 
     def setLevel(self, level):
         self._default_level = level
-        for each_log in list(self._loggers.values()):
+        for each_log in self._loggers.values():
             each_log.setLevel(level)
 
     def add_handler(self, hfile, mode, log_format, time_format, stream=None):
@@ -63,15 +61,13 @@ class Logger(object):
         else:
             handler = logging.FileHandler(hfile, mode)
         handler.setFormatter(formatter)
-        for each_log in list(self._loggers.values()):
+        for each_log in self._loggers.values():
             each_log.addHandler(handler)
         self._handler = handler
 
     def argparse(self, log_level, log_file):
-        if log_level:
-            if log_level in ('debug', 'info', 'warning', 'error', 'critical'):
-                log_level = getattr(logging, log_level.upper())
-                self.setLevel(log_level)
+        # FIXME: log_file not used for now
+        self.setLevel(log_level)
 
 
 NinjaLogger = Logger()
