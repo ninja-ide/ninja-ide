@@ -54,13 +54,14 @@ class InterpreterService(QObject):
     def refresh(self):
         self.__interpreters.clear()
         # Search interpreters in background
-        self._thread = QThread(self)
-        self.__locator.moveToThread(self._thread)
-        self._thread.started.connect(self.__locator.load_suggestions)
+        thread = QThread(self)
+        self.__locator.moveToThread(thread)
+        thread.started.connect(self.__locator.load_suggestions)
+        self.__locator.finished.connect(thread.quit)
         self.__locator.finished.connect(self._on_finished)
-        self._thread.finished.connect(self._thread.deleteLater)
+        thread.finished.connect(thread.deleteLater)
 
-        QTimer.singleShot(1000, self._thread.start)
+        QTimer.singleShot(1000, thread.start)
 
     def _on_finished(self, list_of_interpreters):
         for interpreter in list_of_interpreters:
