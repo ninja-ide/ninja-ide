@@ -109,7 +109,7 @@ class NProject(QObject):
         '''
         Returns the python exec command of the project
         '''
-        if self.venv is '':
+        if self.venv == '':
             return self.venv
         return self.python_exec
 
