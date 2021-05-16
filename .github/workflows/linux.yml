@@ -25,3 +25,6 @@ jobs:
       - name: PEP8
         run: |
           make pep8
+      - name: unittest
+        run: |
+          make unittest
