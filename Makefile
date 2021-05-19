@@ -1,5 +1,5 @@
 PYTEST = pytest -v -s
-cleanUpList = *.pyc *.pyo *.qmlc *.jsc
+CLEANUP_LIST = *.pyc *.pyo *.qmlc *.jsc
 
 help:
 	@echo "unittest		-- run unit tests"
@@ -24,4 +24,4 @@ rc:
 	pyrcc5 ninja_ide/nresources.qrc -o ninja_ide/nresources.py
 
 clean:
-	for i in $(cleanUpList); do find . -name "$$i" -delete; done
+	for i in $(CLEANUP_LIST); do find . -name "$$i" -delete; done
