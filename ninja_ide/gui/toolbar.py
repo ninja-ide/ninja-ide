@@ -29,7 +29,6 @@ from PyQt5.QtCore import (
     QEvent,
     QPropertyAnimation,
     pyqtProperty,
-    pyqtSignal as Signal,
 )
 
 BAR_BACKGROUND_COLOR = '#232323'
@@ -125,9 +124,6 @@ class ToolBar(QWidget):
             tab_sh.height()
         )
 
-    def tab_tooltip(self, index: int) -> str:
-        return self._tabs[index].tooltip
-
     def enterEvent(self, event):
         self._hover_index = -1
 
@@ -187,7 +183,6 @@ class ToolBar(QWidget):
         if self._hover_index != -1:
             self._tabs[self._hover_index].fade_in()
 
-
     def mousePressEvent(self, event):
         for i, tab in enumerate(self._tabs):
             rec = self.tab_rect(i)
@@ -209,14 +204,13 @@ if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication, QHBoxLayout, QPlainTextEdit
     app = QApplication([])
     w = QWidget()
-    w2 = QPlainTextEdit()
-    l = QHBoxLayout(w)
-    t = ToolBar()
-    t.insert_tab(0, 'hola', 'queeeee ondaaaaaa')
-    t.insert_tab(1, 'chau')
-    t.insert_tab(1, 'chau')
-    t.insert_tab(1, 'chau')
-    l.addWidget(t)
-    l.addWidget(w2)
+    layout = QHBoxLayout(w)
+    tb = ToolBar()
+    tb.insert_tab(0, 'hola', 'queeeee ondaaaaaa')
+    tb.insert_tab(1, 'chau')
+    tb.insert_tab(1, 'chau')
+    tb.insert_tab(1, 'chau')
+    layout.addWidget(tb)
+    layout.addWidget(QPlainTextEdit())
     w.show()
     app.exec_()
