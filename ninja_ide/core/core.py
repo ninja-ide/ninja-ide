@@ -23,8 +23,6 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QCoreApplication
 
-from PyQt5.QtGui import QFont, QFontDatabase
-
 from ninja_ide.core import cliparser
 
 PR_SET_NAME = 15
@@ -67,12 +65,8 @@ def run_ninja():
     from ninja_ide import ninja_style
     app.setStyle(ninja_style.NinjaStyle(resources.load_theme()))
 
-    # Add Font Awesome
-    family = QFontDatabase.applicationFontFamilies(
-        QFontDatabase.addApplicationFont(':font/awesome'))[0]
-    font = QFont(family)
-    font.setStyleName('Solid')
-    app.setFont(font)
+    # Load icon font
+    from ninja_ide.gui.icon_manager import icon  # noqa
 
     from ninja_ide import gui
     # Start the UI
