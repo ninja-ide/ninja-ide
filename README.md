@@ -21,7 +21,7 @@ You can clone this repo and simply execute:
 ```bash
 $ git clone git://github.com/ninja-ide/ninja-ide.git
 $ cd ninja-ide
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 $ python ninja-ide.py
 ```
 
